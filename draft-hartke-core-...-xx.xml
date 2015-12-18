@@ -92,33 +92,38 @@
     <section title="Introduction">
 
       <t>
-        The Constrained Application Protocol (CoAP) [RFC7252] is a Web 
-        application protocol designed for constrained nodes and networks
-        [RFC7228].  CoAP is defined to operate either over UDP secured at the 
-        network layer or over Datagram Transport Layer Security (DTLS) [RFC6347].  
-        However, CoAP defines a set of legitimate proxy operations on CoAP messages 
-        which requires DTLS to be terminated at proxies.  This implies that the proxy
-        has access not only with the data required for perform the intended proxy 
-        operation but is also able to eavesdrop or manipulate any part of the CoAP 
-        payload and metadata in transit between client and server without being protected 
-        or detected by DTLS.
+        The <xref target="RFC7252">Constrained Application Protocol
+        (CoAP)</xref> is a Web application protocol designed for
+        <xref target="RFC7228">constrained nodes and networks</xref>.
+        CoAP is defined to operate either over UDP secured at the
+        network layer or over <xref target="RFC6347">Datagram Transport
+        Layer Security (DTLS)</xref>. However, CoAP defines a set of
+        legitimate proxy operations on CoAP messages which requires
+        DTLS to be terminated at the proxy. This implies that the proxy
+        not only has access to the data required for performing the
+        intended proxy functionality but also is able to eavesdrop on
+        or manipulate any part of the CoAP payload and metadata in
+        transit between client and server without being protected or
+        detected by DTLS.
       </t>
 
       <t>
-        One way to mitigate this threat is to secure CoAP communication at 
-        application layer using an object-based security mechanisms 
-        (such as CBOR Encoded Message Syntax [I-D.ietf-cose-msg]) instead 
-        of or in addition to the security mechanisms at the network layer or 
-        transport layer.
+        One way to mitigate this threat is to secure CoAP communication
+        at the application layer using an object-based security
+        mechanism (such as <xref target="I-D.ietf-cose-msg">CBOR
+        Encoded Message Syntax</xref>) instead of or in addition to
+        the security mechanisms at the network layer or transport
+        layer.
       </t>
-      
+
       <t>
-        This document analyses the threats to CoAP requests and responses 
-        of sensor and actuator deployments involving proxies.  The analysis 
-        is based on identifying the assets associated to sensor- and actuator 
-        based communication patterns, and consider the potential threats to 
-        these assets.  The threat analysis provides input to define the security 
-        objectives that an application layer security mechanism for CoAP needs to meet.
+        This document analyses the threats to CoAP requests and
+        responses of sensor and actuator deployments involving proxies.
+        The analysis is based on identifying the assets associated to
+        sensor- and actuator-based communication patterns, and consider
+        the potential threats to these assets. The threat analysis
+        provides input to define the security objectives that an
+        application layer security mechanism for CoAP needs to meet.
       </t>
 
       <section title="Terminology">
@@ -166,7 +171,7 @@
         This section presents a number of scenarios involving sensor
         and actuator communications over CoAP, analyses the threats
         posed by potential attackers and presents security objectives
-        that a CoAP Object Security solution must meet.
+        that an application layer security mechanism needs to meet.
       </t>
 
       <t>
