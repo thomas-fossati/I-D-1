@@ -6,6 +6,7 @@
   <!ENTITY RFC6347 SYSTEM "reference.RFC.6347.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
   <!ENTITY I-D.ietf-cose-msg SYSTEM "reference.I-D.ietf-cose-msg.xml">
 ]>
 
@@ -159,11 +160,353 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Threat Model">
+    <section title="Scenarios, Threats and Security Objectives">
 
       <t>
-        ...
+        This section presents a number of scenarios involving sensor
+        and actuator communications over CoAP, analyses the threats
+        posed by potential attackers and presents security objectives
+        that a CoAP Object Security solution must meet.
       </t>
+
+      <t>
+        Common to all scenarios is the presence of a 'man in the
+        middle' between a CoAP client and a CoAP server in the form
+        of a CoAP proxy. The proxy is intentionally placed between the
+        two endpoints and is responsible, for example, for reducing
+        response time and network bandwidth by serving responses from
+        a cache or for enabling the client to make requests that it
+        otherwise could not make. However, the proxy might not be fully
+        trusted and so a security solution is needed that protects the
+        client, the server and the message exchanges against certain
+        threats while still allowing the proxy to assume its normal
+        proxying functionality.
+      </t>
+
+      <t>
+        In general, there are the following assets to protect:
+        <list style="symbols">
+          <t>
+            The devices at the two ends and their (often very
+            constrained) system resources such as available memory,
+            processing capacity, and energy.
+          </t>
+          <t>
+            The physical environment of the devices fitted with sensor
+            and actuators. Access to the physical environment is
+            provided through CoAP resources that allow a remote entity
+            to retrieve information about the physical environment
+            (such as the current temperature) or to produce an effect
+            on the physical environment (such as the activation of a
+            heater).
+          </t>
+          <t>
+            The individual messages exchanged between a client and a
+            server through the proxy. This includes the CoAP options in
+            request and response messages (such as the requested method
+            or the target URI) and the CoAP resource representations
+            encapsulated in the message payload.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        In general, there are the following threats to consider:
+        <list style="symbols">
+          <t>
+            The proxy does not forward a message.
+          </t>
+          <t>
+            The proxy forwards a different message (including
+            manipulation of existing message and replay of other
+            message).
+          </t>
+          <t>
+            The proxy sends a message on its own initiative (including
+            deliberate delay and flooding).
+          </t>
+          <t>
+            The proxy reads a message.
+          </t>
+          <t>
+            ...
+          </t>
+        </list>
+      </t>
+
+      <section title="Caching">
+
+        <figure>
+          <artwork align="center">
+<![CDATA[Client A         Proxy          Server
+   |               |               |
+   |    Request    |    Request    |
+   |-------------->|-------------->|--.
+   |               |               |  |
+   |<--------------|<--------------|<-'
+   |    Response   |    Response   |
+   |               |               |
+                   |               |
+Client B           |               |
+   |               |               |
+   |    Request    |               |
+   |-------------->|--.            |
+   |               |  | from cache |
+   |<--------------|<-'            |
+   |    Response   |               |
+   |               |               |]]>
+          </artwork>
+        </figure>
+
+        <t>
+          Client A requests the proxy to make a certain request to the
+          server and to return the server's response. The proxy
+          services the request by forwarding the request message to the
+          server. The server returns a cacheable response. The proxy
+          stores the response in its cache, performs any necessary
+          translations, and forwards it to the client. Later, client B
+          makes an equivalent request to the proxy that the proxy
+          services by returning the response from its cache.
+        </t>
+
+        <t>
+          Requirements:
+          <list style="symbols">
+            <t>
+              The response received by client B originates from the
+              server (and not some other server).
+            </t>
+            <t>
+              The response received by client B contains a
+              representation of the requested resource (and not some
+              other resource at the same server).
+            </t>
+            <t>
+              The representation is more recent than previously
+              received representations.
+            </t>
+            <t>
+              The representation and metadata are disclosed only to
+              the intended/authorized client.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Threats:
+          <list style="symbols">
+            <t>
+              The proxy serves a stale response and tricks the client
+              into believing that it is a fresh response (by
+              manipulating the MaxAge option).
+            </t>
+            <t>
+              ...
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Security Objectives:
+          <list style="symbols">
+            <t>
+              Prevent the proxy from serving a stale response.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Possible Solutions:
+          <list style="symbols">
+            <t>
+              Timestamps
+            </t>
+            <t>
+              Challenge-Response
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Functional Requirements:
+          <list style="symbols">
+            <t>
+              The proxy must be able to store cacheable responses in a
+              cache. This requires that the proxy is able to compute
+              the cache key for a request.
+            </t>
+            <t>
+              The proxy must be able to return a fresh response from
+              its cache without contacting the server.
+            </t>
+          </list>
+        </t>
+        
+      </section>
+
+      <section title="Observing Resources">
+
+        <figure>
+          <artwork align="center">
+<![CDATA[Client          Proxy          Server
+  |               |               |
+  |    Request    |    Request    |
+  |-------------->|-------------->|--.
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |  Notification |  Notification |  |
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |  Notification |  Notification |  |
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |  Notification |  Notification |
+  |               |               |]]>
+          </artwork>
+        </figure>
+
+        <t>
+          The server exposes an observable resource (e.g., the current
+          reading of a temperature sensor). Multiple clients are
+          interested in the current state of the resource and observe
+          it using the <xref target="RFC7641">CoAP resource observation
+          mechanism</xref>. The goal is to keep the state observed by
+          the clients closely in sync with the actual state of the
+          resource at the server. Another goal is to minimize the
+          burden on the server by moving the task to fan out
+          notifications to multiple clients from the server to the
+          proxy.
+        </t>
+
+        <t>
+          Security Objectives:
+          <list style="symbols">
+            <t>
+              (Same as for caching.)
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Functional Requirements:
+          <list style="symbols">
+            <t>
+              The proxy must be able to observe a resource on behalf of
+              one or more clients.
+            </t>
+            <t>
+              When a client registers interest in a resource with the
+              proxy, the proxy must be able to return a response with
+              the current state of the resource without contacting the
+              server.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Publish-Subscribe">
+
+        <figure>
+          <artwork align="center">
+<![CDATA[Producer         Broker        Consumer
+(Client)        (Server)       (Client)
+   |               |               |
+   |               |    Request    |
+   |            .--|<--------------|
+   |            |  |               |
+   |            '->|-------------->|
+   |               |  Notification |
+   |    Request    |               |
+   |-------------->|-------------->|
+   |               |  Notification |
+   |<--------------|               |
+   |    Response   |               |
+   |               |               |
+   |    Request    |               |
+   |-------------->|-------------->|
+   |               |  Notification |
+   |<--------------|               |
+   |    Response   |               |
+   |               |               |]]>
+          </artwork>
+        </figure>
+
+      </section>
+
+      <section title="Direct Response">
+
+        <figure>
+          <artwork align="center">
+<![CDATA[Client          Proxy          Server
+  |               |               |
+  |    Request    |    Request    |
+  |-------------->|-------------->|--.
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |    Response   |    Response   |
+  |               |               |]]>
+          </artwork>
+        </figure>
+
+      </section>
+
+      <section title="Direct Request">
+
+        <figure>
+          <artwork align="center">
+<![CDATA[Client          Proxy          Server
+  |               |               |
+  |    Request    |    Request    |
+  |-------------->|-------------->|--.
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |    Response   |    Response   |
+  |               |               |]]>
+          </artwork>
+        </figure>
+
+        <t>
+          Requirements:
+          <list style="symbols">
+            <t>
+              The request from the client to the server is not delayed.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Threats:
+          <list style="symbols">
+            <t>
+              The proxy delays the request.
+            </t>
+            <t>
+              The proxy relays the request to a physically different
+              place.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Security Objectives:
+          <list style="symbols">
+            <t>
+              Detect if the proxy has delayed the request.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Possible Solutions:
+          <list style="symbols">
+            <t>
+              4-pass Mutual Challenge-Response
+            </t>
+          </list>
+        </t>
+
+      </section>
 
     </section>
 
@@ -213,6 +556,7 @@
       &RFC2119;
 
       &RFC7252;
+      &RFC7641;
 
     </references>
 
@@ -221,7 +565,7 @@
       &RFC6347;
 
       &RFC7228;
-
+      
       &I-D.ietf-cose-msg;
 
     </references>
