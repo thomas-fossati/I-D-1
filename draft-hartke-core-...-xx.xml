@@ -306,6 +306,19 @@ Client B           |               |
               manipulating the MaxAge option).
             </t>
             <t>
+              The proxy discloses a representation to an unauthorized 
+              third party.
+            </t>
+            <t>
+              The proxy sends a fake request to the Server tricking it
+              into believing that an authorized client actually sent
+              that request.
+            </t>
+            <t>
+              The proxy maliciously manipulates the representation
+              before caching it.
+            </t>
+            <t>
               ...
             </t>
           </list>
@@ -313,21 +326,41 @@ Client B           |               |
 
         <t>
           Security Objectives:
-          <list style="symbols">
+          <list style="numbers">
             <t>
               Prevent the proxy from serving a stale response.
+            </t>
+            <t>
+              Prevent the proxy from disclosing a representation to an
+              unauthorized thrid party.
+            </t>
+            <t>
+              Prevent the proxy from sending fake requests.
+            </t>
+            <t>
+              Prevent the proxy from manipulating resource 
+              representations (including meta-data).
             </t>
           </list>
         </t>
 
         <t>
           Possible Solutions:
-          <list style="symbols">
+          <list style="numbers">
             <t>
-              Timestamps
+              Timestamps OR  Challenge-Response.
             </t>
             <t>
-              Challenge-Response
+              Encrypt payload at the Server (doesn't work for the
+              metadata).
+            </t>
+            <t>
+              Sign or MAC requests at the Client (doesn't work for
+              some metadata).
+            </t>
+            <t>
+              Sign or MAC the resource representations (doesn't work
+              for some metadata).
             </t>
           </list>
         </t>
