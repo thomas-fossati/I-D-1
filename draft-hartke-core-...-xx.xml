@@ -1,628 +1,1 @@
-<?xml version="1.0" encoding="us-ascii"?>
-
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-  <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
-  <!ENTITY RFC4949 SYSTEM "reference.RFC.4949.xml">
-  <!ENTITY RFC6347 SYSTEM "reference.RFC.6347.xml">
-  <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
-  <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
-  <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
-  <!ENTITY I-D.ietf-cose-msg SYSTEM "reference.I-D.ietf-cose-msg.xml">
-]>
-
-<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
-
-<?rfc compact="yes"?>
-<?rfc sortrefs="yes"?>
-<?rfc subcompact="no"?>
-<?rfc symrefs="yes"?>
-<?rfc toc="yes"?>
-<?rfc tocdepth="3"?>
-
-<rfc category="info" docName="draft-hartke-core-...-00" ipr="trust200902">
-
-  <front>
-
-    <title>Protecting CoAP messages through proxies</title>
-
-    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
-      <organization>Universitaet Bremen TZI</organization>
-      <address>
-        <postal>
-          <street>Postfach 330440</street>
-          <city>Bremen</city>
-          <code>28359</code>
-          <country>Germany</country>
-        </postal>
-        <phone>+49-421-218-63905</phone>
-        <email>hartke@tzi.org</email>
-      </address>
-    </author>
-
-    <author initials="L." surname="Seitz" fullname="Ludwig Seitz">
-      <organization>SICS Swedish ICT AB</organization>
-      <address>
-        <postal>
-          <street>Scheelevaegen 17</street>
-          <city>Lund</city>
-          <code>223 70</code>
-          <country>Sweden</country>
-        </postal>
-        <email>ludwig@sics.se</email>
-      </address>
-    </author>
-
-    <author initials="G." surname="Selander" fullname="Goeran Selander">
-      <organization>Ericsson</organization>
-      <address>
-        <postal>
-          <street>Faroegatan 6</street>
-          <city>Kista</city>
-          <code>164 80</code>
-          <country>Sweden</country>
-        </postal>
-        <email>goran.selander@ericsson.com</email>
-      </address>
-    </author>
-
-    <date />
-
-    <area>Applications</area>
-
-    <workgroup>CoRE Working Group</workgroup>
-
-    <abstract>
-
-      <t>
-        This document analyses threats to CoAP message 
-        exchanges traversing proxies.
-      </t>
-
-    </abstract>
-
-  </front>
-
-  <middle>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <section title="Introduction">
-
-      <t>
-        The <xref target="RFC7252">Constrained Application Protocol
-        (CoAP)</xref> is a Web application protocol designed for
-        <xref target="RFC7228">constrained nodes and networks</xref>.
-        CoAP is defined to operate either over UDP secured at the
-        network layer or over <xref target="RFC6347">Datagram Transport
-        Layer Security (DTLS)</xref>. However, CoAP defines a set of
-        legitimate proxy operations on CoAP messages which requires
-        DTLS to be terminated at the proxy. This implies that the proxy
-        not only has access to the data required for performing the
-        intended proxy functionality but also is able to eavesdrop on
-        or manipulate any part of the CoAP payload and metadata in
-        transit between client and server without being protected or
-        detected by DTLS.
-      </t>
-
-      <t>
-        One way to mitigate this threat is to secure CoAP communication
-        at the application layer using an object-based security
-        mechanism (such as <xref target="I-D.ietf-cose-msg">CBOR
-        Encoded Message Syntax</xref>) instead of or in addition to
-        the security mechanisms at the network layer or transport
-        layer.
-      </t>
-
-      <t>
-        This document analyses the threats to CoAP requests and
-        responses of sensor and actuator deployments involving proxies.
-        The analysis is based on identifying the assets associated to
-        sensor- and actuator-based communication patterns, and consider
-        the potential threats to these assets. The threat analysis
-        provides input to define the security objectives that an
-        application layer security mechanism for CoAP needs to meet.
-      </t>
-
-      <section title="Terminology">
-
-        <!--
-        <t>
-          This document makes use of the terminology defined in
-          <xref target="RFC4949"/>.
-        </t>
-        -->
-
-        <t>
-          Readers are expected to be familiar with
-          <xref target="RFC7252"/> and the terms defined there.
-        </t>
-
-        <!--
-        <t>
-          Additionally, the following terms are used in this document:
-          <list style="hanging">
-            <t hangText="...:">...</t>
-          </list>
-        </t>
-        -->
-
-        <t>
-          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
-          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY",
-          and "OPTIONAL" in this document are to be interpreted as
-          described in <xref target="RFC2119"/>.
-        </t>
-
-      </section>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <section title="Scenarios, Threats and Security Objectives">
-
-      <t>
-        This section presents a number of scenarios involving sensor
-        and actuator communications over CoAP, analyses the threats
-        posed by potential attackers and presents security objectives
-        that an application layer security mechanism needs to meet.
-      </t>
-
-      <t>
-        Common to all scenarios is the presence of a 'man in the
-        middle' between a CoAP client and a CoAP server in the form
-        of a CoAP proxy. The proxy is intentionally placed between the
-        two endpoints and is responsible, for example, for reducing
-        response time and network bandwidth by serving responses from
-        a cache or for enabling the client to make requests that it
-        otherwise could not make. However, the proxy might not be fully
-        trusted and so a security solution is needed that protects the
-        client, the server and the message exchanges against certain
-        threats while still allowing the proxy to assume its normal
-        proxying functionality.
-      </t>
-
-      <t>
-        In general, there are the following assets to protect:
-        <list style="symbols">
-          <t>
-            The devices at the two ends and their (often very
-            constrained) system resources such as available memory,
-            processing capacity, and energy.
-          </t>
-          <t>
-            The physical environment of the devices fitted with sensor
-            and actuators. Access to the physical environment is
-            provided through CoAP resources that allow a remote entity
-            to retrieve information about the physical environment
-            (such as the current temperature) or to produce an effect
-            on the physical environment (such as the activation of a
-            heater).
-          </t>
-          <t>
-            The individual messages exchanged between a client and a
-            server through the proxy. This includes the CoAP options in
-            request and response messages (such as the requested method
-            or the target URI) and the CoAP resource representations
-            encapsulated in the message payload.
-          </t>
-        </list>
-      </t>
-
-      <t>
-        In general, there are the following threats to consider:
-        <list style="symbols">
-          <t>
-            The proxy does not forward a message.
-          </t>
-          <t>
-            The proxy forwards a different message (including
-            manipulation of existing message and replay of other
-            message).
-          </t>
-          <t>
-            The proxy sends a message on its own initiative (including
-            deliberate delay and flooding).
-          </t>
-          <t>
-            The proxy reads a message.
-          </t>
-          <t>
-            ...
-          </t>
-        </list>
-      </t>
-
-      <section title="Caching">
-
-        <figure>
-          <artwork align="center">
-<![CDATA[Client A         Proxy          Server
-   |               |               |
-   |    Request    |    Request    |
-   |-------------->|-------------->|--.
-   |               |               |  |
-   |<--------------|<--------------|<-'
-   |    Response   |    Response   |
-   |               |               |
-                   |               |
-Client B           |               |
-   |               |               |
-   |    Request    |               |
-   |-------------->|--.            |
-   |               |  | from cache |
-   |<--------------|<-'            |
-   |    Response   |               |
-   |               |               |]]>
-          </artwork>
-        </figure>
-
-        <t>
-          Client A requests the proxy to make a certain request to the
-          server and to return the server's response. The proxy
-          services the request by forwarding the request message to the
-          server. The server returns a cacheable response. The proxy
-          stores the response in its cache, performs any necessary
-          translations, and forwards it to the client. Later, client B
-          makes an equivalent request to the proxy that the proxy
-          services by returning the response from its cache.
-        </t>
-
-        <t>
-          Requirements:
-          <list style="symbols">
-            <t>
-              The response received by client B originates from the
-              server (and not some other server).
-            </t>
-            <t>
-              The response received by client B contains a
-              representation of the requested resource (and not some
-              other resource at the same server).
-            </t>
-            <t>
-              The representation is more recent than previously
-              received representations.
-            </t>
-            <t>
-              The representation and metadata are disclosed only to
-              the intended/authorized client.
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Threats:
-          <list style="symbols">
-            <t>
-              The proxy serves a stale response and tricks the client
-              into believing that it is a fresh response (by
-              manipulating the MaxAge option).
-            </t>
-            <t>
-              The proxy discloses a representation to an unauthorized 
-              third party.
-            </t>
-            <t>
-              The proxy sends a fake request to the Server tricking it
-              into believing that an authorized client actually sent
-              that request.
-            </t>
-            <t>
-              The proxy maliciously manipulates the representation
-              before caching it.
-            </t>
-            <t>
-              ...
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Security Objectives:
-          <list style="numbers">
-            <t>
-              Prevent the proxy from serving a stale response.
-            </t>
-            <t>
-              Prevent the proxy from disclosing a representation to an
-              unauthorized thrid party.
-            </t>
-            <t>
-              Prevent the proxy from sending fake requests.
-            </t>
-            <t>
-              Prevent the proxy from manipulating resource 
-              representations (including meta-data).
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Possible Solutions:
-          <list style="numbers">
-            <t>
-              Timestamps OR  Challenge-Response.
-            </t>
-            <t>
-              Encrypt payload at the Server (doesn't work for the
-              metadata).
-            </t>
-            <t>
-              Sign or MAC requests at the Client (doesn't work for
-              some metadata).
-            </t>
-            <t>
-              Sign or MAC the resource representations (doesn't work
-              for some metadata).
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Functional Requirements:
-          <list style="symbols">
-            <t>
-              The proxy must be able to store cacheable responses in a
-              cache. This requires that the proxy is able to compute
-              the cache key for a request.
-            </t>
-            <t>
-              The proxy must be able to return a fresh response from
-              its cache without contacting the server.
-            </t>
-          </list>
-        </t>
-        
-      </section>
-
-      <section title="Observing Resources">
-
-        <figure>
-          <artwork align="center">
-<![CDATA[Client          Proxy          Server
-  |               |               |
-  |    Request    |    Request    |
-  |-------------->|-------------->|--.
-  |               |               |  |
-  |<--------------|<--------------|<-'
-  |  Notification |  Notification |  |
-  |               |               |  |
-  |<--------------|<--------------|<-'
-  |  Notification |  Notification |  |
-  |               |               |  |
-  |<--------------|<--------------|<-'
-  |  Notification |  Notification |
-  |               |               |]]>
-          </artwork>
-        </figure>
-
-        <t>
-          The server exposes an observable resource (e.g., the current
-          reading of a temperature sensor). Multiple clients are
-          interested in the current state of the resource and observe
-          it using the <xref target="RFC7641">CoAP resource observation
-          mechanism</xref>. The goal is to keep the state observed by
-          the clients closely in sync with the actual state of the
-          resource at the server. Another goal is to minimize the
-          burden on the server by moving the task to fan out
-          notifications to multiple clients from the server to the
-          proxy.
-        </t>
-
-        <t>
-          Security Objectives:
-          <list style="symbols">
-            <t>
-              (Same as for caching.)
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Functional Requirements:
-          <list style="symbols">
-            <t>
-              The proxy must be able to observe a resource on behalf of
-              one or more clients.
-            </t>
-            <t>
-              When a client registers interest in a resource with the
-              proxy, the proxy must be able to return a response with
-              the current state of the resource without contacting the
-              server.
-            </t>
-          </list>
-        </t>
-
-      </section>
-
-      <section title="Publish-Subscribe">
-
-        <figure>
-          <artwork align="center">
-<![CDATA[Producer         Broker        Consumer
-(Client)        (Server)       (Client)
-   |               |               |
-   |               |    Request    |
-   |            .--|<--------------|
-   |            |  |               |
-   |            '->|-------------->|
-   |               |  Notification |
-   |    Request    |               |
-   |-------------->|-------------->|
-   |               |  Notification |
-   |<--------------|               |
-   |    Response   |               |
-   |               |               |
-   |    Request    |               |
-   |-------------->|-------------->|
-   |               |  Notification |
-   |<--------------|               |
-   |    Response   |               |
-   |               |               |]]>
-          </artwork>
-        </figure>
-
-      </section>
-
-      <section title="Direct Response">
-
-        <figure>
-          <artwork align="center">
-<![CDATA[Client          Proxy          Server
-  |               |               |
-  |    Request    |    Request    |
-  |-------------->|-------------->|--.
-  |               |               |  |
-  |<--------------|<--------------|<-'
-  |    Response   |    Response   |
-  |               |               |]]>
-          </artwork>
-        </figure>
-
-      </section>
-
-      <section title="Direct Request">
-
-        <figure>
-          <artwork align="center">
-<![CDATA[Client          Proxy          Server
-  |               |               |
-  |    Request    |    Request    |
-  |-------------->|-------------->|--.
-  |               |               |  |
-  |<--------------|<--------------|<-'
-  |    Response   |    Response   |
-  |               |               |]]>
-          </artwork>
-        </figure>
-
-        <t>
-          Requirements:
-          <list style="symbols">
-            <t>
-              The request from the client to the server is not delayed.
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Threats:
-          <list style="symbols">
-            <t>
-              The proxy delays the request.
-            </t>
-            <t>
-              The proxy relays the request to a physically different
-              place.
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Security Objectives:
-          <list style="symbols">
-            <t>
-              Detect if the proxy has delayed the request.
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Possible Solutions:
-          <list style="symbols">
-            <t>
-              4-pass Mutual Challenge-Response
-            </t>
-          </list>
-        </t>
-
-      </section>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <section title="Security Considerations">
-
-      <t>
-        This document is about security; as such, there are no
-        additional security considerations.
-      </t>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <section title="IANA Considerations">
-
-      <t>
-        This document includes no request to IANA.
-      </t>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-  </middle>
-
-  <back>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <references title="Normative References">
-
-      &RFC2119;
-
-      &RFC7252;
-      &RFC7641;
-
-    </references>
-
-    <references title="Informative References">
-
-      &RFC6347;
-
-      &RFC7228;
-      
-      &I-D.ietf-cose-msg;
-
-    </references>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <!--
-    <section title="Acknowledgements" numbered="no">
-    </section>
-    -->
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-  </back>
-
-</rfc>
+<?xml version="1.0" encoding="us-ascii"?><!DOCTYPE rfc SYSTEM "rfc2629.dtd" [  <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">  <!ENTITY RFC4949 SYSTEM "reference.RFC.4949.xml">  <!ENTITY RFC6347 SYSTEM "reference.RFC.6347.xml">  <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">  <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">  <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">  <!ENTITY I-D.ietf-cose-msg SYSTEM "reference.I-D.ietf-cose-msg.xml">]><?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?><?rfc compact="yes"?><?rfc sortrefs="yes"?><?rfc subcompact="no"?><?rfc symrefs="yes"?><?rfc toc="yes"?><?rfc tocdepth="3"?><rfc category="info" docName="draft-hartke-core-...-00" ipr="trust200902">        <front>    <title abbrev="Security requirements for CoAP messages">Security requirements for CoAP messages through proxies</title>    <author initials="K." surname="Hartke" fullname="Klaus Hartke">      <organization>Universitaet Bremen TZI</organization>      <address>        <postal>          <street>Postfach 330440</street>          <city>Bremen</city>          <code>28359</code>          <country>Germany</country>        </postal>        <phone>+49-421-218-63905</phone>        <email>hartke@tzi.org</email>      </address>    </author>        <author initials="L." surname="Seitz" fullname="Ludwig Seitz">      <organization>SICS Swedish ICT AB</organization>      <address>        <postal>          <street>Scheelevaegen 17</street>          <city>Lund</city>          <code>223 70</code>          <country>Sweden</country>        </postal>        <email>ludwig@sics.se</email>      </address>    </author>    <author initials="G." surname="Selander" fullname="Goeran Selander">      <organization>Ericsson AB</organization>      <address>        <postal>          <street/>          <city/>          <code>SE-164 80 Stockholm</code>          <country>Sweden</country>        </postal>        <email>goran.selander@ericsson.com</email>      </address>    </author>        <author initials="F." surname="Palombini" fullname="Francesca Palombini">      <organization>Ericsson AB</organization>      <address>        <postal>          <street/>          <city/>          <code>SE-164 80 Stockholm</code>          <country>Sweden</country>        </postal>        <email>francesca.palombini@ericsson.com</email>      </address>    </author>        <date />    <area>Applications</area>    <workgroup>CoRE Working Group</workgroup>    <abstract>      <t>        This document analyses threats to CoAP message         exchanges traversing proxies and derives the security requirements        mitigating the threats.      </t>    </abstract>  </front>  <middle>    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <section title="Introduction">      <t>        The <xref target="RFC7252">Constrained Application Protocol        (CoAP)</xref> is a Web application protocol designed for        <xref target="RFC7228">constrained nodes and networks</xref>.        CoAP is defined to operate either over UDP secured at the        network layer or over <xref target="RFC6347">Datagram Transport        Layer Security (DTLS)</xref>. However, CoAP defines a set of        legitimate proxy operations on CoAP messages which requires        DTLS to be terminated at the proxy. This implies that the proxy        not only has access to the data required for performing the        intended proxy functionality but also is able to eavesdrop on        or manipulate any part of the CoAP payload and metadata in        transit between client and server without being protected or        detected by DTLS.      </t>      <t>        One way to mitigate this threat is to secure CoAP communication        at the application layer using an object-based security        mechanism (such as <xref target="I-D.ietf-cose-msg">CBOR        Encoded Message Syntax</xref>) instead of or in addition to        the security mechanisms at the network layer or transport        layer.      </t>      <t>        This document analyses the threats to CoAP requests and        responses of sensor and actuator deployments involving proxies.        The analysis is based on identifying the assets associated to sensor-        and actuator-based communication patterns, and considering        the potential threats executed through proxies to these assets.        The threat analysis provides the basis for defining the security        requirements that an application layer security mechanism for CoAP        needs to meet.      </t>      <section title="Terminology">        <!--        <t>          This document makes use of the terminology defined in          <xref target="RFC4949"/>.        </t>        -->        <t>          Readers are expected to be familiar with CoAP          <xref target="RFC7252"/> and the terms defined there.        </t>        <!--        <t>          Additionally, the following terms are used in this document:          <list style="hanging">            <t hangText="...:">...</t>          </list>        </t>        -->        <t>          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY",          and "OPTIONAL" in this document are to be interpreted as          described in <xref target="RFC2119"/>.        </t>      </section>    </section>    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <section title="Scope and assumptions">      <t>        This memo presents a number of scenarios involving sensor        and actuator communications over CoAP. Common to all scenarios is the        presence of at least one proxy between        the client requesting a resource and the server hosting a resource.      </t>            <t>        The proxy is intentionally placed between the        two endpoints and is responsible, for example, for reducing        response time and network bandwidth by serving responses from        a cache or for enabling the client to make requests that it        otherwise could not make.      </t>            <t>        A proxy may perform different functions, but the basic function        is to forward messages according to certain rules.  For example:                <list style="format Rule %d:">          <t>            Forward a message to the next proxy when the link is up          </t>          <t>            Only forward a request if there is no fresh cached response          </t>          <t>            Forward a new publication to all subscribing clients          </t>        </list>      </t>       <t>        In order to perform its function, a proxy may be required to read or        change certain parts of a CoAP message, as discussed below. On the 	other hand, there are parts of a CoAP message that a proxy in general 	should not be able to read and change, such as the CoAP payload.      </t>            <t>        Since a proxy might not be fully trusted, a security solution is needed        that protects the client, the server and the message exchanges against        certain threats, while still allowing the proxy to assume its normal        functionality.      </t>            <t>        To identify the threats in scope, we first consider what assets need to        be protected. In general, there are the following types of assets to        protect:        <list style="format A%d:">          <t>            The devices at the two ends and their (often very            constrained) system resources such as available memory,            processing capacity, and energy.          </t>          <t>            The physical environment of the devices fitted with sensor            and actuators. Access to the physical environment is            provided through CoAP resources that allow a remote entity            to retrieve information about the physical environment            (such as the current temperature) or to produce an effect            on the physical environment (such as the activation of a            heater).          </t>          <t>	    The communication infrastructure linking the two devices	    (which often contains some very constrained parts).	  </t>          <t>            The messages exchanged between a client and a server, through the            proxy. This includes the CoAP header and options in            request and response messages (such as the requested method            or the target URI) and the CoAP resource representations,            encapsulated in the message payload.          </t>        </list>      </t>            <t>        The scope of this memo is to analyze threats executed through        proxies, and this is only directly affecting the assets of type A3 and        A4 listed above: Clearly A4 is affected by the proxies, and since the        proxies are part of the communication infrastructure (A3) an attack        executed through a proxy such as inhibiting forwarding has an impact        on it.      </t>            <t>        Note also that the assets of type A4, the messages, have an impact also        on the two other types of assets. For example: flooding a device with        messages has impact on its system resources; and successful manipulation        of an actuator command carried in a message has an        impact on the physical environment.      </t>            <t>        There may be several reasons why a proxy could end up performing        malicious operations, for example it may have become subject        for intrusion, or infected by malware. A fully trusted proxy, handling        unprotected messages, is an attractive target, since proxies commonly        act as a concentrators for many message flows and since a proxy may        be easier to attack from the Internet than attacking the sensor/actuator        residing behind the proxy. The attack vectors for compromising a proxy        and the associated risks are out of scope for this memo.      </t>            <t>        On a high level, there are the following potential threats from proxies        to consider:        <list style="format T%d:">          <t>            The proxy forwards a message other than received          </t>          <t>            The proxy sends a message on its own initiative, including replay,            flooding, etc.          </t>          <t>            The proxy does not forward a message, including delay, reordering, 	    etc.          </t>          <t>            The proxy reads a message          </t>        </list>      </t>            <t>        Not all of these potential threats are actual threats, in all proxy        settings. For example, a forwarding proxy is designed to change the        contents of CoAP options Uri-Host, Uri-Port to the next hop proxy or to        the content of the Proxy-Uri.       </t>            <t>        To assess which of these potential threats are actual threats, we        need to define what the legitimate proxy operations are in the 	different scenarios and what the security objectives in those 	scenarios are.      </t>                     </section>        <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->        <section title="Scenarios, threats and security requirements">            <t>        In this section we consider a set of scenarios involving proxies, with        different forwarding rules and security objectives. We study the        associated threats and derive the security requirements for message        transfer between client and server in the different scenarios.      </t>            <!-- **************************************************************** -->      <!-- **************************************************************** -->                <section title="Multiple requests - one response">                <t>          In this scenario we study caching: how a proxy may serve the same          cached response to multiple clients, requesting the same          resource.        </t>                <t>          The caching functionality protects communication-constrained servers          from repeated requests for the same resources, thus saving system          resources, bandwidth, and round-trip time.        </t>                <figure>          <artwork align="center">            <![CDATA[Client A         Proxy          Server              |               |               |              |    Request    |    Request    |              |-------------->|-------------->|--.              |               |               |  |              |<--------------|<--------------|<-'              |    Response   |    Response   |              |               |               |              |               |            Client B          |               |              |               |               |              |    Request    |               |              |-------------->|--.            |              |               |  | from cache |              |<--------------|<-'            |              |    Response   |               |              |               |               |]]>          </artwork>        </figure>                <t>          Client A requests the proxy to make a certain request to the          server and to return the server's response. The proxy          services the request by forwarding the request message to the          server. The server returns a cacheable response. The proxy          stores the response in its cache, performs any necessary          translations, and forwards it to the client. Later, client B          makes an equivalent request to the proxy that the proxy          services by returning the response from its cache.        </t>                <section title="Proxy Rule">                    <t>            TBD: Describe logically how caching works, how the cache key works,            with examples using different kinds of CoAP options.          </t>                    <t>            Functional Requirements:            <list style="symbols">              <t>                The proxy must be able to store cacheable responses in a                cache. This requires that the proxy is able to compute                the cache key for a request.              </t>              <t>                The proxy must be able to return a fresh response from                its cache without contacting the server.              </t>            </list>            TBD: These functional requirements could be kept or replaced by a            detailed description above.          </t>                  </section>                <!-- *************************************************************** -->                <section title="Security Objectives">          <t>            By design of the caching functionality the proxy may intercept a            request and respond to the client with a cached response of an            equivalent request. Hence client requests are in general not            verified by the server as a precondition to receive a response.          </t>                    <t>            Moreover, to enable short round-trip times for requesting resource            representations, it may be beneficial the server to grant the proxy            the right to make GET requests for resources where cached            representation is no longer valid. Note, however, that we are not            assuming a proxy to have a security association with the server so            such a request would not necessarily be protected.          </t>                    <t>            As indicated by both these examples, the caching scenario does            neither require client authentication by the server nor            communication security of the request.        </t>                    <t>            In order to perform its task, the proxy needs to read the cache key            which reveals meta-data about the request and response. Hence the            caching scenario does not target the most privacy sensitive            applications.          </t>                    <t>            Since a single response can be used as response to requests from            multiple clients, it is not possible for the client to verify that            the received response was generated by the server in response to the            request. Instead the client need to verify the response in itself.          </t>                    <t>            TBD: Is there any difference in the case of caching error response            messages of PUT requests?          </t>                    <t>            The security objectives are:            <list style="format SO%d:">              <t>                A client is able to verify that the received response is a                response to the requested server and resource, and that                resource specific data in the response, including resource                representation, has not been altered in transfer.              </t>                            <t>                The server is able to protect the resource specific data in the                response, including resource representation, such that only                authorized clients can read the resource representation and that                a change of resource specific data can be detected by a client.              </t>            </list>            The resource specific data mentioned above needs to be determined by            the threat analysis.          </t>                  </section>            <!-- *************************************************************** -->                <section title="Threat Analysis">          <t>            We now analyze the potential threats to caching.          </t>                              <section title="The proxy forwards a messages other than received">            <t>              <list style="format T1.%d:">                <t>                  The proxy manipulates the payload before forwarding                  <vspace blankLines="1"/>                  This threat that may be mitigated with integrity protection of                  payload                </t>                                <t>                  The proxy forwards a GET request with changed Uri-Path                  <vspace blankLines="1"/>                  This threat can be mitigated e.g. with integrity protection                  of URI or by having different security                  context for different resources.                </t>                                <t>                  The proxy forwards a request with changed Code, e.g. DELETE                  <vspace blankLines="1"/>                  This threat may be mitigated e.g. by a server rejecting                  unauthenticated requests other than GET.                </t>                                <t>                  The proxy forwards a response with changed Option, e.g. a                  different Content Format                  <vspace blankLines="1"/>                  This threat may be mitigated by integrity protecting selected                  options.                </t>                                <t>                  The proxy sends an old response to a new request                  <vspace blankLines="1"/>                  This is not necessarily a threat. The proxy is supposed to                  send a cached response, if fresh. However, if the proxy serves                  a stale response and manipulates the MaxAge option then it may                  lure the client into believing it is a fresh response. Since                  the proxy is entitled to make such changes, this is not                  possible to prevent. The server can integrity protect                  trustworthy information about the age of the response which                  may mitigate certain threats. Unless time is synchronized                  between client and server, the client cannot be certain about                  how old the representation is.                </t>                                <t>                  The proxy colludes with a                  legitimate client having access to the key used to create                  Message Authentication Codes (MAC) of responses/resource                  representations to generate a valid MAC.                  <vspace blankLines="1"/>                  This threat applies to responses containing a message                  authentication code (MAC) for integrity protecting the                  representation. The threat may be mitigated by the server                  digitally signing the representation with its private key                  instead of using a MAC.                </t>                              </list>            </t>          </section>                    <section title="The proxy sends a message on its own initiative">            <t>              <list style="format T2.%d:">                                <t>                  The proxy sends a GET request to the server without a previous                  request from the client                  <vspace blankLines="1"/>                  This is not necessarily a threat, since the proxy may want to                  keep the cache updated with fresh representations to allow                  short round-trip time. A proxy maliciously making                  request for the purpose of gaining information about the                  resources may to some extent be mitigated by encryption, but                  certain meta-data is not possible to encrypt since it is                  required for the cache to perform its legitimate operation.                </t>                <t>                  A proxy sends a number of messages for the purpose of flooding                  the client or server                  <vspace blankLines="1"/>                  Considering that a proxy is entitled to make resource                  requests, it may be difficult to protect the server against                  this kind of denial-of-service attacks. As                  for responses, by verifying the integrity, the client may                  mitigate certain flooding attacks.                </t>                              </list>            </t>          </section>                    <section title="The proxy does not forward a message">            <t>              <list style="format T3.%d:">                <t>                  The proxy does not forward a message                  <vspace blankLines="1"/>                  This is not necessarily a threat. According to the                  forwarding rule, the proxy must not forward a request if                  there is a fresh cached response.                  If the proxy does not forward a request although there is                  no valid cache response, then this is a denial-of-service                  attack, and likewise if the proxy does not propagate a                  response. While these threats may be difficult to mitigate,                  missing messages are common in lossy environments so                  applications should have a readiness for this kind of issue.                </t>                                <t>                  The proxy maliciously delays a GET request                  <vspace blankLines="1"/>                  This is a denial of service attack, similar to not forwarding                  the request. Considering that delays may be legitimate it is                  difficult to mitigate.                </t>                                <t>                  The proxy maliciously delays a response                  <vspace blankLines="1"/>                  The case of the proxy serving a stale response is discussed                  above. Maliciously delayed responses are difficult to mitigate.                </t>                                <t>                  The proxy reorders the responses to show a different order of                  representations                  <vspace blankLines="1"/>                  This threat may be mitigated with the server integrity                  protecting information about the order of the representations.                </t>                              </list>            </t>          </section>                    <section title="The proxy reads a message">            <t>              <list style="format T4.%d:">                <t>                  The proxy reads a representation/payload                  <vspace blankLines="1"/>                  This threat can be mitigated with encryption                </t>                                <t>                  The proxy infers information about the nature and state of the                  resource request/response from meta-data.                  <vspace blankLines="1"/>                  The proxy needs to read meta-data for performing the                  forwarding and caching operation. Information leaking that                  can be inferred from                  such data cannot be prevented.                </t>              </list>            </t>          </section>        </section>                <!-- *************************************************************** -->                <section title="Security Requirements">          <t>            The following requirements address the threats above that we            indicated are possible to mitigate.            <list style="format R%d:">              <t>                The client must be able to verify that a received resource                representation originates from the requested server              </t>                            <t>                The client must be able to verify that a received representation                is a representation of the resource requested by the client              </t>                            <t>                The client must be able to detect if it has received this                response previously, i.e. replay protection.              </t>                            <t>                The client must be able to detect that the received resource                representation is older than a previously received                representation of this resource, i.e. protection from                reordering.              </t>                            <t>                The representation must be integrity protected and encrypted                from server to client. To protect against the proxy colluding                with a legitimate client, a digital signature is needed.              </t>            </list>          </t>        </section>              </section>            <!-- **************************************************************** -->      <!-- **************************************************************** -->            <section title="Multiple requests - multiple responses: Observe">                <t>          This scenario adds to the previous the capability to notify a client          when a resource changes. The client observes a          resource and receives notifications, which may be cached.        </t>                <t>          This functionality protects communication-constrained servers from          repeated requests when the resource is unchanged thus saving system          resources and bandwidth.        </t>                <t>          In addition to multiple clients' requests being served by one          response, each request may result in multiple responses.        </t>                <figure>          <artwork align="center">            <![CDATA[Client          Proxy          Server              |               |               |              |    Request    |    Request    |              |-------------->|-------------->|--.              |               |               |  |              |<--------------|<--------------|<-'              |  Notification |  Notification |  |              |               |               |  |              |<--------------|<--------------|<-'              |  Notification |  Notification |  |              |               |               |  |              |<--------------|<--------------|<-'              |  Notification |  Notification |              |               |               |]]>          </artwork>        </figure>                <t>          The server exposes an observable resource (e.g., the current          reading of a temperature sensor). Multiple clients are          interested in the current state of the resource and observe          it using the <xref target="RFC7641">CoAP resource observation            mechanism</xref>. The goal is to keep the state observed by          the clients closely in sync with the actual state of the          resource at the server. Another goal is to minimize the          burden on the server by moving the task to fan out          notifications to multiple clients from the server to the          proxy.        </t>                <section title="Proxy Rule">                    <t>            TBD: Describe logically how observe works with examples using            different kinds of CoAP options.          </t>                    <t>            Functional Requirements:            <list style="symbols">              <t>                The proxy must be able to observe a resource on behalf of                one or more clients.              </t>              <t>                When a client registers interest in a resource with the                proxy, the proxy must be able to return a response with                the current state of the resource without contacting the                server.              </t>            </list>            TBD: These functional requirements could be kept or replace by the            detailed description above.          </t>                  </section>                <!-- *************************************************************** -->                        <section title="Security Objectives">          <t>            TBD          </t>                    <t>            The security objectives are: TBD            <list style="format O%d:">              <t>                A client authenticates a resource representation originating                from the server              </t>              <t>                A client verifies it has received a representation of the                requested resource and that it is more recent than previously                received representations              </t>              <t>                Resource representations are integrity protected and encrypted                for the authorized clients              </t>            </list>          </t>        </section>                <!-- *************************************************************** -->        <section title="Threat Analysis">          <t>            We now analyze the potential threats          </t>                    <section title="The proxy does not forward a message">            <t>              TBD            </t>          </section>                    <section title="The proxy sends a messages other than received">            <t>              TBD            </t>          </section>                    <section title="The proxy reads a message">            <t>              TBD            </t>          </section>        </section>                <section title="Security Requirements">          <t>            TBD          </t>        </section>      </section>            <!-- **************************************************************** -->      <!-- **************************************************************** -->            <section title="Multiple requests - multiple responses: Publish-Subscribe">                <t>          This scenario is about the proxy acting as a broker for messages from          a publisher to a subscriber. The subscriber subscribes to the broker          and receives a fresh cached response. Subsequent publications are          fanned out from the publisher to all subscribers by          the broker/proxy.        </t>                        <figure>          <artwork align="center">            <![CDATA[           Subscribers      Proxy          Publisher           (Client A)      (Server)        (Client)              |               |               |              |               |    Publish    |              |               |<--------------|              |         Cache |               |              |               |               |              |  Subscribe    |               |              |-------------->|--.            |              |               |  | from cache |              |<--------------|<-'            |              |  Notification |               |              |               |               |              |               |               |           (Client B)         |               |              |               |               |              |  Subscribe    |               |              |-------------->|--.            |              |               |  | from cache |              |<--------------|<-'            |              |  Notification |               |              |               |               |              |               |    Publish    |              |               |<--------------|              |         Cache |               |              |               |               |              |<--------------|               |              |  Notification |               |              |               |               |           (Client A)         |               |              |               |               |              |<--------------|               |              |  Notification |               |              |               |               |              |               |               |]]>          </artwork>        </figure>                <section title="Proxy Rule">                    <t>            TBD          </t>                </section>                <!-- *************************************************************** -->                <section title="Security Objectives">          <t>            TBD FIXME: The current text here talks about the client and	    server, but it should probalby call them publisher and subscriber	    as in the figure.          </t>                    <t>            The security objectives are:            <list style="format O%d:">              <t>                A client authenticates a resource representation originating                from the server              </t>              <t>                A client verifies it has received a representation of the                requested resource and that it is more recent than previously                received representations              </t>              <t>                Resource representations are integrity protected and encrypted                for the authorized clients              </t>            </list>          </t>        </section>                <!-- *************************************************************** -->                 <section title="Threat Analysis">          <t>            We now analyze the potential threats          </t>                    <section title="The proxy does not forward a message">            <t>              TBD            </t>          </section>                    <section title="The proxy sends a messages other than received">            <t>              TBD            </t>          </section>                    <section title="The proxy reads a message">            <t>              TBD            </t>          </section>        </section>                <!-- *************************************************************** -->                 <section title="Security Requirements">          <t>            TBD          </t>        </section>              </section>            <!-- **************************************************************** -->      <!-- **************************************************************** -->      <section title="One request - one response">                <t>          This scenario illustrates cases where it is important that a message          sent from one endpoint is a response to a previously received message          to that endpoint. In other words, the proxy cannot cache or broker          responses but is restricted to forwarding only. Use case includes          alarm status request-response, actuator command confirmation and          challenge- response and other security protocols.        </t>        <t>          In this scenario there must be a unique response for each request.        </t>                        <figure>          <artwork align="center">            <![CDATA[Client          Proxy          Server              |               |               |              |    Request    |    Request    |              |-------------->|-------------->|--.              |               |               |  |              |<--------------|<--------------|<-'              |    Response   |    Response   |              |               |               |]]>          </artwork>        </figure>        <t>          TBD: Describe alarm status use case        </t>                <figure>          <artwork align="center">            <![CDATA[Client          Proxy          Server              |               |               |              |    Request    |    Request    |              |-------------->|-------------->|--.              |               |               |  |              |<--------------|<--------------|<-'              |    Response   |    Response   |              |               |               |]]>          </artwork>        </figure>                <t>          TBD: Describe actuator confirmation        </t>                <section title="Proxy Rule">                    <t>            TBD          </t>                  </section>                <!-- *************************************************************** -->                <section title="Security Objectives">          <t>            In this case there is a unique response for each request, so the            client should be able to verify that a certain response is made in            response to a specific request sent by the client.          </t>          <t>            As the proxy functionality is restricted to forwarding only, as much            as possible of the original messages can be protected between client            and server.          </t>          <t>            Some options changed by a proxy are changed in a predictable way            which makes it possible to define invariants which enables the            server to verify that the proxy has performed the intended            operations requested by the client.          </t>                    <t>            The security objectives are:            <list style="format O%d:">              <t>               The server authenticates the request originating from the client              </t>              <t>                The client authenticates the response originating from the server              </t>              <t>                The response is securely bound to the request              </t>              <t>                The order of different responses to the same request can be                securely established              </t>              <t>                The message data which is not intended to be changed by a proxy                is integrity protected between client and server              </t>              <t>                The message data which is not intended to be read by the proxy                is encrypted between client and server              </t>              <t>                The client integrity protects and the server verifies invariants                to verify that predictable changes performed by the proxy              </t>            </list>          </t>                  </section>                <!-- *************************************************************** -->                        <section title="Threat Analysis">          <t>            We now list potential threats and discuss their implications          </t>                    <section title="The proxy does not forward a message">            <t>              <list style="format T1.%d:">                <t>                  The proxy does not forward a message                  <vspace blankLines="1"/>                  This is a denial of service attack. However, the applications                  should have a readiness for this kind of issues, and a client                  is able to detect a missing response.                </t>                                <t>                  The proxy delays forwarding of a received message                  <vspace blankLines="1"/>                  delayed requests and responses can be used in attacks in                  actuator settings, see draft-mattsson FIXME. These attacks can be                  performed by an on-path attacker and are not restricted to                  proxies. The proposed mitigation is based on verifying the                  timeliness of the request for example by using time stamps or                  with an additional round-trip. These mitigations can be                  supported by a new CoAP option containing time stamp or                  binding the response in a first round-trip to a request of                  the second. By integrity protecting that new CoAP option,                  the threat can be mitigated.                </t>                              </list>            </t>          </section>                    <section title="The proxy sends a message other than received">            <t>              <list style="format T2.%d:">                <t>                  The proxy manipulates the payload before forwarding                  <vspace blankLines="1"/>                  In this case, the proxy is only expected to perform the                  changes required to enable forwarding: Proxy-Uri and                  Proxy-Scheme related operations                </t>                                <t>                  the proxy maliciously manipulates header or options which it                  is allowed to change                  <vspace blankLines="1"/>                  Manipulation of destination Uri and proxy scheme can be                  detected using invariants                </t>                                <t>                  the proxy maliciously manipulates the payload/representation                  <vspace blankLines="1"/>                  This threat can be mitigated with integrity protection                </t>                                <t>                  sending a message at its own initiative, incl. flooding                  <vspace blankLines="1"/>                  By integrity and replay protection and binding of response                  to request spoof messages                </t>                                <t>                  sending of an old message                  <vspace blankLines="1"/>                  integrity and replay protection fo request, and integrity                  protection and binding of response to request mitigates this                  threat                </t>                              </list>            </t>          </section>                    <section title="The proxy reads a message">            <t>              <list style="format T3.%d:">                <t>                  The proxy reads a representation/payload                  <vspace blankLines="1"/>                  This threat can be mitigated with encryption                </t>                                <t>                  The proxy infers information about the nature and state of the                  resource request/response from meta-data.                  <vspace blankLines="1"/>                  The proxy needs to read the options related to performing                  forwarding. Information leaking that can be inferred from                  such data cannot be prevented. Other data may be encrypted                  between client and server                </t>              </list>            </t>          </section>        </section>                <!-- *************************************************************** -->                <section title="Security Requirements">          <t>            The following requirements address the threats above that can be            mitigated.            <list style="format R%d:">              <t>                The server must be able to authenticate a message as coming                from a requesting client              </t>                            <t>                The server must be able to detect if it has received this                message previously, i.e. replay protection              </t>                            <t>                The client must be able to verify that the received response                originates from the requested server              </t>                            <t>                The client must be able to verify that a message is the                response to a particular request the client made              </t>                            <t>                The payload must be integrity protected and should be encrypted                between client and server.              </t>                            <t>                The CoAP options and header fields which are not intended to                be changed by a proxy must be integrity protected between client                and server              </t>                            <t>                - The Uri-* related options may be changed              </t>                            <t>                - The destination Uri must be integrity protected              </t>                            <t>                The CoAP headers "Code" and "Version" must not be changed              </t>                            <t>                The CoAP options which are not intended to be read by a proxy                shall be encrypted between client and server              </t>                          </list>          </t>        </section>             </section>                  <!-- **************************************************************** -->      <!-- **************************************************************** -->            <section title="One request - multiple responses">                        <t>          This scenario is about notifying a client when a resource changes, but          without the proxy caching the responses. The client observes a          resource, and receives notifications.        </t>                <t>          This functionality protects communication-constrained servers from          repeated requests when the resource is unchanged thus saving system          resources and bandwidth.        </t>                <t>          In this scenario are typically multiple responses for one request, but          the responses from one client request is different from responses from          another client request        </t>                        <figure>          <artwork align="center">            <![CDATA[Client          Proxy          Server              |               |               |              |    Request    |    Request    |              |-------------->|-------------->|--.              |               |               |  |              |<--------------|<--------------|<-'              |  Notification |  Notification |  |              |               |               |  |              |<--------------|<--------------|<-'              |  Notification |  Notification |  |              |               |               |  |              |<--------------|<--------------|<-'              |  Notification |  Notification |              |               |               |]]>          </artwork>        </figure>                <t>          The server exposes an observable resource (e.g., the current          reading of a temperature sensor). A client is          interested in the current state of the resource and observe          it using the <xref target="RFC7641">CoAP resource observation            mechanism</xref>. The goal is to keep the state observed by          the client closely in sync with the actual state of the          resource at the server.        </t>                <section title="Proxy Rule">                    <t>            TBD          </t>                  </section>                <!-- *************************************************************** -->                <section title="Security Objectives">          <t>            With observe there may be a sequence of responses to one request.          </t>          <t>            In contrast to the caching case, it is possible to associate a            response to a request, although multiple responses are associated to            a single request. A client making a subscribe request is able to            verify that the notifications are associated to the previously            made subscribe request. By ordering the responses each message is            this exchange can be made unique.          </t>          <t>            As the proxy functionality is restricted to forwarding only, as            much as possible of the original messages can be protected between            client and server.          </t>          <t>            Some options changed by a proxy are changed in a predictable way            that makes it possible to define invariants which enables the            server to verify that the proxy has performed the intended operations            requested by the client.          </t>                    <t><!-- Again these do not sound like objectives. I think they can be easilyrephrased into such though -->            The security objectives are:            <list style="format O%d:">              <t>                The server authenticates the request originating from the client              </t>              <t>                The client authenticates the response originating from the server              </t>              <t>                Each response is bound to a request              </t>              <t>                The order of different responses to the same request can be                securely established              </t>              <t>                The message data which is not intended to be changed by a proxy                is integrity protected between client and server.              </t>              <t>                The message data which is not intended to be read by the proxy                is encrypted between client and server.              </t>              <t>                The client integrity protects invariants that the server can                verifies to infer that only legitimate changes have been                performed by the proxy.              </t>            </list>          </t>        </section>                <!-- *************************************************************** -->                <section title="Threat Analysis">          <t>            We now analyze the potential threats          </t>                    <section title="The proxy does not forward a message">            <t>              <list style="format T1.%d:">                <t>                  The proxy does not forward a message                  <vspace blankLines="1"/>                  This is a denial of service attack. However, a lost message is                  common in constrained environments so the applications should                  have a readiness for this kind of issues, and a client is able                  to detect the missing response.                </t>              </list>            </t>          </section>                    <section title="The proxy sends a messages other than received">            <t>              TBD            </t>          </section>                    <section title="The proxy reads a message">            <t>              TBD            </t>          </section>        </section>                <!-- *************************************************************** -->                <section title="Security Requirements">          <t>            TBD          </t>        </section>              </section>          </section>    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <section title="Security Considerations">      <t>        This document is about security; as such, there are no        additional security considerations.      </t>    </section>    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <section title="IANA Considerations">      <t>        This document includes no request to IANA.      </t>    </section>    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->  </middle>  <back>    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <references title="Normative References">      &RFC2119;      &RFC7252;      &RFC7641;    </references>    <references title="Informative References">      &RFC6347;      &RFC7228;            &I-D.ietf-cose-msg;    </references>    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!--    <section title="Acknowledgements" numbered="no">    </section>    -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->    <!-- **************************************************************** -->  </back></rfc>
