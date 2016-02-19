@@ -189,8 +189,20 @@
         This document presents a number of scenarios involving sensor
         and actuator communications over CoAP. Common to all scenarios is the
         presence of at least one proxy between
-        the client requesting a resource and the server hosting a resource.
+        the client requesting a resource and the server hosting a resource
+        (<xref target="figure-0"/>).
       </t>
+
+      <figure anchor="figure-0" title="CoAP Exchanges Through A Proxy">
+        <artwork align="center">
+<![CDATA[ __________              _________              __________
+|          | ---------> |         |  Request   |          |
+|          |  Request   |         | ---------> |          |
+|  Client  |            |  Proxy  |            |  Server  |
+|          |  Response  |         | <--------- |          |
+|__________| <--------- |_________|  Response  |__________|]]>
+        </artwork>
+      </figure>
       
       <t>
         The proxy is intentionally placed between the
