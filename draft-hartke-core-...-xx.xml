@@ -153,8 +153,8 @@
         -->
 
         <t>
-          Readers are expected to be familiar with CoAP
-          <xref target="RFC7252"/> and the terms defined there.
+          Readers are expected to be familiar with the terms and
+          concepts described in <xref target="RFC7252"/>.
         </t>
 
         <!--
