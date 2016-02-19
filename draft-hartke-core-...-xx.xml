@@ -566,8 +566,8 @@
                   <vspace blankLines="1"/>
                   This is not necessarily a threat. For example, a proxy is
                   entitled to change Token as part of its normal operations.
-                  Malicious changes to message layer parameters may cause denial-
-                  of-service, equivalent of dropping a message or sending
+                  Malicious changes to message layer parameters may cause denial-of-service,
+                  equivalent of dropping a message or sending
                   spoofed messages. This is difficult to mitigate.
                   However, changing the CoAP header Code, e.g. from GET to DELETE
                   may result in an error or wrong interpretation of the request
@@ -690,14 +690,14 @@
                   <vspace blankLines="1"/>
                   This threat may be mitigated with the server integrity
                   protecting a freshness parameter from which the
-                  order of requests can be deduced
+                  order of requests can be deduced.
                 </t>
                 
                 <t>
                   The proxy reorders the responses
                   <vspace blankLines="1"/>
                   This threat may be mitigated with the server integrity
-                  protecting to which request a response belongs
+                  protecting to which request a response belongs.
                 </t>
                 
                 
