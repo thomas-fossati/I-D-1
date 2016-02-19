@@ -882,9 +882,19 @@
             mechanism</xref>. The goal is to keep the state observed by
           the client closely in sync with the actual state of the
           resource at the server.
-          FIXME Describe the Observe option.
         </t>
         
+        <t>
+          The Observe Option in a GET request extends the GET method so
+          it does not only retrieve a current representation of the
+          target resource, but also requests the server to add or
+          remove an entry in the list of observers of the resource
+          depending on the option value. In a response, the Observe
+          Option identifies the message as a notification and the
+          option value is a (hop-by-hop) sequence number for reordering
+          detection.
+        </t>
+
         <!-- *************************************************************** -->
         
         <section title="Proxy Rules">
