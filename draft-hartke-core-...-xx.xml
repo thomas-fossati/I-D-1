@@ -431,29 +431,33 @@
           <t>
             In this scenario, the proxy functionality is limited to forwarding.
             There are two ways for a forward proxy to forward requests:
-            Either (R1.1) using the Proxy-Uri option, or (R1.2) using different
-            information in Uri-Host/Uri-Port and destination IP address/port.
+            Either (PR1.1) using the Proxy-Uri option, or (PR1.2) using the
+            Proxy-Scheme option together with the Uri-Host, Uri-Port,
+            Uri-Path and Uri-Query options.
             <list style="format PR1.%d">
               <t>
-                The Proxy-Uri option contains the request URI (potentially
-                including request scheme e.g. "coaps://") and the Uri-* options
-                contains the URI of the proxy.
+                The Proxy-Uri option contains the request URI
+                including request scheme (e.g. "coaps://"); the
+                Proxy-Scheme and Uri-* options are not present.
                 <vspace blankLines="1"/>
-                If the proxy is configured to forward requests for this request
-                URI to another proxy, then it replaces the Uri-* options
-                with those of the other proxy, else it splits the Proxy-Uri option 
-                into its components and replaces the corresponding Uri-* options. 
-                Then it forwards the request using the request scheme indicated in 
-                the Proxy-Uri.
+                If the proxy is configured to forward requests to
+                another forwarding proxy, then it keeps the Proxy-Uri
+                option; otherwise, it splits the option into its
+                components and adds the corresponding Uri-* options.
+                Then it forwards the request using the request scheme
+                indicated in the Proxy-Uri.
               </t>
               <t>
-                The Proxy-Uri option is not present, the Proxy-Scheme option may
-                be present and the Uri-* options contains the request URI.
+                The Proxy-Scheme option
+                and the Uri-* options together contain the request URI;
+                the Proxy-Uri option is not present.
                 <vspace blankLines="1"/>
-                In the last hop, when the proxy forwards the request to the request
-                URI, the request uses the request scheme indicated in the Proxy-Scheme.
-                The Proxy-Scheme option is omitted in the last hop, but the proxy
-                does not change the Uri-* options.
+                If the proxy is configured to forward requests to
+                another forwarding proxy, then it keeps the
+                Proxy-Scheme and Uri-* options; otherwise, it removes
+                the Proxy-Scheme option. Then it forwards the request
+                using the request scheme indicated in the removed
+                Proxy-Scheme option.
               </t>
               <t>
                Responses are forwarded by the proxy without any modification.
