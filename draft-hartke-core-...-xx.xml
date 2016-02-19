@@ -183,7 +183,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Scope and assumptions">
+    <section title="Scope and Assumptions">
 
       <t>
         This document presents a number of scenarios involving sensor
@@ -191,6 +191,10 @@
         presence of at least one proxy between
         the client requesting a resource and the server hosting a resource
         (<xref target="figure-0"/>).
+        The proxy is responsible, for example, for reducing
+        response time and network bandwidth use by serving responses from
+        a cache or for enabling the client to make requests that it
+        otherwise could not make.
       </t>
 
       <figure anchor="figure-0" title="CoAP Exchanges Through A Proxy">
@@ -203,14 +207,6 @@
 |__________| <--------- |_________|  Response  |__________|]]>
         </artwork>
       </figure>
-      
-      <t>
-        The proxy is intentionally placed between the
-        two endpoints and is responsible, for example, for reducing
-        response time and network bandwidth use by serving responses from
-        a cache or for enabling the client to make requests that it
-        otherwise could not make.
-      </t>
       
       <t>
         A proxy may perform different functions, but the basic function
