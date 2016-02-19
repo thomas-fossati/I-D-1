@@ -912,7 +912,7 @@
           <t>
             With observe there may be a sequence of responses to one request,
             but each response
-            maps to a unique request. By ordering the responses each message in
+            maps to a unique request. By ordering the responses, each message in
             this exchange can be made unique.
           </t>
           <t>
@@ -1046,31 +1046,31 @@
           resources, bandwidth, and round-trip time.
         </t>
         
-        <figure>
+        <figure anchor="figure-3" title="FIXME">
           <artwork align="center">
-            <![CDATA[
-    Client A         Proxy          Server
-      |               |               |
-      |    Request    |    Request    |
-      |-------------->|-------------->|--.
-      |               |               |  |
-      |<--------------|<--------------|<-'
-      |    Response   |    Response   |
-      |               |               |
-                      |
-    Client B          |               |
-      |               |               |
-      |    Request    |               |
-      |-------------->|--.            |
-      |               |  | from cache |
-      |<--------------|<-'            |
-      |    Response   |               |
-      |               |               |]]>
+<![CDATA[
+Client A         Proxy           Server
+   |               |               |
+   |    Request    |    Request    |
+   |-------------->|-------------->|--.
+   |               |               |  |
+   |<--------------|<--------------|<-'
+   |    Response   |    Response   |
+   |               |               |
+                   |               |
+Client B           |               |
+   |               |               |
+   |    Request    |               |
+   |-------------->|--.            |
+   |               |  | from cache |
+   |<--------------|<-'            |
+   |    Response   |               |
+   |               |               |]]>
           </artwork>
         </figure>
         
         <t>
-          In Figure XX, Client A requests the proxy to make a certain request to
+          In <xref target="figure-3"/>, Client A requests the proxy to make a certain request to
           the server and to return the server's response. The proxy
           services the request by forwarding the request message to the
           server according to the rules for forwarding. The server returns a
@@ -1082,7 +1082,7 @@
         </t>
         <t>
           Cacheable responses are responses to GET requests and error
-          responses of PUT/POST requests.
+          responses to PUT/POST requests.
         </t>
         <t>
           Functional Requirements:
@@ -1095,6 +1095,9 @@
             <t>
               The proxy must be able to return a fresh response from
               its cache without contacting the server.
+            </t>
+            <t>
+              FIXME: Validation
             </t>
           </list>
         </t>
@@ -1126,7 +1129,7 @@
               </t>
               
               <t>
-                The proxy may adjust the Max-Age option in a response, decreasing
+                The proxy adjusts the Max-Age option in a response, decreasing
                 its value to reflect the time spent in the cache.
               </t>
             
@@ -1181,7 +1184,7 @@
               <t>
                 Somewhere in between 1. and 2. there is a setting which allow
                 caching to some extent, but protects more general message exchanges
-                and/or more meta-data than compared to alternative 2.
+                and/or more metadata than compared to alternative 2.
                 Most of the rest of this
                 section is about this alternative.
               </t>
@@ -1248,7 +1251,7 @@
           </t>
           
           <t>
-            In the Example above, the information relating to the request is
+            In the example above, the information relating to the request is
             pre-defined in the sense that resource representations are
             integrity protected with a certain key and signed with a certain key
             relating to a certain resource and server, respectively.
@@ -1258,7 +1261,7 @@
             Alternatively, it could be implicit in the sense that
             information about the request is built into the response, e.g.
             integrity protecting request information in the response (cf.
-            External_AAD in COSE FIXME).
+            External_AAD in <xref target="I-D.ietf-cose-msg">COSE</xref>).
           </t>
           
           <t>
@@ -1272,28 +1275,28 @@
             Since there is no binding between the request and the response, 
             information about the resource and the request needs to be protected within the response. FIXME: is this sentence ok?
             In the general case, where we are not restricting to particular methods
-            and resources like in the Example, this implies the need to specify selected
+            and resources like in the example, this implies the need to specify selected
             parts of CoAP header, options and payload of the request
             that the client would need to cache and use to verify that a response
             is a response to a particular request.
           </t>
           
           <t>
-            To complicate matters further,sSince different requests could result
+            To complicate matters further, since different requests could result
             in the same response
             from the proxy cache, the request information must be canonicalized such
             that equivalent requests have identical request information, and the
             canonicalized request information must be possible to verify
             by the client receving the response.
-            Additionally meta-data that is allowed to be changed by a proxy must
+            Additionally metadata that is allowed to be changed by a proxy must
             be excluded from the canonicalized request information.
           </t>
           
           <t>
             If such a canonicalization would be defined, this would include
-            protection of meta-data in the request and response protected in the response,
+            protection of metadata in the request and response protected in the response,
             such as for example CoAP header Code and CoAP option Uri-Path.
-            However, requiring meta data to be protected conflicts with
+            However, requiring metadata to be protected conflicts with
             certain proxy rules in this scenario. PR1.3 entitles the proxy to
             provide the authoritative response Code 2.03 (Valid) to a request
             with ETag. If we require Code to be verifiable this response will be discarded,
@@ -1643,7 +1646,7 @@
               </t>
               
               <t>
-                The proxy may eavesdrop on meta-data including the cache key (T2:3.1, T4:3.2)
+                The proxy may eavesdrop on metadata including the cache key (T2:3.1, T4:3.2)
               </t>
               
               <t>
