@@ -25,33 +25,6 @@
 
     <title abbrev="Security requirements for CoAP messages">Security requirements for CoAP messages through proxies</title>
 
-    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
-      <organization>Universitaet Bremen TZI</organization>
-      <address>
-        <postal>
-          <street>Postfach 330440</street>
-          <city>Bremen</city>
-          <code>28359</code>
-          <country>Germany</country>
-        </postal>
-        <phone>+49-421-218-63905</phone>
-        <email>hartke@tzi.org</email>
-      </address>
-    </author>
-    
-    <author initials="L." surname="Seitz" fullname="Ludwig Seitz">
-      <organization>SICS Swedish ICT AB</organization>
-      <address>
-        <postal>
-          <street>Scheelevaegen 17</street>
-          <city>Lund</city>
-          <code>223 70</code>
-          <country>Sweden</country>
-        </postal>
-        <email>ludwig@sics.se</email>
-      </address>
-    </author>
-
     <author initials="G." surname="Selander" fullname="Goeran Selander">
       <organization>Ericsson AB</organization>
       <address>
@@ -75,6 +48,33 @@
           <country>Sweden</country>
         </postal>
         <email>francesca.palombini@ericsson.com</email>
+      </address>
+    </author>
+    
+    <author initials="L." surname="Seitz" fullname="Ludwig Seitz">
+      <organization>SICS Swedish ICT AB</organization>
+      <address>
+        <postal>
+          <street>Scheelevaegen 17</street>
+          <city>Lund</city>
+          <code>223 70</code>
+          <country>Sweden</country>
+        </postal>
+        <email>ludwig@sics.se</email>
+      </address>
+    </author>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
       </address>
     </author>
     
