@@ -242,7 +242,7 @@
             processing capacity, and energy.
           </t>
           <t>
-            The physical environment of the devices fitted with sensor
+            The physical environment of the devices fitted with sensors
             and actuators. Access to the physical environment is
             provided through CoAP resources that allow a remote entity
             to retrieve information about the physical environment
@@ -283,12 +283,12 @@
       
       <t>
         There may be several reasons why a proxy could end up performing
-        malicious operations, for example it may have become subject
-        to intrusion, or infected by malware. A fully trusted proxy, handling
+        malicious operations. For example, it may have become subject
+        to intrusion or be infected by malware. A fully trusted proxy, handling
         unprotected messages, is an attractive target, since proxies commonly
-        act as a concentrators for many message flows and since a proxy may
-        be easier to attack from the Internet than attacking the sensor/actuator
-        residing behind the proxy. The attack vectors for compromising a proxy
+        act as concentrators for many message flows and they may
+        be easier to attack from the Internet than the sensors/actuators
+        residing behind them. The attack vectors for compromising a proxy
         and the associated risks are out of scope for this document.
       </t>
       
@@ -297,7 +297,7 @@
         to consider:
         <list style="format T%d:">
           <t>
-            The proxy forwards a message other than received
+            The proxy forwards a message other than received.
           </t>
           <t>
             The proxy sends a message on its own initiative, including replay,
@@ -308,23 +308,24 @@
 	    etc.
           </t>
           <t>
-            The proxy reads a message
+            The proxy reads a message.
           </t>
         </list>
       </t>
       
       <t>
-        Not all of these potential threats are actual threats, in all proxy
-        settings. For example, a forwarding proxy may change the
-        contents of CoAP options Uri-Host, Uri-Port to that of the the next hop.
-        A proxy caching reponses needs to read the cache key and may change the
-        CoAP option Max-Age in the responses.
+        Not all of these potential threats are actual threats in all proxy
+        settings. For example, a forwarding proxy is defined to transform
+        the Proxy-Uri option to Uri-Host, Uri-Port, Uri-Path and Uri-Query
+        options.
+        A proxy caching reponses needs to read the cache key and changes the
+        Max-Age option in the responses.
       </t>
       
       <t>
         To assess which of these potential threats are actual threats, we
-        need to define what are the legitimate proxy operations in different scenarions
-        and what are the security objectives in these scenarios.
+        need to identify the legitimate proxy operations in different scenarions
+        and define the security objectives in these scenarios.
       </t>
       
       
@@ -365,20 +366,16 @@
         </t>
         
         
-        <figure>
+        <figure anchor="figure-1" title="FIXME Captions, on all figures">
           <artwork align="center">
-            <![CDATA[
-  Client          Proxy          Server
-    |               |               |
-    |    Request    |    Request    |
-    |-------------->|-------------->|--.
-    |               |               |  |
-    |<--------------|<--------------|<-'
-    |    Response   |    Response   |
-    |               |               |
-    
-  Figure XX: FIXME Captions, on all figures
-            ]]>
+<![CDATA[Client          Proxy          Server
+  |               |               |
+  |    Request    |    Request    |
+  |-------------->|-------------->|--.
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |    Response   |    Response   |
+  |               |               |]]>
           </artwork>
         </figure>
         
@@ -387,7 +384,7 @@
           <list style="hanging">
             <t hangText="Example: Alarm status">
             <vspace blankLines="1"/>
-              Figure XX can be seen as an illustration of a message exchange for a client
+              <xref target="figure-1"/> can be seen as an illustration of a message exchange for a client
               requesting the alarm status, GET /alarm_status, at a server. Since the client
               wants to ensure that the alarm status received is reflecting the current alarm
               status, and not a cached or spoofed response to the same resource, it
@@ -397,7 +394,7 @@
             </t>
             <t hangText="Example: Actuation confirmation">
             <vspace blankLines="1"/>
-              Another example for which Figure XX serves as illustration is the
+              Another example for which <xref target="figure-1"/> serves as illustration is the
               confirmation of an actuator request. In this case a client, say in
               an industrial control system, requests a server that a valve should be
               turned to a certain level, e.g. PUT /valve_42/level with payload "3".
