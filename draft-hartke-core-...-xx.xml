@@ -8,6 +8,7 @@
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
   <!ENTITY I-D.ietf-cose-msg SYSTEM "reference.I-D.ietf-cose-msg.xml">
+  <!ENTITY I-D.mattsson-core-coap-actuators SYSTEM "reference.I-D.mattsson-core-coap-actuators.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -556,7 +557,7 @@
                   <vspace blankLines="1"/>
                   This threat may be mitigated with integrity protection of
                   CoAP options. Since the response is not intended to be cached,
-                  Max-Age is set to 0 (FIXME: add reference to CoAP section 5.7.1) and since the proxy is not entitled to change
+                  Max-Age is set to 0 (see Section 5.7.1 of <xref target="RFC7252"/>) and since the proxy is not entitled to change
                   any other options they can all be integrity protected
                 </t>
                 
@@ -673,7 +674,7 @@
                   to not forwarding.  Certain delays may be legitimate so it
                   may be difficult to detect and mitigate.
                   However, delayed requests and responses can also be used in
-                  attacks against actuator, see draft-mattsson FIXME. These attacks can be
+                  attacks against actuator, see <xref target="I-D.mattsson-core-coap-actuators"/>. These attacks can be
                   performed by an on-path attacker and are not restricted to
                   proxies. The proposed mitigation is based on verifying the
                   timeliness of the request for example by using time stamps or
@@ -1973,6 +1974,8 @@
       &RFC7228;
       
       &I-D.ietf-cose-msg;
+
+      &I-D.mattsson-core-coap-actuators;
 
     </references>
 
