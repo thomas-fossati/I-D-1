@@ -185,7 +185,7 @@
     <section title="Scope and assumptions">
 
       <t>
-        This memo presents a number of scenarios involving sensor
+        This document presents a number of scenarios involving sensor
         and actuator communications over CoAP. Common to all scenarios is the
         presence of at least one proxy between
         the client requesting a resource and the server hosting a resource.
@@ -265,7 +265,7 @@
       </t>
       
       <t>
-        The scope of this memo is to analyze threats executed through
+        The scope of this document is to analyze threats executed through
         proxies, and this is only directly affecting the assets of type A3 and
         A4 listed above: Clearly A4 is affected by the proxies, and since the
         proxies are part of the communication infrastructure (A3) an attack
@@ -289,7 +289,7 @@
         act as a concentrators for many message flows and since a proxy may
         be easier to attack from the Internet than attacking the sensor/actuator
         residing behind the proxy. The attack vectors for compromising a proxy
-        and the associated risks are out of scope for this memo.
+        and the associated risks are out of scope for this document.
       </t>
       
       <t>
