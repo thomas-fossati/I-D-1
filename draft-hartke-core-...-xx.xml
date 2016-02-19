@@ -19,11 +19,11 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="info" docName="draft-hartke-core-...-00" ipr="trust200902">
+<rfc category="info" docName="draft-hartke-core-e2e-security-00" ipr="trust200902">
     
     <front>
 
-    <title abbrev="Security requirements for CoAP messages">Security requirements for CoAP messages through proxies</title>
+    <title>Requirements for CoAP End-To-End Security</title>
 
     <author initials="G." surname="Selander" fullname="Goeran Selander">
       <organization>Ericsson AB</organization>
