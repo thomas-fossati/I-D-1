@@ -839,38 +839,32 @@
         
         
         <t>
-          This scenario is about notifying a client when a resource changes.
-          The client observes a resource, and receives notifications.
-        </t>
-        
-        <t>
+          This scenario is about replicating a resource state from a
+          server to a client. The client observes a resource and receives
+          notifications about resource state changes.
           This functionality protects communication-constrained servers from
-          repeated requests when the resource is unchanged thus saving system
+          repeated requests when the resource is unchanged thus saves system
           resources and bandwidth.
-        </t>
-        
-        <t>
           In this scenario there are typically multiple responses for one request.
         </t>
         
         
-        <figure>
+        <figure anchor="figure-2" title="FIXME">
           <artwork align="center">
-            <![CDATA[
-    Client          Proxy          Server
-      |               |               |
-      |    Request    |    Request    |
-      |-------------->|-------------->|--.
-      |               |               |  |
-      |<--------------|<--------------|<-'
-      |  Notification |  Notification |  |
-      |               |               |  |
-      |<--------------|<--------------|<-'
-      |  Notification |  Notification |  |
-      |               |               |  |
-      |<--------------|<--------------|<-'
-      |  Notification |  Notification |
-      |               |               |]]>
+<![CDATA[Client          Proxy          Server
+  |               |               |
+  |    Request    |    Request    |
+  |-------------->|-------------->|--.
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |  Notification |  Notification |  |
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |  Notification |  Notification |  |
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |  Notification |  Notification |
+  |               |               |]]>
           </artwork>
         </figure>
         
