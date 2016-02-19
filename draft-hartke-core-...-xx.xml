@@ -1814,52 +1814,53 @@ Client B           |               |
       <section title="Multiple Requests - Multiple Responses: Publish-Subscribe">
         
         <t>
-          This scenario is about the proxy acting as a broker for messages from
+          This scenario is about a broker for messages from
           a publisher to a subscriber. The subscriber subscribes to the broker
-          and receives a fresh cached response. Subsequent publications are
+          and receives a response. Subsequent publications are
           fanned out from the publisher to all subscribers by
-          the broker/proxy.
+          the broker.
         </t>
         
         
-        <figure>
+        <figure anchor="figure-4" title="FIXME">
           <artwork align="center">
-            <![CDATA[
-   Subscribers      Proxy          Publisher
-   (Client A)      (Server)        (Client)
-      |               |               |
-      |               |    Publish    |
-      |               |<--------------|
-      |         Cache |               |
-      |               |               |
-      |  Subscribe    |               |
-      |-------------->|--.            |
-      |               |  | from cache |
-      |<--------------|<-'            |
-      |  Notification |               |
-      |               |               |
-                      |               |
-   (Client B)         |               |
-      |               |               |
-      |  Subscribe    |               |
-      |-------------->|--.            |
-      |               |  | from cache |
-      |<--------------|<-'            |
-      |  Notification |               |
-      |               |               |
-      |               |    Publish    |
-      |               |<--------------|
-      |         Cache |               |
-      |               |               |
-      |<--------------|               |
-      |  Notification |               |
-                      |               |
-   (Client A)         |               |
-      |               |               |
-      |<--------------|               |
-      |  Notification |               |
-      |               |               |
-      |               |               |]]>
+<![CDATA[Subscriber       Broker         Publisher
+(Client A)      (Server)        (Client)
+    |               |               |
+    |               |    Publish    |
+    |            .--|<--------------|
+    |   to store |  |               |
+    |            '->|-------------->|
+    |               |               |
+    |  Subscribe    |               |
+    |-------------->|--.            |
+    |               |  | from store |
+    |<--------------|<-'            |
+    |  Notification |               |
+    |               |               |
+                    |               |
+(Client B)          |               |
+    |               |               |
+    |  Subscribe    |               |
+    |-------------->|--.            |
+    |               |  | from store |
+    |<--------------|<-'            |
+    |  Notification |               |
+    |               |               |
+    |               |    Publish    |
+    |            .--|<--------------|
+    |   to store |  |               |
+    |            '->|-------------->|
+    |               |               |
+    |<--------------|               |
+    |  Notification |               |
+    |               |               |
+                    |               |
+(Client A)          |               |
+    |               |               |
+    |<--------------|               |
+    |  Notification |               |
+    |               |               |]]>
           </artwork>
         </figure>
         
