@@ -110,11 +110,12 @@
         The <xref target="RFC7252">Constrained Application Protocol
         (CoAP)</xref> is a Web application protocol designed for
         <xref target="RFC7228">constrained nodes and networks</xref>.
-        CoAP is defined to operate either over UDP secured at the
-        network layer or over <xref target="RFC6347">Datagram Transport
-        Layer Security (DTLS)</xref>. However, CoAP defines a set of
-        legitimate proxy operations on CoAP messages which requires
-        DTLS to be terminated at the proxy. This implies that the proxy
+        CoAP relies on <xref target="RFC6347">Datagram Transport Layer
+        Security (DTLS)</xref> for security. At the same time, CoAP
+        relies on proxies to improve scalability and
+        efficiency. These proxies are specified to perform a
+        number of operations on CoAP messages which requires
+        DTLS to be terminated at the proxy. The proxy therefore
         not only has access to the data required for performing the
         intended proxy functionality but also is able to eavesdrop on
         or manipulate any part of the CoAP payload and metadata in
