@@ -904,7 +904,7 @@
             section 3.1.1. In addition the following proxy rules apply:
             <list style="format PR2.%d">
               <t>
-                The proxy may modify the Observe option . . .
+                FIXME: The proxy may modify the Observe option . . .
               </t>
               
             </list>
