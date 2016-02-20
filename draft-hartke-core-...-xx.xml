@@ -1297,7 +1297,7 @@ Client B           |               |
             protection of metadata in the request and response protected in the response,
             such as for example CoAP header Code and CoAP option Uri-Path.
             However, requiring metadata to be protected conflicts with
-            certain proxy rules in this scenario. PR1.3 entitles the proxy to
+            certain proxy rules in this scenario. PR3.3 entitles the proxy to
             provide the authoritative response Code 2.03 (Valid) to a request
             with ETag. If we require Code to be verifiable this response will be discarded,
             since a response originating from a proxy cannot be verified by the client.
