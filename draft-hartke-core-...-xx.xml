@@ -227,9 +227,7 @@
  
       <t>
         In order to perform its function, a proxy may be required to read or
-        change certain parts of a CoAP message, as discussed below. On the 
-	other hand, there are parts of a CoAP message that a proxy in general 
-	should not be able to read and change, such as the CoAP payload.
+        change certain parts of a CoAP message, as discussed below.
       </t>
       
       <t>
