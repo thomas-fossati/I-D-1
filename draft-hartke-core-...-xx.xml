@@ -350,9 +350,14 @@
       
       <t>
         In this section we consider a set of scenarios involving proxies, with
-        different forwarding rules and security objectives. We study the
+        different processing rules and security objectives. We study the
         associated threats and derive the security requirements for message
         transfer between client and server in the different scenarios.
+      </t>
+      
+      <t>
+        FIXME: Add summary/overview of the following
+        subsections here
       </t>
       
       <!-- **************************************************************** -->
@@ -365,10 +370,10 @@
         <t>
           In this scenario we study use cases where it is important that a response
           sent from one endpoint is the response to a particular request
-          to that endpoint. In other words, the proxy cannot cache or broker
-          responses but is restricted to forwarding only. Use cases include
-          challenge-response protocols such as alarm status request-response
-          and actuator command confirmation.
+          to that endpoint. Since a response is only valid for one request there
+          is no use for cached responses. Many security critical use cases require
+          that responses are linked to requests such as alarm
+          status request-response and actuator command confirmation.
         </t>
         <t>
           In this scenario there must be a unique response for each request.
@@ -436,10 +441,10 @@
 
         <!-- *************************************************************** -->
         
-        <section title="Proxy Rules">
+        <section title="Processing Rules">
           <t>
             In this scenario, the proxy functionality is limited to forwarding.
-            There are two ways for a forward proxy to forward requests:
+            There are two modes of operation for a forward proxy:
             Either (PR1.1) using the Proxy-Uri option, or (PR1.2) using the
             Proxy-Scheme option together with the Uri-Host, Uri-Port,
             Uri-Path and Uri-Query options.
@@ -492,7 +497,7 @@
           <t>
             The server should be able to verify that the proxy has
             performed the allowed message modifications according to the
-            proxy rules, according to the intended
+            processing rules, according to the intended
             operations requested by the client.
           </t>
           
@@ -507,7 +512,7 @@
               <t>
                 The server is able to verify that the received request either
                 has not been altered in transfer, or that the request is modified
-                according to the proxy rules PR1.1 and PR1.2 (Section 3.1.1).
+                according to the processing rules PR1.1 and PR1.2 (Section 3.1.1).
               </t>
               <t>
                 The server is able to protect the response such that only
@@ -554,7 +559,7 @@
                   <vspace blankLines="1"/>
                   This threat may be mitigated by integrity protecting the values
                   of selected CoAP options. Note that the proxy is entitled to
-                  change certain options by proxy rules PR1.1 and PR1.2. However,
+                  change certain options by processing rules PR1.1 and PR1.2. However,
                   since the change is predictable, the request URI and
                   Proxy-Scheme can be integrity protected by the client and verified
                   by the server.
@@ -565,7 +570,8 @@
                   <vspace blankLines="1"/>
                   This threat may be mitigated with integrity protection of
                   CoAP options. Since the response is not intended to be cached,
-                  Max-Age is set to 0 (see Section 5.7.1 of <xref target="RFC7252"/>) and since the proxy is not entitled to change
+                  Max-Age is set to 0 (see Section 5.7.1 of <xref target="RFC7252"/>)
+                  and since the proxy is not entitled to change
                   any other options they can all be integrity protected
                 </t>
                 
@@ -682,7 +688,8 @@
                   to not forwarding.  Certain delays may be legitimate so it
                   may be difficult to detect and mitigate.
                   However, delayed requests and responses can also be used in
-                  attacks against actuator, see <xref target="I-D.mattsson-core-coap-actuators"/>. These attacks can be
+                  attacks against actuator, see <xref target="I-D.mattsson-core-coap-actuators"/>.
+                  These attacks can be
                   performed by an on-path attacker and are not restricted to
                   proxies. The proposed mitigation is based on verifying the
                   timeliness of the request for example by using time stamps or
@@ -891,11 +898,11 @@
 
         <!-- *************************************************************** -->
         
-        <section title="Proxy Rules">
+        <section title="Processing Rules">
           
           <t>
             The proxy complies with the fowarding rules PR 1.1 - 1.2 see
-            section 3.1.1. In addition the following proxy rules apply:
+            section 3.1.1. In addition the following processing rules apply:
             <list style="format PR2.%d">
               <t>
                 FIXME: The proxy may modify the Observe option . . .
@@ -1104,7 +1111,7 @@ Client B           |               |
         
         <!-- *************************************************************** -->
         
-        <section title="Proxy Rules">
+        <section title="Processing Rules">
           
           <t>
             The proxy complies with the fowarding rules R1.1 and R1.2, see section 3.1.1.
@@ -1297,7 +1304,7 @@ Client B           |               |
             protection of metadata in the request and response protected in the response,
             such as for example CoAP header Code and CoAP option Uri-Path.
             However, requiring metadata to be protected conflicts with
-            certain proxy rules in this scenario. PR3.3 entitles the proxy to
+            certain processing rules in this scenario. PR3.3 entitles the proxy to
             provide the authoritative response Code 2.03 (Valid) to a request
             with ETag. If we require Code to be verifiable this response will be discarded,
             since a response originating from a proxy cannot be verified by the client.
@@ -1521,7 +1528,7 @@ Client B           |               |
                   The proxy does not forward a message
                   <vspace blankLines="1"/>
                   This is not necessarily a threat. According to the
-                  forwarding rule, the proxy must not forward a request if
+                  processing rule, the proxy must not forward a request if
                   there is a fresh cached response. If the proxy does not
                   forward a request although there is no valid cache response,
                   then this is a denial-of-service attack, and likewise if the
@@ -1742,10 +1749,10 @@ Client B           |               |
         
         <!-- *************************************************************** -->
         
-        <section title="Proxy Rules">
+        <section title="Processing Rules">
           <t>
             The proxy complies with the caching rules PR 3.1 - 3.5 see
-            section 3.3.1. In addition the following proxy rules apply:
+            section 3.3.1. In addition the following processing rules apply:
             <list style="format PR4.%d">
               <t>
                 The proxy may modify the Observe option . . .
@@ -1814,17 +1821,22 @@ Client B           |               |
       <section title="Multiple Requests - Multiple Responses: Publish-Subscribe">
         
         <t>
-          This scenario is about a broker for messages from
-          a publisher to a subscriber. The subscriber subscribes to the broker
-          and receives a response. Subsequent publications are
+          The intermediary node in the publish-subscribe scenario is a broker for
+          messages from a publisher to subscriber. A subscriber subscribes to a "topic"
+          and receives a publication. Subsequent publications on the topic are
           fanned out from the publisher to all subscribers by
           the broker.
+        </t>
+        
+        <t>
+          In this scenario a single request may result in multiple responses,
+          and a single response may reach multiple clients.
         </t>
         
         
         <figure anchor="figure-4" title="FIXME">
           <artwork align="center">
-<![CDATA[Subscriber       Broker         Publisher
+<![CDATA[Subscribers      Broker         Publisher
 (Client A)      (Server)        (Client)
     |               |               |
     |               |    Publish    |
@@ -1864,72 +1876,320 @@ Client B           |               |
           </artwork>
         </figure>
         
+        <t>
+          The broker maintains a number of topics which a publisher can publish to
+          and a subscriber subscribe to. Topics are represented
+          as URIs at the
+          broker. <xref target="figure-4"/> illustrates the publication to a topic
+          implemented as a PUT of a representation to a resource at the broker.
+          Subscribers can make a
+          GET request to the same URI at the broker to initiate the subscription on the topic.
+          A subscriber receives the stored representation in response to the request and
+          further publications of representations to this URI are provided as responses
+          to the subscription request.
+        </t>
+        
        <!-- *************************************************************** -->
         
-        <section title="Proxy Rules">
+        <section title="Processing Rules">
           
           <t>
-            TBD
+            <list style="format PR5.%d">
+              
+              <t>
+                If the broker receives a subscription request to one of its resources,
+                then the broker associates the requesting subscriber to the topic and
+                responds with the current representation.
+              </t>
+              
+              <t>
+                If the broker receives a publication request to one of its resources,
+                then the broker stores the received representation on the topic and
+                responds with the representation
+                to the associated subscribers to that topic.
+              </t>
+ 
+            </list>
           </t>
-        
+          
+          <t>
+            Since we are focusing on end-to-end security between publisher and
+            subscriber, the creation and deletion of topics and other endpoint-to-broker
+            operations are out of scope.
+          </t>
+          
+          
         </section>
         
         <!-- *************************************************************** -->
         
         <section title="Security Objectives">
           <t>
-            TBD
+            The security objectives for this scenario are:
+            <list style="format SO5.%d">
+              <t>
+                A subscriber is able to verify that a received response contains a
+                resource representation of a requested publisher and resource, and
+                that it has not been altered in transfer.
+              </t>
+              
+              <t>
+                The publisher is able to protect a resource representation such
+                that only authorized subscribers can read the representation.
+              </t>
+              
+            </list>
           </t>
-
+          
         </section>
         
         <!-- *************************************************************** -->
         
         <section title="Threat Analysis and Mitigation">
           <t>
-            We now analyze the potential threats
+            We now analyze the potential threats relevant to this scenario.
           </t>
           
-          <section title="T1:The proxy forwards a message other than received">
+          
+          <section title="T1:The broker complies with the processing rules but
+            modifies a message">
             <t>
-              TBD
+              <list style="format T1:5.%d">
+
+                <t>
+                  The broker responds to a subscriber request with a publication with modified payload
+                  <vspace blankLines="1"/>
+                  This threat may be mitigated with integrity protection of
+                  payload.
+                </t>
+                
+                <t>
+                  The broker responds to a subscriber request with a publication with modified CoAP option
+                  <vspace blankLines="1"/>
+                  Since the security objective is to protect the resource representation,
+                  only options in the GET response that influence the interpretation of
+                  the resource representations has an impact. A broker is
+                  entitled to change Max-Age and may do so maliciously.
+                  The broker is not entitled to change Content-Format, but may anyway
+                  do so maliciously. To mitigate these, the subscriber needs to be
+                  able to verify information about freshness and content format
+                  provided by the publisher.
+                </t>
+                
+                
+                <t>
+                  The broker responds to a subscriber request with modified CoAP header fields
+                  <vspace blankLines="1"/>
+                  Since the security objective is to protect the resource representation,
+                  only header fields in the GET response that influence the interpretation of
+                  the resource representations has an impact. Changing of Code such as e.g.
+                  2.05 (Content) to some error code is a denial-of-service.
+                </t>
+                
+                
+                <t>
+                  The broker modifies the publication before or during storage
+                  <vspace blankLines="1"/>
+                  This threat is analogous to the previous threats and are mitigated
+                  in the same way.
+                </t>
+              
+                
+                <t>
+                  The broker responds to a subscriber request with the wrong message
+                  <vspace blankLines="1"/>
+                  Modifications of payload, options and header are considered previously.
+                  To mitigate wrong interpretation of a response resulting from
+                  a broker sending old messages, or reordering messages, from the
+                  same publisher to the same subscriber,
+                  the message may integrity protect a
+                  freshness parameter (timestamp, counter, etc.) from which the
+                  age/order can be deduced (replay/reordering protection).
+                </t>
+                
+                
+                <t>
+                  The broker colludes with a legitimate subscriber having access to
+                  the key used to create Message Authentication Codes (MAC) of
+                  publications to generate a valid MAC.
+                  <vspace blankLines="1"/>
+                  This threat applies to publications containing a message
+                  authentication code (MAC) for integrity protecting the resource
+                  representation.  The threat may be mitigated by the publisher
+                  digitally signing the representation with a private key
+                  instead of using a MAC.
+                </t>
+                
+              </list>
             </t>
           </section>
+          
+          
+          <section title="T2:The broker sends a message on its own initiative">
+            <t>
+              <list style="format T2:5.%d">
+                
+                <t>
+                  The broker sends a response to a subscriber request without a previous
+                  publication from the publisher
+                  <vspace blankLines="1"/>
+                  Most cases of responding inappropriately to a subscriber request are covered in
+                  the previous section. In general, authentication of origin of publication in
+                  combination with replay/reordring protection will mitigate this threat.
+                </t>
+                
+                <t>
+                  A broker sends a number of messages for the purpose of flooding
+                  the subscriber
+                  <vspace blankLines="1"/>
+                  By verifying the integrity and freshness information, the subscriber
+                  may mitigate certain flooding attacks.
+                </t>
+              </list>
+            </t>
+          </section>
+          
+          <section title="T3:The broker does not send a message according to
+            the processing rule">
+            <t>
+              <list style="format T3:5.%d">
+                <t>
+                  The broker does not store or forward a publication
+                  <vspace blankLines="1"/>
+                  This is a denial-of-service attack. While these threats may
+                  be difficult to mitigate, missing messages are common in
+                  lossy environments so applications should have a readiness
+                  for this kind of issue.
+                </t>
+                
+                <t>
+                  The broker does not respond to a publication request
+                  <vspace blankLines="1"/>
+                  This is a denial-of-service attack. While these threats may
+                  be difficult to mitigate, missing messages are common in
+                  lossy environments so applications should have a readiness
+                  for this kind of issue. In some cases there is not even a need
+                  for a response.
+                </t>
+              
+                <t>
+                  The broker delays forwarding of a received publication
+                  <vspace blankLines="1"/>
+                  Delayed forwarding may be a denial of service attack, similar
+                  to not forwarding. Certain delays may be legitimate so it
+                  may be difficult to detect and mitigate.
+                </t>
+                
+                <t>
+                  The broker reorders the publications
+                  <vspace blankLines="1"/>
+                  This threat may be mitigated by
+                  the publisher integrity protecting the message and including
+                  a freshness parameter
+                </t>
         
-          <section title="T2:The proxy sends a message on its own initiative">
-            <t>
-              TBD
+              </list>
             </t>
           </section>
           
-          <section title="T3:The proxy does not forward a message">
+          <section title="T4:The broker reads a message">
             <t>
-              TBD
+              <list style="format T4:5.%d">
+                <t>
+                  The broker reads a representation/payload
+                  <vspace blankLines="1"/>
+                  This threat can be mitigated with encryption of the
+                  representation and other potential payload data
+                </t>
+                
+                <t>
+                  The broker infers information about the nature and state of the
+                  publication from CoAP options and header fields.
+                  <vspace blankLines="1"/>
+                  This meta-data is not in scope of confidentiality.  Information leaking
+                  that can be inferred from such data cannot be prevented.
+                </t>
+              </list>
             </t>
           </section>
           
-          <section title="T4:The proxy reads a message">
-            <t>
-              TBD
-            </t>
-          </section>
         </section>
         
         <!-- *************************************************************** -->
         
- 
+        
         <section title="Security Requirements">
           <t>
-            TBD
+            This section contains the security requirements and non-requirements
+            for the publish-subscribe scenario. For each requirement and non-requirement the
+            associated threats are listed. The security requirements are:
+            
+            <list style="format R5.%d">
+              <t>
+                The subscriber must be able to verify that a received resource
+                representation originates from the requested publisher (T1:5.1, T2:5.1)
+              </t>
+              
+              <t>
+                The subscriber must be able to verify that a received representation
+                is a representation of the resource requested by the subscriber
+                (T1:5.1, T1:5.4, T1:5.5, T1:5.6)
+              </t>
+              
+              <t>
+                The subscriber must be able to verify content format of the representation
+                (T1:5.2)
+              </t>
+              
+              <t>
+                The subscriber must be able to detect if it has received this
+                response previously (T1:5.5, T2:5.1)
+              </t>
+              
+              <t>
+                The subscriber must be able to detect that the received resource
+                representation is older than a previously received
+                representation of this resource (T1:5.5, T2:5.1, T3:5.4)
+              </t>
+              
+              <t>
+                The representation must be integrity protected and encrypted
+                from publisher to subscriber. (T1:5.1, T1:5.5, T2:5.2, T4:5.1)
+              </t>
+              
+              <t>
+                To protect against the proxy colluding with an authorized subscriber,
+                asymmetric crypto is needed. (T1:5.6)
+              </t>
+            </list>
+            The security non-requirements of the pub-sub scenario are:
+            
+            <list style="format NR5.%d">
+              
+              <t>
+                The broker may change and eavesdrop on certain metadata without being
+                detected (T1:5.2, T1:5.3, T4:5.2)
+              </t>
+              
+              <t>
+                The broker may drop messages without being detected (T3:5.1, T3:5.2)
+              </t>
+              
+              <t>
+                The broker may delay messages without being detected (T3:5.3)
+              </t>
+            </list>
+            
           </t>
+          
         </section>
         
       </section>
       
       <!-- **************************************************************** -->
       <!-- **************************************************************** -->
-
-
+      
+      
       
     </section>
 
