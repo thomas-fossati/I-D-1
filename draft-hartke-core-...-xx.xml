@@ -6,9 +6,11 @@
   <!ENTITY RFC6347 SYSTEM "reference.RFC.6347.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY RFC7258 SYSTEM "reference.RFC.7258.xml">
   <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
   <!ENTITY I-D.ietf-cose-msg SYSTEM "reference.I-D.ietf-cose-msg.xml">
   <!ENTITY I-D.mattsson-core-coap-actuators SYSTEM "reference.I-D.mattsson-core-coap-actuators.xml">
+    <!--  <!ENTITY I-D.tcs-coap-no-response-option SYSTEM "reference.I-D.tcs-coap-no-response-option.xml"> -->
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -51,19 +53,6 @@
         <email>francesca.palombini@ericsson.com</email>
       </address>
     </author>
-    
-    <author initials="L." surname="Seitz" fullname="Ludwig Seitz">
-      <organization>SICS Swedish ICT AB</organization>
-      <address>
-        <postal>
-          <street>Scheelevaegen 17</street>
-          <city>Lund</city>
-          <code>223 70</code>
-          <country>Sweden</country>
-        </postal>
-        <email>ludwig@sics.se</email>
-      </address>
-    </author>
 
     <author initials="K." surname="Hartke" fullname="Klaus Hartke">
       <organization>Universitaet Bremen TZI</organization>
@@ -76,6 +65,19 @@
         </postal>
         <phone>+49-421-218-63905</phone>
         <email>hartke@tzi.org</email>
+      </address>
+    </author>
+    
+    <author initials="L." surname="Seitz" fullname="Ludwig Seitz">
+      <organization>SICS Swedish ICT AB</organization>
+      <address>
+        <postal>
+          <street>Scheelevaegen 17</street>
+          <city>Lund</city>
+          <code>223 70</code>
+          <country>Sweden</country>
+        </postal>
+        <email>ludwig@sics.se</email>
       </address>
     </author>
     
@@ -134,7 +136,7 @@
       </t>
 
       <t>
-        This document analyses the threats to CoAP requests and
+        This document analyses security requirements for CoAP requests and
         responses of sensor and actuator deployments involving proxies.
         The analysis is based on identifying the assets associated to sensor-
         and actuator-based communication patterns, and considering
@@ -210,7 +212,7 @@
       
       <t>
         A proxy may perform different functions, but the basic function
-        is to forward messages according to certain rules.  For example:
+        is to forward translated messages according to certain processing rules.  For example:
         
         <list style="format Rule %d:">
           <t>
@@ -227,7 +229,11 @@
  
       <t>
         In order to perform its function, a proxy may be required to read or
-        change certain parts of a CoAP message, as discussed below.
+        change certain parts of a CoAP message, as defined by the processing rules.
+        For example, a forward proxy is defined to transform
+        the Proxy-Uri option to Uri-Host, Uri-Port, Uri-Path and Uri-Query
+        options. A proxy caching reponses needs to read the Cache Key and may change the
+        Max-Age option in the responses.
       </t>
       
       <t>
@@ -275,9 +281,8 @@
         The scope of this document is to analyze threats executed through
         proxies, and this is only directly affecting the assets of type A3 and
         A4 listed above: Clearly A4 is affected by the proxies, and since the
-        proxies are part of the communication infrastructure (A3) an attack
-        executed through a proxy such as inhibiting forwarding has an impact
-        on it.
+        proxies are part of the communication infrastructure an attack
+        executed through a proxy, such as dropping all messages, has an impact on A3.
       </t>
       
       <t>
@@ -300,38 +305,29 @@
       </t>
       
       <t>
-        On a high level, there are the following potential threats from proxies
+        On a high level, there are the following threats from proxies
         to consider:
         <list style="format T%d:">
           <t>
-            The proxy forwards a message other than received.
+            The proxy illegitimately modifies a message.
           </t>
           <t>
-            The proxy sends a message on its own initiative, including replay,
-            flooding, etc.
+            The proxy illegitimately sends a message,
+            including replay, flooding, etc.
           </t>
           <t>
-            The proxy does not forward a message, including delay, reordering, 
-	    etc.
+            The proxy illegitimately inihibits sending of a message,
+            including delay, reordering, etc.
           </t>
           <t>
-            The proxy reads a message.
+            The proxy illegitimately reads part of a message.
           </t>
         </list>
       </t>
       
       <t>
-        Not all of these potential threats are actual threats in all proxy
-        settings. For example, a forwarding proxy is defined to transform
-        the Proxy-Uri option to Uri-Host, Uri-Port, Uri-Path and Uri-Query
-        options.
-        A proxy caching reponses needs to read the cache key and changes the
-        Max-Age option in the responses.
-      </t>
-      
-      <t>
-        To assess which of these potential threats are actual threats, we
-        need to identify the legitimate proxy operations in different scenarions
+        To assess how such threats impact the assets, we need to specify
+        the processing rules in different scenarios
         and define the security objectives in these scenarios.
       </t>
       
@@ -347,15 +343,38 @@
     <section title="Scenarios, Threats and Security Requirements">
       
       <t>
-        In this section we consider a set of scenarios involving proxies, with
-        different processing rules and security objectives. We study the
+        In this section we consider a set of scenarios involving proxies and brokers,
+        with different processing rules and security objectives. We study the
         associated threats and derive the security requirements for message
         transfer between client and server in the different scenarios.
+        Note that since CoAP was not designed for end-to-end security,
+        solutions complying with these security requirements extend the applicability of
+        CoAP beyond its original scope.
       </t>
       
       <t>
-        FIXME: Add summary/overview of the following
-        subsections here
+        To simplify the analysis, the scenarios are structured according to how
+        requests and responses are related to each other:
+        <list style="hanging">
+          <t hangText="One Request - One Response">
+            <vspace />
+            There is a one-to-one relation between request and response.
+          </t>
+          <t hangText="One Request - Multiple Responses">
+            <vspace />
+            A request may have multiple responses, but each response is linked to a unique request.
+          </t>
+          <t hangText="Multiple Requests - One Response">
+            <vspace />
+            One response may serve multiple requests, but each request has a single response.
+          </t>
+          <t hangText="Multiple Requests - Multiple Responses">
+            <vspace />
+            One response may serve multiple requests, and each request may have
+            multiple responses.
+          </t>
+        </list>
+      
       </t>
       
       <!-- **************************************************************** -->
@@ -363,15 +382,14 @@
       
       
       
-      <section title="One Request - One Response">
+      <section anchor="onereq-oneres" title="One Request - One Response">
         
         <t>
           In this scenario we study use cases where it is important that a response
           sent from one endpoint is the response to a particular request
-          to that endpoint. Since a response is only valid for one request there
-          is no use for cached responses. Many security critical use cases require
+          to that endpoint. Many security critical use cases require
           that responses are linked to requests such as alarm
-          status request-response and actuator command confirmation.
+          status retrieval and actuator command confirmation.
         </t>
         <t>
           In this scenario there must be a unique response for each request.
@@ -394,7 +412,7 @@
         
         <t>
           <list style="hanging">
-            <t hangText="Example: Alarm status">
+            <t hangText="Example: Alarm status retrieval">
             <vspace blankLines="1"/>
               <xref target="figure-1"/> can be seen as an illustration of a message exchange for a client
               requesting the alarm status, GET /alarm_status, at a server. Since the client
@@ -402,7 +420,7 @@
               status, and not a cached or spoofed response to the same resource, it
               must be able to verify that the received response is a response to this
               particular request made by the client. Therefore the response must be
-              securely bound to the request.
+              securely linked to the request.
             </t>
             <t hangText="Example: Actuation confirmation">
             <vspace blankLines="1"/>
@@ -417,7 +435,7 @@
               was performed or not. Again, the client wants to ensure that the response
               is reflecting the result of this particular actuation request made by the client,
               and not a cached or spoofed response. Therefore the response must be securely
-              bound to the request.
+              linked to the request.
             </t>
           </list>
         </t>
@@ -426,12 +444,11 @@
           Functional Requirement:
           <list style="symbols">
             <t>
-              The client and server must be able to exchange messages with as
-              little as possible impact from intermediate nodes.
-            </t>
-            <t>
-              All caching functionality should be disabled, since these messages
-              only have a meaning to these endpoints during this interaction.
+              Since a response can only be verified as a response to a particular
+              request, the response should not be used with any other request.
+              Hence, as much as possible of the caching functionality should be
+              inhibited. Therefore the CoAP option Max-Age of the responses
+              is set to 0 (see Section 5.7.1 of <xref target="RFC7252"/>).
             </t>
           </list>
         </t>
@@ -439,10 +456,11 @@
 
         <!-- *************************************************************** -->
         
-        <section title="Processing Rules">
+        <section anchor="PR1" title="Processing Rules">
           <t>
-            In this scenario, the proxy functionality is limited to forwarding.
-            There are two modes of operation for a forward proxy:
+            In this scenario, the assumed proxy functionality is essentially
+            to forward a translated request to the determined destination.
+            There are two modes of operation:
             Either (PR1.1) using the Proxy-Uri option, or (PR1.2) using the
             Proxy-Scheme option together with the Uri-Host, Uri-Port,
             Uri-Path and Uri-Query options.
@@ -453,10 +471,11 @@
                 Proxy-Scheme and Uri-* options are not present.
                 <vspace blankLines="1"/>
                 If the proxy is configured to forward requests to
-                another forwarding proxy, then it keeps the Proxy-Uri
+                another proxy, then it keeps the Proxy-Uri
                 option; otherwise, it splits the option into its
-                components and adds the corresponding Uri-* options.
-                Then it forwards the request using the request scheme
+                components and adds the corresponding Uri-* options and
+                does not include a Proxy-Uri option.
+                Then it makes the request using the request scheme
                 indicated in the Proxy-Uri.
               </t>
               <t>
@@ -467,7 +486,7 @@
                 If the proxy is configured to forward requests to
                 another forwarding proxy, then it keeps the
                 Proxy-Scheme and Uri-* options; otherwise, it removes
-                the Proxy-Scheme option. Then it forwards the request
+                the Proxy-Scheme option. Then it makes the request
                 using the request scheme indicated in the removed
                 Proxy-Scheme option.
               </t>
@@ -480,25 +499,22 @@
         
         <!-- *************************************************************** -->
         
-        <section title="Security Objectives">
+        <section anchor="SO1" title="Security Objectives">
           <t>
             In this scenario there is a unique response for each request, so the
             client should be able to verify that a certain response is made in
             response to a specific request sent by the client.
           </t>
           <t>
-            As the proxy functionality is restricted to forwarding only, as much
-            as possible of the original messages should be protected
-            between client and server, to prevent unauthorized access and manipulations
-            by a proxy. FIXME Reference IAB statement of Internet Confidentiality
+            The server should be able to verify that the proxy only has
+            performed the message modifications intended
+            by the client according to the processing rules.
           </t>
           <t>
-            The server should be able to verify that the proxy has
-            performed the allowed message modifications according to the
-            processing rules, according to the intended
-            operations requested by the client.
+            The proxy should be prevented from reading or making modifications
+            to messages apart from what is necessary to perform the processing rules.
+            (cf. <xref target="RFC7258"/>).
           </t>
-          
           <t>
             The security objectives are:
             <list style="format SO1.%d">
@@ -510,7 +526,7 @@
               <t>
                 The server is able to verify that the received request either
                 has not been altered in transfer, or that the request is modified
-                according to the processing rules PR1.1 and PR1.2 (Section 3.1.1).
+                according to the processing rule PR1.1 or PR1.2 (<xref target="PR1"/>).
               </t>
               <t>
                 The server is able to protect the response such that only
@@ -520,7 +536,11 @@
                 The client is able to verify that the received response
                 originates from the requested server and resource,
                 that it has not been altered in transfer, and that it was
-                generated in response to the request.
+                generated as the unique response to the request.
+              </t>
+              <t>
+                The proxy is only able to read data needed to perform
+                the processing rules.
               </t>
             </list>
           </t>
@@ -532,10 +552,10 @@
         
         <section title="Threat Analysis and Mitigation">
           <t>
-            We now list potential threats and discuss their implications
+            We now list potential threats and discuss candidate mitigation mechanisms.
           </t>
           
-          <section title="T1:The proxy forwards a messages other than received">
+          <section anchor="T1:1" title="T1:The proxy illegitimately modifies a message">
             <t>
               <list style="format T1:1.%d">
                 <t>
@@ -548,36 +568,34 @@
                 <t>
                   The proxy forwards a response with modified payload
                   <vspace blankLines="1"/>
-                  This threat that may be mitigated with integrity protection of
+                  This threat may be mitigated with integrity protection of
                   payload
                 </t>
                 
                 <t>
                   The proxy forwards a request with modified CoAP option
                   <vspace blankLines="1"/>
-                  This threat may be mitigated by integrity protecting the values
-                  of selected CoAP options. Note that the proxy is entitled to
-                  change certain options by processing rules PR1.1 and PR1.2. However,
-                  since the change is predictable, the request URI and
+                  Note that the proxy is entitled to
+                  change certain options by processing rules PR1.1 and PR1.2.
+                  Since the change is predictable, the request URI and
                   Proxy-Scheme can be integrity protected by the client and verified
                   by the server.
+                  The other CoAP options in the request can be integrity protected.
                 </t>
 
                 <t>
                   The proxy forwards a response with modified CoAP option
                   <vspace blankLines="1"/>
                   This threat may be mitigated with integrity protection of
-                  CoAP options. Since the response is not intended to be cached,
-                  Max-Age is set to 0 (see Section 5.7.1 of <xref target="RFC7252"/>)
-                  and since the proxy is not entitled to change
-                  any other options they can all be integrity protected
+                  CoAP options. Since Max-Age is set to 0 the proxy is not entitled to change
+                  any options so they can all be integrity protected
                 </t>
                 
                 <t>
                   The proxy forwards a request with changed CoAP header fields
                   <vspace blankLines="1"/>
-                  This is not necessarily a threat. For example, a proxy is
-                  entitled to change Token as part of its normal operations.
+                  The proxy is entitled to change certain header fields, e.g. Token
+                  as part of its normal operations.
                   Malicious changes to message layer parameters may cause denial-of-service,
                   equivalent of dropping a message or sending
                   spoofed messages. This is difficult to mitigate.
@@ -607,7 +625,7 @@
                   having different security associations with different clients.
                   If the forwarded request is from the same client, but with
                   differences in payload, options or header then this coincides with
-                  previous threats.
+                  previously listed threats.
                   A proxy sending old requests, or reordering requests, from the
                   same client to the same server resource can be
                   mitigated by integrity protecting a freshness parameter
@@ -628,7 +646,7 @@
           </section>
           
           
-          <section title="T2:The proxy sends a message on its own initiative">
+          <section anchor="T2:1" title="T2:The proxy illegitimately sends a message">
             <t>
               <list style="format T2:1.%d">
                 
@@ -644,7 +662,7 @@
                   The proxy sends a response to the client without a previous
                   response from the server
                   <vspace blankLines="1"/>
-                  This is not necessarily a threat. Error messages from the
+                  Error messages from the
                   proxy such as 5.02 (Bad Gateway) originates from the proxy.
                   A proxy maliciously sending error messages is a denial-of-service
                   attack similar to not forwarding a message (T3:1.1) and is
@@ -667,7 +685,7 @@
             </t>
           </section>
           
-          <section title="T3:The proxy does not forward a message">
+          <section anchor="T3:1" title="T3:The proxy illegitimately inihibits sending of a message">
             <t>
               <list style="format T3:1.%d">
                 <t>
@@ -686,7 +704,7 @@
                   to not forwarding.  Certain delays may be legitimate so it
                   may be difficult to detect and mitigate.
                   However, delayed requests and responses can also be used in
-                  attacks against actuator, see <xref target="I-D.mattsson-core-coap-actuators"/>.
+                  attacks against actuators, see <xref target="I-D.mattsson-core-coap-actuators"/>.
                   These attacks can be
                   performed by an on-path attacker and are not restricted to
                   proxies. The proposed mitigation is based on verifying the
@@ -718,7 +736,7 @@
             </t>
           </section>
           
-          <section title="T4:The proxy reads a message">
+          <section anchor="T4:1" title="T4:The proxy illegitimately reads part of a message">
             <t>
               <list style="format T4:1.%d">
                 <t>
@@ -732,11 +750,11 @@
                   resource request/response from CoAP options.
                   <vspace blankLines="1"/>
                   The proxy only needs to read the Uri-Host/Uri-Port and
-                  Proxy-Uri/Proxy-Scheme options of a request and Max-Age of the
-                  response (which is set to 0 as indicated in T.1.4 FIXME: is this ok?). The information revealed by
-                  these parameters is anyway public on network layer. The other
-                  options may be encrypted.
-                  FIXME: may be encrypted or can or should?
+                  Proxy-Uri/Proxy-Scheme options of a request. The information revealed by
+                  these parameters is public on network layer.
+                  The proxy only needs to read Max-Age of the response, which is
+                  set to 0 as indicated in the functional requirements.
+                  This threat can be mitigated by encrypting all other options.
                 </t>
                 
                 <t>
@@ -746,7 +764,7 @@
                   The header fields needs to be transferred in plain text to allow
                   normal CoAP operations. The Code parameter reveals information
                   about what RESTful action is requested. This information leakage is
-                  difficult to mitigate without violating the REST paradigm.
+                  difficult to mitigate.
                 </t>
 
               </list>
@@ -757,7 +775,7 @@
         
         <!-- *************************************************************** -->
         
-        <section title="Security Requirements">
+        <section anchor="R1" title="Security Requirements">
           <t>
             This section contains the security requirements and non-requirements
             for the this scenario.  For each requirement and non-requirement the
@@ -770,9 +788,9 @@
               </t>
               
               <t>
-                The server SHALL verify if it has received this message
-                previously or if the messages are received in the wrong order,
-                i.e. replay and re-ordering protection (T1:1.7, T3:1.3)
+                The server SHALL verify if it has received this request
+                previously and if the requests are received in the wrong order
+                (T1:1.7, T3:1.3)
               </t>
               
               <t>
@@ -781,13 +799,13 @@
               </t>
               
               <t>
-                The client SHALL verify that a response is the
-                response to a particular request that the client has made (T1:1.8, T3:1.4)
+                The client SHALL verify that a response corresponds uniquely to
+                a previous request that the client has made (T1:1.8, T3:1.4)
               </t>
               
               <t>
-                The payload SHALL be integrity protected and SHOULD be encrypted
-                between client and server (T1:1.1-6,T4:1.1, T2:1.3, T4:1.1)
+                The payload SHALL be integrity protected and encrypted
+                between client and server (T1:1.1-6,T4:1.1, T2:1.3, T4:1.1, <xref target="RFC7258"/>)
               </t>
               
               <t>
@@ -810,7 +828,7 @@
               
               <t>
                 The CoAP header fields Version and Code SHALL be integrity protected
-                in requests and responses. All other header fields SHALL not be
+                in requests and responses. All other header fields SHALL NOT be
                 integrity protected. The header fields SHALL NOT be encrypted.
                 (T1:1.5, T4:1.3)
               </t>
@@ -840,19 +858,11 @@
       <!-- **************************************************************** -->
       <!-- **************************************************************** -->
       
-      <section title="One Request - Multiple Responses">
-        
+      <section anchor="onereq-mulres" title="One Request - Multiple Responses">
         
         <t>
-          This scenario is about replicating a resource state from a
-          server to a client. The client observes a resource and receives
-          notifications about resource state changes.
-          This functionality protects communication-constrained servers from
-          repeated requests when the resource is unchanged thus saves system
-          resources and bandwidth.
-          In this scenario there are typically multiple responses for one request.
+          In this scenario we study use cases where it is important that a response is linked to a request, like the previous scenario, but where there may be multiple responses for each request. This functionality protects communication-constrained servers from repeated requests from the same client and thus saves system resources and bandwidth. This is useful in security criticial monitoring scenarios where time synchronization is cannot be guaranteed.
         </t>
-        
         
         <figure anchor="figure-2" title="FIXME">
           <artwork align="center">
@@ -874,39 +884,37 @@
         </figure>
         
         <t>
-          The server exposes an observable resource (e.g., the current
-          reading of a temperature sensor). A client is
-          interested in the current state of the resource and observes
-          it using the <xref target="RFC7641">CoAP resource observation
-            mechanism</xref>. The goal is to keep the state observed by
-          the client closely in sync with the actual state of the
-          resource at the server.
+          
+          
+          <list style="hanging">
+            <t hangText="Example: Secure parameter monitoring">
+              <vspace blankLines="1"/>
+              <xref target="figure-2"/> can be seen as an illustration of a message exchange for a client monitoring an important parameter e.g. in a medical or process industry application measured by the server. The server responds to the request and provides updates to the parameter at regular time intervals.
+            </t>
+            <t>
+              The client wants to ensure that first received response reflects the current parameter value, and that subsequent responses are timely updates are of the initial request. Since responses may be lost or reordered the client needs to be able to verify the order of the messages as sent by the server. By monitoring the received messages and the time they are received the client could detect missing notifications and take appropriate action.
+            </t>
+          </list>
         </t>
         
         <t>
-          The Observe Option in a GET request extends the GET method so
-          it does not only retrieve a current representation of the
-          target resource, but also requests the server to add or
-          remove an entry in the list of observers of the resource
-          depending on the option value. In a response, the Observe
-          Option identifies the message as a notification and the
-          option value is a (hop-by-hop) sequence number for reordering
-          detection.
+          Functional Requirement:
+          <list style="symbols">
+            <t>
+              The same functional requirement apply as in the previous scenario
+              (<xref target="onereq-oneres"/>).
+            </t>
+          </list>
         </t>
-
+        
+        
         <!-- *************************************************************** -->
         
         <section title="Processing Rules">
           
           <t>
-            The proxy complies with the fowarding rules PR 1.1 - 1.2 see
-            section 3.1.1. In addition the following processing rules apply:
-            <list style="format PR2.%d">
-              <t>
-                FIXME: The proxy may modify the Observe option . . .
-              </t>
-              
-            </list>
+            The processing rules are identical to PR 1.1 - 1.3 of the previous
+            scenario (<xref target="PR1"/>).
           </t>
           
         </section>
@@ -915,21 +923,25 @@
         
         <section title="Security Objectives">
           <t>
-            With observe there may be a sequence of responses to one request,
-            but each response
-            maps to a unique request. By ordering the responses, each message in
+            The security
+            objectives are similar to the previous scenario. Each response
+            maps to a unique request, but there may be multiple responses to one request.
+            By ordering the responses, each message in
             this exchange can be made unique.
           </t>
           <t>
-            Since the proxy functionality is identical to the previous scenario the security
-            objectives are similar to the previous scenario. SO1.1, SO1.2, SO1.3 are valid
-            also in this case, but the final objective SO1.4 is replaced by SO2.1
+            The security objectives of the previous scenario (<xref target="SO1"/>)
+            are valid except SO1.4 which is replaced by the following:
             <list style="format SO2.%d">
               <t>
                 The client is able to verify that the received response
                 originates from the requested server and resource,
                 that it has not been altered in transfer, and that it was
                 generated as one in a sequence of responses to the request.
+              </t>
+              <t>
+                The client is able to verify the order of the responses and if
+                a response is missing.
               </t>
             </list>
           </t>
@@ -939,63 +951,49 @@
         
         <section title="Threat Analysis and Mitigation">
           <t>
-            The threat analysis carries over from the previous scenario,
+            The threat analysis from the previous scenario carries over
             with a few exceptions.
           </t>
           
-          <section title="T1:The proxy forwards a messages other than received">
+          <section anchor="T1:2" title="T1:The proxy illegitimately modifies a message">
             <t>
-              The same conclusions apply as in the previous scenario except that:
+              Similar conclusions apply as in the previous scenario (<xref target="T1:1"/>).
+              However, note that in T1:1.8, a proxy may maliciously
+              reorder the responses to the same request without being
+              detected. The mitigation specified in the previous scenario, that
+              the client verifies the response is linked to the request is not
+              sufficient since there may be multiple responses.
             </t>
-            
             <t>
-              If the Observe option is not encrypted, it may be legitimately modified by the
-              proxy and cannot be integrity protected. However, if the Observe
-              option is encrypted, then it is not visible to the proxy
-              and may be integrity protected.
-            </t>
-            
-            <t>
-              If Observe is not encrypted and thereby cannot be integrity protected,
-              then the proxy may reorder responses from the
-              same server to the same client. In this case it is not enough with
-              protecting uniquely identifying information of the request in the
-              response, since there may be multiple responses
-              to one request.
               However, analogous to how requests are protected against
-              replay/reordering in the previous scenario, by introducing and
-              integrity protecting a similar freshness parameter from which the
-              order of responses can be deduced this threat can be mitigated.
-            </t>
-            
-            <t>
-              If Observe is encrypted and integrity protected,
-              then reordered responses will be detected by the client.
+              replay/reordering in the previous scenario, by additionally
+              integrity protecting a parameter from which the
+              order of responses can be deduced, this threat can be mitigated.
             </t>
           </section>
           
           
-          <section title="T2:The proxy sends a message on its own initiative">
+          <section title="T2:The proxy illegitimately sends a message">
             <t>
-              The same conclusions apply as in the previous scenario with the
-              additional replay/reordering protection of responses.
+              Similar conclusions apply as in the previous scenario (<xref target="T2:1"/>).
+              T2:1.3 can be mitigated with the
+              additional replay/reordering protection of responses as mentioned
+              in <xref target="T1:2"/>.
            </t>
           </section>
           
-          <section title="T3:The proxy does not forward a message">
+          <section title="T3:The proxy illegitimately inihibits sending of a message">
             <t>
-              This threat is identical to the previous scenario.
+              Similar conclusions apply as in the previous scenario (<xref target="T3:1"/>).
+              T3:1.4 can be mitigated with the
+              additional replay/reordering protection of responses as mentioned
+              in <xref target="T1:2"/>.
             </t>
           </section>
           
-          <section title="T4:The proxy reads a message">
+          <section title="T4:The proxy illegitimately reads part of a message">
             <t>
-              The same conclusions apply as in the previous scenario
-              with the addition that if the Observe option is in plain text
-              then it reveals information about
-              the relation between different responses. The frequency of
-              the observations may also reveal that the resource
-              is changing. This can be mitigated by encrypting the observe option.
+              The same conclusions apply as in the previous scenario (<xref target="T4:1"/>).
             </t>
           </section>
           
@@ -1005,23 +1003,23 @@
         
         <section title="Security Requirements">
           <t>
-            Since caching is not beneficial in this scenario, there is no
-            reason to expose the Observe option to the proxy.
+            The security objectives of the previous scenario
+            (<xref target="R1"/>) are valid except R1.4 which is replaced by the following:
           </t>
+          
           
           <t>
             <list style="format R2.%d">
               
               <t>
-                The CoAP option Observe SHALL be encrypted and integrity protected
-                (T1)
+                The client SHALL verify that a response corresponds to a
+                previous request that the client has made (T1:1.8, T3:1.4)
               </t>
               
               <t>
-                The response SHALL include a freshness parameter such that the
-                client is able to verify if it has
-                received a response previously or if the messages are received in
-                the wrong order, i.e. replay and re-ordering protection (T1,T2)
+                The client SHALL verify if it has received this response
+                previously and if the responses are received in the wrong order
+                (T1:1.8, T3:1.3)
               </t>
               
             </list>
@@ -1037,18 +1035,17 @@
       
       
     
-      <section title="Multiple Requests - One Response">
+      <section anchor="mulreq-oneres" title="Multiple Requests - One Response">
         
         <t>
           In this scenario we study caching, how a proxy may serve the same
           cached response to multiple clients requesting the same
           resource.
         </t>
-        
         <t>
           The caching functionality protects communication-constrained servers
-          from repeated requests for the same resources, thus saving system
-          resources, bandwidth, and round-trip time.
+          from repeated requests, also from different clients, for the same
+          resources, thus saving system resources, bandwidth, and round-trip time.
         </t>
         
         <figure anchor="figure-3" title="FIXME">
@@ -1077,9 +1074,9 @@ Client B           |               |
         <t>
           In <xref target="figure-3"/>, Client A requests the proxy to make a certain request to
           the server and to return the server's response. The proxy
-          services the request by forwarding the request message to the
-          server according to the rules for forwarding. The server returns a
-          cacheable response. The proxy
+          services the request by making a request message to the
+          server according to the processing rules. If the server returns a
+          cacheable response, then the proxy
           stores the response in its cache, performs any necessary
           translations, and forwards it to the client. Later, client B
           makes an equivalent request to the proxy that the proxy
@@ -1087,14 +1084,14 @@ Client B           |               |
         </t>
         <t>
           Cacheable responses are responses to GET requests and error
-          responses to PUT/POST requests.
+          responses to GET/PUT/POST requests.
         </t>
         <t>
           Functional Requirements:
           <list style="symbols">
             <t>
               The proxy must be able to store cacheable responses in a
-              cache. This requires the proxy to read CoAP header and options,
+              cache. This requires the proxy to read CoAP header, options and payload,
               and compute the cache key for a request.
             </t>
             <t>
@@ -1109,15 +1106,17 @@ Client B           |               |
         
         <!-- *************************************************************** -->
         
-        <section title="Processing Rules">
+        <section anchor="PR3" title="Processing Rules">
           
           <t>
-            The proxy complies with the fowarding rules R1.1 and R1.2, see section 3.1.1.
+            FIXME: Klaus reviews the processing rules.
+            
+            The proxy complies with the fowarding rules PR1.1 - 1.3 (<xref target="PR1"/>).
             <list style="format PR3.%d">
               <t>
                 If the proxy receives a request where the cache key matches that of a
                 cached fresh response, then the proxy discards the request and replies
-                with that response, else it forwards the request.
+                with that response, else it makes a translated request.
               </t>
               
               <t>
@@ -1137,7 +1136,6 @@ Client B           |               |
                 The proxy adjusts the Max-Age option in a response, decreasing
                 its value to reflect the time spent in the cache.
               </t>
-            
               
               <t>
                 If the request contains an Accept option, and if there is a fresh
@@ -1155,176 +1153,21 @@ Client B           |               |
         <!-- *************************************************************** -->
         
         <section title="Security Objectives">
-          
-          
-          <t>
-            In this section we analyze security for caching in more detail.
-            At the end we present the security objectives.
-          </t>
+
           
           <t>
             A caching proxy has an active role in the resource request/response
             procedure, so it is not surprising that it is necessary to make
             trade-offs between caching functionality and the protection of
-            client-server interaction. Considering these trade-offs between
-            caching and security there are different candidate ambition levels
-            in terms of security objectives in this scenario.
+            client-server interaction.
           </t>
           
           <t>
-            We envision three types of ambition levels:
-            <list style="format %d.">
-              <t>
-                The most ambitious security objective would be to inhibit caching
-                entirely, as discussed in Section 3.1. This is out of scope for
-                the current scenario.
-              </t>
-              
-              <t>
-                At the other end, an alternative security objective is to target
-                the protection of cached resource representations, i.e. GET 
-                responses' payload, which is central functionality of a caching proxy.
-              </t>
-              
-              <t>
-                Somewhere in between 1. and 2. there is a setting which allow
-                caching to some extent, but protects more general message exchanges
-                and/or more metadata than compared to alternative 2.
-                Most of the rest of this
-                section is about this alternative.
-              </t>
-            </list>
-          </t>
-          
-          <t>
-            The caching functionality decouples responses from requests. This
-            implies that a client is not able to verify that a received
-            response is generated by the server in response to a specific
-            request.
-          </t>
-          
-          
-          <t>
-            A client may receive a response without the server being aware
-            of that the client has made a request.
-            Moreover, in order to keep the cache up-to-date and thereby enable short
-            round-trip times, a proxy could proactively generate requests, or observe
-            resources.
-            Thus the server cannot in general verify that a request originates
-            from a client as a precondition to provide a response.
-          </t>
-          
-          <t>
-           Since the server is not able to verify a request, it must
-            <list style="format %c.">
-              <t>
-                restrict what requests are allowed (otherwise it would perform any requested actions), and
-              </t>
-              
-              <t>
-                perform a default action, irrespective of authorized client, for
-                protecting the response of these generally allowed requests (otherwise
-                not all authorized clients would be able to read and verify the response).
-              </t>
-            </list>
-          </t>
-          
-          
-          <t>
-            Example:
-            <vspace blankLines="1"/>
-            For GET requests (Alternative 2) this could be quite straightforward:
-            <list style="format %c.">
-              <t>
-                The server restricts allowed plaintext requests to GET and
-                certain resources.
-              </t>
-              
-              <t>
-                The server encrypts and integrity protects the resource representation
-                with key specific for the resource and signs with its private key.
-              </t>
-            </list>
-          </t>
-          
-          
-          <t>
-            In order for the client to process a received response correctly,
-            it needs to determine for what request the response was made. For this
-            purpose, information relating the request must be verifiable
-            by the client receiving the response.
-          </t>
-          
-          <t>
-            In the example above, the information relating to the request is
-            pre-defined in the sense that resource representations are
-            integrity protected with a certain key and signed with a certain key
-            relating to a certain resource and server, respectively.
-          </t>
-          
-          <t>
-            Alternatively, it could be implicit in the sense that
-            information about the request is built into the response, e.g.
-            integrity protecting request information in the response (cf.
-            External_AAD in <xref target="I-D.ietf-cose-msg">COSE</xref>).
-          </t>
-          
-          <t>
-            In the following we argue that the latter would become quite complex
-            in the general case and neither provides desirable properties in terms of
-            security nor in terms of caching.
-          </t>
- 
-          
-          <t>
-            Since there is no binding between the request and the response, 
-            information about the resource and the request needs to be protected within the response. FIXME: is this sentence ok?
-            In the general case, where we are not restricting to particular methods
-            and resources like in the example, this implies the need to specify selected
-            parts of CoAP header, options and payload of the request
-            that the client would need to cache and use to verify that a response
-            is a response to a particular request.
-          </t>
-          
-          <t>
-            To complicate matters further, since different requests could result
-            in the same response
-            from the proxy cache, the request information must be canonicalized such
-            that equivalent requests have identical request information, and the
-            canonicalized request information must be possible to verify
-            by the client receving the response.
-            Additionally metadata that is allowed to be changed by a proxy must
-            be excluded from the canonicalized request information.
-          </t>
-          
-          <t>
-            If such a canonicalization would be defined, this would include
-            protection of metadata in the request and response protected in the response,
-            such as for example CoAP header Code and CoAP option Uri-Path.
-            However, requiring metadata to be protected conflicts with
-            certain processing rules in this scenario. PR3.3 entitles the proxy to
-            provide the authoritative response Code 2.03 (Valid) to a request
-            with ETag. If we require Code to be verifiable this response will be discarded,
-            since a response originating from a proxy cannot be verified by the client.
-            To avoid this issue requires either ETag or caching functionality to
-            be reduced.
-          </t>
-          
-          <t>
-            Furthermore, a solution targeting this security objective would still not be able
-            to confirm that a response was made in response to a particular request.
-            Moreover, providing good privacy/confidentiality properties requires part
-            of the cache key to be encrypted, reducing the efficiency
-            of the caching function.
-          </t>
-          
-          <t>
-            Summarizing this discussion, we think that alternative 3. above does
-            neither provide the desired caching functionality nor the security required.
-            Acknowledging that the scenario in section 3.1
-            targets a more ambitious security objective which can be used
-            in use cases where required, we focus here on enabling the caching
-            functionality and providing security to cacheable resource representations.
+            The scenario in (<xref target="onereq-oneres"/>) motivates the ambitious
+            security objectives in (<xref target="SO1"/>), and a solution to that
+            scenario can be reused in use cases where required.
+            Therefore we focus here on enabling the caching functionality and
+            providing security to cacheable resource representations, i.e. GET responses.
           </t>
           
           <t>
@@ -1351,11 +1194,14 @@ Client B           |               |
         
         <section title="Threat Analysis and Mitigation">
           <t>
-            We now analyze the potential threats relevant to this scenario.
+            We now list potential threats and discuss candidate mitigation mechanisms.
+            
+            FIXME: We redo the threat analysis and security requirements when the
+            processing rules and security objectives are fixed.
           </t>
           
           
-          <section title="T1:The proxy forwards a messages other than received">
+          <section title="T1:The proxy illegitimately modifies a message">
             <t>
               <list style="format T1:3.%d">
                 <t>
@@ -1394,7 +1240,7 @@ Client B           |               |
                 <t>
                   The proxy forwards a request with changed CoAP header fields
                   <vspace blankLines="1"/>
-                  As mentioned in section 3.1, this is not necessarily a threat.
+                  As mentioned in (<xref target="onereq-oneres"/>), this is not necessarily a threat.
                   We consider here the impacts on the response. By changing
                   Code the response will not contain the requested resource
                   representation. However, as long as the required responses
@@ -1477,7 +1323,7 @@ Client B           |               |
           </section>
           
           
-          <section title="T2:The proxy sends a message on its own initiative">
+          <section title="T2:The proxy illegitimately sends a message">
             <t>
               <list style="format T2:3.%d">
                 
@@ -1519,7 +1365,7 @@ Client B           |               |
             </t>
           </section>
           
-          <section title="T3:The proxy does not forward a message">
+          <section title="T3:The proxy illegitimately inihibits sending of a message">
             <t>
               <list style="format T3:3.%d">
                 <t>
@@ -1543,7 +1389,7 @@ Client B           |               |
                   to not forwarding. Certain delays may be legitimate so it
                   may be difficult to detect and mitigate.
                   Delayed requests and responses can also be used in
-                  attacks against actuators as is discussed in Section 3.1 but
+                  attacks against actuators as is discussed in (<xref target="onereq-oneres"/>) but
                   that is out of scope for this scenario.
                 </t>
                 
@@ -1567,7 +1413,7 @@ Client B           |               |
             </t>
           </section>
           
-          <section title="T4:The proxy reads a message">
+          <section title="T4:The proxy illegitimately reads part of a message">
             <t>
               <list style="format T4:3.%d">
                 <t>
@@ -1675,14 +1521,19 @@ Client B           |               |
       <section title="Multiple Requests - Multiple Responses: Observe">
         
         <t>
-          This scenario adds to the previous the capability to notify a client
-          when a resource changes. The client observes a
+          This scenario is about replicating a resource state from a
+          server to a client.  The client observes a
           resource and receives notifications, which may be cached.
+          The difference with previous scenario (<xref target="mulreq-oneres"/>) is the capability
+          to notify a client when a resource changes. The difference with
+          <xref target="mulreq-oneres"/> is that multiple client requests may be served
+          with the same response.
         </t>
         
         <t>
           This functionality protects communication-constrained servers from
-          repeated requests when the resource is unchanged thus saving system
+          repeated requests, also from different clients, when the resource is
+          unchanged thus saving system
           resources and bandwidth.
         </t>
         
@@ -1695,22 +1546,32 @@ Client B           |               |
         <figure>
           <artwork align="center">
             <![CDATA[
-    Client          Proxy          Server
+    Client A        Proxy          Server
       |               |               |
       |    Request    |    Request    |
       |-------------->|-------------->|--.
       |               |               |  |
       |<--------------|<--------------|<-'
-      |  Notification |  Notification |  |
-      |               |               |  |
-      |<--------------|<--------------|<-'
-      |  Notification |  Notification |  |
-      |               |               |  |
-      |<--------------|<--------------|<-'
       |  Notification |  Notification |
       |               |               |
-            
-      FIXME: Add caching to the figure
+      |               |               |
+    Client B          |               |
+      |               |               |
+      |  Request      |               |
+      |-------------->|--.            |
+      |               |  | from cache |
+      |<--------------|<-'            |
+      |  Notification |               |
+      |               |               |
+      |               |               |
+      |<--------------|<--------------|
+      |  Notification |  Notification |
+      |               |               |
+    Client A          |               |
+      |               |               |
+      |<--------------| from cache    |
+      |  Notification |               |
+      |               |               |
             ]]>
           </artwork>
         </figure>
@@ -1727,7 +1588,6 @@ Client B           |               |
           notifications to multiple clients from the server to the
           proxy.
         </t>
-        
         
         <t>
           Functional Requirements:
@@ -1749,8 +1609,12 @@ Client B           |               |
         
         <section title="Processing Rules">
           <t>
-            The proxy complies with the caching rules PR 3.1 - 3.5 see
-            section 3.3.1. In addition the following processing rules apply:
+            The proxy complies with the processing rules PR3.1 - 3.5
+            (<xref target="PR3"/>).
+            
+            FIXME: Klaus to review the processing rules.
+            
+            In addition the following processing rules apply:
             <list style="format PR4.%d">
               <t>
                 The proxy may modify the Observe option . . .
@@ -1774,28 +1638,31 @@ Client B           |               |
 
         <section title="Threat Analysis and Mitigation">
           <t>
-            We now analyze the potential threats
+            We now list potential threats and discuss candidate mitigation mechanisms.
+            
+            FIXME: We redo the threat analysis and security requirements when the
+            processing rules and security objectives are fixed.
           </t>
           
-          <section title="T1:The proxy forwards a message other than received">
+          <section title="T1:The proxy illegitimately modifies a message">
             <t>
               TBD
             </t>
           </section>
           
-          <section title="T2:The proxy sends a message on its own initiative">
+          <section title="T2:The proxy illegitimately sends a message">
             <t>
               TBD
             </t>
           </section>
           
-          <section title="T3:The proxy does not forward a message">
+          <section title="T3:The proxy illegitimately inihibits sending of a message">
             <t>
               TBD
             </t>
           </section>
           
-          <section title="T4:The proxy reads a message">
+          <section title="T4:The proxy illegitimately reads part of a message">
             <t>
               TBD
             </t>
@@ -1862,13 +1729,13 @@ Client B           |               |
     |   to store |  |               |
     |            '->|-------------->|
     |               |               |
-    |<--------------|               |
+    |<--------------| from store    |
     |  Notification |               |
     |               |               |
                     |               |
 (Client A)          |               |
     |               |               |
-    |<--------------|               |
+    |<--------------| from store    |
     |  Notification |               |
     |               |               |]]>
           </artwork>
@@ -1885,6 +1752,16 @@ Client B           |               |
           A subscriber receives the stored representation in response to the request and
           further publications of representations to this URI are provided as responses
           to the subscription request.
+        </t>
+        
+        <t>
+          Functional Requirement:
+          <list style="symbols">
+            <t>
+              The publication must be able to be transferred in a PUT request
+              from the publisher and in a GET response to the subscriber.
+            </t>
+          </list>
         </t>
         
        <!-- *************************************************************** -->
@@ -1949,8 +1826,7 @@ Client B           |               |
           </t>
           
           
-          <section title="T1:The broker complies with the processing rules but
-            modifies a message">
+          <section title="T1:The broker illegitimately modifies a message">
             <t>
               <list style="format T1:5.%d">
 
@@ -2009,7 +1885,7 @@ Client B           |               |
                 <t>
                   The broker colludes with a legitimate subscriber having access to
                   the key used to create Message Authentication Codes (MAC) of
-                  publications to generate a valid MAC.
+                  publications to generate a valid MAC of a modified publication.
                   <vspace blankLines="1"/>
                   This threat applies to publications containing a message
                   authentication code (MAC) for integrity protecting the resource
@@ -2023,7 +1899,7 @@ Client B           |               |
           </section>
           
           
-          <section title="T2:The broker sends a message on its own initiative">
+          <section title="T2:The broker illegitimately sends a message">
             <t>
               <list style="format T2:5.%d">
                 
@@ -2047,8 +1923,7 @@ Client B           |               |
             </t>
           </section>
           
-          <section title="T3:The broker does not send a message according to
-            the processing rule">
+          <section title="T3:The broker illegitimately inihibits sending of a message">
             <t>
               <list style="format T3:5.%d">
                 <t>
@@ -2066,8 +1941,9 @@ Client B           |               |
                   This is a denial-of-service attack. While these threats may
                   be difficult to mitigate, missing messages are common in
                   lossy environments so applications should have a readiness
-                  for this kind of issue. In some cases there is not even a need
-                  for a response.
+                  for this kind of issue. The response may even be omitted
+                  (FIXME Reference "CoAP no-response option").
+                  <!--     <xref target="I-D.tcs-coap-no-response-option"/>  -->
                 </t>
               
                 <t>
@@ -2090,7 +1966,7 @@ Client B           |               |
             </t>
           </section>
           
-          <section title="T4:The broker reads a message">
+          <section title="T4:The broker illegitimately reads part of a message">
             <t>
               <list style="format T4:5.%d">
                 <t>
@@ -2237,6 +2113,9 @@ Client B           |               |
       &RFC2119;
 
       &RFC7252;
+      
+      &RFC7258;
+      
       &RFC7641;
 
     </references>
