@@ -778,7 +778,7 @@
         <section anchor="R1" title="Security Requirements">
           <t>
             This section contains the security requirements and non-requirements
-            for the this scenario.  For each requirement and non-requirement the
+            for this scenario.  For each requirement and non-requirement the
             associated threats are listed. The security requirements are:
             <list style="format R1.%d">
               
@@ -836,7 +836,7 @@
               
             </list>
             
-            The security non-requirements of the this scenario are:
+            The security non-requirements of this scenario are:
             
             <list style="format NR1.%d">
               <t>
