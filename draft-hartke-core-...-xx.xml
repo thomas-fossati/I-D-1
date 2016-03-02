@@ -93,7 +93,7 @@
       <t>
         This document analyses threats to CoAP message 
         exchanges traversing proxies and derives the security requirements
-        mitigating the threats.
+	mitigating those threats.
       </t>
 
     </abstract>
@@ -120,30 +120,30 @@
         number of operations on CoAP messages which requires
         DTLS to be terminated at the proxy. The proxy therefore
         not only has access to the data required for performing the
-        intended proxy functionality but also is able to eavesdrop on
-        or manipulate any part of the CoAP payload and metadata in
-        transit between client and server without being protected or
+        intended proxy functionality but also is able to eavesdrop on,
+        or manipulate any part of the CoAP payload and metadata, in
+        transit between client and server, without being protected or
         detected by DTLS.
       </t>
 
       <t>
         One way to mitigate this threat is to secure CoAP communication
-        at the application layer using an object-based security
+        at the application layer, using an object-based security
         mechanism (such as <xref target="I-D.ietf-cose-msg">CBOR
-        Encoded Message Syntax</xref>) instead of or in addition to
+        Encoded Message Syntax</xref>) instead of, or in addition to,
         the security mechanisms at the network layer or transport
         layer.
       </t>
 
       <t>
         This document analyses security requirements for CoAP requests and
-        responses of sensor and actuator deployments involving proxies.
-        The analysis is based on identifying the assets associated to sensor-
-        and actuator-based communication patterns, and considering
-        the potential threats executed through proxies to these assets.
-        The threat analysis provides the basis for defining the security
-        requirements that an application layer security mechanism for CoAP
-        needs to meet.
+        responses of sensor and actuator deployments involving proxies and
+	other similar intermediaries.  The analysis is based on identifying
+	the assets associated to sensor- and actuator-based communication
+	patterns, and considering the potential threats executed through
+	proxies to these assets.  The threat analysis provides the basis for
+	defining the security requirements that an application layer security
+	mechanism for CoAP needs to meet.
       </t>
 
       <section title="Terminology">
