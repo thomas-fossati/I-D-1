@@ -1083,8 +1083,8 @@ Client B           |               |
           services by returning the response from its cache.
         </t>
         <t>
-          Cacheable responses are responses to GET requests and error
-          responses to GET/PUT/POST requests.
+          Cacheable responses are 2.05 (Content) responses and error
+          responses.
         </t>
         <t>
           Functional Requirements:
@@ -1099,7 +1099,7 @@ Client B           |               |
               its cache without contacting the server.
             </t>
             <t>
-              FIXME: Validation
+              TODO: Validation
             </t>
           </list>
         </t>
@@ -1109,8 +1109,6 @@ Client B           |               |
         <section anchor="PR3" title="Processing Rules">
           
           <t>
-            FIXME: Klaus reviews the processing rules.
-            
             The proxy complies with the fowarding rules PR1.1 - 1.3 (<xref target="PR1"/>).
             <list style="format PR3.%d">
               <t>
@@ -1123,13 +1121,13 @@ Client B           |               |
                 The proxy caches and forwards cacheable responses. If there is
                 already a response cached with the cache key of the corresponding
                 request, then the old
-                response in the cache is replaced with the new response.
+                response in the cache is marked as stale.
               </t>
               
               <t>
                 If the request contains an ETag option and the proxy has a valid
                 response with that ETag, then the proxy replies to the request
-                with a response with Code 2.03 (Valid).
+                with a 2.03 (Valid) response.
               </t>
               
               <t>
@@ -1163,20 +1161,23 @@ Client B           |               |
           </t>
           
           <t>
-            The scenario in (<xref target="onereq-oneres"/>) motivates the ambitious
-            security objectives in (<xref target="SO1"/>), and a solution to that
+            The scenario in <xref target="onereq-oneres"/> motivates the ambitious
+            security objectives in <xref target="SO1"/>, and a solution to that
             scenario can be reused in use cases where required.
             Therefore we focus here on enabling the caching functionality and
-            providing security to cacheable resource representations, i.e. GET responses.
+            providing security to cacheable resource representations.
           </t>
           
           <t>
             The security objectives for this scenario are:
             <list style="format SO3.%d">
               <t>
-                A client is able to verify that a received response contains a
+                The client is able to verify that a received response contains a
                 resource representation to a requested server and resource, and
                 that it has not been altered in transfer.
+              </t>
+              <t>
+                The client is able to verify that a received response is fresh.
               </t>
               
               <t>
