@@ -1524,11 +1524,9 @@ Client B           |               |
         <t>
           This scenario is about replicating a resource state from a
           server to a client.  The client observes a
-          resource and receives notifications, which may be cached.
-          The difference with previous scenario (<xref target="mulreq-oneres"/>) is the capability
-          to notify a client when a resource changes. The difference with
-          <xref target="mulreq-oneres"/> is that multiple client requests may be served
-          with the same response.
+          resource and receives notifications which may be cached.
+          The difference with the previous scenario (<xref target="mulreq-oneres"/>) is the capability
+          to send multiple responses in reply to a single request.
         </t>
         
         <t>
@@ -1544,36 +1542,35 @@ Client B           |               |
         </t>
 
         
-        <figure>
+        <figure anchor="figure-observe" title="FIXME">
           <artwork align="center">
             <![CDATA[
-    Client A        Proxy          Server
-      |               |               |
-      |    Request    |    Request    |
-      |-------------->|-------------->|--.
-      |               |               |  |
-      |<--------------|<--------------|<-'
-      |  Notification |  Notification |
-      |               |               |
-      |               |               |
-    Client B          |               |
-      |               |               |
-      |  Request      |               |
-      |-------------->|--.            |
-      |               |  | from cache |
-      |<--------------|<-'            |
-      |  Notification |               |
-      |               |               |
-      |               |               |
-      |<--------------|<--------------|
-      |  Notification |  Notification |
-      |               |               |
-    Client A          |               |
-      |               |               |
-      |<--------------| from cache    |
-      |  Notification |               |
-      |               |               |
-            ]]>
+Client A         Proxy          Server
+   |               |               |
+   |    Request    |    Request    |
+   |-------------->|-------------->|--.
+   |               |               |  |
+   |<--------------|<--------------|<-'
+   |  Notification |  Notification |  |
+   |               |               |  |
+                   |               |  |
+Client B           |               |  |
+   |               |               |  |
+   |  Request      |               |  |
+   |-------------->|--.            |  |
+   |               |  | from cache |  |
+   |<--------------|<-'            |  |
+   |  Notification |               |  |
+   |               |               |  |
+   |<--------------|<-+------------|<-'
+   |  Notification |  |  Notifi-   |
+   |               |  |   cation   |
+                   |  |            |
+Client A           |  |            |
+   |               |  |            |
+   |<--------------|<-'            |
+   |  Notification |               |
+   |               |               |]]>
           </artwork>
         </figure>
         
@@ -1611,14 +1608,21 @@ Client B           |               |
         <section title="Processing Rules">
           <t>
             The proxy complies with the processing rules PR3.1 - 3.5
-            (<xref target="PR3"/>).
+            of the previous scenario (<xref target="PR3"/>).
             
-            FIXME: Klaus to review the processing rules.
-            
-            In addition the following processing rules apply:
+            In addition, the following processing rules apply:
             <list style="format PR4.%d">
               <t>
-                The proxy may modify the Observe option . . .
+                If the proxy receives a notification from the server
+                that is out of sequence (as indicated by the Observe
+                option), then the proxy discards the notification.
+                Otherwise, the proxy proceeds to notify the registered
+                observers.
+              </t>
+              <t>
+                When notifying an observer, the proxy modifies the
+                Observe option to indicate the sequence of
+                notifications from the proxy to the observer.
               </t>
               
             </list>
