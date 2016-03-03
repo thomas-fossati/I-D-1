@@ -861,7 +861,7 @@
       <section anchor="onereq-mulres" title="One Request - Multiple Responses">
         
         <t>
-          In this scenario we study use cases where it is important that a response is linked to a request, like the previous scenario, but where there may be multiple responses for each request. This functionality protects communication-constrained servers from repeated requests from the same client and thus saves system resources and bandwidth. This is useful in security criticial monitoring scenarios where time synchronization is cannot be guaranteed.
+          In this scenario we study use cases where it is important that a response is linked to a request, like the previous scenario, but where there may be multiple responses for each request. This functionality protects communication-constrained servers from repeated requests from the same client and thus saves system resources and bandwidth. This is useful in security criticial monitoring scenarios where time synchronization cannot be guaranteed.
         </t>
         
         <figure anchor="figure-2" title="FIXME">
