@@ -117,10 +117,10 @@
         Security (DTLS)</xref> for security. At the same time, CoAP
         relies on proxies to improve scalability and
         efficiency. These proxies are specified to perform a
-        number of operations on CoAP messages which requires
+        number of operations on CoAP messages, which requires
         DTLS to be terminated at the proxy. The proxy therefore
         not only has access to the data required for performing the
-        intended proxy functionality but also is able to eavesdrop on,
+        intended proxy functionality, but is also able to eavesdrop on,
         or manipulate any part of the CoAP payload and metadata, in
         transit between client and server, without being protected or
         detected by DTLS.
@@ -137,12 +137,12 @@
 
       <t>
         This document analyses security requirements for CoAP requests and
-        responses of sensor and actuator deployments involving proxies and
+        responses of sensor and actuator deployments, involving proxies and
 	other similar intermediaries.  The analysis is based on identifying
 	the assets associated to sensor- and actuator-based communication
 	patterns, and considering the potential threats executed through
 	proxies to these assets.  The threat analysis provides the basis for
-	defining the security requirements that an application layer security
+	defining the security requirements, that an application layer security
 	mechanism for CoAP needs to meet.
       </t>
 
