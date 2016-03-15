@@ -250,20 +250,22 @@
         certain threats, while still allowing the proxy to assume its normal
         functionality. The client and server are assumed to have a security
         association, but the proxy is neither assumed to have a security association
-        with the client, nor with the server.
+        with the client, nor with the server. See FIXME: Figure.
       </t>
       
       <t>
         The following types of intermediary nodes
         are considered: Forward proxy (see <xref target="RFC7252"/>), reverse proxy
         (see <xref target="RFC7252"/>) and publish-subscribe broker (see
-        <xref target="I-D.koster-core-coapmq"/>). See FIXME: Add figures.
+        <xref target="I-D.koster-core-coapmq"/>).
         The precise functionality assumed
-        by the intermediary nodes are defined by processing rules in the respective
+        by the intermediary nodes is defined by processing rules in the respective
         scenario analyzed in this document (<xref target="analysis"/>).
       </t>
       
       <t>
+        FIXME: Add three of Klaus's' figures
+      
         TODO: Translational proxy is planned to be added in a future version of this draft.
       </t>
       
@@ -302,9 +304,9 @@
       </t>
       
       <t>
-        However, the intermediary node may manipulate the message exchanged
-        between the endpoints and thereby have an impact also on the assets A1 and A2.
-        For example: flooding a device with
+        However, the intermediary node may manipulate the messages exchanged
+        between the endpoints and thereby have an impact also on the assets A1 and A2,
+        for example: flooding a device with
         messages has impact on its system resources; and successful manipulation
         of an actuator command carried in a message has an
         impact on the physical environment. We therefore add a fourth "asset", which
@@ -327,9 +329,9 @@
       <t>
         A fully trusted proxy, handling
         unprotected messages, is an attractive target, since proxies are aggregation
-        points for message flows and they may
-        be easier to attack from the Internet than the sensors/actuators
-        residing behind them (see <xref target="sec-cons"/>).
+        points for message flows (see <xref target="sec-cons"/>) and they may
+        be an easier target from the Internet than the sensors/actuators
+        residing behind them.
         A proxy may become subject to intrusion or become infected by malware and
         perform the attacks of a man-in-the-middle.
         The attack vectors for compromising a proxy
@@ -628,7 +630,7 @@
                   <vspace blankLines="1"/>
                   This threat may be mitigated with integrity protection of
                   CoAP options. Since Max-Age is set to 0 the proxy is not entitled to change
-                  any options so they can all be integrity protected.
+                  any options in the response so they can all be integrity protected.
                 </t>
                 
                 <t>
@@ -653,7 +655,7 @@
                 <t>
                   The proxy forwards a response with changed CoAP header fields
                   <vspace blankLines="1"/>
-                  Similar to previous threat. Some aspects may be
+                  Similar to previous threat. Some aspects of this threat may be
                   mitigated by integrity protecting the Code and
                   Version header fields.
                 </t>
@@ -731,7 +733,7 @@
                 <t>
                   The proxy does not forward a message
                   <vspace blankLines="1"/>
-                  This is a denial-of-service attack. While these threats may be
+                  This is a denial-of-service attack. While these kind of threats may be
                   difficult to mitigate, applications
                   should have a readiness for this kind of issues, and a client
                   is able to detect a missing response.
@@ -752,7 +754,8 @@
                   with an additional round-trip. These mitigations can be
                   supported by a new CoAP option containing time stamp or
                   binding the response in a first round-trip to a request of
-                  the second. By integrity protecting that new CoAP option,
+                  the second, as specified in <xref target="I-D.mattsson-core-coap-actuators"/>.
+                  By integrity protecting that new CoAP option,
                   the threat can be mitigated.
                 </t>
                 
@@ -838,7 +841,7 @@
               </t>
               
               <t>
-                The server must verify if it has not received this request
+                The server must verify that it has not received this request
                 previously (T1:1.7, T3:1.3)
               </t>
               
@@ -890,7 +893,7 @@
             <list style="format NR1.%d">
               <t>
                 The proxy may drop messages without the endpoint being able to
-                infer that the message is lost due to the broker (T3:1.1)
+                infer that the message is lost due to the proxy (T3:1.1)
               </t>
               
               <t>
@@ -1243,10 +1246,13 @@ Client B           |               |
             </list>
           </t>
           <t>
-            Acknowledging that a solution to the scenario in
+            Since a proxy can autonomously make requests for (validity of) resource
+            representations, and there is no security association between proxy and
+            server, the server cannot verify those requests. If a request needs
+            to be verified then a solution to the scenario in
             <xref target="onereq-oneres"/>
-            can be re-used when required, we focus here on
-            enabling the caching functionality and
+            can be re-used. Therefore we do not consider the protection of requests
+            and focus here on enabling the caching functionality and
             providing security to cacheable resource representations.
           </t>
           
@@ -1575,7 +1581,8 @@ Client B           |               |
               </t>
               
               <t>
-                The proxy may drop messages without being detected (T3:3.1)
+                The proxy may drop messages without the endpoint being able to
+                infer that the message is lost due to the proxy (T3:3.1)
               </t>
               
               <t>
@@ -1845,7 +1852,11 @@ Client A           |  |            |
           implemented as a PUT request of a representation to a resource at the broker.
           (The PUT response may be inhibited using the
           No-Response option <xref target="I-D.tcs-coap-no-response-option"/> and is
-          omitted from the figure.)  Subscribers can make a GET request with the Observe
+          omitted from the figure.)
+        </t>
+        
+        <t>
+          Subscribers can make a GET request with the Observe
           option to the same URI at the broker to initiate the subscription on the topic.
           The broker provides notifications in the form the stored representation as
           response to the request. Further publications of representations to this URI
@@ -2124,11 +2135,6 @@ Client A           |  |            |
               </t>
               
               <t>
-                The subscriber must be able to detect if it has received this
-                response previously (T1:5.5, T2:5.1)
-              </t>
-              
-              <t>
                 The subscriber must be able to detect that the received resource
                 representation is older than a previously received
                 representation of this resource (T1:5.5, T2:5.1, T3:5.4)
@@ -2148,6 +2154,15 @@ Client A           |  |            |
             
             <list style="format NR5.%d">
               
+              <t>
+                The subscription request is not protected (See Security Objectives
+                )
+              </t>
+              
+              <t>
+                The header and options of the notification response are not protected
+                (See Security Objectives, compare R5.3)
+              </t>
               <t>
                 The broker may change and eavesdrop on certain metadata without being
                 detected (T1:5.2, T1:5.3, T4:5.2)
