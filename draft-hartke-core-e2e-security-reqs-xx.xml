@@ -1262,7 +1262,7 @@ Client B           |               |
               <t>
                 The client is able to verify that a received response contains a
                 resource representation to a requested server and resource, and
-                that it has not been altered in transfer.
+                that it has not been altered between server and client.
               </t>
               <t>
                 The client is able to verify that a received resource
@@ -1385,7 +1385,7 @@ Client B           |               |
                   This is not possible to prevent, since the proxy is entitled
                   to perform such operation without involving the server.
                   TODO: Since the response must not include a payload
-                  (RFC 7252, 5.9.1.3) it is not clear to me how a server could
+                  (RFC 7252, 5.9.1.3) it is not clear how a server could
                   enforce the proxy to include any integrity protected freshness
                   information unless we define new proxy processing rules.
                 </t>
@@ -1591,7 +1591,7 @@ Client B           |               |
               
               <t>
                 The client may not be able to verify validity information provided
-                by proxy when using ETag (pending TODO in T1:3.10)
+                by proxy when using ETag (T1:3.10)
               </t>
             </list>
             
@@ -1921,7 +1921,7 @@ Client A           |  |            |
               
               <t>
                 A subscriber is able to verify that a received
-                resource representation has not been received before
+                resource representation is fresh
               </t>
               
               <t>
