@@ -249,7 +249,12 @@
         certain threats, while still allowing the proxy to assume its normal
         functionality. The client and server are assumed to have a security
         association, but the proxy is neither assumed to have a security 
-	association with the client, nor with the server.  See FIXME: Figure.
+	association with the client, nor with the server.  
+	<xref target="fig:fwProxy"/>, <xref target="fig:revProxy"/>, and
+	<xref target="fig:brokerProxy"/> illustrate this assumption.  Note that
+	in the Reverse Proxy case, the client is interacting with the proxy as
+	if it was the origin server.  In that case the client is never aware 
+	that there is another entity behind the proxy.
       </t>
       
       <t>
@@ -263,8 +268,56 @@
       </t>
       
       <t>
-        FIXME: Add three of Klaus's' figures
-      
+        
+      <figure anchor="fig:fwProxy" 
+	      title="Security association and message flow in a forward proxy">
+        <artwork align="center">
+<![CDATA[ 
+          +----------+   +-----------+                   +----------+
+          |          | > |           |         >         |          |
+          |  Client  |___|  Forward  |___________________|  Origin  |
+          |          |   |   Proxy   |                   |  Server  |
+          |          | < |           |         <         |          |
+          +----------+   +-----------+                   +----------+
+               |                                               |
+               |_______________________________________________|
+                             Security Association]]>
+        </artwork>
+      </figure>
+
+        <figure anchor="fig:revProxy" 
+	      title="Security association and message flow in a reverse proxy">
+        <artwork align="center">
+<![CDATA[ 
+    +----------+                   +-----------+   +----------+
+    |          |         >         |           | > |          |
+    |  Client  |___________________|  Reverse  |___|  Origin  |
+    |          |                   |   Proxy   |   |  Server  |
+    |          |         <         |           | < |          |
+    +----------+                   +-----------+   +----------+
+         |                               |
+         |_______________________________|
+                Security Association]]>
+        </artwork>
+      </figure>
+    
+      <figure anchor="fig:brokerProxy" 
+	      title="Security association and message flow when a proxy acts as
+		     message broker">
+        <artwork align="center">
+<![CDATA[ 
+    +-----------+          +----------+           +-----------+
+    |           |          |          |           |           |
+    | Publisher |__________|  Broker  |___________| Subscriber|
+    | (Client)  |          | (Server) |           | (Client)  |
+    |           |          |          |           |           |
+    +-----------+          +----------+           +-----------+
+         |                                               |
+         |_______________________________________________|
+                       Security Association]]>
+        </artwork>
+      </figure>
+   
         TODO: Translational proxy is planned to be added in a future version of 
 	this draft.
       </t>
@@ -273,7 +326,7 @@
         To identify the threats in scope, we first consider what assets need to
         be protected.  In general, there are the following types of assets to
         protect:
-        <list style="format A%d:">
+        <list style="format A%d:" counter="my_count">
           <t>
             The devices at the two ends, the data generated and stored in
             these devices, and their (often very
@@ -314,9 +367,8 @@
       </t>
       
       <t>
-        <list style="format A%d:">
+        <list style="format A%d:" counter="my_count">
           <t>
-            FIXME should be "A4"
             The messages exchanged between a client and a server, through the
             proxy.  This includes the CoAP header and options in
             request and response messages (such as the requested method
@@ -439,7 +491,8 @@
         </t>
         
         
-        <figure anchor="figure-1" title="FIXME Captions, on all figures">
+        <figure anchor="figure-1" title="Message flow with unique responses
+					 for each request.">
           <artwork align="center">
 <![CDATA[Client          Proxy          Server
   |               |               |
@@ -943,7 +996,7 @@
 	  monitoring scenarios where time synchronization cannot be guaranteed.
         </t>
         
-        <figure anchor="figure-2" title="FIXME">
+        <figure anchor="figure-2" title="Message flow of a notification.">
           <artwork align="center">
 <![CDATA[Client          Proxy          Server
   |               |               |
@@ -1146,7 +1199,7 @@
 	  time.
         </t>
         
-        <figure anchor="figure-3" title="FIXME">
+        <figure anchor="figure-3" title="Message flow for cached responses.">
           <artwork align="center">
 <![CDATA[
 Client A         Proxy           Server
@@ -1673,7 +1726,8 @@ Client B           |               |
         </t>
 
         
-        <figure anchor="figure-observe" title="FIXME">
+        <figure anchor="figure-observe" title="Message flow for observe 
+					       with multiple observers.">
           <artwork align="center">
             <![CDATA[
 Client A         Proxy          Server
@@ -1853,7 +1907,7 @@ Client A           |  |            |
         </t>
         
         
-        <figure anchor="figure-4" title="FIXME">
+        <figure anchor="figure-4" title="Message flow for publish-subscribe">
           <artwork align="center">
 <![CDATA[Subscribers      Broker         Publisher
 (Client A)      (Server)        (Client)
