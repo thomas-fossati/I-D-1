@@ -28,6 +28,20 @@
     <front>
 
     <title>Requirements for CoAP End-To-End Security</title>
+   
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
+      </address>
+    </author>
 
     <author initials="G." surname="Selander" fullname="Goeran Selander">
       <organization>Ericsson AB</organization>
@@ -52,20 +66,6 @@
           <country>Sweden</country>
         </postal>
         <email>francesca.palombini@ericsson.com</email>
-      </address>
-    </author>
-
-    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
-      <organization>Universitaet Bremen TZI</organization>
-      <address>
-        <postal>
-          <street>Postfach 330440</street>
-          <city>Bremen</city>
-          <code>28359</code>
-          <country>Germany</country>
-        </postal>
-        <phone>+49-421-218-63905</phone>
-        <email>hartke@tzi.org</email>
       </address>
     </author>
     
@@ -114,9 +114,9 @@
         The <xref target="RFC7252">Constrained Application Protocol
         (CoAP)</xref> is a Web application protocol designed for
         <xref target="RFC7228">constrained nodes and networks</xref>.
-        CoAP references <xref target="RFC6347">Datagram Transport Layer
+        CoAP uses <xref target="RFC6347">Datagram Transport Layer
         Security (DTLS)</xref> for security.  At the same time, CoAP
-        relies on proxies to improve scalability and
+        relies on proxies, to improve scalability and
         efficiency.  These proxies are specified to perform a
         number of operations on CoAP messages, which requires
         DTLS to be terminated at the proxy.  The proxy therefore
@@ -194,13 +194,16 @@
         and actuator communications over CoAP.  Common to all scenarios is the
         presence of at least one intermediary device, typically between
         a client requesting a resource and a server hosting a resource
-        (<xref target="figure-0"/>).  (We mainly consider proxies and therefore 
-	use the term "proxy" and its communication setup as a generic model.)
-        The proxy is responsible, for example, for reducing
-        response time and network bandwidth use by serving responses from
-        a cache or for enabling the client to make requests that it
-        otherwise could not make, for example because of lack of privileges or
-        reachability.
+        (<xref target="figure-0"/>).
+      </t>
+
+      <t>Note: We mainly consider proxies and therefore use the term "proxy" and
+      its communication setup as a generic model.</t>
+
+      <t>The proxy is responsible, for example, for reducing response time and
+      network bandwidth use by serving responses from a cache or for enabling 
+      the client to make requests that it otherwise could not make, for example
+      because of lack of privileges or reachability.
       </t>
 
       <figure anchor="figure-0" title="CoAP Exchanges Through A Proxy">
@@ -218,7 +221,7 @@
       
       <t>
         A proxy may perform different functions, but the basic function
-        is to forward translated messages according to certain processing rules.
+        is to forward translated messages, according to certain processing rules.
 	For example:
         
         <list style="format Rule %d:">
@@ -239,13 +242,13 @@
         change certain parts of a CoAP message, as defined by the processing 
 	rules.  For example, a forward proxy is defined to transform
         the Proxy-Uri option to Uri-Host, Uri-Port, Uri-Path and Uri-Query
-        options.  A proxy caching responses needs to read the Cache Key and may
+        options.  A proxy, caching responses, needs to read the Cache Key, and may
 	change the Max-Age option in the responses.
       </t>
       
       <t>
         Since a proxy might not be fully trusted, a security solution is needed
-        that protects the client, the server and the message exchanges against
+        that protects the client, the server, and the message exchanges against
         certain threats, while still allowing the proxy to assume its normal
         functionality. The client and server are assumed to have a security
         association, but the proxy is neither assumed to have a security 
@@ -263,14 +266,14 @@
 	proxy (see <xref target="RFC7252"/>) and publish-subscribe broker (see
         <xref target="I-D.koster-core-coapmq"/>).  The precise functionality 
 	assumed by the intermediary nodes is defined by processing rules in the 
-	respective scenario analyzed in this document 
-	(<xref target="analysis"/>).
+	respective scenario analyzed in this document (<xref
+	target="analysis"/>).
       </t>
       
       <t>
         
       <figure anchor="fig:fwProxy" 
-	      title="Security association and message flow in a forward proxy">
+	      title="Security association and message flow with a forward proxy">
         <artwork align="center">
 <![CDATA[ 
           +----------+   +-----------+                   +----------+
@@ -281,12 +284,12 @@
           +----------+   +-----------+                   +----------+
                |                                               |
                |_______________________________________________|
-                             Security Association]]>
+                           Security Association]]>
         </artwork>
       </figure>
 
         <figure anchor="fig:revProxy" 
-	      title="Security association and message flow in a reverse proxy">
+	      title="Security association and message flow with a reverse proxy">
         <artwork align="center">
 <![CDATA[ 
     +----------+                   +-----------+   +----------+
@@ -297,13 +300,12 @@
     +----------+                   +-----------+   +----------+
          |                               |
          |_______________________________|
-                Security Association]]>
+               Security Association]]>
         </artwork>
       </figure>
     
       <figure anchor="fig:brokerProxy" 
-	      title="Security association and message flow when a proxy acts as
-		     message broker">
+	      title="Security association and message flow with a message broker">
         <artwork align="center">
 <![CDATA[ 
     +-----------+          +----------+           +-----------+
@@ -314,7 +316,7 @@
     +-----------+          +----------+           +-----------+
          |                                               |
          |_______________________________________________|
-                       Security Association]]>
+                      Security Association]]>
         </artwork>
       </figure>
    
@@ -344,7 +346,7 @@
           </t>
           <t>
             The communication infrastructure linking the two devices
-            (which often contains some very constrained parts) and the data
+            (which often contains some very constrained parts), and the data
 	    stored in the message processing devices.
           </t>
         </list>
@@ -360,9 +362,9 @@
         However, the intermediary node may manipulate the messages exchanged
         between the endpoints and thereby have an impact also on the assets A1 
 	and A2, for example: flooding a device with messages has impact on its 
-	system resources; and successful manipulation of an actuator command 
-	carried in a message has an impact on the physical environment.  We 
-	therefore add a fourth "asset", which is the main target being evaluated
+	system resources, and successful manipulation of an actuator command, 
+	carried in a message, has an impact on the physical environment.  We 
+	therefore add a fourth asset, which is the main target being evaluated
 	in this document:
       </t>
       
@@ -383,9 +385,9 @@
 	target, since proxies are aggregation points for message flows (see 
 	<xref target="sec-cons"/>) and they may be an easier target from the 
 	Internet than the sensors/actuators residing behind them.  A proxy may 
-	become subject to intrusion or become infected by malware and perform 
+	become subject to intrusion, or become infected by malware, and perform 
 	the attacks of a man-in-the-middle.  The attack vectors for 
-	compromising a proxy and the associated risks are out of scope for this
+	compromising a proxy, and the associated risks, are out of scope for this
 	document.
       </t>
       
@@ -393,7 +395,7 @@
         The scope of the threat analysis is
         restricted to threats from proxies to single client to server
 	interactions.  Threats resulting from collusion between multiple
-	proxies is out of scope (see <xref target="sec-cons"/>).
+	proxies are also out of scope (see <xref target="sec-cons"/>).
       </t>
       
       <t>
@@ -438,9 +440,9 @@
       <t>
         In this section we consider a set of scenarios involving proxies and 
 	brokers, with different processing rules and security objectives.  We 
-	study the associated threats and derive the security requirements for 
-	message transfer between client and server in the different scenarios.
-        Note that since CoAP was not designed for end-to-end security,
+	study the associated threats, and derive the security requirements for 
+	message transfer between client and server, in the different scenarios.
+        Note that, since CoAP was not designed for end-to-end security,
         solutions complying with these security requirements extend the 
 	applicability of CoAP beyond its original scope.
       </t>
@@ -480,10 +482,10 @@
       <section anchor="onereq-oneres" title="One Request - One Response">
         
         <t>
-          In this scenario we study use cases where it is important that a 
+          In this scenario we study use cases, where it is important that a 
 	  response sent from one endpoint is the response to a particular
 	  request to that endpoint.  Many security critical use cases require
-          that responses are in this way "securely linked" to requests such as
+          that responses are in this way "securely linked" to requests, such as
 	  alarm status retrieval and actuator command confirmation.
         </t>
         <t>
@@ -511,18 +513,18 @@
             <t hangText="Example: Alarm status retrieval">
             <vspace blankLines="1"/>
               <xref target="figure-1"/> can be seen as an illustration of a 
-	      message exchange for a client requesting the alarm status, GET 
-	      /alarm_status, at a server.  Since the client wants to ensure that
-	      the alarm status received is reflecting the current alarm status,
-	      and not a cached or spoofed response to the same resource, it
-	      must be able to verify that the received response is a response 
-	      to this particular request made by the client.  Therefore the 
-	      response must be securely linked to the request.
+	      message exchange for a client, requesting the alarm status, e.g.
+	      GET /alarm_status, at a server.  Since the client wants to ensure
+	      that the alarm status received is reflecting the current alarm
+	      status, and not a cached or spoofed response to the same
+	      resource, it must be able to verify that the received response is
+	      a response to this particular request made by the client.
+	      Therefore the response must be securely linked to the request.
             </t>
             <t hangText="Example: Actuation confirmation">
             <vspace blankLines="1"/>
-              Another example for which <xref target="figure-1"/> serves as
-	      illustration is the confirmation of an actuator request.  In this 
+              Another example, for which <xref target="figure-1"/> serves as
+	      illustration, is the confirmation of an actuator request.  In this 
 	      case a client, say in an industrial control system, requests a 
 	      server that a valve should be turned to a certain level, e.g. PUT
 	      /valve_42/level with payload "3".  In order for the client to 
@@ -570,10 +572,10 @@
                 <vspace blankLines="1"/>
                 If the proxy is configured to forward requests to
                 another proxy, then it keeps the Proxy-Uri
-                option; otherwise, it splits the option into its
+                option; otherwise it splits the option into its
                 components, adds the corresponding Uri-* options and
                 does not include a Proxy-Uri option.
-                Then it makes the request using the request scheme
+                Then it makes the request, using the request scheme
                 indicated in the Proxy-Uri.
               </t>
               <t>
@@ -583,13 +585,13 @@
                 <vspace blankLines="1"/>
                 If the proxy is configured to forward requests to
                 another forwarding proxy, then it keeps the
-                Proxy-Scheme and Uri-* options; otherwise, it removes
-                the Proxy-Scheme option.  Then it makes the request
+                Proxy-Scheme and Uri-* options; otherwise it removes
+                the Proxy-Scheme option.  Then it makes the request,
                 using the request scheme indicated in the removed
                 Proxy-Scheme option.
               </t>
               <t>
-               Responses are forwarded by the proxy without any modification.
+               Responses are forwarded by the proxy, without any modification.
               </t>
             </list>
           </t>
@@ -606,11 +608,11 @@
           <t>
             The server should be able to verify that the proxy only has
             performed the message modifications intended
-            by the client according to the processing rules.
+            by the client, according to the processing rules.
           </t>
           <t>
-            The proxy should be prevented from reading or making modifications
-            to messages apart from what is necessary to perform the processing 
+            The proxy should be prevented from reading, or making modifications
+            to messages, apart from what is necessary to perform the processing 
 	    rules (cf. <xref target="RFC7258"/>).
           </t>
           <t>
@@ -622,13 +624,13 @@
                 the request has not been received before.
               </t>
               <t>
-                The server is able to verify that the received request either
+                The server is able to verify, that the received request either
                 has not been altered in transfer, or that the request is 
 		modified according to the processing rule PR1.1 or PR1.2 (
 		<xref target="PR1"/>).
               </t>
               <t>
-                The server is able to protect the response such that only
+                The server is able to protect the response, such that only
                 authorized clients can read the response.
               </t>
               <t>
@@ -651,7 +653,7 @@
         
         <section title="Threat Analysis and Mitigation">
           <t>
-            We now list potential threats and discuss candidate mitigation 
+            We now list potential threats, and discuss candidate mitigation 
 	    mechanisms.
           </t>
           
@@ -662,14 +664,14 @@
                 <t>
                   The proxy forwards a request with modified payload
                   <vspace blankLines="1"/>
-                  This threat may be mitigated with integrity protection of
+                  This threat can be mitigated with integrity protection of
                   payload.
                 </t>
                 
                 <t>
                   The proxy forwards a response with modified payload
                   <vspace blankLines="1"/>
-                  This threat may be mitigated with integrity protection of
+                  This threat can be mitigated with integrity protection of
                   payload.
                 </t>
                 
@@ -679,7 +681,7 @@
                   Note that the proxy is entitled to change certain options by
 		  processing rules PR1.1 and PR1.2.  Since the change is
 		  predictable, the request URI and Proxy-Scheme can be
-		  integrity protected by the client and verified by the server.
+		  integrity protected by the client, and verified by the server.
                   The other CoAP options in the request can be integrity
 		  protected.
                 </t>
@@ -687,9 +689,9 @@
                 <t>
                   The proxy forwards a response with modified CoAP option
                   <vspace blankLines="1"/>
-                  This threat may be mitigated with integrity protection of
+                  This threat can be mitigated with integrity protection of
                   CoAP options. Since Max-Age is set to 0 the proxy is not 
-		  entitled to change any options in the response so they can 
+		  entitled to change any options in the response, so they can 
 		  all be integrity protected.
                 </t>
                 
@@ -697,22 +699,22 @@
                   The proxy forwards a request with changed CoAP header fields
                   <vspace blankLines="1"/>
                   The proxy is entitled to change certain header fields, e.g. 
-		  Token as part of its normal operations.  Malicious changes to
+		  Token, as part of its normal operations.  Malicious changes to
 		  message layer parameters may cause denial-of-service,
-		  equivalent of dropping a message or sending spoofed messages.
+		  equivalent of dropping a message, or sending spoofed messages.
 		  This is difficult to mitigate.  However, changing the CoAP
-		  header Code, e.g. from GET to DELETE may result in an error
-		  or wrong interpretation of the request which can have other
+		  header Code, e.g. from GET to DELETE may result in an error,
+		  or wrong interpretation of the request, which can have other
 		  security implications.  A change to the header field Version
-		  may result in security errors in interaction between
-		  different versions of CoAP.  These threats may be mitigated
+		  may result in security errors in the interaction between
+		  different versions of CoAP.  These threats can be mitigated
 		  by integrity protecting the Code and Version header fields.
                 </t>
                 
                 <t>
                   The proxy forwards a response with changed CoAP header fields
                   <vspace blankLines="1"/>
-                  Similar to previous threat. Some aspects of this threat may 
+                  Similar to previous threat. Some aspects of this threat can 
 		  be mitigated by integrity protecting the Code and Version 
 		  header fields.
                 </t>
@@ -720,13 +722,13 @@
                 <t>
                   The proxy forwards a different request
                   <vspace blankLines="1"/>
-                  If the forwarded request is from another client it can be 
+                  If the forwarded request is from another client, it can be 
 		  mitigated by having different security associations with 
 		  different clients.  If the forwarded request is from the same
-		  client, but with differences in payload, options or header 
+		  client, but with differences in payload, options, or header, 
 		  then this coincides with previously listed threats.  A proxy 
 		  sending old requests, or reordering requests, from the same 
-		  client to the same server resource can be mitigated by
+		  client, to the same server resource can be mitigated by
 		  integrity protecting a freshness parameter (timestamp, 
 		  counter, etc.) from which the order of requests can be 
 		  deduced (replay/reordering protection).
@@ -737,7 +739,7 @@
                   <vspace blankLines="1"/>
                   By integrity protecting uniquely identifying information of 
 		  the request in the response, the client can verify if the
-		  response was generated in response to a particular request.
+		  response was generated to answer a particular request.
                 </t>
                 
               </list>
@@ -751,7 +753,7 @@
               <list style="format T2:1.%d">
                 
                 <t>
-                  The proxy sends a request to the server without a previous
+                  The proxy sends a request to the server, without a previous
                   request from the client
                   <vspace blankLines="1"/>
                   This threat may be mitigated with integrity- and replay
@@ -759,17 +761,16 @@
                 </t>
                 
                 <t>
-                  The proxy sends a response to the client without a previous
+                  The proxy sends a response to the client, without a previous
                   response from the server
                   <vspace blankLines="1"/>
-                  Error messages from the
-                  proxy such as 5.02 (Bad Gateway) originates from the proxy.
-                  A proxy maliciously sending error messages is a 
-		  denial-of-service attack similar to not forwarding a message 
-		  (T3:1.1) and is difficult to mitigate.  However, responses 
-		  claiming to be from the server may be mitigated with 
-		  integrity protection uniquely identifying information of the
-		  request.
+                  Error messages from the proxy, such as 5.02 (Bad Gateway),
+		  originate from the proxy.  A proxy maliciously sending error
+		  messages is a denial-of-service attack, similar to not
+		  forwarding a message (T3:1.1), and is difficult to mitigate.
+		  However, responses claiming to be from the server may be
+		  mitigated with integrity protection, uniquely identifying
+		  information of the request.
                 </t>
                 
                 <t>
@@ -779,7 +780,7 @@
                   By verifying the integrity, the client and server may
                   mitigate certain flooding attacks.  The server can use the 
 		  replay/reordering protection to verify which messages are 
-		  legitimate and the client can verify if a message is a 
+		  legitimate, and the client can verify if a message is a 
 		  response to a previously sent request.
                 </t>
               </list>
@@ -803,16 +804,16 @@
                   The proxy delays forwarding of a received message
                   <vspace blankLines="1"/>
                   Delayed forwarding may be a denial-of-service attack, similar
-                  to not forwarding.  Certain delays may be legitimate so it
+                  to not forwarding.  Certain delays may be legitimate, so they
                   may be difficult to detect and mitigate.
-                  However, delayed requests and responses can also be used in
+                  However, delayed requests, and responses can also be used in
                   attacks against actuators, see 
 		  <xref target="I-D.mattsson-core-coap-actuators"/>.  These 
-		  attacks can be performed by an on-path attacker and are not 
+		  attacks can be performed by an on-path attacker, and are not 
 		  restricted to proxies. The proposed mitigation is based on
-		  verifying the timeliness of the request for example by using 
-		  time stamps or with an additional round-trip. These 
-		  mitigations can be supported by a new CoAP option containing 
+		  verifying the timeliness of the request, for example by using 
+		  time stamps, or with an additional round-trip. These 
+		  mitigations can be supported by a new CoAP option, containing 
 		  time stamp or binding the response in a first round-trip to a
 		  request of the second, as specified in 
 		  <xref target="I-D.mattsson-core-coap-actuators"/>.
@@ -824,7 +825,7 @@
                   The proxy reorders the requests
                   <vspace blankLines="1"/>
                   This threat may be mitigated with the server integrity
-                  protecting a freshness parameter from which the
+                  protecting a freshness parameter, from which the
                   order of requests can be deduced.
                 </t>
                 
@@ -832,10 +833,9 @@
                   The proxy reorders the responses
                   <vspace blankLines="1"/>
                   This threat may be mitigated with the server integrity
-                  protecting to which request a response belongs.
-                </t>
-                
-                
+                  protecting information, specifying to which request a
+		  response belongs.
+                </t> 
               </list>
             </t>
           </section>
@@ -866,7 +866,7 @@
                   The proxy infers information about the nature and state of the
                   resource request/response from CoAP header fields.
                   <vspace blankLines="1"/>
-                  The header fields needs to be transferred in plain text to 
+                  The header fields needs to be transferred in plain text, to 
 		  allow normal CoAP operations.  The Code parameter reveals 
 		  information about what RESTful action is requested.  This 
 		  information leakage is difficult to mitigate.
@@ -877,10 +877,9 @@
                   term keying material is compromised, read the whole history
                   of the corresponding interactions.
                   <vspace blankLines="1"/>
-                  To mitigate this requires a key exchange
-                  mechanism providing forward secrecy
-                  for establishing the keys to use with application layer 
-		  security.
+                  To mitigate this requires a key exchange mechanism, providing
+		  forward secrecy (PFS), for establishing the keys to use with
+		  application layer security.
                 </t>
 
               </list>
@@ -894,7 +893,7 @@
         <section anchor="R1" title="Security Requirements">
           <t>
             This section contains the security requirements and non-requirements
-            for this scenario.  For each requirement and non-requirement the
+            for this scenario.  For each requirement and non-requirement, the
             associated threats are listed.  The security requirements are:
             <list style="format R1.%d">
               
@@ -916,11 +915,11 @@
               
               <t>
                 The client must verify that a response corresponds uniquely to
-                a previous request that the client has made (T1:1.8, T3:1.4)
+                a previous request, that the client has made (T1:1.8, T3:1.4)
               </t>
               
               <t>
-                The payload must be integrity protected and encrypted
+                The payload must be integrity protected and encrypted,
                 between client and server (T1:1.1-6,T4:1.1, T2:1.3, T4:1.1, 
 		<xref target="RFC7258"/>)
               </t>
@@ -959,11 +958,11 @@
             <list style="format NR1.%d">
               <t>
                 The proxy may drop messages without the endpoint being able to
-                infer that the message is lost due to the proxy (T3:1.1)
+                infer that the message is lost due to the proxy. (T3:1.1)
               </t>
               
               <t>
-                The proxy may delay messages without being detected 
+                The proxy may delay messages without being detected. 
 		(T3:1.1, T3:1.2)
               </t>
               
@@ -987,13 +986,14 @@
       <section anchor="onereq-mulres" title="One Request - Multiple Responses">
         
         <t>
-          In this scenario we study use cases where it is important that a 
-	  response is securely linked to a request like the previous scenario, 
-	  but where there may be multiple responses for each request.  This
-	  functionality protects communication-constrained servers from
-	  repeated requests from the same client and thus saves system
+          In this scenario we study use cases, where it is important that a 
+	  response is securely linked to a request, like in the previous
+	  scenario, but where there may be multiple responses for each request.
+	  This functionality protects communication-constrained servers from
+	  repeated requests from the same client, and thus saves system
 	  resources and bandwidth.  This is useful in security critical
-	  monitoring scenarios where time synchronization cannot be guaranteed.
+	  monitoring scenarios, where time synchronization cannot be
+	  guaranteed.
         </t>
         
         <figure anchor="figure-2" title="Message flow of a notification.">
@@ -1022,21 +1022,20 @@
             <t hangText="Example: Secure parameter monitoring">
               <vspace blankLines="1"/>
               <xref target="figure-2"/> can be seen as an illustration of a
-	      message exchange for a client monitoring an important parameter
-	      e.g. in a medical or process industry application measured by the
-	      server.  The client makes a subscription request for a resource 
-	      and the server provides notifications in the form of responses to
-	      the request thereby providing updates to the parameter with
-	      regular time intervals.
+	      message exchange for a client monitoring an important parameter,
+	      e.g. in a medical or process industry application, measured by the
+	      server.  The client makes a subscription request for a resource, 
+	      and the server responds with notifications, thereby providing
+	      updates to the parameter, in regular time intervals.
             </t>
             <t>
               The client wants to ensure that first received notification 
 	      reflects the current parameter value, and that subsequent 
 	      notifications are timely updates of the initial request.  Since 
-	      notifications may be lost or reordered the client needs to be 
-	      able to verify the order of the messages as sent by the server.
+	      notifications may be lost, or reordered, the client needs to be 
+	      able to verify the order of the messages, as sent by the server.
 	      By monitoring the received messages and the time they are
-	      received the client could detect missing notifications and take
+	      received, the client can detect missing notifications and take
 	      appropriate action.
             </t>
           </list>
@@ -1076,17 +1075,17 @@
           </t>
           <t>
             The security objectives of the previous scenario (
-	    <xref target="SO1"/>) are valid except SO1.4 which is replaced by 
+	    <xref target="SO1"/>) are valid, except SO1.4, which is replaced by 
 	    the following:
            <list style="format SO2.%d">
               <t>
-                The client is able to verify that the received response
+                The client is able to verify, that the received response
                 originates from the requested server and resource,
                 that it has not been altered in transfer, and that it was
-                generated as one in a sequence of responses to the request.
+                generated as one, in a sequence of responses to the request.
               </t>
               <t>
-                The client is able to verify the order of the responses and if
+                The client is able to verify the order of the responses, and if
                 a response is missing.
               </t>
             </list>
@@ -1097,7 +1096,7 @@
         
         <section title="Threat Analysis and Mitigation">
           <t>
-            The threat analysis from the previous scenario carries over
+            The threat analysis from the previous scenario carries over,
             with a few exceptions.
           </t>
           
@@ -1109,12 +1108,12 @@
 	      may maliciously reorder the responses to the same request without
 	      being detected.  The mitigation specified in the previous
 	      scenario, that the client verifies the response is linked to the
-	      request is not sufficient since there may be multiple responses.
+	      request, is not sufficient, since there may be multiple responses.
             </t>
             <t>
               However, analogous to how requests are protected against
               replay/reordering in the previous scenario, by additionally
-              integrity protecting a parameter from which the
+              integrity protecting a parameter, from which the
               order of responses can be deduced, this threat can be mitigated.
             </t>
           </section>
@@ -1153,7 +1152,7 @@
         <section title="Security Requirements">
           <t>
             The security requirements of the previous scenario
-            (<xref target="R1"/>) are valid except R1.4 which is replaced by 
+            (<xref target="R1"/>) are valid, except R1.4 which is replaced by 
 	    the following:
           </t>
           
@@ -1167,8 +1166,8 @@
               </t>
               
               <t>
-                The client must verify if it has not received this response
-                previously and if responses for the same request are received
+                The client must verify that it has not received this response
+                previously, and whether responses for the same request are received
                 in the wrong order (T1:1.8, T3:1.3)
               </t>
               
@@ -1189,14 +1188,13 @@
         
         <t>
           In this scenario we study caching, how a proxy may serve the same
-          cached response to multiple clients requesting the same
-          resource.
+          cached response to multiple clients, requesting the same resource.
         </t>
         <t>
           The caching functionality protects communication-constrained servers
-          from repeated requests, also from different clients, for the same
-          resources, thus saving system resources, bandwidth, and round-trip 
-	  time.
+          from repeated requests for the same resources, possibly originating
+	  from different clients. This saves system resources, bandwidth, and
+	  round-trip time.
         </t>
         
         <figure anchor="figure-3" title="Message flow for cached responses.">
@@ -1224,16 +1222,16 @@ Client B           |               |
         
         <t>
           In <xref target="figure-3"/>, Client A requests the proxy to make a 
-	  certain request to the server and to return the server's response.
+	  certain request to the server, and to return the server's response.
 	  The proxy services the request by making a request message to the
-          server according to the processing rules.  If the server returns a
+          server, according to the processing rules.  If the server returns a
           cacheable response, then the proxy stores the response in its cache, 
 	  performs any necessary translations, and forwards it to the client.
-	  Later, client B makes an equivalent request to the proxy that the
+	  Later, client B makes an equivalent request to the proxy, that the
 	  proxy services by returning the response from its cache.
         </t>
         <t>
-          Cacheable responses are 2.05 (Content) responses and error
+          Cacheable responses are 2.05 (Content) responses, and error
           responses.
         </t>
         <t>
@@ -1241,16 +1239,17 @@ Client B           |               |
           <list style="symbols">
             <t>
               The proxy must be able to store cacheable responses in a
-              cache.  This requires the proxy to read CoAP header, options and 
-	      payload, and compute the cache key for a request.
+              cache.  This requires the proxy to read CoAP header, options, and
+	      payload, and to compute the cache key for a request.
             </t>
             <t>
               The proxy must be able to return a fresh response from
-              its cache without contacting the server.
+              its cache, without contacting the server.
             </t>
             <t>
-              The proxy must be able to perform validation on request by
-              the client and request validation to the server.
+              The proxy must be able to perform validation on a request by
+              a client and a request validation to the server. FIXME this is
+	      unclear, please rephrase.
             </t>
           </list>
         </t>
@@ -1261,35 +1260,35 @@ Client B           |               |
           
           <t>
             The proxy complies with the forwarding rules PR1.1 - 1.3 
-	    (<xref target="PR1"/>) and the rules below.  The rules below have 
+	    (<xref target="PR1"/>), and the rules below.  The rules below have 
 	    priority.
             <list style="format PR3.%d">
               <t>
-                If the proxy receives a request where the cache key matches 
+                If the proxy receives a request, where the cache key matches 
 		that of a cached fresh response, then the proxy discards the 
-		request and replies with that response, else it makes a 
+		request, and replies with that response, else it makes a 
 		translated request.
               </t>
               
               <t>
                 The proxy caches and forwards cacheable responses.  If there is
-                already a response cached with the cache key of the 
+                already a response, cached with the cache key of the 
 		corresponding request, then the old response in the cache is
 		marked as stale.
               </t>
               
               <t>
-                If the proxy receives a request that contains an ETag option
-                and the proxy has a fresh
-                response with the same cache key and ETag, then the proxy 
-		replies to the request with a 2.03 (Valid) response without 
-		payload, else it forwards a translated request.
+                If the proxy receives a request, that contains an ETag option,
+                and the proxy has a fresh response with the same cache key and
+		ETag, then the proxy replies to the request with a 2.03 (Valid)
+		response without payload, else it forwards a translated request.
               </t>
               
               <t>
-                The proxy updates Max-Age option according to value of
+                The proxy updates the Max-Age option, according to value of
                 Max-Age associated to resource representation it receives,
-                and decreasing its value to reflect the time spent in the cache.
+                and decreasing its value, to reflect the time spent in the
+		cache.
               </t>
               
               <t>
@@ -1310,24 +1309,24 @@ Client B           |               |
 
           <t>
             A caching proxy has an active role in the resource request/response
-            procedure, so it is not surprising that it is necessary to make a
-            trade-off between caching functionality and the protection of
+            procedure, so it is not surprising, that it is necessary to make a
+            trade-off between caching functionality, and the protection of
             client-server interaction.  Comparing with the scenario in
             <xref target="onereq-oneres"/>, most of the security objectives in
             <xref target="SO1"/> cannot be met:
             <list style="symbols">
               <t>
                 The caching functionality decouples responses from requests.
-                This implies that a client is not able to verify that a received
+                This implies, that a client is not able to verify that a received
                 response is generated by the server in response to a specific
                 request.
               </t>
               <t>
-                A client may receive a response without the server being aware
-                of that the client has made a request.  A proxy could 
-		proactively generate requests, or observe resources in order to
-		keep the cache up-to-date.  Thus the server cannot in general 
-		verify that a request originates from a client as a precondition
+                A client may receive a response, without the server being aware
+                that the client has made a request.  A proxy could proactively
+		generate requests, or observe resources, in order to keep the
+		cache up-to-date.  Thus the server cannot, in general, verify
+		that a request originates from a client, as a precondition
 		to provide a response.
               </t>
             </list>
@@ -1336,11 +1335,11 @@ Client B           |               |
             Since a proxy can autonomously make requests for (validity of) resource
             representations, and there is no security association between proxy and
             server, the server cannot verify those requests. If a request needs
-            to be verified then a solution to the scenario in
-            <xref target="onereq-oneres"/>
-            can be re-used. Therefore we do not consider the protection of requests
-            and focus here on enabling the caching functionality and
-            providing security to cacheable resource representations.
+            to be verified then the solution to the scenario in <xref
+	    target="onereq-oneres"/> can be re-used. Therefore we do not
+	    consider the protection of requests, and focus here on enabling the
+	    caching functionality, and providing security to cacheable resource
+	    representations.
           </t>
           
           <t>
@@ -1357,7 +1356,7 @@ Client B           |               |
               </t>
               
               <t>
-                The server is able to protect a resource representation such
+                The server is able to protect a resource representation, such
                 that only authorized clients can read the representation.
               </t>
             </list>
@@ -1369,7 +1368,7 @@ Client B           |               |
         
         <section title="Threat Analysis and Mitigation">
           <t>
-            We now list potential threats and discuss candidate mitigation 
+            We now list potential threats, and discuss candidate mitigation 
 	    mechanisms.
           </t>
           
@@ -1391,17 +1390,17 @@ Client B           |               |
                 </t>
                 
                 <t>
-                  The proxy forwards a request with modified CoAP option
+                  The proxy forwards a request with modified CoAP options
                   <vspace blankLines="1"/>
                   Out of scope of the security objectives.
                 </t>
                 
                 <t>
-                  The proxy forwards a response with modified CoAP option
+                  The proxy forwards a response with modified CoAP options
                   <vspace blankLines="1"/>
                   This is not necessarily a threat.  For example, a proxy is
                   entitled to change Max-Age.  However, changing Content-Format
-                  may result in an error or the wrong interpretation of a
+                  may result in an error, or the wrong interpretation of a
                   representation.  That kind of threat may be mitigated by
                   securely associating resource information, such as 
 		  Content-Format, to the representation in the response.
@@ -1411,7 +1410,7 @@ Client B           |               |
                   The proxy forwards a request with changed CoAP header fields
                   <vspace blankLines="1"/>
                   As mentioned in (<xref target="onereq-oneres"/>), this is not
-                  necessarily a threat and it is not in scope of the security
+                  necessarily a threat, and it is not in scope of the security
                   objectives to mitigate.
                 </t>
                 
@@ -1420,9 +1419,9 @@ Client B           |               |
                   <vspace blankLines="1"/>
                   This is not necessarily a threat, since message layer 
 		  parameters may be changed by a proxy.  A change of Code in 
-		  the response may be misinterpreted but as long as the
-		  responses allow verification of resource information such a
-		  change will be detected, and this threat is mainly 
+		  the response may be misinterpreted, but as long as the
+		  responses allow verification of resource information, such a
+		  change will be detected, thus this threat is mainly a
 		  denial-of-service.  Threats arising from modification of 
 		  Version are difficult to predict.  A future version of CoAP 
 		  must consider security implications of a proxy manipulating 
@@ -1440,14 +1439,14 @@ Client B           |               |
                 <t>
                   The proxy forwards a response to a non-equivalent request
                   <vspace blankLines="1"/>
-                  If the response is from another server then it can be 
+                  If the response is from another server, then it can be 
 		  mitigated by having different security associations with
 		  different servers.  If the response is that of another
 		  resource of the same server, it can be mitigated by having
 		  different security associations of different resources, or by
-		  securely associating resource information to the
+		  securely associating a resource identifier to the
 		  representation in the response.  If the response is from the 
-		  right server resource, then the modifications of payload, 
+		  right server and resource, then the modifications of payload, 
 		  options and header are considered previously.
                 </t>
                 
@@ -1456,17 +1455,17 @@ Client B           |               |
                   <vspace blankLines="1"/>
                   This is not necessarily a threat.  The proxy is supposed to
                   send a cached response, if fresh.  However, if the proxy
-                  serves a stale response and manipulates the Max-Age option
-                  then it may trick the client into believing it is a fresh
-                  response.  Since the proxy is entitled to make such changes,
-                  this is not possible to prevent.  The server may however 
-		  provide other freshness information (timestamp, counter, etc.)
-                  integrity protected together with the
-                  resource representation and associated resource information,
+                  serves a stale response and manipulates the Max-Age option,
+                  then it may trick the client into believing, that this is a
+		  fresh response.  Since the proxy is entitled to make such
+		  changes, this is not possible to prevent.  The server may
+		  however provide other freshness information (timestamp,
+		  counter, etc.)  integrity protected, together with the
+                  resource representation, and associated resource information,
                   from which the client may infer that Max-Age is not correct.
-                  Note that in
-                  case time synchronization cannot be assumed, then information
-                  about age is limited to the order of the responses.
+                  Note that in case time synchronization cannot be assumed,
+		  then information about age is limited to the order of the
+		  responses. 
                 </t>
                 
                 <t>
@@ -1474,7 +1473,7 @@ Client B           |               |
                   to a request with an ETag option
                   <vspace blankLines="1"/>
                   This is not possible to prevent, since the proxy is entitled
-                  to perform such operation without involving the server.
+                  to perform such operation, without involving the server.
                   TODO: Since the response must not include a payload
                   (RFC 7252, 5.9.1.3) it is not clear how a server could
                   enforce the proxy to include any integrity protected freshness
@@ -1482,16 +1481,16 @@ Client B           |               |
                 </t>
                 
                 <t>
-                  The proxy colludes with a legitimate client having access to
+                  The proxy colludes with a legitimate client, having access to
                   the key used to generate and verify Message Authentication
-                  Codes (MAC) of
-                  responses/resource representations to generate a valid MAC.
+                  Codes (MAC) of responses/resource representations to generate
+		  a valid MAC.
                   <vspace blankLines="1"/>
                   This threat applies to responses containing a message
                   authentication code (MAC) for integrity protecting the 
 		  resource representation.  The threat may be mitigated by the 
 		  server digitally signing the representation with its private
-		  key instead of using a MAC.
+		  key, instead of using a MAC.
                 </t>
                 
               </list>
@@ -1505,32 +1504,32 @@ Client B           |               |
               <list style="format T2:3.%d">
                 
                 <t>
-                  The proxy sends a request to the server without a previous
+                  The proxy sends a request to the server, without a previous
                   request from the client
                   <vspace blankLines="1"/>
                   This is not necessarily a threat, since the proxy may want to
                   keep the cache updated with fresh representations to allow
-                  short round-trip time.  A proxy maliciously making requests
-                  for the purpose of gaining information about the resources
+                  short round-trip time.  A proxy maliciously making requests,
+                  for the purpose of gaining information about the resources,
                   may to some extent be mitigated by encryption, but
                   encrypting data in the cache key has an impact on how the
-                  cache can perform its legitimate operation.  Out of scope of
-                  the security objectives.
+                  cache can perform its legitimate operation.  This is out of
+		  scope for the security objectives.
                 </t>
                 
                 <t>
-                  The proxy sends a response to the client without a previous
+                  The proxy sends a response to the client, without a previous
                   response from the server
                   <vspace blankLines="1"/>
-                  This is not necessarily a threat since the proxy is allowed
-                  to respond with a fresh cached response.  Other cases of
+                  This is not necessarily a threat, since the proxy is allowed
+                  to respond with a fresh, cached response.  Other cases of
                   responding inappropriately to a client request are covered in
                   the previous section.  The client can detect the case of
                   receiving a response without having sent a request.
                 </t>
                 
                 <t>
-                  A proxy sends a number of messages for the purpose of flooding
+                  A proxy sends a number of messages, for the purpose of flooding
                   client or server
                   <vspace blankLines="1"/>
                   Considering that a proxy is entitled to make resource
@@ -1551,9 +1550,9 @@ Client B           |               |
                   The proxy does not forward a message
                   <vspace blankLines="1"/>
                   This is not necessarily a threat.  According to the
-                  processing rule, the proxy must not forward a request if
+                  processing rule, the proxy must not forward a request, if
                   there is a fresh cached response.  If the proxy does not
-                  forward a request although there is no valid cache response,
+                  forward a request, although there is no valid cache response,
                   then this is a denial-of-service attack, and likewise if the
                   proxy does not propagate a response.  While these threats may
                   be difficult to mitigate, missing messages are common in
@@ -1565,11 +1564,11 @@ Client B           |               |
                   The proxy delays forwarding of a received message
                   <vspace blankLines="1"/>
                   Delayed forwarding may be a denial-of-service attack, similar
-                  to not forwarding.  Certain delays may be legitimate so it
-                  may be difficult to detect and mitigate.
+                  to not forwarding.  Certain delays may be legitimate, so it
+                  is difficult to detect and mitigate this.
                   Delayed requests and responses can also be used in
                   attacks against actuators as is discussed in
-                  <xref target="onereq-oneres"/>
+                  <xref target="onereq-oneres"/>,
                   but that is out of scope for this scenario.
                 </t>
                 
@@ -1583,7 +1582,7 @@ Client B           |               |
                   The proxy reorders the responses
                   <vspace blankLines="1"/>
                   This threat may be mitigated with the server integrity
-                  protecting a freshness parameter with the response
+                  protecting a freshness parameter together with the response.
                 </t>
                 
                 
@@ -1599,7 +1598,7 @@ Client B           |               |
                   The proxy reads a representation/payload
                   <vspace blankLines="1"/>
                   This threat can be mitigated with encryption of the
-                  representation and other potential payload data
+                  representation, and other potential payload data.
                 </t>
                 
                 <t>
@@ -1638,7 +1637,7 @@ Client B           |               |
               </t>
               
               <t>
-                The client must be able to verify content format of the 
+                The client must be able to verify the content format of the 
 		representation (T1:3.4)
               </t>
               
@@ -1649,7 +1648,7 @@ Client B           |               |
               
               <t>
                 The representation must be integrity protected and encrypted
-                from server to client (T1:3.2, T1:3.11, T2:3.3, T4:3.1)
+                from the server to the client (T1:3.2, T1:3.11, T2:3.3, T4:3.1)
               </t>
               
               <t>
@@ -1671,12 +1670,12 @@ Client B           |               |
               </t>
               
               <t>
-                The proxy may eavesdrop on metadata including the cache key or
+                The proxy may eavesdrop on metadata, including the cache key, or
                 by making requests on behalf of alleged clients (T2:3.1, T4:3.2)
               </t>
               
               <t>
-                The proxy may drop messages without the endpoint being able to
+                The proxy may drop messages, without the endpoint being able to
                 infer that the message is lost due to the proxy (T3:3.1)
               </t>
               
@@ -1704,20 +1703,19 @@ Client B           |               |
         <t>
           This scenario is about replicating a resource state from a
           server to a client.  The client observes a
-          resource and receives notifications which may be cached.
-          The difference compared to previous scenario
-          (<xref target="mulreq-oneres"/>) is the capability
-          to send multiple responses in reply to a single request.
-          The difference compared to <xref target="onereq-mulres"/>
+          resource, and receives notifications which may be cached.
+          The difference, compared to the previous scenario
+          (<xref target="mulreq-oneres"/>), is the capability
+          to send multiple responses, in reply to a single request.
+          The difference, compared to <xref target="onereq-mulres"/>,
           is that in this scenario multiple clients may be served
           with the same response.
         </t>
         
         <t>
           This functionality protects communication-constrained servers from
-          repeated requests, also from different clients, when the resource is
-          unchanged thus saving system
-          resources and bandwidth.
+          repeated requests, which may come from different clients, when the
+	  resource is unchanged. This saves system resources and bandwidth.
         </t>
         
         <t>
@@ -1762,12 +1760,12 @@ Client A           |  |            |
         <t>
           The server exposes an observable resource (e.g., the current
           reading of a temperature sensor).  Multiple clients are
-          interested in the current state of the resource and observe
-          it using the <xref target="RFC7641">CoAP resource observation
+          interested in the current state of the resource, and observe
+          it, using the <xref target="RFC7641">CoAP resource observation
             mechanism</xref>.  The goal is to keep the state observed by
           the clients closely in sync with the actual state of the
           resource at the server.  Another goal is to minimize the
-          burden on the server by moving the task to fan out
+          burden on the server, by moving the task to fan out
           notifications to multiple clients from the server to the
           proxy.
         </t>
@@ -1779,13 +1777,13 @@ Client A           |  |            |
           (<xref target="mulreq-oneres"/>) apply, and additionally:
           <list style="symbols">
             <t>
-              The proxy must be able to observe a resource on behalf of
+              The proxy must be able to observe a resource, on behalf of
               one or more clients.
             </t>
             <t>
               When a client registers interest in a resource with the
-              proxy, the proxy must be able to return a response with
-              the current state of the resource without contacting the
+              proxy, the proxy must be able to return a response, containing
+              the current state of the resource, without contacting the
               server.
             </t>
           </list>
@@ -1801,7 +1799,7 @@ Client A           |  |            |
             In addition, the following processing rules apply:
             <list style="format PR4.%d">
               <t>
-                If the proxy receives a notification from the server
+                If the proxy receives a notification from the server,
                 that is out of sequence (as indicated by the Observe
                 option), then the proxy discards the notification.
                 Otherwise, the proxy proceeds to notify the registered
@@ -1809,7 +1807,7 @@ Client A           |  |            |
               </t>
               <t>
                 When notifying an observer, the proxy modifies the
-                Observe option to indicate the sequence of
+                Observe option, to indicate the sequence of
                 notifications from the proxy to the observer.
               </t>
               
@@ -1839,12 +1837,11 @@ Client A           |  |            |
 		   title="T1:The proxy illegitimately modifies a message">
             <t>
               The same conclusions apply as in the previous scenario
-              (<xref target="T1:3"/>).  For example in T1:3.4 a proxy may
+              (<xref target="T1:3"/>).  For example in T1:3.4, a proxy may
               maliciously modify the Observe option to indicate a different 
-	      order of notifications.  the responses to the same request 
-	      without being detected.  However, the mitigation specified in the
-	      previous scenario applies: the server integrity protects a 
-	      freshness parameter with the response.
+	      order of notifications, without being detected.  However, the
+	      mitigation specified in the previous scenario applies: the server
+	      integrity protects a freshness parameter with the response.
             </t>
           </section>
           
@@ -1877,8 +1874,8 @@ Client A           |  |            |
         
         <section title="Security Requirements">
           <t>
-            Since the security objectives and threat mitigations carry over from
-            the previous scenario (<xref target="mulreq-oneres"/>) the same
+            Since the security objectives, and threat mitigations carry over from
+            the previous scenario (<xref target="mulreq-oneres"/>), the same
             security requirements are valid (<xref target="R3"/>).
           </t>
           
@@ -1896,9 +1893,8 @@ Client A           |  |            |
         <t>
           The intermediary node in the publish-subscribe scenario is a broker 
 	  for messages from a publisher to subscriber.  A subscriber subscribes
-	  to a "topic" and receives a publication.  Subsequent publications on 
-	  the topic are fanned out from the publisher to all subscribers by
-          the broker.
+	  to a "topic", and receives a publication.  The broker fans out
+	  subsequent publications on that topic to all subscribers.
         </t>
         
         <t>
@@ -1944,20 +1940,23 @@ Client A           |  |            |
         </figure>
         
         <t>
-          The broker maintains a number of topics which a publisher can publish
-	  to and a subscriber subscribe to. Topics are represented as URIs at 
+          The broker maintains a number of topics, which a publisher can publish
+	  to, and a subscriber subscribe to. Topics are represented as URIs at 
 	  the broker. <xref target="figure-4"/> illustrates the publication to 
-	  a topic implemented as a PUT request of a representation to a
-	  resource at the broker.  (The PUT response may be inhibited using the
+	  a topic, implemented as a PUT request of a representation to a
+	  resource at the broker.</t>
+
+	<t>
+	  Note that the PUT response may be inhibited using the
           No-Response option <xref target="I-D.tcs-coap-no-response-option"/> 
-	  and is omitted from the figure.)
+	  and is omitted from the figure.
         </t>
         
         <t>
           Subscribers can make a GET request with the Observe option to the 
-	  same URI at the broker to initiate the subscription on the topic.
-          The broker provides notifications in the form the stored
-	  representation as response to the request. Further publications of
+	  topic URI at the broker, in order to initiate the subscription on the
+	  topic.  The broker provides a notification, in the form the stored
+	  representation, as response to the request. Further publications of
 	  representations to this URI are provided as notification responses to
 	  the subscription request.
         </t>
@@ -1967,7 +1966,7 @@ Client A           |  |            |
           <list style="symbols">
             <t>
               The publication must be able to be transferred in a PUT request
-              from the publisher and in a GET response to the subscriber.
+              from the publisher, and in a GET response to the subscriber.
             </t>
           </list>
         </t>
@@ -1982,13 +1981,13 @@ Client A           |  |            |
               <t>
                 If the broker receives a subscription request to one of its
 		resources, then the broker associates the requesting subscriber
-		to the topic and responds with the current representation.
+		to the topic, and responds with the current representation.
               </t>
               
               <t>
                 If the broker receives a publication request to one of its
 		resources, then the broker stores the received representation
-		on the topic and responds with the representation to the
+		on the topic, and responds with the representation to the
 		associated subscribers of that topic.
               </t>
  
@@ -2014,7 +2013,7 @@ Client A           |  |            |
               <t>
                 A subscriber is able to verify that a received response
 		contains a resource representation of a requested topic, that 
-		the publisher is authorized to publish to that topic and
+		the publisher is authorized to publish to that topic, and
                 that it has not been altered between publisher and subscriber.
               </t>
               
@@ -2024,14 +2023,15 @@ Client A           |  |            |
               </t>
               
               <t>
-                The publisher is able to protect a resource representation such
+                The publisher is able to protect a resource representation, such
                 that only authorized subscribers can read the representation.
               </t>
               
             </list>
-            In general, the authorization step of publisher and subscriber 
-	    mentioned above is dependent on an associated authentication of 
-	    publisher and subscriber, respectively.
+            In general, the authorization step of publisher and subscriber, 
+	    mentioned above, is dependent on an associated authentication of 
+	    publisher and subscriber, respectively. FIXME: This is not entirely
+	    clear. Please elaborate.
           </t>
           
         </section>
@@ -2050,7 +2050,7 @@ Client A           |  |            |
 
                 <t>
                   The broker responds to a subscriber request with a 
-		  publication with modified payload
+		  publication containing modified payload
 		  <vspace blankLines="1"/>
                   This threat may be mitigated with integrity protection of
                   payload.
@@ -2058,13 +2058,13 @@ Client A           |  |            |
                 
                 <t>
                   The broker responds to a subscriber request with a 
-		  publication with modified CoAP option
+		  publication with a modified CoAP option
                   <vspace blankLines="1"/>
                   Since the security objective is to protect the resource
-		  representation, only options in the GET response that
-		  influence the interpretation of the resource representations
-		  has an impact.  A broker is entitled to change Max-Age and may
-		  do so maliciously.  The broker is not entitled to change 
+		  representation, only options in the GET response, that
+		  influence the interpretation of the resource representations,
+		  have an impact.  A broker is entitled to change Max-Age, and
+		  may do so maliciously.  The broker is not entitled to change 
 		  Content-Format, but may anyway do so maliciously.  To mitigate
 		  these, the subscriber needs to be able to verify information
 		  about freshness and content format provided by the publisher.
@@ -2076,9 +2076,9 @@ Client A           |  |            |
 		  CoAP header fields
                   <vspace blankLines="1"/>
                   Since the security objective is to protect the resource
-		  representation, only header fields in the GET response that 
-		  influence the interpretation of the resource representations 
-		  has an impact.  Changing of Code such as e.g. 2.05 (Content) 
+		  representation, only header fields in the GET response, that 
+		  influence the interpretation of the resource representations, 
+		  have an impact.  Changing of Code such as e.g. 2.05 (Content) 
 		  to some error code is a denial-of-service.
                 </t>
                 
@@ -2086,7 +2086,7 @@ Client A           |  |            |
                 <t>
                   The broker modifies the publication before or during storage
                   <vspace blankLines="1"/>
-                  This threat is analogous to the previous threats and are 
+                  This threat is analogous to the previous threats, and is
 		  mitigated in the same way.
                 </t>
               
@@ -2095,12 +2095,12 @@ Client A           |  |            |
                   The broker responds to a subscriber request with the wrong 
 		  message
                   <vspace blankLines="1"/>
-                  Modifications of payload, options and header are considered 
-		  previously.  To mitigate wrong interpretation of a response 
+                  Modifications of payload, options, and header are considered 
+		  previously.  To mitigate wrong interpretation of a response, 
 		  resulting from a broker sending old messages, or reordering 
 		  messages, from the same publisher to the same subscriber, the
 		  message may integrity protect a freshness parameter 
-		  (timestamp, counter, etc.) from which the age/order can be 
+		  (timestamp, counter, etc.), from which the age/order can be 
 		  deduced (replay/reordering protection).
                 </t>
                 
@@ -2108,8 +2108,8 @@ Client A           |  |            |
                 <t>
                   The broker colludes with a legitimate subscriber having 
 		  access to the key used to create Message Authentication Codes
-		  (MAC) of publications to generate a valid MAC of a modified 
-		  publication.
+		  (MAC) of publications, in order to generate a valid MAC of a
+		  modified publication.
                   <vspace blankLines="1"/>
                   This threat applies to publications containing a message
                   authentication code (MAC) for integrity protecting the 
@@ -2128,17 +2128,17 @@ Client A           |  |            |
               <list style="format T2:5.%d">
                 
                 <t>
-                  The broker sends a response to a subscriber request without a
+                  The broker sends a response to a subscriber request, without a
 		  previous publication from the publisher
                   <vspace blankLines="1"/>
                   Most cases of responding inappropriately to a subscriber
 		  request are covered in the previous section.  In general,
-		  authentication of publisher in combination with
+		  authentication of publisher, in combination with
 		  replay/reordering protection will mitigate this threat.
                 </t>
                 
                 <t>
-                  A broker sends a number of messages for the purpose of 
+                  A broker sends a number of messages, for the purpose of 
 		  flooding the subscriber
                   <vspace blankLines="1"/>
                   By verifying the integrity and freshness information, the 
@@ -2176,7 +2176,7 @@ Client A           |  |            |
                   The broker delays forwarding of a received publication
                   <vspace blankLines="1"/>
                   Delayed forwarding may be a denial-of-service attack, similar
-                  to not forwarding.  Certain delays may be legitimate so it
+                  to not forwarding.  Certain delays may be legitimate, so it
                   may be difficult to detect and mitigate.
                 </t>
                 
@@ -2184,8 +2184,8 @@ Client A           |  |            |
                   The broker reorders the publications
                   <vspace blankLines="1"/>
                   This threat may be mitigated by
-                  the publisher integrity protecting the message and including
-                  a freshness parameter
+                  the publisher integrity protecting the message, and including
+                  a freshness parameter.
                 </t>
         
               </list>
@@ -2199,7 +2199,7 @@ Client A           |  |            |
                   The broker reads a representation/payload
                   <vspace blankLines="1"/>
                   This threat can be mitigated with encryption of the
-                  representation and other potential payload data
+                  representation, and other potential payload data
                 </t>
                 
                 <t>
@@ -2240,7 +2240,7 @@ Client A           |  |            |
               </t>
               
               <t>
-                The subscriber must be able to verify content format of the 
+                The subscriber must be able to verify the content format of the 
 		representation (T1:5.2)
               </t>
               
@@ -2257,7 +2257,7 @@ Client A           |  |            |
               
               <t>
                 To protect against the proxy colluding with an authorized 
-		subscriber, asymmetric crypto must be used.  (T1:5.6)
+		subscriber, asymmetric cryptography must be used.  (T1:5.6)
               </t>
             </list>
             The security non-requirements of the pub-sub scenario are:
@@ -2309,16 +2309,16 @@ Client A           |  |            |
     <section anchor="sec-cons" title="Security Considerations">
 
       <t>
-        A proxy or intermediary may be an aggregation point for message flows
-        and therefore is an attractive target both from a security and privacy
+        A proxy or intermediary may be an aggregation point for message flows,
+        and therefore it is an attractive target, both from a security and privacy
         point of view.
       </t>
       
       <t>
         Unless the security mechanisms provide forward secrecy, a
         compromise of long term keying material means that an attacker can 
-	decrypt all previously sent information and be directly used for any
-	kind of manipulation of the cyber-physical system.
+	decrypt all previously sent information, and can be directly used for
+	any kind of manipulation of the cyber-physical system.
       </t>
       
       <t>
@@ -2327,19 +2327,19 @@ Client A           |  |            |
       </t>
       
       <t>
-        Intermediary nodes are aggregation points also for meta data and
+        Intermediary nodes are aggregation points, also for meta data, and
         therefore valuable targets for signal intelligence agencies.
-        Pervasive monitoring is an attack <xref target="RFC7258"/> and the 
+        Pervasive monitoring is an attack <xref target="RFC7258"/>, and the 
 	effect of collecting and correlating information from multitude of 
 	proxies must to be mitigated.
       </t>
       
       <t>
-        Related to this is need to delete all historical information
-        from all nodes handling the plain text data and meta-data, to avoid 
-	information leakage.  The impact of this need can be limited in the 
-	intermediary nodes by confidentiality protecting as much as possible
-	between the endpoints.
+        Related to this, it is needed to delete all historical information
+        from all nodes handling the plaintext data and meta-data, in order
+	to avoid information leakage.  The impact of this on the intermediary
+	nodes can be limited, by confidentiality protecting as much as
+	possible between the endpoints.
       </t>
 
     </section>
