@@ -253,17 +253,14 @@
         functionality. The client and server are assumed to have a security
         association, but the proxy is neither assumed to have a security 
 	association with the client, nor with the server.  
-	<xref target="fig:fwProxy"/>, <xref target="fig:revProxy"/>, and
-	<xref target="fig:brokerProxy"/> illustrate this assumption.  Note that
-	in the Reverse Proxy case, the client is interacting with the proxy as
-	if it was the origin server.  In that case the client is never aware 
-	that there is another entity behind the proxy.
+	<xref target="fig:fwProxy"/> and
+	<xref target="fig:brokerProxy"/> illustrate this assumption.
       </t>
       
       <t>
         The following types of intermediary nodes
-        are considered: Forward proxy (see <xref target="RFC7252"/>), reverse 
-	proxy (see <xref target="RFC7252"/>) and publish-subscribe broker (see
+        are considered: Forward proxy (see <xref target="RFC7252"/>)
+        and publish-subscribe broker (see
         <xref target="I-D.koster-core-coapmq"/>).  The precise functionality 
 	assumed by the intermediary nodes is defined by processing rules in the 
 	respective scenario analyzed in this document (<xref
@@ -273,55 +270,39 @@
       <t>
         
       <figure anchor="fig:fwProxy" 
-	      title="Security association and message flow with a forward proxy">
+	      title="Security association between client and server">
         <artwork align="center">
 <![CDATA[ 
-          +----------+   +-----------+                   +----------+
-          |          | > |           |         >         |          |
-          |  Client  |___|  Forward  |___________________|  Origin  |
-          |          |   |   Proxy   |                   |  Server  |
-          |          | < |           |         <         |          |
-          +----------+   +-----------+                   +----------+
-               |                                               |
-               |_______________________________________________|
-                           Security Association]]>
-        </artwork>
-      </figure>
-
-        <figure anchor="fig:revProxy" 
-	      title="Security association and message flow with a reverse proxy">
-        <artwork align="center">
-<![CDATA[ 
-    +----------+                   +-----------+   +----------+
-    |          |         >         |           | > |          |
-    |  Client  |___________________|  Reverse  |___|  Origin  |
-    |          |                   |   Proxy   |   |  Server  |
-    |          |         <         |           | < |          |
-    +----------+                   +-----------+   +----------+
-         |                               |
-         |_______________________________|
-               Security Association]]>
+    +----------+   +-----------+                  +----------+
+    |          |   |           |                  |          |
+    |  Client  |___|  Forward  |__________________|  Origin  |
+    |          |   |   Proxy   |                  |  Server  |
+    |          |   |           |                  |          |
+    +----------+   +-----------+                  +----------+
+         |                                              |
+         |______________________________________________|
+                     Security Association]]>
         </artwork>
       </figure>
     
       <figure anchor="fig:brokerProxy" 
-	      title="Security association and message flow with a message broker">
+	      title="Security association between publisher and subscriber">
         <artwork align="center">
 <![CDATA[ 
     +-----------+          +----------+           +-----------+
     |           |          |          |           |           |
-    | Publisher |__________|  Broker  |___________| Subscriber|
-    | (Client)  |          | (Server) |           | (Client)  |
+    | Subscriber|__________|  Broker  |___________| Publisher |
+    |           |          |          |           |           |
     |           |          |          |           |           |
     +-----------+          +----------+           +-----------+
-         |                                               |
-         |_______________________________________________|
+          |                                             |
+          |_____________________________________________|
                       Security Association]]>
         </artwork>
       </figure>
    
-        TODO: Translational proxy is planned to be added in a future version of 
-	this draft.
+        TODO: Reverse proxy and translational proxy is planned to be added in a
+        future version of this draft.
       </t>
       
       <t>
@@ -1248,8 +1229,8 @@ Client B           |               |
             </t>
             <t>
               The proxy must be able to perform validation on a request by
-              a client and a request validation to the server. FIXME this is
-	      unclear, please rephrase.
+              a client and a request validation to the server (see 5.6.2. of
+              <xref target="RFC7252"/>).
             </t>
           </list>
         </t>
@@ -2026,12 +2007,8 @@ Client A           |  |            |
                 The publisher is able to protect a resource representation, such
                 that only authorized subscribers can read the representation.
               </t>
-              
+
             </list>
-            In general, the authorization step of publisher and subscriber, 
-	    mentioned above, is dependent on an associated authentication of 
-	    publisher and subscriber, respectively. FIXME: This is not entirely
-	    clear. Please elaborate.
           </t>
           
         </section>
