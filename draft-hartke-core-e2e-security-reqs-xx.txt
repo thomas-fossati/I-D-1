@@ -5,11 +5,11 @@
 CoRE Working Group                                             K. Hartke
 Internet-Draft                                   Universitaet Bremen TZI
 Intended status: Informational                               G. Selander
-Expires: September 17, 2016                                 F. Palombini
+Expires: September 19, 2016                                 F. Palombini
                                                              Ericsson AB
                                                                 L. Seitz
                                                      SICS Swedish ICT AB
-                                                          March 16, 2016
+                                                          March 18, 2016
 
 
                Requirements for CoAP End-To-End Security
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 17, 2016.
+   This Internet-Draft will expire on September 19, 2016.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Hartke, et al.         Expires September 17, 2016               [Page 1]
+Hartke, et al.         Expires September 19, 2016               [Page 1]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -68,12 +68,12 @@ Table of Contents
    2.  Scope and Assumptions . . . . . . . . . . . . . . . . . . . .   3
    3.  Scenarios, Threats and Security Requirements  . . . . . . . .   7
      3.1.  One Request - One Response  . . . . . . . . . . . . . . .   7
-       3.1.1.  Processing Rules  . . . . . . . . . . . . . . . . . .   9
+       3.1.1.  Processing Rules  . . . . . . . . . . . . . . . . . .   8
        3.1.2.  Security Objectives . . . . . . . . . . . . . . . . .   9
        3.1.3.  Threat Analysis and Mitigation  . . . . . . . . . . .  10
-       3.1.4.  Security Requirements . . . . . . . . . . . . . . . .  14
-     3.2.  One Request - Multiple Responses  . . . . . . . . . . . .  15
-       3.2.1.  Processing Rules  . . . . . . . . . . . . . . . . . .  16
+       3.1.4.  Security Requirements . . . . . . . . . . . . . . . .  13
+     3.2.  One Request - Multiple Responses  . . . . . . . . . . . .  14
+       3.2.1.  Processing Rules  . . . . . . . . . . . . . . . . . .  15
        3.2.2.  Security Objectives . . . . . . . . . . . . . . . . .  16
        3.2.3.  Threat Analysis and Mitigation  . . . . . . . . . . .  16
        3.2.4.  Security Requirements . . . . . . . . . . . . . . . .  17
@@ -90,10 +90,10 @@ Table of Contents
      3.5.  Multiple Requests - Multiple Responses: Publish-Subscribe  28
        3.5.1.  Processing Rules  . . . . . . . . . . . . . . . . . .  30
        3.5.2.  Security Objectives . . . . . . . . . . . . . . . . .  30
-       3.5.3.  Threat Analysis and Mitigation  . . . . . . . . . . .  31
+       3.5.3.  Threat Analysis and Mitigation  . . . . . . . . . . .  30
        3.5.4.  Security Requirements . . . . . . . . . . . . . . . .  33
    4.  Security Considerations . . . . . . . . . . . . . . . . . . .  34
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  35
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  34
    6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  35
      6.1.  Normative References  . . . . . . . . . . . . . . . . . .  35
      6.2.  Informative References  . . . . . . . . . . . . . . . . .  35
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Hartke, et al.         Expires September 17, 2016               [Page 2]
+Hartke, et al.         Expires September 19, 2016               [Page 2]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -165,7 +165,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016               [Page 3]
+Hartke, et al.         Expires September 19, 2016               [Page 3]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -203,17 +203,13 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    assume its normal functionality.  The client and server are assumed
    to have a security association, but the proxy is neither assumed to
    have a security association with the client, nor with the server.
-   Figure 2, Figure 3, and Figure 4 illustrate this assumption.  Note
-   that in the Reverse Proxy case, the client is interacting with the
-   proxy as if it was the origin server.  In that case the client is
-   never aware that there is another entity behind the proxy.
+   Figure 2 and Figure 3 illustrate this assumption.
 
    The following types of intermediary nodes are considered: Forward
-   proxy (see [RFC7252]), reverse proxy (see [RFC7252]) and publish-
-   subscribe broker (see [I-D.koster-core-coapmq]).  The precise
-   functionality assumed by the intermediary nodes is defined by
-   processing rules in the respective scenario analyzed in this document
-   (Section 3).
+   proxy (see [RFC7252]) and publish-subscribe broker (see
+   [I-D.koster-core-coapmq]).  The precise functionality assumed by the
+   intermediary nodes is defined by processing rules in the respective
+   scenario analyzed in this document (Section 3).
 
 
 
@@ -221,51 +217,42 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016               [Page 4]
+
+
+
+
+Hartke, et al.         Expires September 19, 2016               [Page 4]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
-             +----------+   +-----------+                   +----------+
-             |          | > |           |         >         |          |
-             |  Client  |___|  Forward  |___________________|  Origin  |
-             |          |   |   Proxy   |                   |  Server  |
-             |          | < |           |         <         |          |
-             +----------+   +-----------+                   +----------+
-                  |                                               |
-                  |_______________________________________________|
-                              Security Association
+          +----------+   +-----------+                  +----------+
+          |          |   |           |                  |          |
+          |  Client  |___|  Forward  |__________________|  Origin  |
+          |          |   |   Proxy   |                  |  Server  |
+          |          |   |           |                  |          |
+          +----------+   +-----------+                  +----------+
+               |                                              |
+               |______________________________________________|
+                           Security Association
 
-   Figure 2: Security association and message flow with a forward proxy
-
-
-          +----------+                   +-----------+   +----------+
-          |          |         >         |           | > |          |
-          |  Client  |___________________|  Reverse  |___|  Origin  |
-          |          |                   |   Proxy   |   |  Server  |
-          |          |         <         |           | < |          |
-          +----------+                   +-----------+   +----------+
-               |                               |
-               |_______________________________|
-                     Security Association
-
-   Figure 3: Security association and message flow with a reverse proxy
+         Figure 2: Security association between client and server
 
 
           +-----------+          +----------+           +-----------+
           |           |          |          |           |           |
-          | Publisher |__________|  Broker  |___________| Subscriber|
-          | (Client)  |          | (Server) |           | (Client)  |
+          | Subscriber|__________|  Broker  |___________| Publisher |
+          |           |          |          |           |           |
           |           |          |          |           |           |
           +-----------+          +----------+           +-----------+
-               |                                               |
-               |_______________________________________________|
+                |                                             |
+                |_____________________________________________|
                             Security Association
 
-   Figure 4: Security association and message flow with a message broker
+      Figure 3: Security association between publisher and subscriber
 
-   TODO: Translational proxy is planned to be added in a future version
-   of this draft.
+   TODO: Reverse proxy and translational proxy is planned to be added in
+   a future version of this draft.
 
    To identify the threats in scope, we first consider what assets need
    to be protected.  In general, there are the following types of assets
@@ -273,15 +260,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    A1:  The devices at the two ends, the data generated and stored in
         these devices, and their (often very constrained) system
-
-
-
-
-Hartke, et al.         Expires September 17, 2016               [Page 5]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
         resources such as available memory, storage, processing
         capacity, and energy.
 
@@ -295,6 +273,14 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    A3:  The communication infrastructure linking the two devices (which
         often contains some very constrained parts), and the data stored
         in the message processing devices.
+
+
+
+
+Hartke, et al.         Expires September 19, 2016               [Page 5]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
    The scope of this document is to analyze threats executed through
    intermediary nodes, and this is only directly affecting the assets of
@@ -331,13 +317,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    On a high level, there are the following threats from proxies to
    consider:
 
-
-
-Hartke, et al.         Expires September 17, 2016               [Page 6]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    T1:  The proxy illegitimately modifies a message.
 
    T2:  The proxy illegitimately sends a message, including replay,
@@ -351,6 +330,13 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    To assess how such threats impact the assets, we need to specify the
    processing rules of the intermediary nodes in different scenarios and
    define the associated security objectives.
+
+
+
+Hartke, et al.         Expires September 19, 2016               [Page 6]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
 3.  Scenarios, Threats and Security Requirements
 
@@ -385,15 +371,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    In this scenario we study use cases, where it is important that a
    response sent from one endpoint is the response to a particular
    request to that endpoint.  Many security critical use cases require
-
-
-
-
-Hartke, et al.         Expires September 17, 2016               [Page 7]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    that responses are in this way "securely linked" to requests, such as
    alarm status retrieval and actuator command confirmation.
 
@@ -408,11 +385,18 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
                     |    Response   |    Response   |
                     |               |               |
 
-      Figure 5: Message flow with unique responses for each request.
+      Figure 4: Message flow with unique responses for each request.
+
+
+
+Hartke, et al.         Expires September 19, 2016               [Page 7]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
    Example: Alarm status retrieval
 
-      Figure 5 can be seen as an illustration of a message exchange for
+      Figure 4 can be seen as an illustration of a message exchange for
       a client, requesting the alarm status, e.g.  GET /alarm_status, at
       a server.  Since the client wants to ensure that the alarm status
       received is reflecting the current alarm status, and not a cached
@@ -423,7 +407,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    Example: Actuation confirmation
 
-      Another example, for which Figure 5 serves as illustration, is the
+      Another example, for which Figure 4 serves as illustration, is the
       confirmation of an actuator request.  In this case a client, say
       in an industrial control system, requests a server that a valve
       should be turned to a certain level, e.g.  PUT /valve_42/level
@@ -441,15 +425,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    o  Since each response is intended to be securely linked to a
       particular request, the response should not be used with any other
       request.  Hence, as much as possible of the caching functionality
-
-
-
-
-Hartke, et al.         Expires September 17, 2016               [Page 8]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
       must be inhibited.  Therefore the CoAP option Max-Age of the
       responses is set to 0 (see Section 5.7.1 of [RFC7252]).
 
@@ -467,6 +442,14 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
           If the proxy is configured to forward requests to another
           proxy, then it keeps the Proxy-Uri option; otherwise it splits
+
+
+
+Hartke, et al.         Expires September 19, 2016               [Page 8]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
           the option into its components, adds the corresponding Uri-*
           options and does not include a Proxy-Uri option.  Then it
           makes the request, using the request scheme indicated in the
@@ -498,14 +481,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    to messages, apart from what is necessary to perform the processing
    rules (cf.  [RFC7258]).
 
-
-
-
-Hartke, et al.         Expires September 17, 2016               [Page 9]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    The security objectives are:
 
    SO1.1  The server is able to verify that a received request
@@ -523,6 +498,14 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    SO1.4  The client is able to verify that the received response
           originates from the requested server and resource, that it has
+
+
+
+Hartke, et al.         Expires September 19, 2016               [Page 9]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
           not been altered in transfer, and that it was generated as the
           unique response to the request.
 
@@ -555,13 +538,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            server.  The other CoAP options in the request can be
            integrity protected.
 
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 10]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    T1:1.4  The proxy forwards a response with modified CoAP option
 
            This threat can be mitigated with integrity protection of
@@ -578,6 +554,14 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            messages.  This is difficult to mitigate.  However, changing
            the CoAP header Code, e.g. from GET to DELETE may result in
            an error, or wrong interpretation of the request, which can
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 10]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
            have other security implications.  A change to the header
            field Version may result in security errors in the
            interaction between different versions of CoAP.  These
@@ -609,15 +593,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            the request in the response, the client can verify if the
            response was generated to answer a particular request.
 
-
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 11]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
 3.1.3.2.  T2:The proxy illegitimately sends a message
 
    T2:1.1  The proxy sends a request to the server, without a previous
@@ -634,6 +609,15 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            messages is a denial-of-service attack, similar to not
            forwarding a message (T3:1.1), and is difficult to mitigate.
            However, responses claiming to be from the server may be
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 11]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
            mitigated with integrity protection, uniquely identifying
            information of the request.
 
@@ -666,14 +650,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            restricted to proxies.  The proposed mitigation is based on
            verifying the timeliness of the request, for example by using
            time stamps, or with an additional round-trip.  These
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 12]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
            mitigations can be supported by a new CoAP option, containing
            time stamp or binding the response in a first round-trip to a
            request of the second, as specified in
@@ -687,6 +663,16 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            requests can be deduced.
 
    T3:1.4  The proxy reorders the responses
+
+
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 12]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
            This threat may be mitigated with the server integrity
            protecting information, specifying to which request a
@@ -720,16 +706,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            keying material is compromised, read the whole history of the
            corresponding interactions.
 
-
-
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 13]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
            To mitigate this requires a key exchange mechanism, providing
            forward secrecy (PFS), for establishing the keys to use with
            application layer security.
@@ -745,6 +721,14 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    R1.2  The server must verify that it has not received this request
          previously (T1:1.7, T3:1.3)
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 13]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
    R1.3  The client must verify that the received response originates
          from the requested server (T1:1.2, T1:1.4, T1:1.6, T2:1.2)
@@ -777,15 +761,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    NR1.1  The proxy may drop messages without the endpoint being able to
           infer that the message is lost due to the proxy.  (T3:1.1)
 
-
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 14]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    NR1.2  The proxy may delay messages without being detected.  (T3:1.1,
           T3:1.2)
 
@@ -804,6 +779,13 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    monitoring scenarios, where time synchronization cannot be
    guaranteed.
 
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 14]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
                   Client          Proxy          Server
                     |               |               |
                     |    Request    |    Request    |
@@ -819,11 +801,11 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
                     |    Notify     |    Notify     |
                     |               |               |
 
-                 Figure 6: Message flow of a notification.
+                 Figure 5: Message flow of a notification.
 
    Example: Secure parameter monitoring
 
-      Figure 6 can be seen as an illustration of a message exchange for
+      Figure 5 can be seen as an illustration of a message exchange for
       a client monitoring an important parameter, e.g. in a medical or
       process industry application, measured by the server.  The client
       makes a subscription request for a resource, and the server
@@ -834,14 +816,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
       reflects the current parameter value, and that subsequent
       notifications are timely updates of the initial request.  Since
       notifications may be lost, or reordered, the client needs to be
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 15]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
       able to verify the order of the messages, as sent by the server.
       By monitoring the received messages and the time they are
       received, the client can detect missing notifications and take
@@ -856,6 +830,17 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    The processing rules are identical to PR 1.1 - 1.3 of the previous
    scenario (Section 3.1.1).
+
+
+
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 15]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
 3.2.2.  Security Objectives
 
@@ -889,15 +874,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    the client verifies the response is linked to the request, is not
    sufficient, since there may be multiple responses.
 
-
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 16]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    However, analogous to how requests are protected against replay/
    reordering in the previous scenario, by additionally integrity
    protecting a parameter, from which the order of responses can be
@@ -909,6 +885,18 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    (Section 3.1.3.2).  T2:1.3 can be mitigated with the additional
    replay/reordering protection of responses as mentioned in
    Section 3.2.3.1.
+
+
+
+
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 16]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
 3.2.3.3.  T3:The proxy illegitimately inhibits sending of a message
 
@@ -949,7 +937,19 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 17]
+
+
+
+
+
+
+
+
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 17]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -972,9 +972,9 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
                      |    Response   |               |
                      |               |               |
 
-               Figure 7: Message flow for cached responses.
+               Figure 6: Message flow for cached responses.
 
-   In Figure 7, Client A requests the proxy to make a certain request to
+   In Figure 6, Client A requests the proxy to make a certain request to
    the server, and to return the server's response.  The proxy services
    the request by making a request message to the server, according to
    the processing rules.  If the server returns a cacheable response,
@@ -996,8 +996,8 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
       without contacting the server.
 
    o  The proxy must be able to perform validation on a request by a
-      client and a request validation to the server.  FIXME this is
-      unclear, please rephrase.
+      client and a request validation to the server (see 5.6.2. of
+      [RFC7252]).
 
 
 
@@ -1005,7 +1005,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 18]
+Hartke, et al.         Expires September 19, 2016              [Page 18]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1061,7 +1061,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 19]
+Hartke, et al.         Expires September 19, 2016              [Page 19]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1117,7 +1117,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 20]
+Hartke, et al.         Expires September 19, 2016              [Page 20]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1173,7 +1173,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 21]
+Hartke, et al.         Expires September 19, 2016              [Page 21]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1229,7 +1229,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 22]
+Hartke, et al.         Expires September 19, 2016              [Page 22]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1285,7 +1285,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 23]
+Hartke, et al.         Expires September 19, 2016              [Page 23]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1341,7 +1341,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 24]
+Hartke, et al.         Expires September 19, 2016              [Page 24]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1397,7 +1397,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 25]
+Hartke, et al.         Expires September 19, 2016              [Page 25]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1429,7 +1429,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
                      |    Notify     |               |
                      |               |               |
 
-        Figure 8: Message flow for observe with multiple observers.
+        Figure 7: Message flow for observe with multiple observers.
 
    The server exposes an observable resource (e.g., the current reading
    of a temperature sensor).  Multiple clients are interested in the
@@ -1453,7 +1453,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 26]
+Hartke, et al.         Expires September 19, 2016              [Page 26]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1509,7 +1509,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 27]
+Hartke, et al.         Expires September 19, 2016              [Page 27]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1565,7 +1565,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 28]
+Hartke, et al.         Expires September 19, 2016              [Page 28]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1602,11 +1602,11 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
                      |    Notify     |               |
                      |               |               |
 
-               Figure 9: Message flow for publish-subscribe
+               Figure 8: Message flow for publish-subscribe
 
    The broker maintains a number of topics, which a publisher can
    publish to, and a subscriber subscribe to.  Topics are represented as
-   URIs at the broker.  Figure 9 illustrates the publication to a topic,
+   URIs at the broker.  Figure 8 illustrates the publication to a topic,
    implemented as a PUT request of a representation to a resource at the
    broker.
 
@@ -1621,7 +1621,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 29]
+Hartke, et al.         Expires September 19, 2016              [Page 29]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -1666,25 +1666,21 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
           such that only authorized subscribers can read the
           representation.
 
-   In general, the authorization step of publisher and subscriber,
-   mentioned above, is dependent on an associated authentication of
-   publisher and subscriber, respectively.  FIXME: This is not entirely
-   clear.  Please elaborate.
-
-
-
-
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 30]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
 3.5.3.  Threat Analysis and Mitigation
 
    We now analyze the potential threats relevant to this scenario.
+
+
+
+
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 30]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
 3.5.3.1.  T1:The broker illegitimately modifies a message
 
@@ -1729,20 +1725,19 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            resulting from a broker sending old messages, or reordering
            messages, from the same publisher to the same subscriber, the
            message may integrity protect a freshness parameter
-
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 31]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
            (timestamp, counter, etc.), from which the age/order can be
            deduced (replay/reordering protection).
 
    T1:5.6  The broker colludes with a legitimate subscriber having
            access to the key used to create Message Authentication Codes
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 31]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
            (MAC) of publications, in order to generate a valid MAC of a
            modified publication.
 
@@ -1786,19 +1781,18 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            so applications should have a readiness for this kind of
            issue.
 
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 32]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    T3:5.3  The broker delays forwarding of a received publication
 
            Delayed forwarding may be a denial-of-service attack, similar
            to not forwarding.  Certain delays may be legitimate, so it
            may be difficult to detect and mitigate.
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 32]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
    T3:5.4  The broker reorders the publications
 
@@ -1841,15 +1835,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
          resource representation is older than a previously received
          representation of this resource (T1:5.5, T2:5.1, T3:5.4)
 
-
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 33]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    R5.5  The representation must be integrity protected and encrypted
          from publisher to subscriber.  (T1:5.1, T1:5.5, T2:5.2, T4:5.1)
 
@@ -1857,6 +1842,13 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
          subscriber, asymmetric cryptography must be used.  (T1:5.6)
 
    The security non-requirements of the pub-sub scenario are:
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 33]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
    NR5.1  The subscription request is not protected (See Security
           Objectives)
@@ -1898,30 +1890,34 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    nodes can be limited, by confidentiality protecting as much as
    possible between the endpoints.
 
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 34]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
 5.  IANA Considerations
 
    This document includes no request to IANA.
+
+
+
+
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 34]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
 
 6.  References
 
 6.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
+              Requirement Levels", BCP 14, RFC 2119, DOI 10.17487/
+              RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
-              Application Protocol (CoAP)", RFC 7252,
-              DOI 10.17487/RFC7252, June 2014,
+              Application Protocol (CoAP)", RFC 7252, DOI 10.17487/
+              RFC7252, June 2014,
               <http://www.rfc-editor.org/info/rfc7252>.
 
    [RFC7258]  Farrell, S. and H. Tschofenig, "Pervasive Monitoring Is an
@@ -1929,8 +1925,8 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
               2014, <http://www.rfc-editor.org/info/rfc7258>.
 
    [RFC7641]  Hartke, K., "Observing Resources in the Constrained
-              Application Protocol (CoAP)", RFC 7641,
-              DOI 10.17487/RFC7641, September 2015,
+              Application Protocol (CoAP)", RFC 7641, DOI 10.17487/
+              RFC7641, September 2015,
               <http://www.rfc-editor.org/info/rfc7641>.
 
 6.2.  Informative References
@@ -1950,31 +1946,29 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
               mattsson-core-coap-actuators-00 (work in progress),
               October 2015.
 
-
-
-
-
-
-
-
-Hartke, et al.         Expires September 17, 2016              [Page 35]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    [I-D.tcs-coap-no-response-option]
               Bhattacharyya, A., Bandyopadhyay, S., Pal, A., and T.
               Bose, "CoAP option for no server-response", draft-tcs-
               coap-no-response-option-14 (work in progress), February
               2016.
 
+
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 35]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
    [RFC6347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
               Security Version 1.2", RFC 6347, DOI 10.17487/RFC6347,
               January 2012, <http://www.rfc-editor.org/info/rfc6347>.
 
    [RFC7228]  Bormann, C., Ersue, M., and A. Keranen, "Terminology for
-              Constrained-Node Networks", RFC 7228,
-              DOI 10.17487/RFC7228, May 2014,
+              Constrained-Node Networks", RFC 7228, DOI 10.17487/
+              RFC7228, May 2014,
               <http://www.rfc-editor.org/info/rfc7228>.
 
 Acknowledgments
@@ -2013,7 +2007,13 @@ Authors' Addresses
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 36]
+
+
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 36]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
@@ -2069,4 +2069,4 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-Hartke, et al.         Expires September 17, 2016              [Page 37]
+Hartke, et al.         Expires September 19, 2016              [Page 37]
