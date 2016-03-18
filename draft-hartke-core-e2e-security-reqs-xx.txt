@@ -209,7 +209,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    proxy (see [RFC7252]) and publish-subscribe broker (see
    [I-D.koster-core-coapmq]).  The precise functionality assumed by the
    intermediary nodes is defined by processing rules in the respective
-   scenario analyzed in this document (Section 3).
+   scenarios analyzed in this document (Section 3).
 
 
 
@@ -423,7 +423,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    Functional Requirement:
 
    o  Since each response is intended to be securely linked to a
-      particular request, the response should not be used with any other
+      particular request, the response must not be used with any other
       request.  Hence, as much as possible of the caching functionality
       must be inhibited.  Therefore the CoAP option Max-Age of the
       responses is set to 0 (see Section 5.7.1 of [RFC7252]).
@@ -704,10 +704,11 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    T4:1.4  The proxy stores all message exchanges and can, if long term
            keying material is compromised, read the whole history of the
-           corresponding interactions.
+           corresponding interactions.  TODO: reformulate this threat to
+           fit in the section (proxy illegitimately reads)
 
            To mitigate this requires a key exchange mechanism, providing
-           forward secrecy (PFS), for establishing the keys to use with
+           forward secrecy, for establishing the keys to use with
            application layer security.
 
 3.1.4.  Security Requirements
@@ -716,12 +717,11 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    for this scenario.  For each requirement and non-requirement, the
    associated threats are listed.  The security requirements are:
 
-   R1.1  The server must authenticate a message coming from a requesting
-         client (T1:1.1, T1:1.3, T1:1.5, T2:1.1)
+   R1.1   The server must authenticate a message coming from a
+          requesting client (T1:1.1, T1:1.3, T1:1.5, T2:1.1)
 
-   R1.2  The server must verify that it has not received this request
-         previously (T1:1.7, T3:1.3)
-
+   R1.2   The server must verify that it has not received this request
+          previously (T1:1.7, T3:1.3)
 
 
 
@@ -730,31 +730,33 @@ Hartke, et al.         Expires September 19, 2016              [Page 13]
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
-   R1.3  The client must verify that the received response originates
-         from the requested server (T1:1.2, T1:1.4, T1:1.6, T2:1.2)
+   R1.3   The client must verify that the received response originates
+          from the requested server (T1:1.2, T1:1.4, T1:1.6, T2:1.2)
 
-   R1.4  The client must verify that a response corresponds uniquely to
-         a previous request, that the client has made (T1:1.8, T3:1.4)
+   R1.4   The client must verify that a response corresponds uniquely to
+          a previous request, that the client has made (T1:1.8, T3:1.4)
 
-   R1.5  The payload must be integrity protected and encrypted, between
-         client and server (T1:1.1-6,T4:1.1, T2:1.3, T4:1.1, [RFC7258])
+   R1.5   The payload must be integrity protected and encrypted, between
+          client and server (T1:1.1-6,T4:1.1, T2:1.3, T4:1.1, [RFC7258])
 
-   R1.6  The CoAP options except Uri-* and Proxy-* must be integrity
-         protected in the request.  The request URI and proxy scheme
-         must be integrity protected in the request.  (T1:1.3)
+   R1.6   The CoAP options except Uri-* and Proxy-* must be integrity
+          protected in the request.  The request URI and proxy scheme
+          must be integrity protected in the request.  (T1:1.3)
 
-   R1.7  All CoAP options in the response must be integrity protected.
-         Max-Age must be set to 0 (T1:1.4)
+   R1.7   All CoAP options in the response must be integrity protected.
+          Max-Age must be set to 0 (T1:1.4)
 
-   R1.8  The CoAP options Uri-Host/Port and Proxy-Uri/Scheme of the
-         request must not be encrypted.  The Max-Age option of the
-         response must not be encrypted.  All other options must be
-         encrypted.  (T4:1.2)
+   R1.8   The CoAP options Uri-Host/Port and Proxy-Uri/Scheme of the
+          request must not be encrypted.  The Max-Age option of the
+          response must not be encrypted.  All other options must be
+          encrypted.  (T4:1.2)
 
-   R1.9  The CoAP header fields Version and Code must be integrity
-         protected in requests and responses.  All other header fields
-         must not be integrity protected.  The header fields must not be
-         encrypted.  (T1:1.5, T4:1.3)
+   R1.9   The CoAP header fields Version and Code must be integrity
+          protected in requests and responses.  All other header fields
+          must not be integrity protected.  The header fields must not
+          be encrypted.  (T1:1.5, T4:1.3)
+
+   R1.10  TODO: add requirement related to T4:1.4
 
    The security non-requirements of this scenario are:
 
@@ -776,8 +778,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    This functionality protects communication-constrained servers from
    repeated requests from the same client, and thus saves system
    resources and bandwidth.  This is useful in security critical
-   monitoring scenarios, where time synchronization cannot be
-   guaranteed.
 
 
 
@@ -785,6 +785,9 @@ Hartke, et al.         Expires September 19, 2016              [Page 14]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
+
+   monitoring scenarios, where time synchronization cannot be
+   guaranteed.
 
                   Client          Proxy          Server
                     |               |               |
@@ -834,9 +837,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
 
-
-
-
 Hartke, et al.         Expires September 19, 2016              [Page 15]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
@@ -854,8 +854,8 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    SO2.1  The client is able to verify, that the received response
           originates from the requested server and resource, that it has
-          not been altered in transfer, and that it was generated as
-          one, in a sequence of responses to the request.
+          not been altered in transfer, and that it was generated as one
+          in a sequence of responses to the request.
 
    SO2.2  The client is able to verify the order of the responses, and
           if a response is missing.
@@ -1178,7 +1178,7 @@ Hartke, et al.         Expires September 19, 2016              [Page 21]
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
-            then it may trick the client into believing, that this is a
+            then it may trick the client into believing that this is a
             fresh response.  Since the proxy is entitled to make such
             changes, this is not possible to prevent.  The server may
             however provide other freshness information (timestamp,
@@ -1616,7 +1616,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    Subscribers can make a GET request with the Observe option to the
    topic URI at the broker, in order to initiate the subscription on the
-   topic.  The broker provides a notification, in the form the stored
+   topic.  The broker provides a notification, in the form of a stored
    representation, as response to the request.  Further publications of
 
 
@@ -1882,7 +1882,7 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    therefore valuable targets for signal intelligence agencies.
    Pervasive monitoring is an attack [RFC7258], and the effect of
    collecting and correlating information from multitude of proxies must
-   to be mitigated.
+   be mitigated.
 
    Related to this, it is needed to delete all historical information
    from all nodes handling the plaintext data and meta-data, in order to
@@ -1911,13 +1911,13 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 6.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119, DOI 10.17487/
-              RFC2119, March 1997,
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
-              Application Protocol (CoAP)", RFC 7252, DOI 10.17487/
-              RFC7252, June 2014,
+              Application Protocol (CoAP)", RFC 7252,
+              DOI 10.17487/RFC7252, June 2014,
               <http://www.rfc-editor.org/info/rfc7252>.
 
    [RFC7258]  Farrell, S. and H. Tschofenig, "Pervasive Monitoring Is an
@@ -1925,8 +1925,8 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
               2014, <http://www.rfc-editor.org/info/rfc7258>.
 
    [RFC7641]  Hartke, K., "Observing Resources in the Constrained
-              Application Protocol (CoAP)", RFC 7641, DOI 10.17487/
-              RFC7641, September 2015,
+              Application Protocol (CoAP)", RFC 7641,
+              DOI 10.17487/RFC7641, September 2015,
               <http://www.rfc-editor.org/info/rfc7641>.
 
 6.2.  Informative References
@@ -1967,8 +1967,8 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
               January 2012, <http://www.rfc-editor.org/info/rfc6347>.
 
    [RFC7228]  Bormann, C., Ersue, M., and A. Keranen, "Terminology for
-              Constrained-Node Networks", RFC 7228, DOI 10.17487/
-              RFC7228, May 2014,
+              Constrained-Node Networks", RFC 7228,
+              DOI 10.17487/RFC7228, May 2014,
               <http://www.rfc-editor.org/info/rfc7228>.
 
 Acknowledgments

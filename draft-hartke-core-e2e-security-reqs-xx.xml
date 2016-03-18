@@ -263,7 +263,7 @@
         and publish-subscribe broker (see
         <xref target="I-D.koster-core-coapmq"/>).  The precise functionality 
 	assumed by the intermediary nodes is defined by processing rules in the 
-	respective scenario analyzed in this document (<xref
+	respective scenarios analyzed in this document (<xref
 	target="analysis"/>).
       </t>
       
@@ -525,7 +525,7 @@
           <list style="symbols">
             <t>
               Since each response is intended to be securely linked to a 
-	      particular request, the response should not be used with any 
+	      particular request, the response must not be used with any 
 	      other request.  Hence, as much as possible of the caching 
 	      functionality must be inhibited.  Therefore the CoAP option 
 	      Max-Age of the responses is set to 0 (see Section 5.7.1 of 
@@ -857,9 +857,11 @@
                   The proxy stores all message exchanges and can, if long
                   term keying material is compromised, read the whole history
                   of the corresponding interactions.
+                  TODO: reformulate this threat to fit in the section (proxy 
+                  illegitimately reads)
                   <vspace blankLines="1"/>
                   To mitigate this requires a key exchange mechanism, providing
-		  forward secrecy (PFS), for establishing the keys to use with
+		  forward secrecy, for establishing the keys to use with
 		  application layer security.
                 </t>
 
@@ -931,6 +933,9 @@
 		encrypted. (T1:1.5, T4:1.3)
               </t>
               
+              <t>
+                TODO: add requirement related to T4:1.4
+              </t>
               
             </list>
             
@@ -1063,7 +1068,7 @@
                 The client is able to verify, that the received response
                 originates from the requested server and resource,
                 that it has not been altered in transfer, and that it was
-                generated as one, in a sequence of responses to the request.
+                generated as one in a sequence of responses to the request.
               </t>
               <t>
                 The client is able to verify the order of the responses, and if
@@ -1437,7 +1442,7 @@ Client B           |               |
                   This is not necessarily a threat.  The proxy is supposed to
                   send a cached response, if fresh.  However, if the proxy
                   serves a stale response and manipulates the Max-Age option,
-                  then it may trick the client into believing, that this is a
+                  then it may trick the client into believing that this is a
 		  fresh response.  Since the proxy is entitled to make such
 		  changes, this is not possible to prevent.  The server may
 		  however provide other freshness information (timestamp,
@@ -1936,7 +1941,7 @@ Client A           |  |            |
         <t>
           Subscribers can make a GET request with the Observe option to the 
 	  topic URI at the broker, in order to initiate the subscription on the
-	  topic.  The broker provides a notification, in the form the stored
+	  topic.  The broker provides a notification, in the form of a stored
 	  representation, as response to the request. Further publications of
 	  representations to this URI are provided as notification responses to
 	  the subscription request.
@@ -2308,7 +2313,7 @@ Client A           |  |            |
         therefore valuable targets for signal intelligence agencies.
         Pervasive monitoring is an attack <xref target="RFC7258"/>, and the 
 	effect of collecting and correlating information from multitude of 
-	proxies must to be mitigated.
+	proxies must be mitigated.
       </t>
       
       <t>
