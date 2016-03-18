@@ -73,7 +73,7 @@ Table of Contents
        3.1.3.  Threat Analysis and Mitigation  . . . . . . . . . . .  10
        3.1.4.  Security Requirements . . . . . . . . . . . . . . . .  13
      3.2.  One Request - Multiple Responses  . . . . . . . . . . . .  14
-       3.2.1.  Processing Rules  . . . . . . . . . . . . . . . . . .  15
+       3.2.1.  Processing Rules  . . . . . . . . . . . . . . . . . .  16
        3.2.2.  Security Objectives . . . . . . . . . . . . . . . . .  16
        3.2.3.  Threat Analysis and Mitigation  . . . . . . . . . . .  16
        3.2.4.  Security Requirements . . . . . . . . . . . . . . . .  17
@@ -93,7 +93,7 @@ Table of Contents
        3.5.3.  Threat Analysis and Mitigation  . . . . . . . . . . .  30
        3.5.4.  Security Requirements . . . . . . . . . . . . . . . .  33
    4.  Security Considerations . . . . . . . . . . . . . . . . . . .  34
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  34
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  35
    6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  35
      6.1.  Normative References  . . . . . . . . . . . . . . . . . .  35
      6.2.  Informative References  . . . . . . . . . . . . . . . . .  35
@@ -702,14 +702,14 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            information about what RESTful action is requested.  This
            information leakage is difficult to mitigate.
 
-   T4:1.4  The proxy stores all message exchanges and can, if long term
-           keying material is compromised, read the whole history of the
-           corresponding interactions.  TODO: reformulate this threat to
-           fit in the section (proxy illegitimately reads)
+   T4:1.4  The proxy reads and stores all message exchanges and can
+           deduce information about the entire history of the
+           corresponding interactions.
 
-           To mitigate this requires a key exchange mechanism, providing
-           forward secrecy, for establishing the keys to use with
-           application layer security.
+           This threat can be mitigated with encrypting as much as
+           possible of the data transferred between client and server.
+           The case of long term key compromise can be mitigated with
+           forward secrecy.
 
 3.1.4.  Security Requirements
 
@@ -756,7 +756,8 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
           must not be integrity protected.  The header fields must not
           be encrypted.  (T1:1.5, T4:1.3)
 
-   R1.10  TODO: add requirement related to T4:1.4
+   R1.10  The communication protocol must provide forward secrecy.
+          (T4:1.4)
 
    The security non-requirements of this scenario are:
 
@@ -777,7 +778,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    scenario, but where there may be multiple responses for each request.
    This functionality protects communication-constrained servers from
    repeated requests from the same client, and thus saves system
-   resources and bandwidth.  This is useful in security critical
 
 
 
@@ -786,6 +786,7 @@ Hartke, et al.         Expires September 19, 2016              [Page 14]
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
+   resources and bandwidth.  This is useful in security critical
    monitoring scenarios, where time synchronization cannot be
    guaranteed.
 
@@ -829,10 +830,9 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    o  The same functional requirement apply as in the previous scenario
       (Section 3.1).
 
-3.2.1.  Processing Rules
 
-   The processing rules are identical to PR 1.1 - 1.3 of the previous
-   scenario (Section 3.1.1).
+
+
 
 
 
@@ -841,6 +841,11 @@ Hartke, et al.         Expires September 19, 2016              [Page 15]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
+
+3.2.1.  Processing Rules
+
+   The processing rules are identical to PR 1.1 - 1.3 of the previous
+   scenario (Section 3.1.1).
 
 3.2.2.  Security Objectives
 
@@ -885,11 +890,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    (Section 3.1.3.2).  T2:1.3 can be mitigated with the additional
    replay/reordering protection of responses as mentioned in
    Section 3.2.3.1.
-
-
-
-
-
 
 
 
@@ -1305,6 +1305,16 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            operations.  Information leaking that can be inferred from
            such data cannot be prevented.
 
+   T4:3.3  The proxy reads and stores all message exchanges and can
+           deduce information about the entire history of resource
+           access.
+
+           Since the cache key and other metadata is not in scope of the
+           security objectives, the mitigation is restricted to
+           encrypting the resource representations.  The case of long
+           term key compromise would nevertheless reveal the history of
+           the resource, but this can be mitigated with forward secrecy.
+
 3.3.4.  Security Requirements
 
    This section contains the security requirements and non-requirements
@@ -1328,16 +1338,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    R3.5  The representation must be integrity protected and encrypted
          from the server to the client (T1:3.2, T1:3.11, T2:3.3, T4:3.1)
 
-   R3.6  To protect against the proxy colluding with an authorized
-         client, asymmetric cryptography must be used (T1:3.11)
-
-   The security non-requirements of the caching scenario are:
-
-   NR3.1  The request is not protected (See Security Objectives)
-
-   NR3.2  The header and options of the response are not protected (See
-          Security Objectives, compare R3.3)
-
 
 
 
@@ -1345,6 +1345,19 @@ Hartke, et al.         Expires September 19, 2016              [Page 24]
 
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
+
+   R3.6  To protect against the proxy colluding with an authorized
+         client, asymmetric cryptography must be used (T1:3.11)
+
+   R3.7  The communication protocol must provide forward secrecy.
+         (T4:3.3)
+
+   The security non-requirements of the caching scenario are:
+
+   NR3.1  The request is not protected (See Security Objectives)
+
+   NR3.2  The header and options of the response are not protected (See
+          Security Objectives, compare R3.3)
 
    NR3.3  The proxy may eavesdrop on metadata, including the cache key,
           or by making requests on behalf of alleged clients (T2:3.1,
@@ -1374,19 +1387,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    In addition to multiple clients' requests being served by one
    response, each request may result in multiple responses.
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1813,6 +1813,17 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
            Information leaking that can be inferred from such data
            cannot be prevented.
 
+   T4:5.3  The broker reads and stores all publications and can deduce
+           information about the entire history of the publications and
+           subscriptions
+
+           Since the protection of metadata related to subscription and
+           publication is not in scope of the security objectives, the
+           mitigation is restricted to encrypting the resource
+           representations.  The case of long term key compromise would
+           nevertheless reveal the history of a publication, but this
+           can be mitigated with forward secrecy.
+
 3.5.4.  Security Requirements
 
    This section contains the security requirements and non-requirements
@@ -1831,6 +1842,14 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    R5.3  The subscriber must be able to verify the content format of the
          representation (T1:5.2)
 
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 33]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
    R5.4  The subscriber must be able to detect that the received
          resource representation is older than a previously received
          representation of this resource (T1:5.5, T2:5.1, T3:5.4)
@@ -1841,14 +1860,10 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    R5.6  To protect against the proxy colluding with an authorized
          subscriber, asymmetric cryptography must be used.  (T1:5.6)
 
+   R5.7  The communication protocol must provide forward secrecy.
+         (T4:5.3)
+
    The security non-requirements of the pub-sub scenario are:
-
-
-
-Hartke, et al.         Expires September 19, 2016              [Page 33]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
 
    NR5.1  The subscription request is not protected (See Security
           Objectives)
@@ -1884,6 +1899,13 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    collecting and correlating information from multitude of proxies must
    be mitigated.
 
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 34]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
    Related to this, it is needed to delete all historical information
    from all nodes handling the plaintext data and meta-data, in order to
    avoid information leakage.  The impact of this on the intermediary
@@ -1894,30 +1916,18 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
    This document includes no request to IANA.
 
-
-
-
-
-
-
-
-Hartke, et al.         Expires September 19, 2016              [Page 34]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
 6.  References
 
 6.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
+              Requirement Levels", BCP 14, RFC 2119, DOI 10.17487/
+              RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
-              Application Protocol (CoAP)", RFC 7252,
-              DOI 10.17487/RFC7252, June 2014,
+              Application Protocol (CoAP)", RFC 7252, DOI 10.17487/
+              RFC7252, June 2014,
               <http://www.rfc-editor.org/info/rfc7252>.
 
    [RFC7258]  Farrell, S. and H. Tschofenig, "Pervasive Monitoring Is an
@@ -1925,8 +1935,8 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
               2014, <http://www.rfc-editor.org/info/rfc7258>.
 
    [RFC7641]  Hartke, K., "Observing Resources in the Constrained
-              Application Protocol (CoAP)", RFC 7641,
-              DOI 10.17487/RFC7641, September 2015,
+              Application Protocol (CoAP)", RFC 7641, DOI 10.17487/
+              RFC7641, September 2015,
               <http://www.rfc-editor.org/info/rfc7641>.
 
 6.2.  Informative References
@@ -1940,6 +1950,18 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
               in the Constrained Application Protocol (CoAP)", draft-
               koster-core-coapmq-00 (work in progress), July 2014.
 
+
+
+
+
+
+
+
+Hartke, et al.         Expires September 19, 2016              [Page 35]
+
+Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
+
+
    [I-D.mattsson-core-coap-actuators]
               Mattsson, J., Fornehed, J., Selander, G., and F.
               Palombini, "Controlling Actuators with CoAP", draft-
@@ -1952,23 +1974,13 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
               coap-no-response-option-14 (work in progress), February
               2016.
 
-
-
-
-
-
-Hartke, et al.         Expires September 19, 2016              [Page 35]
-
-Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
-
-
    [RFC6347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
               Security Version 1.2", RFC 6347, DOI 10.17487/RFC6347,
               January 2012, <http://www.rfc-editor.org/info/rfc6347>.
 
    [RFC7228]  Bormann, C., Ersue, M., and A. Keranen, "Terminology for
-              Constrained-Node Networks", RFC 7228,
-              DOI 10.17487/RFC7228, May 2014,
+              Constrained-Node Networks", RFC 7228, DOI 10.17487/
+              RFC7228, May 2014,
               <http://www.rfc-editor.org/info/rfc7228>.
 
 Acknowledgments
@@ -1996,18 +2008,6 @@ Authors' Addresses
    Email: goran.selander@ericsson.com
 
 
-   Francesca Palombini
-   Ericsson AB
-   SE-164 80 Stockholm
-   Sweden
-
-   Email: francesca.palombini@ericsson.com
-
-
-
-
-
-
 
 
 
@@ -2018,6 +2018,14 @@ Hartke, et al.         Expires September 19, 2016              [Page 36]
 Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
 
 
+   Francesca Palombini
+   Ericsson AB
+   SE-164 80 Stockholm
+   Sweden
+
+   Email: francesca.palombini@ericsson.com
+
+
    Ludwig Seitz
    SICS Swedish ICT AB
    Scheelevaegen 17
@@ -2025,14 +2033,6 @@ Internet-Draft  Requirements for CoAP End-To-End Security     March 2016
    Sweden
 
    Email: ludwig@sics.se
-
-
-
-
-
-
-
-
 
 
 

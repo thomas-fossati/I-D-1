@@ -854,15 +854,16 @@
                 </t>
                 
                 <t>
-                  The proxy stores all message exchanges and can, if long
-                  term keying material is compromised, read the whole history
-                  of the corresponding interactions.
-                  TODO: reformulate this threat to fit in the section (proxy 
-                  illegitimately reads)
+                  The proxy reads and stores all message exchanges and can
+                  deduce information about the entire history of the corresponding
+                  interactions.
                   <vspace blankLines="1"/>
-                  To mitigate this requires a key exchange mechanism, providing
-		  forward secrecy, for establishing the keys to use with
-		  application layer security.
+                  This threat can be mitigated with encrypting as much as possible
+                  of the data transferred between client and server.
+                  The case of long term key compromise can be mitigated with
+                  forward secrecy.
+                  
+                  
                 </t>
 
               </list>
@@ -934,7 +935,7 @@
               </t>
               
               <t>
-                TODO: add requirement related to T4:1.4
+                The communication protocol must provide forward secrecy. (T4:1.4)
               </t>
               
             </list>
@@ -1595,6 +1596,20 @@ Client B           |               |
                   operations.  Information leaking that can be inferred from 
 		  such data cannot be prevented.
                 </t>
+                
+                <t>
+                  The proxy reads and stores all message exchanges and can
+                  deduce information about the entire history of resource
+                  access.
+                  <vspace blankLines="1"/>
+                  Since the cache key and other metadata is not in scope of the
+                  security objectives, the mitigation is restricted to encrypting
+                  the resource representations.
+                  The case of long term key compromise would nevertheless reveal
+                  the history of the resource, but this can be mitigated with
+                  forward secrecy.
+                </t>
+                
               </list>
             </t>
           </section>
@@ -1640,6 +1655,9 @@ Client B           |               |
               <t>
                 To protect against the proxy colluding with an authorized 
 		client, asymmetric cryptography must be used (T1:3.11)
+              </t>
+              <t>
+                The communication protocol must provide forward secrecy. (T4:3.3)
               </t>
             </list>
             The security non-requirements of the caching scenario are:
@@ -2192,6 +2210,21 @@ Client A           |  |            |
 		  Information leaking that can be inferred from such data 
 		  cannot be prevented.
                 </t>
+                
+                <t>
+                  The broker reads and stores all publications and can
+                  deduce information about the entire history of the publications
+                  and subscriptions
+                  <vspace blankLines="1"/>
+                  Since the protection of metadata related to subscription and
+                  publication is not in scope of the security objectives,
+                  the mitigation is restricted to encrypting
+                  the resource representations.
+                  The case of long term key compromise would nevertheless reveal
+                  the history of a publication, but this can be mitigated with
+                  forward secrecy.
+                </t>
+                
               </list>
             </t>
           </section>
@@ -2240,6 +2273,9 @@ Client A           |  |            |
               <t>
                 To protect against the proxy colluding with an authorized 
 		subscriber, asymmetric cryptography must be used.  (T1:5.6)
+              </t>
+              <t>
+                The communication protocol must provide forward secrecy. (T4:5.3)
               </t>
             </list>
             The security non-requirements of the pub-sub scenario are:
