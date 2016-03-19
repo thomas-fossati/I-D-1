@@ -27,20 +27,6 @@
     <front>
 
     <title>Requirements for CoAP End-To-End Security</title>
-   
-    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
-      <organization>Universitaet Bremen TZI</organization>
-      <address>
-        <postal>
-          <street>Postfach 330440</street>
-          <city>Bremen</city>
-          <code>28359</code>
-          <country>Germany</country>
-        </postal>
-        <phone>+49-421-218-63905</phone>
-        <email>hartke@tzi.org</email>
-      </address>
-    </author>
 
     <author initials="G." surname="Selander" fullname="Goeran Selander">
       <organization>Ericsson AB</organization>
@@ -65,6 +51,20 @@
           <country>Sweden</country>
         </postal>
         <email>francesca.palombini@ericsson.com</email>
+      </address>
+    </author>
+   
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
       </address>
     </author>
     
