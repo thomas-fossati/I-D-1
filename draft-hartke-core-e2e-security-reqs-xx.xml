@@ -284,11 +284,11 @@
       <figure anchor="fig-broker" 
               title="Security Association Between Publisher and Subscriber">
         <artwork align="center">
-<![CDATA[ ___________            __________            ____________
-|           |    >     |          |     <    |            |
-| Publisher |__________|  Broker  |__________| Subscriber |
-| (Client)  |          | (Server) |          |  (Client)  |
-|___________|    <     |__________|     >    |____________|
+<![CDATA[ ____________            __________            ___________
+|            |    >     |          |     <    |           |
+| Subscriber |__________|  Broker  |__________| Publisher |
+|  (Client)  |          | (Server) |          | (Client)  |
+|___________ |    <     |__________|     >    |___________|
      :                                              :
      '----------------------------------------------'
                    Security Association]]>
@@ -1903,40 +1903,41 @@ Client A           |               |
         
         <figure anchor="figure-4" title="Message Flow for Publish-Subscribe">
           <artwork align="center">
-<![CDATA[Publisher        Broker         Subscriber
-(Client)        (Server)        (Client A)
+<![CDATA[Subscriber       Broker          Publisher
+(Client A)      (Server)         (Client)
     |               |               |
-    |    Publish    |               |
-    |-------------->|--.            |
-    |               |  | to store   |
-    |<--------------|--'            |
-    |               |               |
-    |               |   Subscribe   |
+    |               |    Publish    |
     |            .--|<--------------|
-    | from store |  |               |
-    |            '->|-------------->|
-    |               | Notification  |
-    |               |
-    |               |           (Client B)
+    |   to store |  |               |
+    |            '--|-------------->|
     |               |               |
-    |               |   Subscribe   |
-    |            .--|<--------------|
-    | from store |  |               |
-    |            '->|-------------->|
-    |               | Notification  |
-    |               |               |
-    |    Publish    |               |
+    |   Subscribe   |               |
     |-------------->|--.            |
-    |               |  | to store   |
-    |<--------------|--'            |
+    |               |  | from store |
+    |<--------------|<-'            |
+    |  Notification |               |
+                    |               |
+(Client B)          |               |
     |               |               |
-    |               |-------------->|
-    |               | Notification  |
-    |               |
-    |               |           (Client A)
+    |   Subscribe   |               |
+    |-------------->|--.            |
+    |               |  | from store |
+    |<--------------|<-'            |
+    |  Notification |               |
     |               |               |
-    |               |-------------->|
-    |               | Notification  |
+    |               |    Publish    |
+    |            .--|<--------------|
+    |   to store |  |               |
+    |            '--|-------------->|
+    |               |               |
+    |<--------------|               |
+    |  Notification |               |
+    |               |               |
+                    |               |
+(Client A)          |               |
+    |               |               |
+    |<--------------|               |
+    |  Notification |               |
     |               |               |]]>
           </artwork>
         </figure>
