@@ -340,7 +340,7 @@
         and A2, for example: flooding a device with messages has impact on its 
         system resources, and successful manipulation of an actuator command, 
         carried in a message, has an impact on the physical environment.  We 
-        therefore add a fourth asset, which is the main target being evaluated
+        therefore define a fourth asset, which is the main target being evaluated
         in this document:
       </t>
       
@@ -363,7 +363,7 @@
         Internet than the sensors/actuators residing behind them.  A proxy may 
         become subject to intrusion or become infected by malware and perform 
         the attacks of a man-in-the-middle.  The attack vectors for 
-        compromising a proxy and the associated risks are out of scope for this
+        compromising a proxy are out of scope for this
         document.
       </t>
       
@@ -1990,26 +1990,44 @@ Client A           |               |
             </list>
           </t>
           
-          <t>
-            Since we are focusing on end-to-end security between publisher and
-            subscriber, the creation and deletion of topics and other
-            endpoint-to-broker operations are out of scope.
-          </t>
-          
-          
-          
         </section>
         
         <!-- *************************************************************** -->
         
         <section title="Security Objectives">
+          
+          <t>
+            In this scenario, there may be multiple publishers to one topic.
+            A security objective of the subscriber is to be able to verify
+            that a publication on a certain topic is from a publisher authorized
+            to publish on this topic. We assume in the follwing that this
+            authorization step consists of two parts:
+            <list style="symbols">
+              <t>
+                The subscriber verifies that the publication comes from a
+                certain publisher
+              </t>
+              <t>
+                The subscriber verifies that the publisher is
+                authorized to publish on the topic
+              </t>
+            </list>
+            The latter is out of scope for this document.
+          </t>
+          
+          <t>
+            Since we are focusing on end-to-end security between publisher and
+            subscriber, securing the creation and deletion of
+            topics and other endpoint-to-broker operations are out of scope.
+          </t>
+          
           <t>
             The security objectives for this scenario are:
             <list style="format SO5.%d">
               <t>
                 A subscriber is able to verify that a received response
-                contains a resource representation of a requested topic, that 
-                the publisher is authorized to publish to that topic, and
+                contains a resource representation by an authorized publisher,
+                and of a requested topic, and
                 that it has not been altered between publisher and subscriber.
               </t>
               
@@ -2022,8 +2040,9 @@ Client A           |               |
                 The publisher is able to protect a resource representation such
                 that only authorized subscribers can read the representation.
               </t>
-
+              
             </list>
+
           </t>
           
         </section>
