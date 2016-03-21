@@ -242,8 +242,8 @@
         change certain parts of a CoAP message as defined in <xref target="RFC7252"/>.
         For example, a forward proxy is defined to transform
         the Proxy-Uri option to Uri-Host, Uri-Port, Uri-Path and Uri-Query
-        options.  A proxy caching responses needs to read the Cache Key and is required to
-        change the Max-Age option in the responses.
+        options. A proxy caching responses needs to read the Cache Key and
+        must be able to change the Max-Age option in the responses.
       </t>
       
       <t>
@@ -1671,7 +1671,7 @@ Client B           |               |
               
               <t>
                 The proxy may eavesdrop on metadata (including the cache key) or
-                by making requests on behalf of alleged clients (T2:3.1, T4:3.2).
+                may make requests on behalf of alleged clients (T2:3.1, T4:3.2).
               </t>
               
               <t>
@@ -2002,7 +2002,7 @@ Client A           |               |
             A security objective of the subscriber is to be able to verify
             that a publication on a certain topic is from a publisher authorized
             to publish on this topic. In general that requires authentication
-            of publisher. How the subscriber knows which publishers are
+            of publication. How the subscriber knows which publications are
             authorized is out of scope.
           </t>
           
