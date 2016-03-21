@@ -2001,25 +2001,9 @@ Client A           |               |
             In this scenario, there may be multiple publishers to one topic.
             A security objective of the subscriber is to be able to verify
             that a publication on a certain topic is from a publisher authorized
-            to publish on this topic. We assume in the follwing that this
-            authorization step consists of two parts:
-            <list style="symbols">
-              <t>
-                The subscriber verifies that the publication comes from a
-                certain publisher
-              </t>
-              <t>
-                The subscriber verifies that the publisher is
-                authorized to publish on the topic
-              </t>
-            </list>
-            The latter is out of scope for this document.
-          </t>
-          
-          <t>
-            Since we are focusing on end-to-end security between publisher and
-            subscriber, securing the creation and deletion of
-            topics and other endpoint-to-broker operations are out of scope.
+            to publish on this topic. In general that requires authentication
+            of publisher. How the subscriber knows which publishers are
+            authorized is out of scope.
           </t>
           
           <t>
