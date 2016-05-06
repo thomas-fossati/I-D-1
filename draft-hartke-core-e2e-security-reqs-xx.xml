@@ -68,6 +68,7 @@
       </address>
     </author>
     
+    <!--
     <author initials="L." surname="Seitz" fullname="Ludwig Seitz">
       <organization>SICS Swedish ICT AB</organization>
       <address>
@@ -80,6 +81,7 @@
         <email>ludwig@sics.se</email>
       </address>
     </author>
+    -->
     
     <date />
 
@@ -2417,11 +2419,19 @@ Client A           |               |
     <!-- **************************************************************** -->
 
 
-    <section title="Acknowledgments" anchor="acknowledgments" numbered="no">
+    <section title="Acknowledgments" numbered="no">
+
+      <!-- sorted by last name -->
       <t>
-     The authors wish to thank John Mattsson and Ari Keranen for reviewing
-     early versions of the draft.
-     </t>
+        Thanks to
+        Ari Keranen,
+        John Mattsson,
+        Jim Schaad, and
+        Ludwig Seitz
+        for helpful comments and discussions that have shaped the
+        document.
+      </t>
+
     </section>
    
     <!-- **************************************************************** -->
