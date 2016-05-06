@@ -165,7 +165,8 @@
 
         <t>
           Readers are expected to be familiar with the terms and
-          concepts described in <xref target="RFC7252"/>.
+          concepts described in <xref target="RFC7252"/> and
+          <xref target="RFC7641"/>.
         </t>
 
         <!--
