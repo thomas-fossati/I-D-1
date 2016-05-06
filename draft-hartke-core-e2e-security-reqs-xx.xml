@@ -20,7 +20,7 @@
 <?rfc subcompact="no"?>
 <?rfc symrefs="yes"?>
 <?rfc toc="yes"?>
-<?rfc tocdepth="3"?>
+<?rfc tocdepth="4"?>
 
 <rfc category="info" docName="draft-hartke-core-e2e-security-reqs-01" ipr="trust200902">
     
@@ -195,6 +195,725 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
+    <section title="Scope and Assumptions"></section>
+    
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Proxying" anchor="proxying">
+
+      <figure anchor="fig-hopbyhop" title="Hop-by-Hop Security">
+        <artwork align="left">
+<![CDATA[     __________       _________       _________       __________
+    |          |     |         |     |         |     |          |
+    |          |---->|         |---->|         |---->|          |
+    |  Client  |     |  Proxy  |     |  Proxy  |     |  Server  |
+    |          |<----|         |<----|         |<----|          |
+    |__________|     |_________|     |_________|     |__________|
+          :             :   :           :   :             :
+          '-------------'   '-----------'   '-------------'
+             Security         Security         Security
+            Association      Association      Association
+                 A                B                C]]>
+        </artwork>
+      </figure>
+
+      <t>
+        <vspace blankLines="3"/>
+      </t>
+
+      <figure anchor="fig-endtoend" title="End-to-End Security">
+        <artwork align="left">
+<![CDATA[     __________       _________       _________       __________
+    |          |     |         |     |         |     |          |
+    |          |---->|         |---->|         |---->|          |
+    |  Client  |     |  Proxy  |     |  Proxy  |     |  Server  |
+    |          |<----|         |<----|         |<----|          |
+    |__________|     |_________|     |_________|     |__________|
+          :                                               :
+          '-----------------------------------------------'
+                        Security Association]]>
+        </artwork>
+      </figure>
+
+      <t>
+        <vspace blankLines="100"/>
+      </t>
+
+      <!-- **************************************************************** -->
+
+      <section title="Threats and Security Requirements">
+
+        <section title="Client">
+
+          <figure anchor="fig-client" title="The Client End">
+            <artwork align="left">
+<![CDATA[     __________             __ _ _
+    |          | Request   |
+    |          |---------->|
+    |  Client  |           |   Proxy
+    |          |<----------|
+    |__________|  Response |__ _ _]]>
+            </artwork>
+          </figure>
+
+          <t>
+            The client sends a request to the proxy and waits for a
+            response.
+          </t>
+          <t>
+            From the perspective of the client, there are four possible
+            flows:
+            <list style="symbols">
+              <t>
+                The client receives a response.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    The proxy duly processed the request and returns a
+                    response based on data it obtained from the origin
+                    server.
+                  </t>
+                  <t>
+                    The proxy encountered an unexpected condition and
+                    returns an error response (e.g., 5.02 Bad Gateway
+                    or 5.04 Gateway Timeout) according to specification.
+                  </t>
+                  <t>
+                    (Threat 1:) The proxy spoofs a response.
+                  </t>
+                </list>
+              </t>
+              <t>
+                The client does not receive a response.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    The client times out too early.
+                  </t>
+                  <t>
+                    (Threat 2:) The proxy withholds the response.
+                  </t>
+                </list>
+              </t>
+              <t>
+                The client receives too many responses.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    (Threat 3:) The proxy floods the client with
+                    responses.
+                  </t>
+                </list>
+              </t>
+            </list>
+            This is repeated as often as needed when the client
+            observes a resource.
+          </t>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+          <section title="Threat 1: Spoofing">
+            <t>
+              With one exception (see below), this threat is REQUIRED
+              to be mitigated by the security solution: the client MUST
+              verify that the response is an
+              <spanx>authentic response</spanx> before processing it.
+            </t>
+            <t>
+              The definition of an "authentic response"
+              depends on the scenario
+              (<xref target="proxy-scenarios"/>),
+              but usually means that the client can obtain proof for
+              some or all of the following things:
+              <list style="symbols">
+                <t>that the requested action was executed by the origin server;</t>
+                <t>that the data originates from the origin server and has not been altered on the way;</t>
+                <t>that the data matches the specifications of the request (such as the target resource);</t>
+                <t>that the data is fresh (when the data is cacheable);</t>
+                <t>that the data is in sequence (when observing a resource).</t>
+              </list>
+              The proof can, for example, involve a message
+              authentication code that the proxy obtains from the origin
+              server and includes in the response or an additional
+              challenge-response roundtrip.
+            </t>
+            <t>
+              Note that a CoAP proxy is specified to return an error
+              response (such as 5.02 Bad Gateway or 5.04 Gateway
+              Timeout) when it encounters an error condition. Since the
+              condition occurs at the proxy and not at the origin
+              server, the response will not be an "authentic response"
+              according to the above definition. Thus a client cannot
+              tell if the proxy sends the response according to
+              specification or if it spoofs the response.
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution.
+            </t>
+          </section>
+
+          <section title="Threat 2: Withholding">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution.
+            </t>
+          </section>
+
+          <section title="Threat 3: Flooding">
+            <t>
+              A CoAP client is specified to reject any response that
+              it does not expect. This can happen before the client
+              verifies if the response is authentic.
+              Therefore a flood of responses is primarily a threat to
+              the system resources of the client, in particular to its
+              energy.
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution in particular, but a client SHOULD
+              generally defend against flooding attacks.
+            </t>
+            <t>
+              <vspace blankLines="100"/>
+            </t>
+          </section>
+
+        </section>
+
+        <section title="Server">
+
+          <figure anchor="fig-server" title="The Server End">
+            <artwork align="left">
+<![CDATA[                                 _ _ __             __________
+                                       | Request   |          |
+                                       |---------->|          |
+                               Proxy   |           |  Server  |
+                                       |<----------|          |
+                                 _ _ __|  Response |__________|]]>
+            </artwork>
+          </figure>
+
+          <t>
+            A server listens for a request and returns a response.
+          </t>
+          <t>
+            From the perspective of the server, there are three possible
+            flows:
+            <list style="symbols">
+              <t>
+                The server receives a request.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    The proxy sends a request according to
+                    specification.
+                  </t>
+                  <t>
+                    (Threat 4:) The proxy spoofs a request.
+                  </t>
+                </list>
+              </t>
+              <t>
+                The server does not receive a request.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    The proxy does not need to send a request.
+                  </t>
+                  <t>
+                    (Threat 5:) The proxy withholds a request.
+                  </t>
+                </list>
+              </t>
+              <t>
+                The server receives too many requests.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    (Threat 6:) The proxy floods the server with
+                    requests.
+                  </t>
+                </list>
+              </t>
+            </list>
+          </t>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+          <section title="Threat 4: Spoofing">
+            <t>
+              This threat is REQUIRED to be mitigated by the security
+              solution: the server MUST verify that the request is an
+              <spanx>authentic request</spanx> before processing it.
+            </t>
+            <t>
+              The definition of an "authentic request"
+              depends on the scenario
+              (<xref target="proxy-scenarios"/>),
+              but usually means that the server can obtain proof for
+              some or all of the following things:
+              <list style="symbols">
+                <t>that the proxy acts on behalf of a client;</t>
+                <t>that the data originates from the client and has not been altered on the way;</t>
+                <t>that the request has not been received so far;</t>
+                <t>that the data has been generated by the client not too long ago.</t>
+              </list>
+              The proof can, for example, involve a message
+              authentication code that the proxy obtains from the
+              client and includes in the request or a
+              challenge-response roundtrip.
+            </t>
+          </section>
+
+          <section title="Threat 5: Withholding">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution because a CoAP server cannot detect if
+              the proxy does not send a request because it has no work
+              to do or if it withholds a request.
+            </t>
+          </section>
+
+          <section title="Threat 6: Flooding">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution in particular, but a server SHOULD
+              generally defend against flooding attacks.
+            </t>
+            <t>
+              <vspace blankLines="100"/>
+            </t>
+          </section>
+
+        </section>
+
+        <section title="Proxy">
+
+          <figure anchor="fig-proxy" title="A Proxy">
+            <artwork align="left">
+<![CDATA[         _ _ __             ___________             __ _ _
+               | Request   |           | Request   |
+       Client  |---------->|           |---------->|  Server
+         or    |           |   Proxy   |           |    or
+       Proxy   |<----------|           |<----------|  Proxy
+         _ _ __|  Response |___________|  Response |__ _ _]]>
+            </artwork>
+          </figure>
+
+          <t>
+            The proxy receives a request from the client and sends a
+            response back to the client. There are two ways for the
+            proxy to do this:
+            <list style="symbols">
+              <t>
+                The proxy constructs and sends a request to the server,
+                receives a response from the server and uses the
+                received data to construct the response to the client.
+              </t>
+              <t>
+                The proxy uses cached data to construct the response to
+                the client.
+              </t>
+            </list>
+            In both cases, the proxy needs to read some parts of the
+            request from the client and the response from the server
+            to accomplish its task.
+          </t>
+
+          <t>
+            There are the following threats:
+            <list style="symbols">
+              <t>(Threat 7:) The proxy reads the data in the request from the client and in the response from the server.</t>
+              <t>(Threat 8:) The proxy measures the frequency and distribution of incoming requests and outgoing responses.</t>
+              <t>(Threat 9:) The proxy stores data from an attacker in its cache (cache poisoning).</t>
+            </list>
+          </t>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+          <section title="Threat 7: Reading">
+            <t>
+              This threat is REQUIRED to be mitigated by the security
+              solution: clients and servers MUST protect the data in
+              the requests and responses they're sending with
+              Authenticated Encryption.
+            </t>
+            <t>
+              Note that this requirement is in conflict with the
+              requirement that the proxy needs to be able to read some
+              parts of the requests and responses in order to accomplish
+              its task. Which parts can be encrypted and/or
+              integrity-protected depends on the scenario
+              (<xref target="proxy-scenarios"/>).
+            </t>
+            <!-- TODO: forward secrecy -->
+          </section>
+
+          <section title="Threat 8: Measuring">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution.
+            </t>
+          </section>
+
+          <section title="Threat 9: Poisoning">
+            <t>
+              TODO.
+            </t>
+            <t>
+              <vspace blankLines="100"/>
+            </t>
+          </section>
+
+        </section>
+
+      </section>
+
+      <!-- **************************************************************** -->
+
+      <section title="Scenarios" anchor="proxy-scenarios">
+
+        <section title="One Request - One Response"></section>
+        <section title="One Request - Multiple Responses"></section>
+        <section title="Multiple Requests - One Response"></section>
+        <section title="Multiple Requests - Multiple Responses"><t><vspace blankLines="100"/></t></section>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Publish-Subscribe">
+
+      <t>
+        Applying <xref target="proxying"/> to Publish-Subscribe results
+        in <xref target="fig-pubsub-endtoend"/>.
+      </t>
+
+      <figure anchor="fig-pubsub-endtoend" title="End-to-End Security">
+        <artwork align="left">
+<![CDATA[     ___________      _      __________      _      ____________
+    |           |    | |    |          |    | |    |            |
+    |           |--->| |--->|          |<---| |<---|            |
+    | Publisher |    | |    |  Broker  |    | |    | Subscriber |
+    |           |<---| |<---|          |--->| |--->|            |
+    |___________|    |_|    |__________|    |_|    |____________|
+          :         Proxy       :  :       Proxy         :
+          :                     :  :                     :
+          '---------------------'  '---------------------'
+                  Security               Security
+                 Association            Association
+                      A                      B]]>
+        </artwork>
+      </figure>
+
+      <t>
+        This section is about <xref target="fig-pubsub-ptos"/>.
+      </t>
+
+      <figure anchor="fig-pubsub-ptos" title="Publisher-to-Subscriber Security">
+        <artwork align="left">
+<![CDATA[     ___________      _      __________      _      ____________
+    |           |    | |    |          |    | |    |            |
+    |           |--->| |--->|          |<---| |<---|            |
+    | Publisher |    | |    |  Broker  |    | |    | Subscriber |
+    |           |<---| |<---|          |--->| |--->|            |
+    |___________|    |_|    |__________|    |_|    |____________|
+          :         Proxy                  Proxy         :
+          :                                              :
+          '----------------------------------------------'
+                        Security Association]]>
+        </artwork>
+      </figure>
+
+      <t>
+        (But note that a key aspect of pub-sub is that the subscribers
+        do not know the publishers and the publishers do not know the
+        subscribers. They only have to know the broker. In
+        <xref target="fig-pubsub-ptos"/> all subscribers have to know
+        all publishers. That doesn't scale.)
+      </t>
+
+      <t>
+        <vspace blankLines="100"/>
+      </t>
+
+      <!-- **************************************************************** -->
+
+      <section title="Threats and Security Requirements">
+
+        <section title="Publisher">
+
+          <figure anchor="fig-publisher" title="The Publisher End">
+            <artwork align="left">
+<![CDATA[     ___________             __ _ _
+    |           | Request   |
+    |           |---------->|
+    | Publisher |           |  Broker
+    |           |<----------|
+    |___________|  Response |__ _ _]]>
+            </artwork>
+          </figure>
+
+          <t>
+            The publisher sends a request to the broker (possibly
+            via one or more proxies) and receives a response.
+          </t>
+          <t>
+            From the perspective of the publisher, are there any
+            requirements on the response?
+          </t>
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="Subscriber">
+
+          <figure anchor="fig-subscriber" title="The Subscriber End">
+            <artwork align="left">
+<![CDATA[                                 _ _ __             ____________
+                                       |   Request |            |
+                                       |<----------|            |
+                               Broker  |           | Subscriber |
+                                       |---------->|            |
+                                 _ _ __| Response  |____________|]]>
+            </artwork>
+          </figure>
+
+          <t>
+            The subscriber sends a request to the broker (possibly
+            via one or more proxies) and waits for a response.
+          </t>
+          <t>
+            From the perspective of the subscriber, there are four
+            possible flows:
+            <list style="symbols">
+              <t>
+                The subscriber receives a response.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    The broker duly processed the request and returns
+                    a response based on data it obtained from a
+                    publisher.
+                  </t>
+                  <t>
+                    The subscriber made a bad request and the broker
+                    returns an error response (e.g., 4.04 Not Found)
+                    accordingly.
+                  </t>
+                  <t>
+                    The broker encountered an unexpected condition and
+                    returns an error response (e.g., 5.03 Service
+                    Unavailable) accordingly.
+                  </t>
+                  <t>
+                    (Threat 1:) The broker spoofs a response.
+                  </t>
+                </list>
+              </t>
+              <t>
+                The subscriber does not receive a response.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    The subscriber times out too early.
+                  </t>
+                  <t>
+                    (Threat 2:) The broker withholds the response.
+                  </t>
+                </list>
+              </t>
+              <t>
+                The subscriber receives too many responses.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    (Threat 3:) The proxy floods the subscriber with
+                    responses.
+                  </t>
+                </list>
+              </t>
+            </list>
+            This is repeated as often as needed when the subscriber
+            observes a topic.
+          </t>
+
+          <!--<t>
+            <vspace blankLines="100"/>
+          </t>-->
+
+          <section title="Threat 1: Spoofing">
+            <t>
+              With one exception (see below), this threat is REQUIRED
+              to be mitigated by the security solution: the subscriber
+              MUST verify that the response is an
+              <spanx>authentic response</spanx> before processing it.
+            </t>
+            <t>
+              The definition of an "authentic response"
+              depends on the scenario
+              (<xref target="pubsub-scenarios"/>),
+              but usually means that the subscriber can obtain proof
+              for some or all of the following things:
+              <list style="symbols">
+                <t>that the data matches the specifications of the request (such as the topic);</t>
+                <t>that the data originates from a publisher that is authorized to publish to the topic;</t>
+                <t>that the data has not been altered on the way between publisher and subscriber;</t>
+                <t>that the data is fresh (when the data is cacheable);</t>
+                <t>that the data is in sequence (when observing a topic).</t>
+              </list>
+              The proof can, for example, involve a message
+              authentication code that the proxy obtains from the origin
+              server and includes in the response or an additional
+              challenge-response roundtrip.
+            </t>
+            <t>
+              Note that a CoAP server like the broker is specified to
+              return an error response (such as 4.04 Not Found or 5.03
+              Service Unavailable) when it encounters an error
+              condition. Since the condition occurs at the broker and
+              not at the publisher, the response will not be an
+              "authentic response" according to the above definition.
+              Thus a subscriber cannot tell if the broker sends the
+              error response according to specification or if it spoofs
+              the response. This threat is NOT REQUIRED to be mitigated
+              by the security solution.
+            </t>
+          </section>
+
+          <section title="Threat 2: Withholding">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution.
+            </t>
+          </section>
+
+          <section title="Threat 3: Flooding">
+            <t>
+              A CoAP client like the subscriber is specified to reject
+              any response that it does not expect. This can happen
+              before the client verifies if the response is authentic.
+              Therefore a flood of responses is primarily a threat to
+              the system resources of the client, in particular to its
+              energy.
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution in particular, but a subscriber SHOULD
+              generally defend against flooding attacks.
+            </t>
+            <t>
+              <vspace blankLines="100"/>
+            </t>
+          </section>
+
+        </section>
+
+        <section title="Broker">
+
+          <figure anchor="fig-brokerend" title="A Broker">
+            <artwork align="left">
+<![CDATA[          _ _ __             __________             __ _ _
+                | Request   |          |   Request |
+                |---------->|          |<----------|
+      Publisher |           |  Broker  |           | Subscriber
+                |<----------|          |---------->|
+          _ _ __|  Response |__________| Response  |__ _ _]]>
+            </artwork>
+          </figure>
+
+          <t>
+            The broker receives a request from a publisher or a
+            subscriber (possibly via one or more proxies).
+            <list style="symbols">
+              <t>
+                If the request comes from a publisher, the broker
+                stores the data, notifies any subscribers and returns
+                a response to the publisher.
+              </t>
+              <t>
+                If the request comes from a subscriber, the broker
+                uses the previously stored data to construct a
+                response and returns the response to the client.
+              </t>
+            </list>
+            In both cases, the broker needs to read some parts of the
+            requests to accomplish its task.
+          </t>
+          <t>
+            There are the following threats:
+            <list style="symbols">
+              <t>(Threat 5:) The broker reads the data in the request from the publisher or the subscriber.</t>
+              <t>(Threat 6:) The broker measures the frequency and distribution of incoming requests.</t>
+              <t>(Threat 7:) The broker stores and notifies subscribers of data from an unauthorized publisher.</t>
+            </list>
+          </t>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+          <section title="Threat 5: Reading">
+            <t>
+              This threat is REQUIRED to be mitigated by the security
+              solution: publishers MUST protect the data in the requests
+              they're sending with Authenticated Encryption.
+            </t>
+            <t>
+              Note that this requirement is in conflict with the
+              requirement that the broker needs to be able to read some
+              parts of the requests in order to accomplish its task.
+              Which parts can be encrypted and/or
+              integrity-protected depends on the scenario
+              (<xref target="pubsub-scenarios"/>).
+            </t>
+          </section>
+
+          <section title="Threat 6: Measuring">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution.
+            </t>
+          </section>
+
+          <section title="Threat 7: Poisoning">
+            <t>
+              TODO.
+            </t>
+            <t>
+              <vspace blankLines="100"/>
+            </t>
+          </section>
+
+        </section>
+
+      </section>
+
+      <!-- **************************************************************** -->
+
+      <section title="Scenarios" anchor="pubsub-scenarios">
+
+        <section title="Multiple Requests - Multiple Responses"><t><vspace blankLines="100"/></t></section>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
 
     <section anchor="sec-cons" title="Security Considerations">
 
