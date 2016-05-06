@@ -854,9 +854,9 @@
           <t>
             There are the following threats:
             <list style="symbols">
-              <t>(Threat 5:) The broker reads the data in the request from the publisher or the subscriber.</t>
-              <t>(Threat 6:) The broker measures the frequency and distribution of incoming requests.</t>
-              <t>(Threat 7:) The broker stores and notifies subscribers of data from an unauthorized publisher.</t>
+              <t>(Threat 4:) The broker reads the data in the request from the publisher or the subscriber.</t>
+              <t>(Threat 5:) The broker measures the frequency and distribution of incoming requests.</t>
+              <t>(Threat 6:) The broker stores and notifies subscribers of data from an unauthorized publisher.</t>
             </list>
           </t>
 
@@ -864,7 +864,7 @@
             <vspace blankLines="100"/>
           </t>
 
-          <section title="Threat 5: Reading">
+          <section title="Threat 4: Reading">
             <t>
               This threat is REQUIRED to be mitigated by the security
               solution: publishers MUST protect the data in the requests
@@ -880,14 +880,14 @@
             </t>
           </section>
 
-          <section title="Threat 6: Measuring">
+          <section title="Threat 5: Measuring">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution.
             </t>
           </section>
 
-          <section title="Threat 7: Poisoning">
+          <section title="Threat 6: Poisoning">
             <t>
               TODO.
             </t>
