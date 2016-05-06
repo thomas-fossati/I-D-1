@@ -195,6 +195,104 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
+
+    <section anchor="sec-cons" title="Security Considerations">
+
+      <t>
+        A proxy or intermediary may be an aggregation point for message flows.
+        Therefore it is an attractive target, both from a security and privacy
+        point of view.
+      </t>
+      
+      <t>
+        Unless the security mechanisms provide forward secrecy, a
+        compromise of long term keying material means that an attacker can 
+        decrypt all previously sent information and can be directly used for
+        any kind of manipulation of the cyber-physical system.
+      </t>
+      
+      <t>
+        Therefore the key exchange mechanism used for establish keys to use with
+        application layer security must provide forward secrecy.
+      </t>
+      
+      <t>
+        Intermediary nodes are aggregation points also for metadata and
+        therefore valuable targets for signal intelligence agencies.
+        Pervasive monitoring is an attack <xref target="RFC7258"/> and the 
+        effect of collecting and correlating information from multitude of 
+        proxies must be mitigated.
+      </t>
+      
+      <t>
+        Related to this, it is needed to delete all historical information
+        from all nodes handling the plaintext data and metadata, in order
+        to avoid information leakage.  The impact of this on the intermediary
+        nodes can be limited by confidentiality protecting as much as
+        possible between the endpoints.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    
+
+    <section title="IANA Considerations">
+
+      <t>
+        This document includes no request to IANA.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC2119;
+
+      &RFC7252;
+      
+      &RFC7258;
+      
+      &RFC7641;
+
+    </references>
+
+    <references title="Informative References">
+
+      &RFC6347;
+
+      &RFC7228;
+      
+      &I-D.ietf-cose-msg;
+      
+      &I-D.mattsson-core-coap-actuators;
+      
+      &I-D.koster-core-coap-pubsub;
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
     <section title="Scope and Assumptions">
 
       <t>
@@ -2320,104 +2418,6 @@ Client A           |               |
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
-
-    <section anchor="sec-cons" title="Security Considerations">
-
-      <t>
-        A proxy or intermediary may be an aggregation point for message flows.
-        Therefore it is an attractive target, both from a security and privacy
-        point of view.
-      </t>
-      
-      <t>
-        Unless the security mechanisms provide forward secrecy, a
-        compromise of long term keying material means that an attacker can 
-        decrypt all previously sent information and can be directly used for
-        any kind of manipulation of the cyber-physical system.
-      </t>
-      
-      <t>
-        Therefore the key exchange mechanism used for establish keys to use with
-        application layer security must provide forward secrecy.
-      </t>
-      
-      <t>
-        Intermediary nodes are aggregation points also for metadata and
-        therefore valuable targets for signal intelligence agencies.
-        Pervasive monitoring is an attack <xref target="RFC7258"/> and the 
-        effect of collecting and correlating information from multitude of 
-        proxies must be mitigated.
-      </t>
-      
-      <t>
-        Related to this, it is needed to delete all historical information
-        from all nodes handling the plaintext data and metadata, in order
-        to avoid information leakage.  The impact of this on the intermediary
-        nodes can be limited by confidentiality protecting as much as
-        possible between the endpoints.
-      </t>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    
-
-    <section title="IANA Considerations">
-
-      <t>
-        This document includes no request to IANA.
-      </t>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-  </middle>
-
-  <back>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <references title="Normative References">
-
-      &RFC2119;
-
-      &RFC7252;
-      
-      &RFC7258;
-      
-      &RFC7641;
-
-    </references>
-
-    <references title="Informative References">
-
-      &RFC6347;
-
-      &RFC7228;
-      
-      &I-D.ietf-cose-msg;
-      
-      &I-D.mattsson-core-coap-actuators;
-      
-      &I-D.koster-core-coap-pubsub;
-
-    </references>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
 
     <section title="Acknowledgments" numbered="no">
 
