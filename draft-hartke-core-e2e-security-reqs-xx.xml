@@ -279,8 +279,8 @@
                   </t>
                   <t>
                     The proxy encountered an unexpected condition and
-                    returns an error response (e.g., 5.02 Bad Gateway
-                    or 5.04 Gateway Timeout) according to specification.
+                    returns an error response according to specification
+                    (e.g., 5.02 Bad Gateway or 5.04 Gateway Timeout).
                   </t>
                   <t>
                     (Threat 1:) The proxy spoofs a response.
@@ -762,13 +762,13 @@
                   </t>
                   <t>
                     The subscriber made a bad request and the broker
-                    returns an error response (e.g., 4.04 Not Found)
-                    accordingly.
+                    returns an error response accordingly (e.g., 4.04
+                    Not Found).
                   </t>
                   <t>
                     The broker encountered an unexpected condition and
-                    returns an error response (e.g., 5.03 Service
-                    Unavailable) accordingly.
+                    returns an error response accordingly (e.g., 5.03
+                    Service Unavailable).
                   </t>
                   <t>
                     (Threat 1:) The broker spoofs a response.
