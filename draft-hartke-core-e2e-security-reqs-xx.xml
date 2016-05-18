@@ -265,7 +265,7 @@
             response.
           </t>
           <t>
-            From the perspective of the client, there are four possible
+            From the perspective of the client, there are three possible
             flows:
             <list style="symbols">
               <t>
@@ -748,7 +748,7 @@
             via one or more proxies) and waits for a response.
           </t>
           <t>
-            From the perspective of the subscriber, there are four
+            From the perspective of the subscriber, there are three
             possible flows:
             <list style="symbols">
               <t>
