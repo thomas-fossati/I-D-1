@@ -379,11 +379,11 @@
               
               <list style="symbols">
                 <t>
-                  (Threat 7:) Data in the request from the client or the response
+                  (Threat 4:) Data in the request from the client or the response
                   from the server is eavesdropped by an intermediate node.
                 </t>
                 <t>
-                  (Threat 8:) Data in the request from the client or the
+                  (Threat 5:) Data in the request from the client or the
                   response from the server is used by an intermediate node to
                   infer information about the nature of the request from the
                   client or the response from the server e.g. by measuring the
@@ -468,7 +468,7 @@
               
             </section>
             
-            <section title="Threat 7: Eavesdropping" anchor="eavesdrop">
+            <section title="Threat 4: Eavesdropping" anchor="eavesdrop">
               <t>
                 This threat is REQUIRED to be mitigated by the security
                 solution; clients and servers MUST confidentiality protect the
@@ -484,15 +484,27 @@
                 A solution may, for example, encrypt only payload, encrypt payload
                 and selected options, or encrypt payload and almost all options.
               </t>
-              
+            </section>
+            
+            
+            <section title="Threat 5: Traffic Analysis" anchor="traffic">
               <t>
-                <vspace blankLines="100"/>
+                This threat is NOT REQUIRED to be mitigated by the security
+                solution.
+              </t>
+              <t>
+                 It is RECOMMENDED that applications analyse the risks
+                 associated with application information leaking from the
+                 messages flow and assess the feasibility to protect  against
+                 various threats, e.g. by obfuscating parameters transported
+                 in plain text, aligning message flow and traffic between the
+                 different cases, adding padding so different messages become
+                 indistinguishable, etc.
               </t>
               
             </section>
+
           </section>
-          
-          
           
         </section>
         
@@ -530,7 +542,7 @@
                       specification.
                     </t>
                     <t>
-                      (Threat 4:) An intermediate node spoofs a request.
+                      (Threat 6:) An intermediate node spoofs a request.
                     </t>
                   </list>
                 </t>
@@ -542,7 +554,7 @@
                       A request has not been sent.
                     </t>
                     <t>
-                      (Threat 5:) An intermediate node withholds a request.
+                      (Threat 7:) An intermediate node withholds a request.
                     </t>
                   </list>
                 </t>
@@ -551,7 +563,7 @@
                   <vspace/>Reasons include:
                   <list style="symbols">
                     <t>
-                      (Threat 6:) An intermediate node floods the server with
+                      (Threat 8:) An intermediate node floods the server with
                       requests.
                     </t>
                   </list>
@@ -564,9 +576,20 @@
           
           <section title="Threats to Confidentiality">
             <t>
-              The same threats to confidentiality apply to the server as
-              to the client, see <xref target="threat-conf"/>.
+              Analogous threats to confidentiality applies to
+              the server as well as to the client, see
+              <xref target="threat-conf"/>.
+              
+              <list style="symbols">
+                <t>
+                  (Threat 9:) Eavesdropping; analogous of Threat 4.
+                </t>
+                <t>
+                  (Threat 10:) Traffic analysis; analogous of Threat 5.
+                </t>
+              </list>
             </t>
+            
             <t>
               <vspace blankLines="100"/>
             </t>
@@ -574,7 +597,7 @@
           </section>
           
           <section title="Mitigation">
-            <section title="Threat 4: Spoofing">
+            <section title="Threat 6: Spoofing">
               <t>
                 This threat is REQUIRED to be mitigated by the security
                 solution: the server MUST verify that the request is
@@ -609,7 +632,7 @@
               </t>
             </section>
             
-            <section title="Threat 5: Withholding">
+            <section title="Threat 7: Withholding">
               <t>
                 This threat is NOT REQUIRED to be mitigated by the
                 security solution because a CoAP server cannot detect if
@@ -618,7 +641,7 @@
               </t>
             </section>
             
-            <section title="Threat 6: Flooding">
+            <section title="Threat 8: Flooding">
               <t>
                 This threat is NOT REQUIRED to be mitigated by the
                 security solution in particular, but a server SHOULD
@@ -630,10 +653,18 @@
             </section>
             
             
-            <section title="Threat 7: Eavesdropping">
+            <section title="Threat 9: Eavesdropping">
               <t>
-                The same mitigation against eavesdropping apply to the server as
-                to the client, see <xref target="eavesdrop"/>.
+                The same mitigation against eavesdropping applies to the server
+                as well as to the client, see <xref target="eavesdrop"/>.
+              </t>
+              
+            </section>
+            
+            <section title="Threat 10: Traffic Analysis">
+              <t>
+                This threat is NOT REQUIRED to be mitigated by the security
+                solution, see <xref target="traffic"/>.
               </t>
               
             </section>
@@ -648,16 +679,7 @@
 
       <section title="Scenarios" anchor="proxy-scenarios">
 
-        <t>
-          <list style="symbols">
-            <t>processing rules</t>
-            <t>definition of "authentic request" and "authentic response"</t>
-            <t>encrypted and integrity-protected parts of a message</t>
-          </list>
-        </t>
-
         <section title="One Request - One Response">
-        
         
         <t>
           In this scenario we study use cases where it is important that a
@@ -717,6 +739,23 @@
         </t>
         
         
+        <section anchor="FR1" title="Functional Requirements">
+          
+          <t>
+            <list style="format FR1.%d">
+              <t>
+                Each response MUST to be securely linked to a
+                particular request.
+              </t>
+              <t>
+                The caching functionality SHALL be inhibited;
+                the CoAP option Max-Age of the responses SHALL be 0
+                (see Section 5.7.1 of <xref target="RFC7252"/>).
+              </t>
+            </list>
+          </t>
+        </section>
+        
         <!-- *************************************************************** -->
         
         <section anchor="PR1" title="Processing Rules">
@@ -760,43 +799,53 @@
           </t>
         </section>
         
+        
+
         <!-- *************************************************************** -->
-        <section anchor="validity" title="Validity of a Message">
+        <section anchor="auth-1" title="Authenticity">
           <t>
-            This section defines when a message is considered valid.
-            TODO: add references to threats.
+            This section defines when a message is considered authentic (cf.
+            Threats 1 and 6).
           </t>
           <t>
-            The request is considered valid by the server if:
-            <list style="symbols">
+            The request is considered authentic by the server if:
+            <list style="format A1.%d" counter="A1_count">
               <t>
-                The request is originated from the client.
+                The request originates from the client
               </t>
               <t>
-                The request has not been altered by the proxy in any other
-                way than that defined in <xref target="PR1" />.
+                The CoAP payload of the request has not been altered.
+              </t>
+              <t>
+                The CoAP options of the request has not been altered in any
+                other way than defined in <xref target="PR1" />.
+              </t>
+              <t>
+                The CoAP header fields Version and Code of the request have not
+                been altered.
+              </t>
+              <t>
+                The effective URI of the request is not changed.
               </t>
               <t>
                 The request has not been previously received.
               </t>
               <t>
-                The request's sensitive fields have not been read by
-                the proxy.
-              </t>
-              <t>
-                The request has originated from the client not too long ago.
+                The request was recently sent by the client.
               </t>
             </list>
           </t>
           <t>
-            The response is considered valid by the client if:
-            <list style="symbols">
+            <vspace blankLines="1"/>
+          </t>
+          <t>
+            The response is considered authentic by the client if:
+            <list style="format A1.%d" counter="A1_count">
               <t>
-                The response is originated from the server.
+                The response originates from the server.
               </t>
               <t>
-                The response has not been altered by the proxy in any other
-                way than that defined in <xref target="PR1" />.
+                The response has not been altered.
               </t>
               <t>
                 The response has not been previously received.
@@ -810,73 +859,7 @@
                 sent by the client.
               </t>
               <t>
-                The response has originated from the server not too long ago.
-              </t>
-            </list>
-          </t>
-          
-          <t>
-            Functional Requirement:
-            <list style="symbols">
-              <t>
-                Since each response is intended to be securely linked to a
-                particular request, the response must not be used with any
-                other request.  Hence, as much as possible of the caching
-                functionality must be inhibited.  Therefore the CoAP option
-                Max-Age of the responses is set to 0 (see Section 5.7.1 of
-                <xref target="RFC7252"/>).
-              </t>
-            </list>
-          </t>
-        </section>
-        
-        <!-- *************************************************************** -->
-        
-        <section anchor="SO1" title="Security Objectives">
-          <t>
-            TODO: consider removing this section.
-          </t>
-          <t>
-            In this scenario there is a unique response for each request, so the
-            client should be able to verify that a certain response is made in
-            response to a specific request sent by the client.
-          </t>
-          <t>
-            The server should be able to verify that the proxy only has
-            performed the message modifications intended
-            by the client according to the processing rules.
-          </t>
-          <t>
-            The proxy should be prevented from reading or making modifications
-            to messages apart from what is necessary to perform the processing
-            rules (cf. <xref target="RFC7258"/>).
-          </t>
-          <t>
-            The security objectives are:
-            <list style="format SO1.%d">
-              <t>
-                The server is able to verify that a received request originates
-                from a client with which it has a security association, and that
-                the request has not been received before.
-              </t>
-              <t>
-                The server is able to verify that the received request either
-                has not been altered in transfer, or that the request is
-                modified according to the processing rule PR1.1 or PR1.2 (<xref target="PR1"/>).
-              </t>
-              <t>
-                The server is able to protect the response such that only
-                authorized clients can read the response.
-              </t>
-              <t>
-                The client is able to verify that the received response
-                originates from the requested server and resource,
-                that it has not been altered in transfer, and that it was
-                generated as the unique response to the request.
-              </t>
-              <t>
-                The proxy is only able to read data needed to perform
-                the processing rules.
+                The response was recently sent by the server.
               </t>
             </list>
           </t>
@@ -884,61 +867,87 @@
         </section>
         
         <!-- *************************************************************** -->
+        <section anchor="conf-1" title="Confidentiality">
+          
+          <t>
+            This section defines when a message is considered confidentiality
+            protected (cf. Threat 4).
+          </t>
+          <t>
+            The messages is considered confidentiality protected if:
+            <list style="format C1.%d">
+              <t>
+                The CoAP payload (if present) is confidentiality protected
+              </t>
+              <t>
+                All CoAP options of the request and response, except
+                Uri-Host/Port and Proxy-Uri/Scheme, are confidentiality
+                protected.
+              </t>
+              <t>
+                The keys used to confidentiality protect provides forward
+                security.
+              </t>
+            </list>
+          </t>
+          
+        </section>
+        
+        <!-- *************************************************************** -->
+        
         
         <section anchor="R1" title="Security Requirements">
           <t>
-            TODO: consider removing this section. Otherwise, reference the
-            right threats.
+            TODO: consider keeping this section.
           </t>
           <t>
-            This section contains the security requirements and non-requirements
-            for this scenario.  For each requirement and non-requirement the
-            associated threats are listed.  The security requirements are:
+            This section contains the security requirements for this scenario.
+            For each requirement the associated functional requirement,
+            processing rule, authenticity property, and confidentiality
+            property is listed.  The security requirements are:
             <list style="format R1.%d">
               
               <t>
                 The server must authenticate a message coming
-                from a requesting client (T1:1.1, T1:1.3, T1:1.5, T2:1.1).
+                from a requesting client (A1.1).
               </t>
               
               <t>
                 The server must verify that it has not received this request
-                previously (T1:1.7, T3:1.3).
+                previously (A1.6).
               </t>
               
               <t>
                 The client must verify that the received response
-                originates from the requested server (T1:1.2, T1:1.4, T1:1.6,
-                T2:1.2).
+                originates from the requested server (A1.8).
               </t>
               
               <t>
                 The client must verify that a response corresponds uniquely to
-                a previous request that the client has made (T1:1.8, T3:1.4).
+                a previous request that the client has made (FR1.1, A1.12).
               </t>
               
               <t>
                 The payload must be integrity protected and encrypted
-                between client and server (T1:1.1-6,T4:1.1, T2:1.3, T4:1.1,
-                <xref target="RFC7258"/>).
+                between client and server (A1.2, C1.1).
               </t>
               
               <t>
                 The CoAP options except Uri-* and Proxy-* must be integrity
                 protected in the request.  The effective request URI
-                must be integrity protected in the request (T1:1.3).
+                must be integrity protected in the request (PR1.1, PR1.2, A1.3).
               </t>
               
               <t>
                 All CoAP options in the response must be integrity protected.
-                Max-Age must be set to 0 (T1:1.4).
+                Max-Age must be set to 0 (FR1.2, PR1.3).
               </t>
               
               <t>
                 The CoAP options Uri-Host/Port and Proxy-Uri/Scheme of the
                 request must not be encrypted.  The Max-Age option of the
                 response must not be encrypted.  All other options must be
-                encrypted (T4:1.2).
+                encrypted (C1.2).
               </t>
               
               
@@ -946,46 +955,19 @@
                 The CoAP header fields Version and Code must be integrity
                 protected in requests and responses.  All other header fields
                 must not be integrity protected.  The header fields must not be
-                encrypted (T1:1.5, T4:1.3).
+                encrypted (A1.4).
               </t>
               
               <t>
-                The communication protocol must provide forward secrecy (T4:1.4).
+                The communication protocol must provide forward secrecy (C1.3).
               </t>
               
-            </list>
-            
-            The security non-requirements of this scenario are:
-            
-            <list style="format NR1.%d">
-              <t>
-                The proxy may drop messages without the endpoint being able to
-                infer that the message is lost due to the proxy (T3:1.1).
-              </t>
-              
-              <t>
-                The proxy may delay messages without being detected
-                (T3:1.1, T3:1.2).
-              </t>
-              
-              <t>
-                The proxy may read the CoAP header including message layer
-                parameters and Code, revealing the kind of RESTful action being
-                requested and the response code (T4:1.3).
-              </t>
             </list>
             
           </t>
         </section>
         
         </section>
-        
-        
-        
-        
-        
-        
-        
         
         
         <section title="One Request - Multiple Responses"></section>
@@ -2327,7 +2309,7 @@
           </t>
           <t>
             The security objectives of the previous scenario
-            (<xref target="SO1"/>) are valid except for SO1.4 which is replaced by 
+            (<xref target="SOx"/>) are valid except for SO1.4 which is replaced by
             the following objectives:
             <list style="format SO2.%d">
               <t>
@@ -2565,7 +2547,7 @@ Client B           |               |
             trade-off between caching functionality and the protection of
             client-server interaction.  Comparing with the scenario in
             <xref target="onereq-oneres"/>, most of the security objectives in
-            <xref target="SO1"/> cannot be met:
+            <xref target="SOx"/> cannot be met:
             <list style="symbols">
               <t>
                 The caching functionality decouples responses from requests.
