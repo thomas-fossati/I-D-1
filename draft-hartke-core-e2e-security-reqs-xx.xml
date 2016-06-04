@@ -204,6 +204,45 @@
     <!-- **************************************************************** -->
 
     <section title="Proxying" anchor="proxying">
+      
+      
+      <figure anchor="fig-proxy" title="A Proxy">
+        <artwork align="left">
+          <![CDATA[ _ _ __             ___________             __ _ _
+                 | Request   |           | Request   |
+                 |---------->|           |---------->|
+         Client  |           |   Proxy   |           |  Server
+                 |<----------|           |<----------|
+           _ _ __|  Response |___________|  Response |__ _ _]]>
+        </artwork>
+      </figure>
+      
+      <t>
+        In the simplest setting, the proxy receives a request from the client
+        and sends a response back to the client. There are two legitimate ways
+        for the proxy to do this:
+        <list style="symbols">
+          <t>
+            The proxy constructs and sends a request to the server,
+            receives a response from the server and uses the
+            received data to construct the response to the client.
+          </t>
+          <t>
+            The proxy uses cached data to construct the response to
+            the client.
+          </t>
+        </list>
+        In both cases, the proxy needs to read some parts of the
+        request from the client and the response from the server
+        to accomplish its task.
+      </t>
+      
+      <t>
+        The proxy may in turn make a request to another proxy, or
+        receive a request from another proxy as in
+        <xref target="fig-hopbyhop"/> and <xref target="fig-endtoend"/>.
+      </t>
+
 
       <figure anchor="fig-hopbyhop" title="Hop-by-Hop Security">
         <artwork align="left">
@@ -238,14 +277,18 @@
                         Security Association]]>
         </artwork>
       </figure>
-
+      
       <t>
+        In this document, we focus on threats to client and server performed
+        by proxies or other intermediary nodes on the path between client and
+        server. Without loss of generality, this includes threats agents acting
+        between the nodes.
         <vspace blankLines="100"/>
       </t>
 
       <!-- **************************************************************** -->
 
-      <section title="Threats and Security Requirements">
+      <section title="Threats and Mitigation">
 
         <section title="Client">
 
@@ -259,132 +302,202 @@
     |__________|  Response |__ _ _]]>
             </artwork>
           </figure>
-
+          
           <t>
-            The client sends a request to the proxy and waits for a
-            response.
+            The client sends a request to a proxy and waits for a response.
           </t>
-          <t>
-            From the perspective of the client, there are three possible
-            flows:
-            <list style="symbols">
-              <t>
-                The client receives a response.
-                <vspace/>Reasons include:
-                <list style="symbols">
-                  <t>
-                    The proxy duly processed the request and returns a
-                    response based on data it obtained from the origin
-                    server.
-                  </t>
-                  <t>
-                    The proxy encountered an unexpected condition and
-                    returns an error response according to specification
-                    (e.g., 5.02 Bad Gateway or 5.04 Gateway Timeout).
-                  </t>
-                  <t>
-                    (Threat 1:) The proxy spoofs a response.
-                  </t>
-                </list>
-              </t>
-              <t>
-                The client does not receive a response.
-                <vspace/>Reasons include:
-                <list style="symbols">
-                  <t>
-                    The client times out too early.
-                  </t>
-                  <t>
-                    (Threat 2:) The proxy withholds the response.
-                  </t>
-                </list>
-              </t>
-              <t>
-                The client receives too many responses.
-                <vspace/>Reasons include:
-                <list style="symbols">
-                  <t>
-                    (Threat 3:) The proxy floods the client with
-                    responses.
-                  </t>
-                </list>
-              </t>
-            </list>
-            This is repeated as often as needed when the client
-            observes a resource.
-          </t>
-
-          <t>
-            <vspace blankLines="100"/>
-          </t>
-
-          <section title="Threat 1: Spoofing">
+          
+          
+          <section title="Threats to Authenticity and Availability">
             <t>
-              With one exception (see below), this threat is REQUIRED
-              to be mitigated by the security solution: the client MUST
-              verify that the response is an
-              <spanx>authentic response</spanx> before processing it.
-            </t>
-            <t>
-              The definition of an "authentic response"
-              depends on the scenario
-              (<xref target="proxy-scenarios"/>),
-              but usually means that the client can obtain proof for
-              some or all of the following things:
+              From the perspective of the client, there are three possible
+              flows:
               <list style="symbols">
-                <t>that the requested action was executed by the origin server;</t>
-                <t>that the data originates from the origin server and has not been altered on the way;</t>
-                <t>that the data matches the specifications of the request (such as the target resource);</t>
-                <t>that the data is fresh (when the data is cacheable);</t>
-                <t>that the data is in sequence (when observing a resource).</t>
+                <t>
+                  The client receives a response.
+                  <vspace/>Reasons include:
+                  <list style="symbols">
+                    <t>
+                      The request is duly processed and a response is received
+                      based on data from the origin server.
+                    </t>
+                    <t>
+                      The client receives an error response from the proxy
+                      according to specification
+                      (e.g., 5.02 Bad Gateway or 5.04 Gateway Timeout).
+                    </t>
+                    <t>
+                      (Threat 1:) The response is spoofed by an intermediate node.
+                    </t>
+                  </list>
+                </t>
+                <t>
+                  The client does not receive a response.
+                  <vspace/>Reasons include:
+                  <list style="symbols">
+                    <t>
+                      The client times out too early, for example because a
+                      link is down, or a message is lost and re-transmission
+                      failed, or that the server takes too long responding.
+                    </t>
+                    <t>
+                      (Threat 2:) A message is withheld by an intermediate
+                      node, e.g. intentionally dropped or delayed.
+                    </t>
+                  </list>
+                </t>
+                <t>
+                  The client receives too many responses.
+                  <vspace/>Reasons include:
+                  <list style="symbols">
+                    <t>
+                      (Threat 3:) An intermediate node floods the client with
+                      responses.
+                    </t>
+                  </list>
+                </t>
               </list>
-              The proof can, for example, involve a message
-              authentication code that the proxy obtains from the origin
-              server and includes in the response or an additional
-              challenge-response roundtrip.
+              If there are mulitple responses to a request, as in the case of
+              Observe, then the same threat applies to each response.
+              TBD: Remove this sentence - I don't see what it adds.
             </t>
             <t>
-              Note that a CoAP proxy is specified to return an error
-              response (such as 5.02 Bad Gateway or 5.04 Gateway
-              Timeout) when it encounters an error condition. Since the
-              condition occurs at the proxy and not at the origin
-              server, the response will not be an "authentic response"
-              according to the above definition. Thus a client cannot
-              tell if the proxy sends the response according to
-              specification or if it spoofs the response.
-              This threat is NOT REQUIRED to be mitigated by the
-              security solution.
+              Note: "cache poisioning" - the case of a proxy caching incorrect
+              responses injected by an intermediate node - is covered from the
+              point of view of the client: it may result in the client receiving a
+              spoofed message (Threat 1), or too many (Threat 3), or that the
+              proxy or other node is affected such that the client is impacted,
+              e.g. times out too early.
             </t>
           </section>
-
-          <section title="Threat 2: Withholding">
+          
+          <section title="Threats to Confidentiality" anchor="threat-conf">
             <t>
-              This threat is NOT REQUIRED to be mitigated by the
-              security solution.
+              An intermediate node may eavesdrop or infer information from
+              messages between client and server. Such information can be used
+              for targeted attacks as well as pervasive monitoring.
+              
+              <list style="symbols">
+                <t>
+                  (Threat 7:) Data in the request from the client or the response
+                  from the server is eavesdropped by an intermediate node.
+                </t>
+                <t>
+                  (Threat 8:) Data in the request from the client or the
+                  response from the server is used by an intermediate node to
+                  infer information about the nature of the request from the
+                  client or the response from the server e.g. by measuring the
+                  message size, frequency and distribution of incoming requests
+                  or outgoing responses.
+                </t>
+              </list>
             </t>
           </section>
-
-          <section title="Threat 3: Flooding">
-            <t>
-              A CoAP client is specified to reject any response that
-              it does not expect. This can happen before the client
-              verifies if the response is authentic.
-              Therefore a flood of responses is primarily a threat to
-              the system resources of the client, in particular to its
-              energy.
-              This threat is NOT REQUIRED to be mitigated by the
-              security solution in particular, but a client SHOULD
-              generally defend against flooding attacks.
-            </t>
-            <t>
-              <vspace blankLines="100"/>
-            </t>
+          
+          <section title="Mitigation">
+            <section title="Threat 1: Spoofing">
+              <t>
+                Except as specified below, this threat is REQUIED to be
+                mitigated by the security solution; the client MUST
+                verify that the response is
+                <spanx>authentic</spanx> before processing it.
+              </t>
+              <t>
+                The definition of an "authentic response"
+                depends on the scenario
+                (<xref target="proxy-scenarios"/>),
+                but usually means that the client can obtain proof for
+                some or all of the following things:
+                <list style="symbols">
+                  <t>that the requested action was executed by the origin server;
+                  </t>
+                  <t>that the data originates from the origin server and has not
+                    been altered on the way;</t>
+                  <t>that the data matches the specifications of the request
+                    (such as the target resource);</t>
+                  <t>that the data is fresh (when the data is cacheable);</t>
+                  <t>that the data is in sequence (when observing a resource).</t>
+                </list>
+                The proof can, for example, involve a message
+                authentication code by the origin
+                server included in the response.
+              </t>
+              <t>
+                Note that a CoAP proxy is specified to return an error
+                response (such as 5.02 Bad Gateway or 5.04 Gateway
+                Timeout) when it encounters an error condition. Since the
+                condition occurs at the proxy and not at the origin
+                server, the response will not be "authentic"
+                according to the above definition. Thus a client cannot
+                tell if the proxy sends the response according to
+                specification or if it spoofs the response. Hence the security
+                solution is NOT REQUIRED to mitigate spoofing in this case.
+              </t>
+              
+            </section>
+            
+          
+            <section title="Threat 2: Withholding">
+              <t>
+                This threat is NOT REQUIRED to be mitigated by the
+                security solution because a CoAP client cannot tell if an
+                intermediate node does not send
+                a response because it is busy, or if it intentionally drops a
+                message.
+              </t>
+              <t>
+                Applications sensitive to delay of requests, e.g. certain actuator
+                applications, must protect against this kind of threats,
+                see <xref target="I-D.mattsson-core-coap-actuators"/>.
+                That is out of scope for this document.
+              </t>
+            </section>
+            
+            <section title="Threat 3: Flooding">
+              <t>
+                A CoAP client is specified to reject any response that
+                it does not expect. This can happen before the client
+                verifies if the response is authentic.
+                Therefore a flood of responses is primarily a threat to
+                the system resources of the client, in particular to its
+                energy.
+                This threat is NOT REQUIRED to be mitigated by the
+                security solution in particular, but a client SHOULD
+                generally defend against flooding attacks.
+              </t>
+              
+            </section>
+            
+            <section title="Threat 7: Eavesdropping" anchor="eavesdrop">
+              <t>
+                This threat is REQUIRED to be mitigated by the security
+                solution; clients and servers MUST confidentiality protect the
+                data in the requests and responses they send.
+              </t>
+              <t>
+                The definition of what needs to be protected depends on the scenario
+                (<xref target="proxy-scenarios"/>), but is RECOMMENDED to
+                encompass all data that is not needed to be read by a proxy to
+                perform its function.
+              </t>
+              <t>
+                A solution may, for example, encrypt only payload, encrypt payload
+                and selected options, or encrypt payload and almost all options.
+              </t>
+              
+              <t>
+                <vspace blankLines="100"/>
+              </t>
+              
+            </section>
           </section>
-
+          
+          
+          
         </section>
-
+        
         <section title="Server">
-
+          
           <figure anchor="fig-server" title="The Server End">
             <artwork align="left">
 <![CDATA[                                 _ _ __             __________
@@ -395,187 +508,142 @@
                                  _ _ __|  Response |__________|]]>
             </artwork>
           </figure>
-
+          
+          
           <t>
             A server listens for a request and returns a response.
           </t>
-          <t>
-            From the perspective of the server, there are three possible
-            flows:
-            <list style="symbols">
-              <t>
-                The server receives a request.
-                <vspace/>Reasons include:
-                <list style="symbols">
-                  <t>
-                    The proxy sends a request according to
-                    specification.
-                  </t>
-                  <t>
-                    (Threat 4:) The proxy spoofs a request.
-                  </t>
-                </list>
-              </t>
-              <t>
-                The server does not receive a request.
-                <vspace/>Reasons include:
-                <list style="symbols">
-                  <t>
-                    The proxy does not need to send a request.
-                  </t>
-                  <t>
-                    (Threat 5:) The proxy withholds a request.
-                  </t>
-                </list>
-              </t>
-              <t>
-                The server receives too many requests.
-                <vspace/>Reasons include:
-                <list style="symbols">
-                  <t>
-                    (Threat 6:) The proxy floods the server with
-                    requests.
-                  </t>
-                </list>
-              </t>
-            </list>
-          </t>
-
-          <t>
-            <vspace blankLines="100"/>
-          </t>
-
-          <section title="Threat 4: Spoofing">
+          
+          
+          <section title="Threats to Authenticity and Availability">
+            
             <t>
-              This threat is REQUIRED to be mitigated by the security
-              solution: the server MUST verify that the request is an
-              <spanx>authentic request</spanx> before processing it.
-            </t>
-            <t>
-              The definition of an "authentic request"
-              depends on the scenario
-              (<xref target="proxy-scenarios"/>),
-              but usually means that the server can obtain proof for
-              some or all of the following things:
+              From the perspective of the server, there are three possible
+              flows:
               <list style="symbols">
-                <t>that the proxy acts on behalf of a client;</t>
-                <t>that the data originates from the client and has not been altered on the way;</t>
-                <t>that the request has not been received so far;</t>
-                <t>that the data has been generated by the client not too long ago.</t>
+                <t>
+                  The server receives a request.
+                  <vspace/>Reasons include:
+                  <list style="symbols">
+                    <t>
+                      The request was sent according to
+                      specification.
+                    </t>
+                    <t>
+                      (Threat 4:) An intermediate node spoofs a request.
+                    </t>
+                  </list>
+                </t>
+                <t>
+                  The server does not receive a request.
+                  <vspace/>Reasons include:
+                  <list style="symbols">
+                    <t>
+                      A request has not been sent.
+                    </t>
+                    <t>
+                      (Threat 5:) An intermediate node withholds a request.
+                    </t>
+                  </list>
+                </t>
+                <t>
+                  The server receives too many requests.
+                  <vspace/>Reasons include:
+                  <list style="symbols">
+                    <t>
+                      (Threat 6:) An intermediate node floods the server with
+                      requests.
+                    </t>
+                  </list>
+                </t>
+                
               </list>
-              The proof can, for example, involve a message
-              authentication code that the proxy obtains from the
-              client and includes in the request or a
-              challenge-response roundtrip.
             </t>
+            
           </section>
-
-          <section title="Threat 5: Withholding">
+          
+          <section title="Threats to Confidentiality">
             <t>
-              This threat is NOT REQUIRED to be mitigated by the
-              security solution because a CoAP server cannot detect if
-              the proxy does not send a request because it has no work
-              to do or if it withholds a request.
-            </t>
-          </section>
-
-          <section title="Threat 6: Flooding">
-            <t>
-              This threat is NOT REQUIRED to be mitigated by the
-              security solution in particular, but a server SHOULD
-              generally defend against flooding attacks.
+              The same threats to confidentiality apply to the server as
+              to the client, see <xref target="threat-conf"/>.
             </t>
             <t>
               <vspace blankLines="100"/>
             </t>
+            
           </section>
-
-        </section>
-
-        <section title="Proxy">
-
-          <figure anchor="fig-proxy" title="A Proxy">
-            <artwork align="left">
-<![CDATA[         _ _ __             ___________             __ _ _
-               | Request   |           | Request   |
-       Client  |---------->|           |---------->|  Server
-         or    |           |   Proxy   |           |    or
-       Proxy   |<----------|           |<----------|  Proxy
-         _ _ __|  Response |___________|  Response |__ _ _]]>
-            </artwork>
-          </figure>
-
-          <t>
-            The proxy receives a request from the client and sends a
-            response back to the client. There are two ways for the
-            proxy to do this:
-            <list style="symbols">
+          
+          <section title="Mitigation">
+            <section title="Threat 4: Spoofing">
               <t>
-                The proxy constructs and sends a request to the server,
-                receives a response from the server and uses the
-                received data to construct the response to the client.
+                This threat is REQUIRED to be mitigated by the security
+                solution: the server MUST verify that the request is
+                <spanx>authentic</spanx> before processing it.
               </t>
               <t>
-                The proxy uses cached data to construct the response to
-                the client.
+                The definition of an "authentic request"
+                depends on the scenario
+                (<xref target="proxy-scenarios"/>),
+                but usually means that the server can obtain proof for
+                some or all of the following things:
+                <list style="symbols">
+                  <t>that proxies act on behalf of a client;</t>
+                  <t>that the data originates from the client and has not been altered on the way;</t>
+                  <t>that the request has not been received previously;</t>
+                  <t>that the data has been recently generated by the client.</t>
+                </list>
+                The proof can, for example, involve a message
+                authentication code that the proxy obtains from the
+                client and includes in the request or a
+                challenge-response roundtrip.
               </t>
-            </list>
-            In both cases, the proxy needs to read some parts of the
-            request from the client and the response from the server
-            to accomplish its task.
-          </t>
-
-          <t>
-            There are the following threats:
-            <list style="symbols">
-              <t>(Threat 7:) The proxy reads the data in the request from the client and in the response from the server.</t>
-              <t>(Threat 8:) The proxy measures the frequency and distribution of incoming requests and outgoing responses.</t>
-              <t>(Threat 9:) The proxy stores data from an attacker in its cache (cache poisoning).</t>
-            </list>
-          </t>
-
-          <t>
-            <vspace blankLines="100"/>
-          </t>
-
-          <section title="Threat 7: Reading">
-            <t>
-              This threat is REQUIRED to be mitigated by the security
-              solution: clients and servers MUST protect the data in
-              the requests and responses they're sending with
-              Authenticated Encryption.
-            </t>
-            <t>
-              Note that this requirement is in conflict with the
-              requirement that the proxy needs to be able to read some
-              parts of the requests and responses in order to accomplish
-              its task. Which parts can be encrypted and/or
-              integrity-protected depends on the scenario
-              (<xref target="proxy-scenarios"/>).
-            </t>
-            <!-- TODO: forward secrecy -->
+              <t>
+                Note that a CoAP proxy may be allowed to make a validation
+                request to a resource, without it being possible to
+                prove that it acts on behalf of a client. Since such a
+                request does not originate from the client, the server cannot
+                tell if the proxy sends the request according to specification
+                or if it spoofs the request.  If the scenario allows this
+                functionality, then this threat is NOT REQUIRED to be mitigated
+                by the security solution.
+              </t>
+            </section>
+            
+            <section title="Threat 5: Withholding">
+              <t>
+                This threat is NOT REQUIRED to be mitigated by the
+                security solution because a CoAP server cannot detect if
+                the proxy does not send a request because it has no work
+                to do or if it withholds a request.
+              </t>
+            </section>
+            
+            <section title="Threat 6: Flooding">
+              <t>
+                This threat is NOT REQUIRED to be mitigated by the
+                security solution in particular, but a server SHOULD
+                generally defend against flooding attacks.
+              </t>
+              <t>
+                <vspace blankLines="100"/>
+              </t>
+            </section>
+            
+            
+            <section title="Threat 7: Eavesdropping">
+              <t>
+                The same mitigation against eavesdropping apply to the server as
+                to the client, see <xref target="eavesdrop"/>.
+              </t>
+              
+            </section>
+            
           </section>
-
-          <section title="Threat 8: Measuring">
-            <t>
-              This threat is NOT REQUIRED to be mitigated by the
-              security solution.
-            </t>
-          </section>
-
-          <section title="Threat 9: Poisoning">
-            <t>
-              TODO.
-            </t>
-            <t>
-              <vspace blankLines="100"/>
-            </t>
-          </section>
-
+          
         </section>
-
+        
       </section>
-
+      
       <!-- **************************************************************** -->
 
       <section title="Scenarios" anchor="proxy-scenarios">
@@ -588,11 +656,342 @@
           </list>
         </t>
 
-        <section title="One Request - One Response"></section>
+        <section title="One Request - One Response">
+        
+        
+        <t>
+          In this scenario we study use cases where it is important that a
+          response sent from one endpoint is the response to a particular
+          request to that endpoint.  Many security critical use cases require
+          that responses are in this way "securely linked" to requests, such as
+          alarm status retrieval and actuator command confirmation.
+        </t>
+        <t>
+          In this scenario there must be a unique response for each request.
+        </t>
+        
+        
+        <figure anchor="figure-1" title="Message Flow with a Unique Response for Each Request">
+          <artwork align="center">
+            <![CDATA[Client          Proxy          Server
+              |               |               |
+              |    Request    |    Request    |
+              |-------------->|-------------->|--.
+              |               |               |  |
+              |<--------------|<--------------|<-'
+              |    Response   |    Response   |
+              |               |               |]]>
+          </artwork>
+        </figure>
+        
+        
+        <t>
+          <list style="hanging">
+            <t hangText="Example: Alarm status retrieval">
+              <vspace blankLines="1"/>
+              <xref target="figure-1"/> can be seen as an illustration of a
+              message exchange for a client requesting the alarm status (e.g.,
+              GET /alarm_status) from a server.  Since the client wants to ensure
+              that the alarm status received is reflecting the current alarm
+              status and not a cached or spoofed response to the same
+              resource, it must be able to verify that the received response is
+              a response to this particular request made by the client.
+              Therefore the response must be securely linked to the request.
+            </t>
+            <t hangText="Example: Actuation confirmation">
+              <vspace blankLines="1"/>
+              Another example for which <xref target="figure-1"/> serves as
+              illustration is the confirmation of an actuator request.  In this
+              case a client, say in an industrial control system, requests a
+              server that a valve should be turned to a certain level, e.g. PUT
+              /valve_42/level with payload "3".  In order for the client to
+              correctly evaluate the result of a potential changed valve level,
+              it is important that the client gets a confirmation how the
+              server responded to the requested change, e.g., whether the request
+              was performed or not.  Again, the client wants to ensure that the
+              response is reflecting the result of this particular actuation
+              request made by the client and not a cached or spoofed response.
+              Therefore the response must be securely linked to the request.
+            </t>
+          </list>
+        </t>
+        
+        
+        <!-- *************************************************************** -->
+        
+        <section anchor="PR1" title="Processing Rules">
+          <t>
+            In this scenario, the desired proxy functionality is
+            to forward a translated request to the determined destination.
+            There are two modes of operation for requests:
+            Either using the Proxy-Uri option (PR1.1) or using the
+            Proxy-Scheme option together with the Uri-Host, Uri-Port,
+            Uri-Path and Uri-Query options (PR1.2).
+            <list style="format PR1.%d">
+              <t>
+                The Proxy-Uri option contains the request URI
+                including request scheme (e.g. "coaps://"); the
+                Proxy-Scheme and Uri-* options are not present.
+                <vspace blankLines="1"/>
+                If the proxy is configured to forward requests to
+                another proxy, then it keeps the Proxy-Uri
+                option; otherwise, it splits the option into its
+                components, adds the corresponding Uri-* options and
+                removes the Proxy-Uri option.
+                Then it makes the request using the request scheme
+                indicated in the Proxy-Uri.
+              </t>
+              <t>
+                The Proxy-Scheme option
+                and the Uri-* options together contain the request URI;
+                the Proxy-Uri option is not present.
+                <vspace blankLines="1"/>
+                If the proxy is configured to forward requests to
+                another forwarding proxy, then it keeps the
+                Proxy-Scheme and Uri-* options; otherwise, it removes
+                the Proxy-Scheme option.  Then it makes the request
+                using the request scheme indicated in the removed
+                Proxy-Scheme option.
+              </t>
+              <t>
+                Responses are forwarded by the proxy, without any modification.
+              </t>
+            </list>
+          </t>
+        </section>
+        
+        <!-- *************************************************************** -->
+        <section anchor="validity" title="Validity of a Message">
+          <t>
+            This section defines when a message is considered valid.
+            TODO: add references to threats.
+          </t>
+          <t>
+            The request is considered valid by the server if:
+            <list style="symbols">
+              <t>
+                The request is originated from the client.
+              </t>
+              <t>
+                The request has not been altered by the proxy in any other
+                way than that defined in <xref target="PR1" />.
+              </t>
+              <t>
+                The request has not been previously received.
+              </t>
+              <t>
+                The request's sensitive fields have not been read by
+                the proxy.
+              </t>
+              <t>
+                The request has originated from the client not too long ago.
+              </t>
+            </list>
+          </t>
+          <t>
+            The response is considered valid by the client if:
+            <list style="symbols">
+              <t>
+                The response is originated from the server.
+              </t>
+              <t>
+                The response has not been altered by the proxy in any other
+                way than that defined in <xref target="PR1" />.
+              </t>
+              <t>
+                The response has not been previously received.
+              </t>
+              <t>
+                The response's sensitive fields have not been read by
+                the proxy.
+              </t>
+              <t>
+                The response is made in response to a specific request
+                sent by the client.
+              </t>
+              <t>
+                The response has originated from the server not too long ago.
+              </t>
+            </list>
+          </t>
+          
+          <t>
+            Functional Requirement:
+            <list style="symbols">
+              <t>
+                Since each response is intended to be securely linked to a
+                particular request, the response must not be used with any
+                other request.  Hence, as much as possible of the caching
+                functionality must be inhibited.  Therefore the CoAP option
+                Max-Age of the responses is set to 0 (see Section 5.7.1 of
+                <xref target="RFC7252"/>).
+              </t>
+            </list>
+          </t>
+        </section>
+        
+        <!-- *************************************************************** -->
+        
+        <section anchor="SO1" title="Security Objectives">
+          <t>
+            TODO: consider removing this section.
+          </t>
+          <t>
+            In this scenario there is a unique response for each request, so the
+            client should be able to verify that a certain response is made in
+            response to a specific request sent by the client.
+          </t>
+          <t>
+            The server should be able to verify that the proxy only has
+            performed the message modifications intended
+            by the client according to the processing rules.
+          </t>
+          <t>
+            The proxy should be prevented from reading or making modifications
+            to messages apart from what is necessary to perform the processing
+            rules (cf. <xref target="RFC7258"/>).
+          </t>
+          <t>
+            The security objectives are:
+            <list style="format SO1.%d">
+              <t>
+                The server is able to verify that a received request originates
+                from a client with which it has a security association, and that
+                the request has not been received before.
+              </t>
+              <t>
+                The server is able to verify that the received request either
+                has not been altered in transfer, or that the request is
+                modified according to the processing rule PR1.1 or PR1.2 (<xref target="PR1"/>).
+              </t>
+              <t>
+                The server is able to protect the response such that only
+                authorized clients can read the response.
+              </t>
+              <t>
+                The client is able to verify that the received response
+                originates from the requested server and resource,
+                that it has not been altered in transfer, and that it was
+                generated as the unique response to the request.
+              </t>
+              <t>
+                The proxy is only able to read data needed to perform
+                the processing rules.
+              </t>
+            </list>
+          </t>
+          
+        </section>
+        
+        <!-- *************************************************************** -->
+        
+        <section anchor="R1" title="Security Requirements">
+          <t>
+            TODO: consider removing this section. Otherwise, reference the
+            right threats.
+          </t>
+          <t>
+            This section contains the security requirements and non-requirements
+            for this scenario.  For each requirement and non-requirement the
+            associated threats are listed.  The security requirements are:
+            <list style="format R1.%d">
+              
+              <t>
+                The server must authenticate a message coming
+                from a requesting client (T1:1.1, T1:1.3, T1:1.5, T2:1.1).
+              </t>
+              
+              <t>
+                The server must verify that it has not received this request
+                previously (T1:1.7, T3:1.3).
+              </t>
+              
+              <t>
+                The client must verify that the received response
+                originates from the requested server (T1:1.2, T1:1.4, T1:1.6,
+                T2:1.2).
+              </t>
+              
+              <t>
+                The client must verify that a response corresponds uniquely to
+                a previous request that the client has made (T1:1.8, T3:1.4).
+              </t>
+              
+              <t>
+                The payload must be integrity protected and encrypted
+                between client and server (T1:1.1-6,T4:1.1, T2:1.3, T4:1.1,
+                <xref target="RFC7258"/>).
+              </t>
+              
+              <t>
+                The CoAP options except Uri-* and Proxy-* must be integrity
+                protected in the request.  The effective request URI
+                must be integrity protected in the request (T1:1.3).
+              </t>
+              
+              <t>
+                All CoAP options in the response must be integrity protected.
+                Max-Age must be set to 0 (T1:1.4).
+              </t>
+              
+              <t>
+                The CoAP options Uri-Host/Port and Proxy-Uri/Scheme of the
+                request must not be encrypted.  The Max-Age option of the
+                response must not be encrypted.  All other options must be
+                encrypted (T4:1.2).
+              </t>
+              
+              
+              <t>
+                The CoAP header fields Version and Code must be integrity
+                protected in requests and responses.  All other header fields
+                must not be integrity protected.  The header fields must not be
+                encrypted (T1:1.5, T4:1.3).
+              </t>
+              
+              <t>
+                The communication protocol must provide forward secrecy (T4:1.4).
+              </t>
+              
+            </list>
+            
+            The security non-requirements of this scenario are:
+            
+            <list style="format NR1.%d">
+              <t>
+                The proxy may drop messages without the endpoint being able to
+                infer that the message is lost due to the proxy (T3:1.1).
+              </t>
+              
+              <t>
+                The proxy may delay messages without being detected
+                (T3:1.1, T3:1.2).
+              </t>
+              
+              <t>
+                The proxy may read the CoAP header including message layer
+                parameters and Code, revealing the kind of RESTful action being
+                requested and the response code (T4:1.3).
+              </t>
+            </list>
+            
+          </t>
+        </section>
+        
+        </section>
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <section title="One Request - Multiple Responses"></section>
         <section title="Multiple Requests - One Response"></section>
         <section title="Multiple Requests - Multiple Responses"></section>
-
+        
         <section title="Summary">
 
           <figure>
@@ -1342,7 +1741,7 @@
         </t>
         
         
-        <figure anchor="figure-1" title="Message Flow with a Unique Response for Each Request">
+        <figure anchor="figure-x" title="Message Flow with a Unique Response for Each Request">
           <artwork align="center">
 <![CDATA[Client          Proxy          Server
   |               |               |
@@ -1404,7 +1803,7 @@
 
         <!-- *************************************************************** -->
         
-        <section anchor="PR1" title="Processing Rules">
+        <section anchor="PRx" title="Processing Rules">
           <t>
             In this scenario, the desired proxy functionality is
             to forward a translated request to the determined destination.
@@ -1447,7 +1846,7 @@
         
         <!-- *************************************************************** -->
         
-        <section anchor="SO1" title="Security Objectives">
+        <section anchor="SOx" title="Security Objectives">
           <t>
             In this scenario there is a unique response for each request, so the
             client should be able to verify that a certain response is made in
@@ -1740,7 +2139,7 @@
         
         <!-- *************************************************************** -->
         
-        <section anchor="R1" title="Security Requirements">
+        <section anchor="Rx" title="Security Requirements">
           <t>
             This section contains the security requirements and non-requirements
             for this scenario.  For each requirement and non-requirement the
