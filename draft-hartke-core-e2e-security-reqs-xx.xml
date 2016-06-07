@@ -205,6 +205,32 @@
 
     <section title="Proxying" anchor="proxying">
       
+      <t>
+        A proxy receives a request from the client
+        and sends a response back to the client, see
+        <xref target="fig-proxy"/>.
+      </t>
+      <t>
+        There are different ways
+        for the proxy to operate:
+        <list style="symbols">
+          <t>
+            The proxy constructs and sends a request to the server,
+            receives a response from the server and uses the
+            received data to construct the response to the client.
+          </t>
+          <t>
+            The proxy uses cached data to construct the response to
+            the client.
+          </t>
+        </list>
+        In general, the proxy needs to read some parts of the
+        request from the client and the response from the server
+        to accomplish its task. Also, the proxy may send a request
+        to the server which is not identical to the request received
+        from the client, and analogously for the response.
+      </t>
+      
       
       <figure anchor="fig-proxy" title="A Proxy">
         <artwork align="left">
@@ -218,30 +244,15 @@
         </artwork>
       </figure>
       
-      <t>
-        In the simplest setting, the proxy receives a request from the client
-        and sends a response back to the client. There are two legitimate ways
-        for the proxy to do this:
-        <list style="symbols">
-          <t>
-            The proxy constructs and sends a request to the server,
-            receives a response from the server and uses the
-            received data to construct the response to the client.
-          </t>
-          <t>
-            The proxy uses cached data to construct the response to
-            the client.
-          </t>
-        </list>
-        In both cases, the proxy needs to read some parts of the
-        request from the client and the response from the server
-        to accomplish its task.
-      </t>
+
       
       <t>
-        The proxy may in turn make a request to another proxy, or
-        receive a request from another proxy as in
-        <xref target="fig-hopbyhop"/> and <xref target="fig-endtoend"/>.
+        The proxy may in turn make a request to another proxy, or receive a
+        request from another proxy, and different trust models are possible.
+      </t>
+      <t>
+        In the case of hop-by-hop security (<xref target="fig-hopbyhop"/>) each node
+        has a security association with its nearest hop neighbour.
       </t>
 
 
@@ -261,13 +272,22 @@
         </artwork>
       </figure>
 
-      <t>
+      <!-- <t>
         <vspace blankLines="3"/>
+      </t> -->
+      
+      <t>
+        In the case of end-to-end security (<xref target="fig-endtoend"/>) the
+        client has a security association with the server, and the proxies may
+        neither be trusted by client nor server, except for performing its
+        intended proxy functionality.
       </t>
+ 
 
       <figure anchor="fig-endtoend" title="End-to-End Security">
         <artwork align="left">
-<![CDATA[     __________       _________       _________       __________
+<![CDATA[
+     __________       _________       _________       __________
     |          |     |         |     |         |     |          |
     |          |---->|         |---->|         |---->|          |
     |  Client  |     |  Proxy  |     |  Proxy  |     |  Server  |
@@ -280,22 +300,27 @@
       </figure>
       
       <t>
-        In this document, we focus on threats to client and server performed
+        In this section, we focus on threats to client and server performed
         by proxies or other intermediary nodes on the path between client and
         server. Without loss of generality, this includes threats agents acting
         between the nodes.
-        <vspace blankLines="100"/>
       </t>
-
+      
       <!-- **************************************************************** -->
-
+      
       <section title="Threats and Mitigation" anchor="threat-mit">
-
+        
         <section title="Client">
-
+          
+          <t>
+            In this section we focus on threats to the client, see
+            <xref target="fig-client"/>.
+          </t>
+          
           <figure anchor="fig-client" title="The Client End">
             <artwork align="left">
-<![CDATA[     __________             __ _ _
+              <![CDATA[
+    __________             __ _ _
     |          | Request   |
     |          |---------->|
     |  Client  |           |   Proxy
@@ -304,15 +329,10 @@
             </artwork>
           </figure>
           
-          <t>
-            The client sends a request to a proxy and waits for a response.
-          </t>
-          
-          
           <section title="Threats to Authenticity and Availability">
             <t>
-              From the perspective of the client, there are three possible
-              flows:
+              The client sends a request to a proxy and waits for a response.
+              There are three possible flows and associated threats:
               <list style="symbols">
                 <t>
                   The client receives a response.
@@ -361,12 +381,11 @@
                   </list>
                 </t>
               </list>
-              If there are multiple responses to a request, as in the case of
-              Observe, then the same threat applies to each response. TBD: I
-              still don't understand this.
+              If the client observes a resource, the same threats applies to
+              each response.
             </t>
             <t>
-              Note: "cache poisioning" - the case of a proxy caching injected
+              Note that "cache poisioning" - the case of a proxy caching injected
               incorrect responses  - is covered from the
               point of view of the client: it may result in the client receiving a
               spoofed message, or too many responses, or that the
@@ -514,6 +533,12 @@
         
         <section title="Server">
           
+          <t>
+            In this section we focus on threats to the server, see
+            <xref target="fig-server"/>.
+          </t>
+
+          
           <figure anchor="fig-server" title="The Server End">
             <artwork align="left">
 <![CDATA[                                 _ _ __             __________
@@ -525,6 +550,10 @@
             </artwork>
           </figure>
           
+          
+          <t>
+            <vspace blankLines="1"/>
+          </t>
           
           <t>
             A server listens for a request and returns a response.
@@ -1510,103 +1539,147 @@ Client          Proxy          Server
     <section title="Publish-Subscribe">
       
       <t>
-        In the simplest setting, the publisher makes publications available to a
-        broker and the subscriber requests and receives publications from the broker,
-        see <xref target="fig-pubsub-simple"/>.
+        A publisher makes publications available to a
+        broker and the subscriber requests and receives publications from the
+        broker.
       </t>
-      
-      <figure anchor="fig-pubsub-simple" title="Publish-Subscribe">
-        <artwork align="left">
-          <![CDATA[
-       ____________         __________         ___________
-      |            |       |          |       |           |
-      |            |------>|          |<------|           |
-      | Subscriber |       |  Broker  |       | Publisher |
-      |            |<------|          |------>|           |
-      |____________|       |__________|       |___________|]]>
-        </artwork>
-      </figure>
-      
-      
       <t>
-        There are different ways for the publisher to make publications available:
+        There are different ways for the broker to operate:
         <list style="symbols">
           <t>
-            The publisher publishes using PUT with the publication as
-            payload to a resource on the broker, and receives a confirmation response.
+            The broker requests a publication from the publisher and
+            receives the publication in the response,
+            see <xref target="fig-broker-req"/>. The broker may observe
+            publication resources at the publisher.
           </t>
           <t>
-            The broker requests the publication from the publisher using GET and
-            receives the publication in the response. This may be combined with
-            Observe so that the publisher provides notifications for the broker
-            containing new publications when available.
+            The broker receives a publication request with the publication from
+            the publisher and responds with a confirmation response,
+            see <xref target="fig-publisher-req"/>.
           </t>
         </list>
-        In both cases, the proxy obtains publications as resource representation
-        which it makes available to the subscriber. The subscriber in turn requests
-        the publications from the broker using GET and Observe to a certain resource.
       </t>
       
-      <t>
-        Different trust models are possible. In the case of trusted broker
-        (<xref target="fig-pubsub-trusted-broker"/>), both the subscriber and the
-        publisher has a security association with the broker, and the broker
-        is assumed to mediate the publications in an honest way. This case
-        does not present any
-        additional challenges compared to what has already been covered, except
-        that multiple intermediary nodes of different kinds may of use in one
-        deployment, which is FFS.
-      </t>
-      
-      
-      <figure anchor="fig-pubsub-trusted-broker" title="Trusted Broker">
-        <artwork align="center">
+      <figure anchor="fig-broker-req" title="Publish-Subscribe. Broker
+        requests publication.">
+        <artwork align="left">
           <![CDATA[
- ____________         __________         ___________
-|            |       |          |       |           |
-|            |------>|          |<------|           |
-| Subscriber |       |  Broker  |       | Publisher |
-|            |<------|          |------>|           |
-|____________|       |__________|       |___________|
-      :                  :  :                 :
-      :                  :  :                 :
-      '------------------'  '-----------------'
-            Security              Security
-          Association           Association
-               A                     B]]>
+ ____________             __________             ___________
+|            |  Request  |          |  Request  |           |
+|            |---------->|          |---------->|           |
+| Subscriber |           |  Broker  |           | Publisher |
+|            |<----------|          |<----------|           |
+|____________|  Response |__________|  Response |___________|
+
+          ]]>
         </artwork>
       </figure>
+<figure anchor="fig-publisher-req" title="Publish-Subscribe. Publisher
+  requests publication.">
+<artwork align="left">
+<![CDATA[
+ ____________             __________             ___________
+|            |  Request  |          |  Request  |           |
+|            |---------->|          |<----------|           |
+| Subscriber |           |  Broker  |           | Publisher |
+|            |<----------|          |---------->|           |
+|____________|  Response |__________|  Response |___________|
+
+          ]]>
+        </artwork>
+      </figure>
+<t>
+In general, the broker obtains publications as resource representations
+which it makes available to the subscriber. We summarise the case that either broker
+or publisher request publication in <xref target="fig-either-req"/>.
+</t>
+  
+<figure anchor="fig-either-req" title="Publish-Subscribe. Either broker or
+  publisher requests publication.">
+<artwork align="left">
+<![CDATA[
+ ____________             __________           ___________
+|            |  Request  |          |         |           |
+|            |---------->|          | Publi-  |           |
+| Subscriber |           |  Broker  |< - - - -| Publisher |
+|            |<----------|          | cation  |           |
+|____________|  Response |__________|         |___________|
+          ]]>
+        </artwork>
+      </figure>
+      
+      <t>
+        The broker may in turn receive publications from another broker, and
+        different trust models are possible. In the case of trusted brokers
+        (<xref target="fig-pubsub-trusted-broker"/>), both the subscriber and the
+        publisher has a security association with the nearest broker, and the
+        brokers are assumed to only mediate the publications according to
+        specification.
+      </t>
+      
+      <figure anchor="fig-pubsub-trusted-broker" title="Trusted Brokers">
+        <artwork align="left">
+          <![CDATA[
+ _________            ________           ________           ________
+|         | Request  |        |         |        |         |        |
+| Sub-    |--------->|        | Publi-  |        | Publi-  | Pub-   |
+| scriber |          | Broker |< - - - -| Broker |< - - - -| lisher |
+|         |<---------|        | cation  |        | cation  |        |
+|_________| Response |________|         |________|         |________|
+     :                  :  :               :  :                 :
+     '------------------'  '---------------'  '-----------------'
+           Security             Security            Security
+         Association          Association         Association
+             A                    B                   C
+          ]]>
+        </artwork>
+      </figure>
+      
+      <!-- <t>
+       <vspace blankLines="3"/>
+       </t> -->
       
       <t>
         Another trust model, and which is the focus of this section, is security
-        between publisher and subscriber, see <xref target="fig-pubsub-ptos"/>.
+        assiciation between publisher and subscriber, see
+        <xref target="fig-pubsub-ptos"/>.
       </t>
       
       <figure anchor="fig-pubsub-ptos" title="Publisher-to-Subscriber Security">
         <artwork align="center">
           <![CDATA[
- ____________         __________         ___________
-|            |       |          |       |           |
-|            |------>|          |<------|           |
-| Subscriber |       |  Broker  |       | Publisher |
-|            |<------|          |------>|           |
-|____________|       |__________|       |___________|
-       :                                      :
-       :                                      :
-       '--------------------------------------'
-                 Security Association]]>
+ _________            ________           ________           ________
+|         | Request  |        |         |        |         |        |
+| Sub-    |--------->|        | Publi-  |        | Publi-  | Pub-   |
+| scriber |          | Broker |< - - - -| Broker |< - - - -| lisher |
+|         |<---------|        | cation  |        | cation  |        |
+|_________| Response |________|         |________|         |________|
+     :                                                          :
+     '----------------------------------------------------------'
+                               Security
+                              Association
+          ]]>
         </artwork>
       </figure>
-      
+
+
       <t>
-        In contrast to the case with trusted broker, the subscriber and publisher
+        In contrast to the case with trusted brokers, the subscriber and publisher
         necessarily must be able to establish a security association. Trusted
-        third parties and trust anchors may be used favoarbaly in this setting to
+        third parties and trust anchors may be used favorably in this setting to
         allow the subscriber to verify publications of multiple publishers
         without having a pre-established security association with all potential
-        publishers.
+        publishers. The brokers may neither be trusted by subscriber nor publisher,
+        except for performing its intended functionality.
       </t>
       
+      <t>
+        In this section, we focus on threats to subscriber and publisher performed
+        by brokers or other intermediary nodes on the path between publisher and
+        subscriber. Without loss of generality, this includes threat agents acting
+        between the nodes.
+      </t>
+
       
       <!-- **************************************************************** -->
       
@@ -1614,6 +1687,11 @@ Client          Proxy          Server
         
         
         <section title="Subscriber">
+          
+          <t>
+            In this section we focus on threats to the subscriber, see
+            <xref target="fig-subscriber"/>.
+          </t>
           
           <figure anchor="fig-subscriber" title="The Subscriber End">
             <artwork align="left">
@@ -1627,15 +1705,10 @@ Client          Proxy          Server
             </artwork>
           </figure>
           
-          <t>
-            The subscriber sends a request to the broker
-            and waits for a response.
-          </t>
-          
-          
           <section title="Threats to Authenticity and Availability">
           <t>
-            From the perspective of the subscriber, there are three
+            The subscriber sends a request to the broker
+            and waits for a response. There are three
             possible flows:
             <list style="symbols">
               <t>
@@ -1780,19 +1853,24 @@ Client          Proxy          Server
 
 <section title="Publisher">
   
+  <t>
+    In this section we focus on threats to the publisher, first the case
+    of broker request publication, see
+    <xref target="fig-publisher"/>.
+  </t>
+  
   <figure anchor="fig-publisher" title="The Publisher End">
     <artwork align="right">
       <![CDATA[
-        _ _ __             ___________
+  _ _ __             ___________
         |   Request |           |
         |<----------|           |
-        Broker  |           | Publisher |
+Broker  |           | Publisher |
         |---------->|           |
-        _ _ __| Response  |___________|]]>
+  _ _ __| Response  |___________|
+      ]]>
     </artwork>
   </figure>
-  
-  
   
   <t>
     The publisher sends a request to the broker
