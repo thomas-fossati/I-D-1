@@ -1572,6 +1572,20 @@ Client          Proxy          Server
               </t>
             </section>
             
+            <section anchor="FR3" title="Functional Requirements">
+              <t>
+                TODO
+              </t>
+            </section>
+
+
+            <section anchor="PR3" title="Processing Rules">
+              <t>
+                TODO
+              </t>
+            </section>
+            
+            
             <section anchor="auth-3" title="Authenticity">
               <t>
                 TODO
@@ -3125,7 +3139,7 @@ Client B           |               |
         
         <!-- *************************************************************** -->
         
-        <section anchor="PR3" title="Processing Rules">
+        <section anchor="PRz" title="Processing Rules">
           
           <t>
             The proxy complies with the forwarding rules PR1.1 - 1.3 
