@@ -196,7 +196,77 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Scope and Assumptions"></section>
+    <section title="Scope and Assumptions">
+    
+    <t>
+      This document analyzes security aspects of various kinds of intermediary
+      nodes involved in sensor and actuator communications over CoAP.
+      The intermediaries are responsible, for example, for reducing response time and
+      network bandwidth use by serving responses from a cache or for enabling
+      the client to make requests that it otherwise could not make.
+    </t>
+    
+    <t>
+      In general, there are the following types of assets that
+      need to be protected:
+      <list style="format A%d:" counter="my_count">
+        <t>
+          The devices at the two ends, the data generated and stored in
+          these devices, and their (often very
+          constrained) system resources such as available memory, storage,
+          processing capacity, and energy.
+        </t>
+        <t>
+          The physical environment of the devices fitted with sensors
+          and actuators.  Access to the physical environment is
+          provided through CoAP resources that allow a remote entity
+          to retrieve information about the physical environment
+          (such as the current temperature) or to produce an effect
+          on the physical environment (such as the activation of a
+          heater).
+        </t>
+        <t>
+          The communication infrastructure linking the two devices
+          (which often contains some very constrained parts) and the data
+          stored in the message processing devices.
+        </t>
+      </list>
+    </t>
+    
+    <t>
+      The purpose of this document is to analyze threats executed through
+      intermediary nodes. An intermediary may directly affect assets of
+      type A3, e.g. by dropping messages. An intermediary node may also
+      manipulate the messages exchanged between the endpoints and thereby
+      have an impact also on the assets A1 and A2, for example: flooding a
+      device with messages has impact on its
+      system resources, and successful manipulation of an actuator command,
+      carried in a message, has an impact on the physical environment.
+    </t>
+    
+    <t>
+      An intermediate node handling unprotected messages may be an attractive
+      target for an attack, since such nodes are aggregation points for message flows
+      (see <xref target="sec-cons"/>) and, furthermore, may be an easier target from the
+      Internet than the sensors/actuators residing behind them.  An intermediary
+      may become subject to intrusion or infected by malware and perform
+      the attacks of a man-in-the-middle; the attack vectors for
+      compromise are out of scope for this document.
+    </t>
+    
+    <t>
+      The scope of the analysis is
+      restricted to threats from intermediaries to single client to server
+      interactions.  Threats resulting from collusion between multiple
+      intermediaries are also out of scope (see <xref target="sec-cons"/>).
+    </t>
+    
+    <t>
+      To assess what impact various threats have to the assets, we need to specify
+      and analyse how the intermediary nodes operate.
+    </t>
+    
+    </section>
     
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
