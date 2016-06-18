@@ -274,7 +274,61 @@
     <!-- **************************************************************** -->
 
     <section title="Proxying" anchor="proxying">
-
+      
+      <figure anchor="fig-proxy" title="A Proxy">
+        <artwork align="left">
+          <![CDATA[
+            _ _ __             ___________             __ _ _
+                  | Request   |           | Request   |
+          Client  |---------->|           |---------->|  Server
+            or    |           |   Proxy   |           |    or
+          Proxy   |<----------|           |<----------|  Proxy
+            _ _ __|  Response |___________|  Response |__ _ _]]>
+        </artwork>
+      </figure>
+      
+      
+      <figure anchor="fig-server-req" title="alternative figure">
+        <artwork align="left">
+          <![CDATA[
+             ________            _________            ________
+            |        | Request  |         | Request  |        |
+            |        |--------->|         |--------->|        |
+            | Client |          |  Proxy  |          | Server |
+            |        |<---------|         |<---------|        |
+            |________| Response |_________| Response |________|
+          ]]>
+        </artwork>
+      </figure>
+      
+      <t>
+        The proxy receives a request from the client and sends a
+        response back to the client. There are two ways for the
+        proxy to do this:
+        <list style="symbols">
+          <t>
+            The proxy constructs and sends a request to the server,
+            receives a response from the server and uses the
+            received data to construct the response to the client.
+          </t>
+          <t>
+            The proxy uses cached data to construct the response to
+            the client.
+          </t>
+        </list>
+        In both cases, the proxy needs to read some parts of the
+        request from the client and the response from the server
+        to accomplish its task. Also, if the intermediary sends a request
+        to the origin server, this request is not necessarily identical to the
+        request received from the client, and analogously for the response.
+      </t>
+      
+      <t>
+        The proxy may in turn make a request to another proxy.
+        In the case of hop-by-hop security (<xref target="fig-hopbyhop"/>) each node
+        has a security association with its nearest hop neighbour.
+      </t>
+      
       <figure anchor="fig-hopbyhop" title="Hop-by-Hop Security">
         <artwork align="left">
 <![CDATA[     __________       _________       _________       __________
@@ -290,9 +344,12 @@
                  A                B                C]]>
         </artwork>
       </figure>
-
+      
       <t>
-        <vspace blankLines="3"/>
+        In the case of end-to-end security (<xref target="fig-endtoend"/>) the
+        client has a security association with the origin server
+        and the proxies are only trusted with performing its
+        intended operations.
       </t>
 
       <figure anchor="fig-endtoend" title="End-to-End Security">
@@ -563,37 +620,6 @@
         </section>
 
         <section title="Proxy">
-
-          <figure anchor="fig-proxy" title="A Proxy">
-            <artwork align="left">
-<![CDATA[         _ _ __             ___________             __ _ _
-               | Request   |           | Request   |
-       Client  |---------->|           |---------->|  Server
-         or    |           |   Proxy   |           |    or
-       Proxy   |<----------|           |<----------|  Proxy
-         _ _ __|  Response |___________|  Response |__ _ _]]>
-            </artwork>
-          </figure>
-
-          <t>
-            The proxy receives a request from the client and sends a
-            response back to the client. There are two ways for the
-            proxy to do this:
-            <list style="symbols">
-              <t>
-                The proxy constructs and sends a request to the server,
-                receives a response from the server and uses the
-                received data to construct the response to the client.
-              </t>
-              <t>
-                The proxy uses cached data to construct the response to
-                the client.
-              </t>
-            </list>
-            In both cases, the proxy needs to read some parts of the
-            request from the client and the response from the server
-            to accomplish its task.
-          </t>
 
           <t>
             There are the following threats:
