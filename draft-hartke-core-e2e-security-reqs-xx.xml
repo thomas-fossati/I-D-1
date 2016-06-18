@@ -442,13 +442,28 @@
           </t>
           
           <t>
+            An intermediate node may eavesdrop or infer information from messages
+            it operates on.  Such information can be used for targeted attacks as
+            well as pervasive monitoring. There are the following threats:
+            <list style="symbols">
+              <t>(Threat 7:) An intermediate node eavesdrops on data in the
+                request from the client and in the response from the server.
+              </t>
+              <t>(Threat 8:) An intermediate node infers information about
+                the nature or content of a message by
+                measuring size, frequency or distribution of incoming requests
+                or outgoing responses.</t>
+            </list>
+          </t>
+          
+          <t>
             Note that "cache poisioning" - the case of caching injected
             incorrect responses - is covered from the point of view of
             the client: it may result in the client receiving a spoofed
             message, or being flooded, or affect other nodes such that the
             client times out too early.
           </t>
-
+          
           <t>
             <vspace blankLines="100"/>
           </t>
@@ -638,14 +653,7 @@
 
         <section title="Proxy">
 
-          <t>
-            There are the following threats:
-            <list style="symbols">
-              <t>(Threat 7:) The proxy reads the data in the request from the client and in the response from the server.</t>
-              <t>(Threat 8:) The proxy measures the frequency and distribution of incoming requests and outgoing responses.</t>
-              <t>(Threat 9:) The proxy stores data from an attacker in its cache (cache poisoning).</t>
-            </list>
-          </t>
+
 
           <t>
             <vspace blankLines="100"/>
