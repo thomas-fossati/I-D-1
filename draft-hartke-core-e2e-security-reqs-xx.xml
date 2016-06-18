@@ -455,16 +455,16 @@
 
           <section title="Threat 1: Spoofing">
             <t>
-              With one exception (see below), this threat is REQUIRED
+              Except as specified below, this threat is REQUIRED
               to be mitigated by the security solution: the client MUST
               verify that the response is an
               <spanx>authentic response</spanx> before processing it.
             </t>
             <t>
               The definition of an "authentic response"
-              depends on the scenario
+              depends on the proxy use case
               (<xref target="proxy-scenarios"/>),
-              but usually means that the client can obtain proof for
+              but usually means that the client can verify
               some or all of the following things:
               <list style="symbols">
                 <t>that the requested action was executed by the origin server;</t>
@@ -474,8 +474,8 @@
                 <t>that the data is in sequence (when observing a resource).</t>
               </list>
               The proof can, for example, involve a message
-              authentication code that the proxy obtains from the origin
-              server and includes in the response or an additional
+              authentication code from the origin
+              server or an additional
               challenge-response roundtrip.
             </t>
             <t>
@@ -495,8 +495,17 @@
           <section title="Threat 2: Withholding">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
-              security solution.
+              security solution because a CoAP client or server cannot tell
+              if an intermediate node does not send a message because it is
+              busy, or if it intentionally drops a message.
             </t>
+            <t>
+              Applications sensitive to delay of requests, e.g. certain actuator
+              applications, must protect against this kind of threats,
+              see <xref target="I-D.mattsson-core-coap-actuators"/>.
+              That is out of scope for this document.
+            </t>
+            
           </section>
 
           <section title="Threat 3: Flooding">
