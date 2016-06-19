@@ -374,7 +374,7 @@
 
       <section title="Threats and Security Requirements">
 
-        <section title="Client">
+        <section title="Client" anchor="sec-client">
 
           <figure anchor="fig-client" title="The Client End">
             <artwork align="left">
@@ -537,7 +537,7 @@
             </t>
           </section>
           
-          <section title="Threat 7: Eavesdropping">
+          <section title="Threat 7: Eavesdropping" anchor="eavesdrop">
             
             
             <t>
@@ -555,7 +555,7 @@
 
           </section>
           
-          <section title="Threat 8: Traffic Analysis">
+          <section title="Threat 8: Traffic Analysis" anchor="traffic-an">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
             </t>
@@ -601,11 +601,11 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    The proxy sends a request according to
+                    The request was sent according to
                     specification.
                   </t>
                   <t>
-                    (Threat 4:) The proxy spoofs a request.
+                    (Threat 4:) An intermediate node spoofs a request.
                   </t>
                 </list>
               </t>
@@ -614,10 +614,10 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    The proxy does not need to send a request.
+                    A request has not been sent.
                   </t>
                   <t>
-                    (Threat 5:) The proxy withholds a request.
+                    (Threat 5:) An intermediate node withholds a request.
                   </t>
                 </list>
               </t>
@@ -626,12 +626,20 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    (Threat 6:) The proxy floods the server with
+                    (Threat 6:) An intermediate node floods the server with
                     requests.
                   </t>
                 </list>
               </t>
             </list>
+          </t>
+          
+          <t>
+            An intermediate node eavesdropping or
+            inferring information from messages it operates has an impact
+            on a server in the same way as on a client, see
+            <xref target="sec-client"/>. Threats 7 and 8 applies also to the
+            server.
           </t>
 
           <t>
@@ -678,10 +686,31 @@
               security solution in particular, but a server SHOULD
               generally defend against flooding attacks.
             </t>
+    
+          </section>
+          
+          <section title="Threat 7: Eavesdropping">
+            
+            
+            <t>
+              This threat is REQUIRED to be mitigated by the security
+              solution, see (<xref target="eavesdrop"/>).
+            </t>
+            
+          </section>
+          
+          <section title="Threat 8: Traffic Analysis">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the security
+              solution, see (<xref target="traffic-an"/>.
+            </t>
             <t>
               <vspace blankLines="100"/>
             </t>
+  
           </section>
+          
+
 
         </section>
 
