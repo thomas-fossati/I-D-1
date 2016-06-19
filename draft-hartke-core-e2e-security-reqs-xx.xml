@@ -477,7 +477,7 @@
             </t>
             <t>
               The definition of an "authentic response"
-              depends on the proxy use case
+              depends on the proxy case
               (<xref target="proxy-scenarios"/>),
               but usually means that the client can verify
               some or all of the following things:
@@ -522,7 +522,7 @@
             </t>
             
           </section>
-
+          
           <section title="Threat 3: Flooding">
             <t>
               A CoAP client is specified to reject any response that
@@ -535,7 +535,41 @@
               security solution in particular, but a client SHOULD
               generally defend against flooding attacks.
             </t>
+          </section>
+          
+          <section title="Threat 7: Eavesdropping">
+            
+            
             <t>
+              This threat is REQUIRED to be mitigated by the security
+              solution: clients and servers MUST confidentiality protect
+              the data in the requests and responses they send.
+            </t>
+            <t>
+              The definition of what needs to be protected depends on the proxy
+              case (<xref target="proxy-scenarios"/>), but it is RECOMMENDED
+              to encompass all data that is not
+              needed to be read by the intermediate node to
+              accomplish its task.
+            </t>
+
+          </section>
+          
+          <section title="Threat 8: Traffic Analysis">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the security solution.
+            </t>
+            <t>
+              It is RECOMMENDED that applications analyse the risks associated with
+              application information leaking from the messages flow and assess the
+              feasibility to protect against various threats, e.g. by obfuscating
+              parameters transported in plain text, aligning message flow and
+              traffic between the different cases, adding padding so different
+              messages become indistinguishable, etc.
+            </t>
+            
+            <t>
+              TODO: forward secrecy
               <vspace blankLines="100"/>
             </t>
           </section>
@@ -651,49 +685,7 @@
 
         </section>
 
-        <section title="Proxy">
 
-
-
-          <t>
-            <vspace blankLines="100"/>
-          </t>
-
-          <section title="Threat 7: Reading">
-            <t>
-              This threat is REQUIRED to be mitigated by the security
-              solution: clients and servers MUST protect the data in
-              the requests and responses they're sending with
-              Authenticated Encryption.
-            </t>
-            <t>
-              Note that this requirement is in conflict with the
-              requirement that the proxy needs to be able to read some
-              parts of the requests and responses in order to accomplish
-              its task. Which parts can be encrypted and/or
-              integrity-protected depends on the scenario
-              (<xref target="proxy-scenarios"/>).
-            </t>
-            <!-- TODO: forward secrecy -->
-          </section>
-
-          <section title="Threat 8: Measuring">
-            <t>
-              This threat is NOT REQUIRED to be mitigated by the
-              security solution.
-            </t>
-          </section>
-
-          <section title="Threat 9: Poisoning">
-            <t>
-              TODO.
-            </t>
-            <t>
-              <vspace blankLines="100"/>
-            </t>
-          </section>
-
-        </section>
 
       </section>
 
