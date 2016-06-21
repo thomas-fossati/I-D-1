@@ -695,29 +695,6 @@
           
         </section>
         
-        <section title="Summary">
-          
-          <t>
-            The security solution MUST protect client and server
-            against threats to authenticity
-            and confidentiality as defined in relation to the legimitate
-            proxy operations in the different cases
-            (<xref target="proxy-scenarios"/>).
-          </t>
-          <t>
-            Flooding attacks SHOULD be mitigated. Plain text of message data
-            SHOULD be restricted to a need-to-know basis for intermediate nodes,
-            and traffic analysis SHOULD be mitigated.
-          </t>
-          <t>
-            Mitigation of spoofing of error messages or other legitimate messages
-            originating from the intermediate node is not in scope of the security
-            solution. Delay attacks are out of scope.
-          </t>
-        </section>
-        
-        
-        
       </section>
 
       <!-- **************************************************************** -->
