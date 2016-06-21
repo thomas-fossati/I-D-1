@@ -537,7 +537,7 @@
 
         </section>
 
-        <section title="Server">
+        <section title="Proxy -&gt; Server">
 
           <figure anchor="fig-server" title="The Server End">
             <artwork align="left">
@@ -562,11 +562,11 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    The request was sent according to
+                    The proxy sends a request according to
                     specification.
                   </t>
                   <t>
-                    (Threat 4:) An intermediate node spoofs a request.
+                    (Threat 1:) The proxy spoofs a request.
                   </t>
                 </list>
               </t>
@@ -575,10 +575,10 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    A request has not been sent.
+                    The proxy does not need to send a request.
                   </t>
                   <t>
-                    (Threat 5:) An intermediate node withholds a request.
+                    (Threat 2:) The proxy withholds a request.
                   </t>
                 </list>
               </t>
@@ -587,7 +587,7 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    (Threat 6:) An intermediate node floods the server with
+                    (Threat 3:) The proxy floods the server with
                     requests.
                   </t>
                 </list>
@@ -599,29 +599,33 @@
             An intermediate node eavesdropping or
             inferring information from messages it operates has an impact
             on a server in the same way as on a client, see
-            <xref target="sec-client"/>. Threats 7 and 8 applies also to the
-            server.
+            <xref target="sec-client"/>:
+            <list style="symbols">
+              <t>
+                (Threat 4:) The proxy eavesdrops on the data in the
+                response from the server.
+              </t>
+              <t>
+                (Threat 5:) The proxy measures the frequency and
+                distribution of responses from the server.
+              </t>
+            </list>
           </t>
 
-          <t>
-            <vspace blankLines="100"/>
-          </t>
-
-          <section title="Threat 4: Spoofing" anchor="spoofing-server">
+          <section title="Threat 1: Spoofing" anchor="spoofing-server">
             <t>
-              Except as specified below, this threat is REQUIRED to be mitigated
-              by the security
+              This threat is REQUIRED to be mitigated by the security
               solution: the server MUST verify that the request is an
               <spanx>authentic request</spanx> before processing it.
             </t>
             <t>
               The definition of an "authentic request"
-              depends on the scenario
+              depends on the proxy case
               (<xref target="proxy-scenarios"/>),
-              but usually means that the server can verify
+              but usually means that the server can obtain proof for
               some or all of the following things:
               <list style="symbols">
-                <t>that a proxy acts on behalf of a client;</t>
+                <t>that the proxy acts on behalf of a client;</t>
                 <t>that the data originates from the client and has not been altered on the way;</t>
                 <t>that the request has not been received previously;</t>
                 <t>that the data has been generated recently by the client.</t>
@@ -632,6 +636,7 @@
               challenge-response roundtrip.
             </t>
             
+            <!--
             <t>
               Note that a CoAP proxy may be allowed to make a
               validation request to a resource without it being possible to
@@ -643,27 +648,22 @@
               specify this functionality, then this threat is NOT REQUIRED
               to be mitigated by the security solution.
             </t>
+            -->
             
             
           </section>
           
 
-          <section title="Threat 5: Withholding">
+          <section title="Threat 2: Withholding">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution because a CoAP server cannot detect if
               the proxy does not send a request because it has no work
               to do or if it withholds a request.
             </t>
-            <t>
-              Applications sensitive to delay of requests, e.g. certain actuator
-              applications, must protect against this kind of threats,
-              see <xref target="I-D.mattsson-core-coap-actuators"/>.
-              That is out of scope for this document.
-            </t>
           </section>
 
-          <section title="Threat 6: Flooding">
+          <section title="Threat 3: Flooding">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution in particular, but a server SHOULD
@@ -672,20 +672,20 @@
     
           </section>
           
-          <section title="Threat 7: Eavesdropping">
+          <section title="Threat 4: Eavesdropping">
             
             
             <t>
               This threat is REQUIRED to be mitigated by the security
-              solution, see (<xref target="eavesdrop"/>).
+              solution, see <xref target="eavesdrop"/>.
             </t>
             
           </section>
           
-          <section title="Threat 8: Traffic Analysis">
+          <section title="Threat 5: Traffic Analysis">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security
-              solution, see (<xref target="traffic-an"/>.
+              solution, see <xref target="traffic-an"/>.
             </t>
             <t>
               <vspace blankLines="100"/>
