@@ -188,21 +188,20 @@
         mechanism for CoAP needs to meet.
       </t>
 
-      <section title="Scope and Assumptions">
+      <section title="Assets and Scope">
 
         <t>
-          In general, there are the following types of assets that
+          In general, there are the following assets that
           need to be protected:
-          <list style="format A%d:" counter="my_count">
+          <list style="symbols">
             <t>
-              The devices at the two ends, the data generated and stored in
-              these devices, and their (often very
+              The devices at the two ends and their (often very
               constrained) system resources such as available memory, storage,
-              processing capacity, and energy.
+              processing power and energy.
             </t>
             <t>
               The physical environment of the devices fitted with sensors
-              and actuators.  Access to the physical environment is
+              and actuators.  Access to the physical environment is assumed to be
               provided through CoAP resources that allow a remote entity
               to retrieve information about the physical environment
               (such as the current temperature) or to produce an effect
@@ -210,44 +209,41 @@
               heater).
             </t>
             <t>
-              The communication infrastructure linking the two devices
-              (which often contains some very constrained parts) and the data
-              stored in the message processing devices.
+              The communication infrastructure linking the two devices,
+              which often contains some very constrained networks.
+            </t>
+            <t>
+              The data generated and stored in the involved devices.
             </t>
           </list>
         </t>
 
         <t>
-          The purpose of this document is to analyze threats executed through
-          intermediary nodes. An intermediary may directly affect assets of
-          type A3, e.g. by dropping messages. An intermediary node may also
+          An intermediary can directly affect the communication infrastructure,
+          e.g., by dropping messages. An intermediary node can also
           manipulate the messages exchanged between the endpoints and thereby
-          have an impact also on the assets A1 and A2, for example: flooding a
-          device with messages has impact on its
-          system resources, and successful manipulation of an actuator command,
-          carried in a message, has an impact on the physical environment.
+          have an impact on the devices and their physical environment. For example, flooding a
+          device with messages has an impact on its
+          system resources, and the successful manipulation of an actuator command
+          carried in a message has an impact on the physical environment.
         </t>
 
         <t>
-          An intermediate node handling unprotected messages may be an attractive
-          target for an attack, since such nodes are aggregation points for message flows
-          (see <xref target="sec-cons"/>) and, furthermore, may be an easier target from the
-          Internet than the sensors/actuators residing behind them.  An intermediary
-          may become subject to intrusion or infected by malware and perform
-          the attacks of a man-in-the-middle; the attack vectors for
-          compromise are out of scope for this document.
+          Even if an intermediary is fully trusted, it may be an attractive
+          target for an attack itself, since such nodes are aggregation points for message flows
+          and may be an easier target from the
+          Internet than the sensor and actuator nodes residing behind them.  An intermediary
+          may become subject to intrusion or be infected by malware and perform
+          the attacks of a man-in-the-middle<!--; the attack vectors for
+          compromise are out of scope for this document-->.
         </t>
 
         <t>
-          The scope of the analysis is
-          restricted to threats from intermediaries to single client to server
-          interactions.  Threats resulting from collusion between multiple
-          intermediaries are also out of scope (see <xref target="sec-cons"/>).
-        </t>
-
-        <t>
-          To assess what impact various threats have to the assets, we need to specify
-          and analyse how the intermediary nodes operate.
+          The scope of this document is
+          on threats from intermediaries to
+          interactions between two CoAP endpoints.
+          <!--Threats resulting from collusion between multiple
+          intermediaries are also out of scope.-->
         </t>
 
       </section>
@@ -295,6 +291,11 @@
     <!-- **************************************************************** -->
 
     <section title="Proxying" anchor="proxying">
+      
+      <t>
+        To assess what impact various threats have to the assets, we need to specify
+        and analyse how the intermediary nodes operate.
+      </t>
       
       <figure anchor="fig-proxy" title="A Proxy">
         <artwork align="left">
