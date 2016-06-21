@@ -596,7 +596,7 @@
           </t>
           
           <t>
-            An intermediate node eavesdropping or
+            A proxy eavesdropping or
             inferring information from messages it operates has an impact
             on a server in the same way as on a client, see
             <xref target="sec-client"/>:
@@ -709,9 +709,7 @@
     <t>the functional requirements of the proxy;</t>
     <t>the processing rules of the proxy;</t>
     <t>the required authenticity properties of the messages;</t>
-    <t>the required confidentiality properties of the messages; and</t>
-    <t>the resulting security requirements for message transfer
-      between the endpoints.</t>
+    <t>the required confidentiality properties of the messages.</t>
   </list>
 </t>
 <t>
