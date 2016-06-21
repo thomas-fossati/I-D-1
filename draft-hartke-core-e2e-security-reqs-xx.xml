@@ -115,23 +115,43 @@
         The <xref target="RFC7252">Constrained Application Protocol
         (CoAP)</xref> is a Web application protocol designed for
         <xref target="RFC7228">constrained nodes and networks</xref>.
-      </t>
-
-      <t>
         CoAP uses <xref target="RFC6347">Datagram Transport Layer
         Security (DTLS)</xref> for security.  At the same time, CoAP
         relies on proxies for scalability and
-        efficiency.  These proxies are specified to perform a
-        number of operations on CoAP messages which requires
-        DTLS to be terminated at the proxy.  The proxy therefore
-        not only has access to the data required for performing the
-        desired proxy functionality, but is also able to eavesdrop on
+        efficiency:  Proxies can
+        reduce response time and network bandwidth use by serving
+        responses from a cache or enable clients to make requests that
+        they otherwise could not make.
+      </t> 
+       
+      <t>
+        CoAP proxies need to perform a
+        number of operations on requests and responses, which requires
+        DTLS to be terminated at the proxy.  The proxies therefore do
+        not only have access to the data required for performing the
+        desired proxy functionality, but are also able to eavesdrop on
         or manipulate any part of the CoAP payload and metadata in
         transit between client and server or inject new CoAP messages
         without being protected or
         detected by DTLS.
       </t>
 
+      <figure anchor="fig-hopbyhop" title="Hop-by-Hop Security">
+        <artwork align="left">
+<![CDATA[     __________       _________       _________       __________
+    |          |     |         |     |         |     |          |
+    |          |---->|         |---->|         |---->|          |
+    |  Client  |     |  Proxy  |     |  Proxy  |     |  Server  |
+    |          |<----|         |<----|         |<----|          |
+    |__________|     |_________|     |_________|     |__________|
+          :             :   :           :   :             :
+          '-------------'   '-----------'   '-------------'
+             Security         Security         Security
+            Association      Association      Association
+                 A                B                C]]>
+        </artwork>
+      </figure>
+      
       <t>
         One way to mitigate this threat is to secure CoAP communication
         at the application layer using an object-based security
@@ -143,14 +163,28 @@
         provided by DTLS.
       </t>
 
+      <figure anchor="fig-endtoend" title="End-to-End Security">
+        <artwork align="left">
+<![CDATA[     __________       _________       _________       __________
+    |          |     |         |     |         |     |          |
+    |          |---->|         |---->|         |---->|          |
+    |  Client  |     |  Proxy  |     |  Proxy  |     |  Server  |
+    |          |<----|         |<----|         |<----|          |
+    |__________|     |_________|     |_________|     |__________|
+          :                                               :
+          '-----------------------------------------------'
+                        Security Association]]>
+        </artwork>
+      </figure>
+
       <t>
-        This document analyses security requirements for CoAP requests and
-        responses of sensor and actuator deployments involving proxies and
+        This document analyses security aspects of sensor and actuator
+        comunications over CoAP that involve proxies and
         other similar intermediaries.  The analysis is based on identifying
-        the assets associated to sensor- and actuator-based communication
-        patterns and considering the potential threats executed through
+        the assets associated with this communication
+        and considering the potential threats posed by
         proxies to these assets.  The threat analysis provides the basis for
-        defining the security requirements that an end-to-end security
+        recommending security requirements that an end-to-end security
         mechanism for CoAP needs to meet.
       </t>
 
@@ -197,14 +231,6 @@
     <!-- **************************************************************** -->
 
     <section title="Scope and Assumptions">
-    
-    <t>
-      This document analyzes security aspects of various kinds of intermediary
-      nodes involved in sensor and actuator communications over CoAP.
-      The intermediaries are responsible, for example, for reducing response time and
-      network bandwidth use by serving responses from a cache or for enabling
-      the client to make requests that it otherwise could not make.
-    </t>
     
     <t>
       In general, there are the following types of assets that
@@ -329,42 +355,12 @@
         has a security association with its nearest hop neighbour.
       </t>
       
-      <figure anchor="fig-hopbyhop" title="Hop-by-Hop Security">
-        <artwork align="left">
-<![CDATA[     __________       _________       _________       __________
-    |          |     |         |     |         |     |          |
-    |          |---->|         |---->|         |---->|          |
-    |  Client  |     |  Proxy  |     |  Proxy  |     |  Server  |
-    |          |<----|         |<----|         |<----|          |
-    |__________|     |_________|     |_________|     |__________|
-          :             :   :           :   :             :
-          '-------------'   '-----------'   '-------------'
-             Security         Security         Security
-            Association      Association      Association
-                 A                B                C]]>
-        </artwork>
-      </figure>
-      
       <t>
         In the case of end-to-end security (<xref target="fig-endtoend"/>) the
         client has a security association with the origin server
         and the proxies are only trusted with performing its
         intended operations.
       </t>
-
-      <figure anchor="fig-endtoend" title="End-to-End Security">
-        <artwork align="left">
-<![CDATA[     __________       _________       _________       __________
-    |          |     |         |     |         |     |          |
-    |          |---->|         |---->|         |---->|          |
-    |  Client  |     |  Proxy  |     |  Proxy  |     |  Server  |
-    |          |<----|         |<----|         |<----|          |
-    |__________|     |_________|     |_________|     |__________|
-          :                                               :
-          '-----------------------------------------------'
-                        Security Association]]>
-        </artwork>
-      </figure>
 
       <t>
         <vspace blankLines="100"/>
