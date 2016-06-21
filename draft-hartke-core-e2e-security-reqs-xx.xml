@@ -305,27 +305,12 @@
       
       <figure anchor="fig-proxy" title="A Proxy">
         <artwork align="left">
-          <![CDATA[
-            _ _ __             ___________             __ _ _
-                  | Request   |           | Request   |
-          Client  |---------->|           |---------->|  Server
-            or    |           |   Proxy   |           |    or
-          Proxy   |<----------|           |<----------|  Proxy
-            _ _ __|  Response |___________|  Response |__ _ _]]>
-        </artwork>
-      </figure>
-      
-      
-      <figure anchor="fig-server-req" title="alternative figure">
-        <artwork align="left">
-          <![CDATA[
-             ________            _________            ________
-            |        | Request  |         | Request  |        |
-            |        |--------->|         |--------->|        |
-            | Client |          |  Proxy  |          | Server |
-            |        |<---------|         |<---------|        |
-            |________| Response |_________| Response |________|
-          ]]>
+<![CDATA[         _ _ __             ___________             __ _ _
+               | Request   |           | Request   |
+       Client  |---------->|           |---------->|  Server
+         or    |           |   Proxy   |           |    or
+       Proxy   |<----------|           |<----------|  Proxy
+         _ _ __|  Response |___________|  Response |__ _ _]]>
         </artwork>
       </figure>
       
@@ -346,24 +331,9 @@
         </list>
         In both cases, the proxy needs to read some parts of the
         request from the client and the response from the server
-        to accomplish its task. Also, if the intermediary sends a request
-        to the origin server, this request is not necessarily identical to the
-        request received from the client, and analogously for the response.
+        to accomplish its task.
       </t>
       
-      <t>
-        The proxy may in turn make a request to another proxy.
-        In the case of hop-by-hop security (<xref target="fig-hopbyhop"/>) each node
-        has a security association with its nearest hop neighbour.
-      </t>
-      
-      <t>
-        In the case of end-to-end security (<xref target="fig-endtoend"/>) the
-        client has a security association with the origin server
-        and the proxies are only trusted with performing its
-        intended operations.
-      </t>
-
       <t>
         <vspace blankLines="100"/>
       </t>
