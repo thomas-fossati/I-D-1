@@ -356,7 +356,7 @@
           </figure>
 
           <t>
-            The client sends a request and waits for a
+            The client sends a request to the proxy and waits for a
             response.
           </t>
           <t>
@@ -368,17 +368,17 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    The request is duly processed and a response is received
-                    based on data from the origin
+                    The proxy duly processed the request and returns a
+                    response based on data it obtained from the origin
                     server.
                   </t>
                   <t>
-                    The response is a proxy
-                    error according to specification
+                    The proxy encountered an unexpected condition and
+                    returns an error response according to specification
                     (e.g., 5.02 Bad Gateway or 5.04 Gateway Timeout).
                   </t>
                   <t>
-                    (Threat 1:) The response is spoofed by an intermediary node.
+                    (Threat 1:) The proxy spoofs a response.
                   </t>
                 </list>
               </t>
@@ -390,7 +390,7 @@
                     The client times out too early.
                   </t>
                   <t>
-                    (Threat 2:) A messages is withheld by an intermediate node.
+                    (Threat 2:) The proxy withholds the response.
                   </t>
                 </list>
               </t>
@@ -406,7 +406,7 @@
               </t>
             </list>
             This is repeated as often as needed when the client
-            observes a resource. TODO: Can this be explained in another way?
+            observes a resource.
           </t>
           
           <t>
