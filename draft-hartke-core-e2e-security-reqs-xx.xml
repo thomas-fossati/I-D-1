@@ -115,10 +115,10 @@
         The <xref target="RFC7252">Constrained Application Protocol
         (CoAP)</xref> is a Web application protocol designed for
         <xref target="RFC7228">constrained nodes and networks</xref>.
-        CoAP uses <xref target="RFC6347">Datagram Transport Layer
+        CoAP makes use of <xref target="RFC6347">Datagram Transport Layer
         Security (DTLS)</xref> for security.  At the same time, CoAP
         relies on proxies for scalability and
-        efficiency:  Proxies can
+        efficiency:  proxies can
         reduce response time and network bandwidth use by serving
         responses from a cache or enable clients to make requests that
         they otherwise could not make.
@@ -127,11 +127,11 @@
       <t>
         CoAP proxies need to perform a
         number of operations on requests and responses, which requires
-        DTLS to be terminated at the proxy.  The proxies therefore do
+        DTLS to be terminated at each proxy.  The proxies therefore do
         not only have access to the data required for performing the
         desired proxy functionality, but are also able to eavesdrop on
-        or manipulate any part of the CoAP payload and metadata in
-        transit between client and server or inject new CoAP messages
+        or manipulate any part of the CoAP payload and metadata
+        exchanged between client and server or inject new CoAP messages
         without being protected or
         detected by DTLS.
       </t>
@@ -158,9 +158,10 @@
         mechanism such as <xref target="I-D.ietf-cose-msg">CBOR
         Encoded Message Syntax</xref> instead of or in addition to
         the security mechanisms at the network layer or transport
-        layer. Such a mechanism can provide "end-to-end security" at
-        the application layer in contrast to the "hop-by-hop security"
-        provided by DTLS.
+        layer. Such a mechanism can provide "end-to-end security"
+        at the application layer (<xref target="fig-endtoend"/>)
+        in contrast to the "hop-by-hop security" provided by DTLS
+        (<xref target="fig-hopbyhop"/>).
       </t>
 
       <figure anchor="fig-endtoend" title="End-to-End Security">
@@ -180,12 +181,12 @@
       <t>
         This document analyses security aspects of sensor and actuator
         comunications over CoAP that involve proxies and
-        other similar intermediaries.  The analysis is based on identifying
-        the assets associated with this communication
+        other similar intermediaries.  The analysis is based on the identification
+        of assets associated with this communication
         and considering the potential threats posed by
         proxies to these assets.  The threat analysis provides the basis for
         recommending security requirements that an end-to-end security
-        mechanism for CoAP needs to meet.
+        mechanism for CoAP should meet.
       </t>
 
       <section title="Assets and Scope">
@@ -219,17 +220,18 @@
         </t>
 
         <t>
-          An intermediary can directly affect the communication infrastructure,
-          e.g., by dropping messages. An intermediary node can also
-          manipulate the messages exchanged between the endpoints and thereby
-          have an impact on the devices and their physical environment. For example, flooding a
-          device with messages has an impact on its
+          An intermediary can directly interfere with the
+          interactions between the two ends and thereby have an impact
+          on both the devices and their physical environment. For example,
+          flooding a device with messages has an impact on
           system resources, and the successful manipulation of an actuator command
-          carried in a message has an impact on the physical environment.
+          can have a severe impact on the physical environment.
+          An intermediary can also affect the communication infrastructure,
+          e.g., by dropping messages.
         </t>
 
         <t>
-          Even if an intermediary is fully trusted, it may be an attractive
+          Even if an intermediary is trusted, it may be an attractive
           target for an attack itself, since such nodes are aggregation points for message flows
           and may be an easier target from the
           Internet than the sensor and actuator nodes residing behind them.  An intermediary
@@ -279,6 +281,10 @@
           be interpreted as described in <xref target="RFC2119"/>.
           The key word "NOT REQUIRED" is interpreted as synonymous with
           the key word "OPTIONAL".
+        </t>
+
+        <t>
+          <vspace blankLines="100"/>
         </t>
 
       </section>
