@@ -1488,46 +1488,6 @@
   </section>
 </section>
 
-<section title="Reverse proxy">
-  
-  <section title="Examples">
-    <t>
-      TODO
-    </t>
-  </section>
-  
-  <section anchor="FR3" title="Functional Requirements">
-    <t>
-      TODO
-    </t>
-  </section>
-  
-  
-  <section anchor="PR3" title="Processing Rules">
-    <t>
-      TODO
-    </t>
-  </section>
-  
-  
-  <section anchor="auth-3" title="Authenticity">
-    <t>
-      TODO
-    </t>
-  </section>
-  
-  <section anchor="conf-3" title="Confidentiality">
-    <t>
-      TODO
-    </t>
-  </section>
-  
-  <section anchor="R-3" title="Security Requirements">
-    <t>
-      TODO
-    </t>
-  </section>
-</section>
 
 
 
