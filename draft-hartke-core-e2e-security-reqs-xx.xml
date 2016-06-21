@@ -300,7 +300,7 @@
       
       <t>
         To assess what impact various threats have to the assets, we need to specify
-        and analyse how the intermediary nodes operate.
+        and analyse how the proxies operate.
       </t>
       
       <figure anchor="fig-proxy" title="A Proxy">
@@ -342,7 +342,7 @@
 
       <section title="Threats and Security Requirements">
 
-        <section title="Client" anchor="sec-client">
+        <section title="Client -&gt; Proxy" anchor="sec-client">
 
           <figure anchor="fig-client" title="The Client End">
             <artwork align="left">
@@ -410,35 +410,30 @@
           </t>
           
           <t>
-            An intermediate node may eavesdrop or infer information from messages
-            it operates on.  Such information can be used for targeted attacks as
-            well as pervasive monitoring. There are the following threats:
+            Furthermore, there are threats related to privacy:
             <list style="symbols">
-              <t>(Threat 7:) An intermediate node eavesdrops on data in the
-                request from the client and in the response from the server.
+              <t>
+                (Threat 4:) The proxy eavesdrops on the data in the
+                request from the client.
               </t>
-              <t>(Threat 8:) An intermediate node infers information about
-                the nature or content of a message by
-                measuring size, frequency or distribution of incoming requests
-                or outgoing responses.</t>
+              <t>
+                (Threat 5:) The proxy measures the frequency and
+                distribution of requests from the client.
+              </t>
             </list>
           </t>
           
           <t>
-            Note that "cache poisioning" - the case of caching injected
-            incorrect responses - is covered from the point of view of
+            Note that "cache poisioning" -- the case of caching injected
+            incorrect responses -- is covered from the point of view of
             the client: it may result in the client receiving a spoofed
             message, or being flooded, or affect other nodes such that the
             client times out too early.
           </t>
-          
-          <t>
-            <vspace blankLines="100"/>
-          </t>
 
           <section title="Threat 1: Spoofing" anchor="spoofing-client">
             <t>
-              Except as specified below, this threat is REQUIRED
+              With one exception (see below), this threat is REQUIRED
               to be mitigated by the security solution: the client MUST
               verify that the response is an
               <spanx>authentic response</spanx> before processing it.
@@ -447,7 +442,7 @@
               The definition of an "authentic response"
               depends on the proxy case
               (<xref target="proxy-scenarios"/>),
-              but usually means that the client can verify
+              but usually means that the client can obtain proof for
               some or all of the following things:
               <list style="symbols">
                 <t>that the requested action was executed by the origin server;</t>
@@ -457,8 +452,8 @@
                 <t>that the data is in sequence (when observing a resource).</t>
               </list>
               The proof can, for example, involve a message
-              authentication code from the origin
-              server or an additional
+              authentication code that the proxy obtains from the origin
+              server and includes in the response or an additional
               challenge-response roundtrip.
             </t>
             <t>
@@ -478,17 +473,11 @@
           <section title="Threat 2: Withholding">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
-              security solution because a CoAP client or server cannot tell
-              if an intermediate node does not send a message because it is
-              busy, or if it intentionally drops a message.
+              security solution, since a client cannot tell
+              if the proxy does not send a response because it is
+              hasn't received a response from the origin server yet
+              or if it intentionally withholds the response.
             </t>
-            <t>
-              Applications sensitive to delay of requests, e.g. certain actuator
-              applications, must protect against this kind of threats,
-              see <xref target="I-D.mattsson-core-coap-actuators"/>.
-              That is out of scope for this document.
-            </t>
-            
           </section>
           
           <section title="Threat 3: Flooding">
@@ -505,39 +494,43 @@
             </t>
           </section>
           
-          <section title="Threat 7: Eavesdropping" anchor="eavesdrop">
+          <section title="Threat 4: Eavesdropping" anchor="eavesdrop">
             
             
             <t>
               This threat is REQUIRED to be mitigated by the security
-              solution: clients and servers MUST confidentiality protect
-              the data in the requests and responses they send.
+              solution: clients MUST protect
+              the data in the requests they send.
             </t>
             <t>
-              The definition of what needs to be protected depends on the proxy
-              case (<xref target="proxy-scenarios"/>), but it is RECOMMENDED
+              Note that this requirement is in conflict with the
+              requirement that the proxy needs to be able to read some
+              parts of the requests in order to accomplish
+              its task. Which parts can be encrypted and/or
+              integrity-protected depends on the scenario
+              (<xref target="proxy-scenarios"/>), but it is RECOMMENDED
               to encompass all data that is not
-              needed to be read by the intermediate node to
+              needed to be read by the proxy to
               accomplish its task.
             </t>
+            <!-- TODO: forward secrecy -->
 
           </section>
           
-          <section title="Threat 8: Traffic Analysis" anchor="traffic-an">
+          <section title="Threat 5: Traffic Analysis" anchor="traffic-an">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
             </t>
             <t>
               It is RECOMMENDED that applications analyse the risks associated with
               application information leaking from the messages flow and assess the
-              feasibility to protect against various threats, e.g. by obfuscating
+              feasibility to protect against various threats, e.g., by obfuscating
               parameters transported in plain text, aligning message flow and
               traffic between the different cases, adding padding so different
               messages become indistinguishable, etc.
             </t>
             
             <t>
-              TODO: forward secrecy
               <vspace blankLines="100"/>
             </t>
           </section>
