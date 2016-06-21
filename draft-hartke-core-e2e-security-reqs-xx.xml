@@ -188,48 +188,6 @@
         mechanism for CoAP needs to meet.
       </t>
 
-      <section title="Terminology">
-
-        <!--
-        <t>
-          This document makes use of the terminology defined in
-          <xref target="RFC4949"/>.
-        </t>
-        -->
-
-        <t>
-          Readers are expected to be familiar with the terms and
-          concepts described in <xref target="RFC7252"/> and
-          <xref target="RFC7641"/>.
-        </t>
-
-        <!--
-        <t>
-          Additionally, the following terms are used in this document:
-          <list style="hanging">
-            <t hangText="...:">...</t>
-          </list>
-        </t>
-        -->
-
-        <t>
-          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-          NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
-          RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to
-          be interpreted as described in <xref target="RFC2119"/>.
-          The key word "NOT REQUIRED" is interpreted as synonymous with
-          the key word "OPTIONAL".
-        </t>
-
-      </section>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
     <section title="Scope and Assumptions">
     
     <t>
@@ -294,6 +252,43 @@
     
     </section>
     
+      <section title="Terminology">
+
+        <!--
+        <t>
+          This document makes use of the terminology defined in
+          <xref target="RFC4949"/>.
+        </t>
+        -->
+
+        <t>
+          Readers are expected to be familiar with the terms and
+          concepts described in <xref target="RFC7252"/> and
+          <xref target="RFC7641"/>.
+        </t>
+
+        <!--
+        <t>
+          Additionally, the following terms are used in this document:
+          <list style="hanging">
+            <t hangText="...:">...</t>
+          </list>
+        </t>
+        -->
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+          NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+          RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to
+          be interpreted as described in <xref target="RFC2119"/>.
+          The key word "NOT REQUIRED" is interpreted as synonymous with
+          the key word "OPTIONAL".
+        </t>
+
+      </section>
+
+    </section>
+
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
