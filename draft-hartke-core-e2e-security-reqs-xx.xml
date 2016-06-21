@@ -1531,51 +1531,6 @@
 
 
 
-        <section title="Summary">
-
-<t>
-  TODO
-</t>
-          <figure>
-            <artwork>
-<![CDATA[ +-------------- One Request - One Response
- |   +---------- One Request - Multiple Responses
- |   |   +------ Multiple Requests - One Response
- |   |   |   +-- Multiple Requests - Multiple Responses
- |   |   |   |
- V   V   V   V]]>
-            </artwork>
-          </figure>
-          <t>
-            <list style="hanging" hangIndent="17">
-              <t>--- Server ---</t>
-              <t hangText="(x) (x) ( ) ( )">The server must authenticate a message coming from a requesting client. (R1.1)</t>
-              <t hangText="(x) (x) ( ) ( )">The server must verify that it has not received this request previously. (R1.2)</t>
-              <t>--- Client ---</t>
-              <t hangText="(x) (x) (x) (x)">The client must verify that the received response originates from the requested server. (R1.3) The client must be able to verify that a received resource representation originates from the requested server. (R3.1)</t>
-              <t hangText="(x) ( ) ( ) ( )">The client must verify that a response corresponds uniquely to a previous request that the client has made. (R1.4)</t>
-              <t hangText="( ) (x) ( ) ( )">The client must verify that a response corresponds to a previous request that the client has made. (R2.1)</t>
-              <t hangText="( ) (x) ( ) ( )">The client must verify that it has not received this response previously and whether responses for the same request are received in the wrong order. (R2.2)</t>
-              <t hangText="( ) ( ) (x) (x)">The client must be able to verify that a received representation is a representation of the resource requested by the client. (R3.2)</t>
-              <t hangText="( ) ( ) (x) (x)">The client must be able to verify the content format of the representation. (R3.3)</t>
-              <t hangText="( ) ( ) (x) (x)">The client must be able to detect that a received representation is fresh. (R3.4)</t>
-              <t>--- Encrypted and Integrity Protected Parts ---</t>
-              <t hangText="(x) (x) (x) (x)">The payload must be integrity protected and encrypted between client and server. (R1.5) The representation must be integrity protected and encrypted from the server to the client. (R3.5)</t>
-              <t hangText="(x) (x) ( ) ( )">The CoAP options except Uri-* and Proxy-* must be integrity protected in the request.  The effective request URI must be integrity protected in the request. (R1.6)</t>
-              <t hangText="(x) (x) ( ) ( )">All CoAP options in the response must be integrity protected. Max-Age must be set to 0. (R1.7)</t>
-              <t hangText="(x) (x) ( ) ( )">The CoAP options Uri-Host/Port and Proxy-Uri/Scheme of the request must not be encrypted.  The Max-Age option of the response must not be encrypted.  All other options must be encrypted. (R1.8)</t>
-              <t hangText="(x) (x) ( ) ( )">The CoAP header fields Version and Code must be integrity protected in requests and responses.  All other header fields must not be integrity protected. The header fields must not be encrypted. (R1.9)</t>
-              <t>--- Miscellaneous ---</t>
-              <t hangText="(x) (x) (x) (x)">The communication protocol must provide forward secrecy. (R1.10) (R3.7)</t>
-              <t hangText="( ) ( ) (x) (x)">To protect against the proxy colluding with an authorized client, asymmetric cryptography must be used. (R3.6)</t>
-            </list>
-          </t>
-          <t>
-            <vspace blankLines="100"/>
-          </t>
-          
-        </section>
-
       </section>
 
     </section>
