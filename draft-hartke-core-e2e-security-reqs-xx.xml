@@ -616,8 +616,8 @@
           <t>
             A proxy eavesdropping or
             inferring information from messages it operates on has an impact
-            on a server in the same way as on a client, see
-            <xref target="sec-client"/>:
+            on a server in the same way as on a client
+            (<xref target="sec-client"/>):
             <list style="symbols">
               <t>
                 (Threat 5:) The proxy eavesdrops on the data in the
@@ -671,7 +671,7 @@
           <section title="Threat 2: Delaying">
             <t>
               Applications sensitive to delay of requests, e.g. certain actuator
-              applications, must protect against this kind of threats,
+              applications, must protect against this kind of threats;
               see <xref target="I-D.mattsson-core-coap-actuators"/>.
               That is out of scope for this document.
               TODO: which keyword should we use here? NOT REQUIRED?
@@ -701,12 +701,7 @@
             
             <t>
               This threat is REQUIRED to be mitigated by the security
-              solution, see <xref target="eavesdrop"/>.
-            </t>
-            
-            <t>
-              The keys used for confidentiality protection MUST
-              provide forward secrecy.
+              solution; see <xref target="eavesdrop"/>.
             </t>
 
           </section>
@@ -714,7 +709,7 @@
           <section title="Threat 6: Traffic Analysis">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security
-              solution, see <xref target="traffic-an"/>.
+              solution; see <xref target="traffic-an"/>.
             </t>
             <t>
               <vspace blankLines="100"/>
