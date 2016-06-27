@@ -118,7 +118,7 @@
         CoAP makes use of <xref target="RFC6347">Datagram Transport Layer
         Security (DTLS)</xref> for security.  At the same time, CoAP
         relies on proxies for scalability and
-        efficiency:  proxies can
+        efficiency;  proxies can
         reduce response time and network bandwidth use by serving
         responses from a cache or enable clients to make requests that
         they otherwise could not make.
@@ -126,12 +126,12 @@
        
       <t>
         CoAP proxies need to perform a
-        number of operations on requests and responses, which requires
+        number of operations on requests and responses to fulfill their purpose, which requires
         DTLS to be terminated at each proxy.  The proxies therefore do
         not only have access to the data required for performing the
-        desired proxy functionality, but are also able to eavesdrop on
+        desired functionality, but are also able to eavesdrop on
         or manipulate any part of the CoAP payload and metadata
-        exchanged between client and server or inject new CoAP messages
+        exchanged between client and server, or inject new CoAP messages
         without being protected or
         detected by DTLS.
       </t>
@@ -160,7 +160,7 @@
         the security mechanisms at the network layer or transport
         layer. Such a mechanism can provide "end-to-end security"
         at the application layer (<xref target="fig-endtoend"/>)
-        in contrast to the "hop-by-hop security" provided by DTLS
+        in contrast to the "hop-by-hop security" that DTLS provides
         (<xref target="fig-hopbyhop"/>).
       </t>
 
@@ -180,13 +180,13 @@
 
       <t>
         This document analyses security aspects of sensor and actuator
-        comunications over CoAP that involve proxies and
+        communications over CoAP that involve proxies and
         other similar intermediaries.  The analysis is based on the identification
         of assets associated with this communication
         and considering the potential threats posed by
         proxies to these assets.  The threat analysis provides the basis for
-        deriving security requirements that an end-to-end security
-        mechanism for CoAP should meet.
+        deriving security requirements that a solution for
+        CoAP end-to-end security should meet.
       </t>
 
       <section title="Assets and Scope">
