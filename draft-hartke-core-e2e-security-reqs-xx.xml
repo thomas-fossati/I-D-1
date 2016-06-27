@@ -478,7 +478,7 @@
               applications, must protect against this kind of threats,
               see <xref target="I-D.mattsson-core-coap-actuators"/>.
               That is out of scope for this document.
-              TODO: which keyword should we use here? NOT REQUIRED?
+              [[TODO: which keyword should we use here? NOT REQUIRED?]]
             </t>            
           </section>
 
@@ -527,6 +527,8 @@
             <t>
               The keys used for confidentiality protection MUST
               provide forward secrecy.
+              [[TODO: this implies that asymmetric enryption is
+              required, right?]]
             </t>
 
           </section>
@@ -647,10 +649,10 @@
               but usually means that the server can obtain proof for
               some or all of the following things:
               <list style="symbols">
-                <t>that the proxy acts on behalf of a client; (TODO: remove this?)</t>
+                <t>that the proxy acts on behalf of a client;</t>
                 <t>that the data originates from the client and has not been altered on the way;</t>
                 <t>that the request has not been received previously;</t>
-                <t>that the data has been generated recently by the client. (TODO: remove this?)</t>
+                <t>that the data has been generated recently by the client. [[TODO: remove this? delaying is covered separately]]</t>
               </list>
               The proof can, for example, involve a message
               authentication code that the proxy obtains from the
@@ -666,6 +668,7 @@
               tell if the proxy sends the request according to specification
               or if it spoofs the request. This threat is NOT REQUIRED
               to be mitigated by the security solution.
+              [[TODO: confirm last sentence]]
             </t>
             
             
@@ -677,7 +680,7 @@
               applications, must protect against this kind of threats;
               see <xref target="I-D.mattsson-core-coap-actuators"/>.
               That is out of scope for this document.
-              TODO: which keyword should we use here? NOT REQUIRED?
+              [[TODO: which keyword should we use here? NOT REQUIRED?]]
             </t>
           </section>
 
@@ -1148,7 +1151,7 @@ Client A           |               |
   
   <section anchor="FR2" title="Functional Requirements">
     <t>
-      TODO: Complete the functional requirements
+      [[TODO: Complete the functional requirements]]
     </t>
     
     <t>
@@ -1183,7 +1186,7 @@ Client A           |               |
   
   <section anchor="PR2" title="Processing Rules">
     <t>
-      TODO: Complete the processing rules
+      [[TODO: Complete the processing rules]]
     </t>
     
     <t>
@@ -1236,7 +1239,7 @@ Client A           |               |
   <section anchor="auth-2" title="Authenticity">
     
     <t>
-      TODO: Make the analysis and write this section
+      [[TODO: Make the analysis and write this section]]
     </t>
     <t>
       A request is considered authentic (<xref target="spoofing-server"/>)
@@ -1270,7 +1273,7 @@ Client A           |               |
           <list style="symbols">
             <t>the CoAP version,</t>
             <t>the response code,</t>
-            <t>all options, (TODO: really?)</t>
+            <t>all options,</t>
             <t>the payload, if any.</t>
           </list>
         </t>
@@ -1295,7 +1298,7 @@ Client A           |               |
   <section anchor="conf-2" title="Confidentiality">
     
     <t>
-      TODO: Make the analysis and write this section
+      [[TODO: Make the analysis and write this section]]
     </t>
     
     <t>
