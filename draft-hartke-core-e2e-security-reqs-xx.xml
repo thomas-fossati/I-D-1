@@ -1739,23 +1739,6 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-
-
-<section title="Acknowledgments" numbered="no">
-  
-  <!-- sorted by last name -->
-  <t>
-    Thanks to
-    Ari Keranen,
-    John Mattsson,
-    Jim Schaad, and
-    Ludwig Seitz
-    for helpful comments and discussions that have shaped the
-    document.
-  </t>
-  
-</section>
-
   </middle>
 
   <back>
@@ -1871,6 +1854,21 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
+
+    <section title="Acknowledgments" numbered="no">
+  
+      <!-- sorted by last name -->
+      <t>
+        Thanks to
+        Ari Keranen,
+        John Mattsson,
+        Jim Schaad, and
+        Ludwig Seitz
+        for helpful comments and discussions that have shaped the
+        document.
+      </t>
+  
+    </section>
 
   </back>
 
