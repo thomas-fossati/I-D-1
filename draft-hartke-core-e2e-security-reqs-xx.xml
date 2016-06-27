@@ -1458,6 +1458,10 @@ Client A           |               |
                   <t>
                     (Threat 1:) The broker spoofs a response.
                   </t>
+                  <t>
+                    (Threat 2:) The broker duly processed the
+                    request but delays the return of the response.
+                  </t>
                 </list>
               </t>
               <t>
@@ -1468,7 +1472,7 @@ Client A           |               |
                     The subscriber times out too early.
                   </t>
                   <t>
-                    (Threat 2:) The broker withholds the response.
+                    (Threat 3:) The broker withholds the response.
                   </t>
                 </list>
               </t>
@@ -1477,7 +1481,7 @@ Client A           |               |
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    (Threat 3:) The proxy floods the subscriber with
+                    (Threat 4:) The proxy floods the subscriber with
                     responses.
                   </t>
                 </list>
@@ -1526,14 +1530,20 @@ Client A           |               |
             </t>
           </section>
 
-          <section title="Threat 2: Withholding">
+          <section title="Threat 2: Delaying">
+            <t>
+              [[TODO.]]
+            </t>
+          </section>
+
+          <section title="Threat 3: Withholding">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution.
             </t>
           </section>
 
-          <section title="Threat 3: Flooding">
+          <section title="Threat 4: Flooding">
             <t>
               A CoAP client like the subscriber is specified to reject
               any response that it does not expect. This can happen
@@ -1583,13 +1593,13 @@ Client A           |               |
           <t>
             There are the following threats:
             <list style="symbols">
-              <t>(Threat 4:) The broker reads the data in the request from the publisher or the subscriber.</t>
-              <t>(Threat 5:) The broker measures the frequency and distribution of incoming requests.</t>
-              <t>(Threat 6:) The broker stores and notifies subscribers of data from an unauthorized publisher.</t>
+              <t>(Threat 5:) The broker reads the data in the request from the publisher or the subscriber.</t>
+              <t>(Threat 6:) The broker measures the frequency and distribution of incoming requests.</t>
+              <t>(Threat 7:) The broker stores and notifies subscribers of data from an unauthorized publisher.</t>
             </list>
           </t>
 
-          <section title="Threat 4: Reading">
+          <section title="Threat 5: Reading">
             <t>
               This threat is REQUIRED to be mitigated by the security
               solution: publishers MUST protect the data in the requests
@@ -1605,14 +1615,14 @@ Client A           |               |
             </t>
           </section>
 
-          <section title="Threat 5: Measuring">
+          <section title="Threat 6: Measuring">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution.
             </t>
           </section>
 
-          <section title="Threat 6: Poisoning">
+          <section title="Threat 7: Poisoning">
             <t>
               [[TODO.]]
             </t>
