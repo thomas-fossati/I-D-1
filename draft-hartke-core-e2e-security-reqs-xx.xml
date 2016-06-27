@@ -520,6 +520,9 @@
               parts of the requests in order to accomplish
               its task. <xref target="proxy-scenarios"/> analyzes
               which parts can be encrypted depending on the proxy case.
+              In general, a security solution SHOULD confidentiality
+              protect all data that is not needed to be read by the
+              proxy to accomplish its task.
             </t>
             <t>
               The keys used for confidentiality protection MUST
