@@ -1313,6 +1313,9 @@ Client A           |               |
         <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query;</t>
       </list>
     </t>
+    <t>
+      <vspace blankLines="100"/>
+    </t>
     
   </section>
   
@@ -1384,10 +1387,6 @@ Client A           |               |
         all publishers. That doesn't scale.)
       </t>
 
-      <t>
-        <vspace blankLines="100"/>
-      </t>
-
       <!-- **************************************************************** -->
 
       <section title="Threats and Security Requirements">
@@ -1412,9 +1411,6 @@ Client A           |               |
           <t>
             From the perspective of the publisher, are there any
             requirements on the response?
-          </t>
-          <t>
-            <vspace blankLines="100"/>
           </t>
 
         </section>
@@ -1491,10 +1487,6 @@ Client A           |               |
             observes a topic.
           </t>
 
-          <!--<t>
-            <vspace blankLines="100"/>
-          </t>-->
-
           <section title="Threat 1: Spoofing">
             <t>
               With one exception (see below), this threat is REQUIRED
@@ -1553,9 +1545,6 @@ Client A           |               |
               security solution in particular, but a subscriber SHOULD
               generally defend against flooding attacks.
             </t>
-            <t>
-              <vspace blankLines="100"/>
-            </t>
           </section>
 
         </section>
@@ -1600,10 +1589,6 @@ Client A           |               |
             </list>
           </t>
 
-          <t>
-            <vspace blankLines="100"/>
-          </t>
-
           <section title="Threat 4: Reading">
             <t>
               This threat is REQUIRED to be mitigated by the security
@@ -1629,10 +1614,7 @@ Client A           |               |
 
           <section title="Threat 6: Poisoning">
             <t>
-              TODO.
-            </t>
-            <t>
-              <vspace blankLines="100"/>
+              [[TODO.]]
             </t>
           </section>
 
