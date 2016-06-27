@@ -342,7 +342,7 @@
 
       <section title="Threats and Security Requirements">
 
-        <section title="Client -&gt; Proxy" anchor="sec-client">
+        <section title="Client-side" anchor="sec-client">
 
           <figure anchor="fig-client" title="The Client End">
             <artwork align="left">
@@ -551,7 +551,7 @@
 
         </section>
 
-        <section title="Proxy -&gt; Server">
+        <section title="Server-side">
 
           <figure anchor="fig-server" title="The Server End">
             <artwork align="left">
