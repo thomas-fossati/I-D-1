@@ -380,6 +380,10 @@
                   <t>
                     (Threat 1:) The proxy spoofs a response.
                   </t>
+                  <t>
+                    (Threat 2:) The proxy duly processed the request
+                    but delays the return of the response.
+                  </t>
                 </list>
               </t>
               <t>
@@ -390,7 +394,7 @@
                     The client times out too early.
                   </t>
                   <t>
-                    (Threat 2:) The proxy withholds the response.
+                    (Threat 3:) The proxy withholds the response.
                   </t>
                 </list>
               </t>
@@ -399,7 +403,7 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    (Threat 3:) The proxy floods the client with
+                    (Threat 4:) The proxy floods the client with
                     responses.
                   </t>
                 </list>
@@ -413,11 +417,11 @@
             Furthermore, there are threats related to privacy:
             <list style="symbols">
               <t>
-                (Threat 4:) The proxy eavesdrops on the data in the
+                (Threat 5:) The proxy eavesdrops on the data in the
                 request from the client.
               </t>
               <t>
-                (Threat 5:) The proxy measures the size, frequency or
+                (Threat 6:) The proxy measures the size, frequency or
                 distribution of requests from the client.
               </t>
             </list>
@@ -470,19 +474,26 @@
             </t>
           </section>
 
-          <section title="Threat 2: Withholding">
+          <section title="Threat 2: Delaying">
+            <t>
+              Applications sensitive to delay of responses, e.g. certain sensor
+              applications, must protect against this kind of threats,
+              see <xref target="I-D.mattsson-core-coap-actuators"/>.
+              That is out of scope for this document.
+            </t>            
+          </section>
+
+          <section title="Threat 3: Withholding">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution, since a client cannot tell
               if the proxy does not send a response because it is
               hasn't received a response from the origin server yet
               or if it intentionally withholds the response.
-              
-              TODO: Delay attacks
             </t>
           </section>
           
-          <section title="Threat 3: Flooding">
+          <section title="Threat 4: Flooding">
             <t>
               A CoAP client is specified to reject any response that
               it does not expect. This can happen before the client
@@ -496,7 +507,7 @@
             </t>
           </section>
           
-          <section title="Threat 4: Eavesdropping" anchor="eavesdrop">
+          <section title="Threat 5: Eavesdropping" anchor="eavesdrop">
             
             
             <t>
@@ -520,7 +531,7 @@
 
           </section>
           
-          <section title="Threat 5: Traffic Analysis" anchor="traffic-an">
+          <section title="Threat 6: Traffic Analysis" anchor="traffic-an">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
             </t>
@@ -571,6 +582,9 @@
                   <t>
                     (Threat 1:) The proxy spoofs a request.
                   </t>
+                  <t>
+                    (Threat 2:) The proxy sends a request with delay.
+                  </t>
                 </list>
               </t>
               <t>
@@ -581,7 +595,7 @@
                     The proxy does not need to send a request.
                   </t>
                   <t>
-                    (Threat 2:) The proxy withholds a request.
+                    (Threat 3:) The proxy withholds a request.
                   </t>
                 </list>
               </t>
@@ -590,7 +604,7 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    (Threat 3:) The proxy floods the server with
+                    (Threat 4:) The proxy floods the server with
                     requests.
                   </t>
                 </list>
@@ -605,11 +619,11 @@
             <xref target="sec-client"/>:
             <list style="symbols">
               <t>
-                (Threat 4:) The proxy eavesdrops on the data in the
+                (Threat 5:) The proxy eavesdrops on the data in the
                 response from the server.
               </t>
               <t>
-                (Threat 5:) The proxy measures the frequency and
+                (Threat 6:) The proxy measures the frequency and
                 distribution of responses from the server.
               </t>
             </list>
@@ -631,7 +645,7 @@
                 <t>that the proxy acts on behalf of a client;</t>
                 <t>that the data originates from the client and has not been altered on the way;</t>
                 <t>that the request has not been received previously;</t>
-                <t>that the data has been generated recently by the client.</t>
+                <t>that the data has been generated recently by the client. (TODO: remove this?)</t>
               </list>
               The proof can, for example, involve a message
               authentication code that the proxy obtains from the
@@ -659,20 +673,26 @@
             
             
           </section>
-          
 
-          <section title="Threat 2: Withholding">
+          <section title="Threat 2: Delaying">
+            <t>
+              Applications sensitive to delay of requests, e.g. certain actuator
+              applications, must protect against this kind of threats,
+              see <xref target="I-D.mattsson-core-coap-actuators"/>.
+              That is out of scope for this document.
+            </t>
+          </section>
+
+          <section title="Threat 3: Withholding">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution because a CoAP server cannot detect if
               the proxy does not send a request because it has no work
               to do or if it withholds a request.
-              
-              TODO: Delay attacks
             </t>
           </section>
 
-          <section title="Threat 3: Flooding">
+          <section title="Threat 4: Flooding">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution in particular, but a server SHOULD
@@ -681,7 +701,7 @@
     
           </section>
           
-          <section title="Threat 4: Eavesdropping">
+          <section title="Threat 5: Eavesdropping">
             
             
             <t>
@@ -691,7 +711,7 @@
             
           </section>
           
-          <section title="Threat 5: Traffic Analysis">
+          <section title="Threat 6: Traffic Analysis">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security
               solution, see <xref target="traffic-an"/>.
