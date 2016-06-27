@@ -569,8 +569,12 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    The proxy sends a request according to
-                    specification.
+                    The proxy makes a request on behalf of a client
+                    according to specification.
+                  </t>
+                  <t>
+                    The proxy makes a request (e.g., to validate
+                    cached data) on its own behalf.
                   </t>
                   <t>
                     (Threat 1:) The proxy spoofs a request.
@@ -624,7 +628,8 @@
 
           <section title="Threat 1: Spoofing" anchor="spoofing-server">
             <t>
-              This threat is REQUIRED to be mitigated by the security
+              With one exception (see below), this threat is REQUIRED
+              to be mitigated by the security
               solution: the server MUST verify that the request is an
               <spanx>authentic request</spanx> before processing it.
             </t>
@@ -635,7 +640,7 @@
               but usually means that the server can obtain proof for
               some or all of the following things:
               <list style="symbols">
-                <t>that the proxy acts on behalf of a client;</t>
+                <t>that the proxy acts on behalf of a client; (TODO: remove this?)</t>
                 <t>that the data originates from the client and has not been altered on the way;</t>
                 <t>that the request has not been received previously;</t>
                 <t>that the data has been generated recently by the client. (TODO: remove this?)</t>
@@ -645,24 +650,17 @@
               client and includes in the request or a
               challenge-response roundtrip. TODO: I (GS) would rather speak
               about integrity protection, than "e.g. a MAC".
-              TODO: What is the problem with the content commented out below?
-              Note that the exception formulation also need to included in
-              this threat.
             </t>
             
-            <!--
             <t>
-              Note that a CoAP proxy may be allowed to make a
-              validation request to a resource without it being possible to
-              prove that it acts on behalf of a client. Since such a
-              request does not originate from the client, the server cannot
+              Note that a CoAP proxy may make certain
+              requests (e.g., to validate cached data) without acting
+              on behalf of a client. Since such a
+              request does not originate from a client, the server cannot
               tell if the proxy sends the request according to specification
-              or if it spoofs the request.  If the proxy processing rules
-              (<xref target="proxy-scenarios"/>)
-              specify this functionality, then this threat is NOT REQUIRED
+              or if it spoofs the request. This threat is NOT REQUIRED
               to be mitigated by the security solution.
             </t>
-            -->
             
             
           </section>
