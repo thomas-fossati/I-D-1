@@ -705,6 +705,11 @@
               solution, see <xref target="eavesdrop"/>.
             </t>
             
+            <t>
+              The keys used for confidentiality protection MUST
+              provide forward secrecy.
+            </t>
+
           </section>
           
           <section title="Threat 6: Traffic Analysis">
@@ -1240,67 +1245,51 @@ Client A           |               |
     <t>
       TODO: Make the analysis and write this section
     </t>
-    
     <t>
-      This section consider the forwarding only proxy case and defines when
-      a message is considered authentic (see
-      <xref target="spoofing-client"/> and <xref target="spoofing-server"/>).
-    </t>
-    <t>
-      The request is considered authentic by the server if:
+      A request is considered authentic (<xref target="spoofing-server"/>)
+      by the server if the server can obtain proof for all of the
+      following things:
       <list style="format A2.%d" counter="A2_count">
         <t>
-          The request originates from the client
+          that the following parts of the request originate from
+          the client and have not been altered on the way:
+          <list style="symbols">
+            <t>the CoAP version,</t>
+            <t>the request method,</t>
+            <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query;</t>
+            <t>the payload, if any.</t>
+          </list>
         </t>
         <t>
-          The CoAP payload of the request has not been altered.
-        </t>
-        <t>
-          The CoAP options of the request have not been altered in any
-          other way than defined in <xref target="PR2" />.
-        </t>
-        <t>
-          The effective URI of the request is not changed.
-        </t>
-        <t>
-          The CoAP header fields Version and Code of the request have not
-          been altered.
-        </t>
-        <t>
-          The request has not been previously received.
-        </t>
-        <t>
-          The request was recently sent by the client.
+          that the effective request URI originates from
+          the client and have not been altered on the way;
         </t>
       </list>
     </t>
     <t>
-      <vspace blankLines="1"/>
-    </t>
-    <t>
-      The response is considered authentic by the client if:
+      The response is considered authentic (<xref target="spoofing-client"/>)
+      by the client if the client can obtain proof for all of the
+      following things:
       <list style="format A2.%d" counter="A2_count">
         <t>
-          The response originates from the server.
+          that the following parts of the response originate from
+          the server and have not been altered on the way:
+          <list style="symbols">
+            <t>the CoAP version,</t>
+            <t>the response code,</t>
+            <t>all options, (TODO: really?)</t>
+            <t>the payload, if any.</t>
+          </list>
         </t>
         <t>
-          The CoAP payload, options and header fields Version and Code of
-          the response have not been altered.
+          that the response matches the specifications of the request;
         </t>
         <t>
-          The response has not been previously received.
+          that the data is fresh;
         </t>
         <t>
-          The response was recently sent by the server.
-        </t>
-        <t>
-          The response corresponds to a unique request
-          sent by the client.
-        </t>
-        <t>
-          If there are multiple responses, the client should
-          be able to verify that
-          is the case, as well as the order of the responses.
+          that the response is in sequence if there are multiple
+          responses.
         </t>
         
       </list>
@@ -1321,20 +1310,11 @@ Client A           |               |
       protected (see <xref target="eavesdrop"/>).
     </t>
     <t>
-      A messages is considered confidentiality protected if:
-      <list style="format C2.%d">
-        <t>
-          The CoAP payload (if present) is confidentiality protected
-        </t>
-        <t>
-          All CoAP options of the request and response, except
-          Uri-Host/Port and Proxy-Uri/Scheme, are confidentiality
-          protected.
-        </t>
-        <t>
-          The keys used for confidentiality protection provides forward
-          security.
-        </t>
+      A messages is considered confidentiality protected
+      (<xref target="eavesdrop"/>) if the following parts of
+      the message are confidentiality protected:
+      <list style="symbols">
+        <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query;</t>
       </list>
     </t>
     
