@@ -517,13 +517,8 @@
               Note that this requirement is in conflict with the
               requirement that the proxy needs to be able to read some
               parts of the requests in order to accomplish
-              its task. Which parts can be encrypted and/or
-              integrity-protected depends on the proxy case
-              (<xref target="proxy-scenarios"/>), but it is RECOMMENDED
-              to encompass all data that is not
-              needed to be read by the proxy to
-              accomplish its task. TODO: this section is about eavesdropping -
-              integrity protection does not belong here.
+              its task. <xref target="proxy-scenarios"/> analyzes
+              which parts can be encrypted depending on the proxy case.
             </t>
             <!-- TODO: forward secrecy -->
 
