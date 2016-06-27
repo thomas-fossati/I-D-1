@@ -652,8 +652,7 @@
               The proof can, for example, involve a message
               authentication code that the proxy obtains from the
               client and includes in the request or a
-              challenge-response roundtrip. TODO: I (GS) would rather speak
-              about integrity protection, than "e.g. a MAC".
+              challenge-response roundtrip.
             </t>
             
             <t>
