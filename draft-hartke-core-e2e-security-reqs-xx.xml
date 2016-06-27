@@ -775,15 +775,14 @@
     
     <figure anchor="figure-1" title="Message Flow with a Unique Response for Each Request">
       <artwork align="center">
-        <![CDATA[
-          Client          Proxy          Server
-          |               |               |
-          |    Request    |    Request    |
-          |-------------->|-------------->|--.
-          |               |               |  |
-          |<--------------|<--------------|<-'
-          |    Response   |    Response   |
-          |               |               |]]>
+<![CDATA[Client          Proxy          Server
+  |               |               |
+  |    Request    |    Request    |
+  |-------------->|-------------->|--.
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |    Response   |    Response   |
+  |               |               |]]>
       </artwork>
     </figure>
     
@@ -830,21 +829,20 @@
     <figure anchor="figure-2" title="Message Flow of Notifications of
       Linked to a Unique Request">
       <artwork align="center">
-        <![CDATA[
-          Client          Proxy          Server
-          |               |               |
-          |    Request    |    Request    |
-          |-------------->|-------------->|--.
-          |               |               |  |
-          |<--------------|<--------------|<-'
-          |  Notification |  Notification |
-          |               |               |
-          |<--------------|<--------------|
-          |  Notification |  Notification |
-          |               |               |
-          |<--------------|<--------------|
-          |  Notification |  Notification |
-          |               |               |]]>
+<![CDATA[Client          Proxy          Server
+  |               |               |
+  |    Request    |    Request    |
+  |-------------->|-------------->|--.
+  |               |               |  |
+  |<--------------|<--------------|<-'
+  |  Notification |  Notification |
+  |               |               |
+  |<--------------|<--------------|
+  |  Notification |  Notification |
+  |               |               |
+  |<--------------|<--------------|
+  |  Notification |  Notification |
+  |               |               |]]>
       </artwork>
     </figure>
     
@@ -940,6 +938,8 @@
 
     <t>
       A request is considered authentic (<xref target="spoofing-server"/>)
+      by the server if the server can obtain proof for all of the
+      following things:
       <list style="format A1.%d" counter="A1_count">
         <t>
           that the proxy acts on behalf of a client;
@@ -969,6 +969,8 @@
     </t>
     <t>
       The response is considered authentic (<xref target="spoofing-client"/>)
+      by the client if the client can obtain proof for all of the
+      following things:
       <list style="format A1.%d" counter="A1_count">
         <t>
           that the following parts of the response originate from
@@ -1044,25 +1046,24 @@
     </t>
     
     <figure anchor="figure-3" title="Message Flow for Cached Responses">
-      <artwork align="left">
-        <![CDATA[
-          Client A         Proxy           Server
-          |               |               |
-          |    Request    |    Request    |
-          |-------------->|-------------->|--.
-          |               |               |  |
-          |<--------------|<--------------|<-'
-          |    Response   |    Response   |
-          |               |               |
-          |               |
-          Client B           |               |
-          |               |               |
-          |    Request    |               |
-          |-------------->|--.            |
-          |               |  | from cache |
-          |<--------------|<-'            |
-          |    Response   |               |
-          |               |               |]]>
+      <artwork align="center">
+<![CDATA[Client A         Proxy           Server
+   |               |               |
+   |    Request    |    Request    |
+   |-------------->|-------------->|--.
+   |               |               |  |
+   |<--------------|<--------------|<-'
+   |    Response   |    Response   |
+   |               |               |
+                   |               |
+Client B           |               |
+   |               |               |
+   |    Request    |               |
+   |-------------->|--.            |
+   |               |  | from cache |
+   |<--------------|<-'            |
+   |    Response   |               |
+   |               |               |]]>
       </artwork>
     </figure>
     
@@ -1093,33 +1094,33 @@
     
     
     <figure anchor="figure-observe" title="Message Flow for Observe with Multiple Observers">
-      <artwork align="left">
-        <![CDATA[Client A         Proxy          Server
-          |               |               |
-          |    Request    |    Request    |
-          |-------------->|-------------->|--.
-          |               |               |  |
-          |<--------------|<--------------|<-'
-          |  Notification |  Notification |
-          |               |               |
-          |               |
-          Client B           |               |
-          |               |               |
-          |    Request    |               |
-          |-------------->|--.            |
-          |               |  | from cache |
-          |<--------------|<-'            |
-          |  Notification |               |
-          |               |               |
-          |<--------------|<--------------|
-          |  Notification |  Notification |
-          |               |               |
-          |               |
-          Client A           |               |
-          |               |               |
-          |<--------------|               |
-          |  Notification |               |
-          |               |               |]]>
+      <artwork align="center">
+<![CDATA[Client A         Proxy          Server
+   |               |               |
+   |    Request    |    Request    |
+   |-------------->|-------------->|--.
+   |               |               |  |
+   |<--------------|<--------------|<-'
+   |  Notification |  Notification |
+   |               |               |
+                   |               |
+Client B           |               |
+   |               |               |
+   |    Request    |               |
+   |-------------->|--.            |
+   |               |  | from cache |
+   |<--------------|<-'            |
+   |  Notification |               |
+   |               |               |
+   |<--------------|<--------------|
+   |  Notification |  Notification |
+   |               |               |
+                   |               |
+Client A           |               |
+   |               |               |
+   |<--------------|               |
+   |  Notification |               |
+   |               |               |]]>
       </artwork>
     </figure>
     <t>
