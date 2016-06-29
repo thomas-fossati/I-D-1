@@ -472,13 +472,13 @@
             </t>
           </section>
 
-          <section title="Threat 2: Delaying">
+          <section title="Threat 2: Delaying" anchor="delay-client">
             <t>
-              Applications sensitive to delay of responses, e.g. certain sensor
-              applications, must protect against this kind of threats,
-              see <xref target="I-D.mattsson-core-coap-actuators"/>.
-              That is out of scope for this document.
-              [[TODO: which keyword should we use here? NOT REQUIRED?]]
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution. Applications sensitive to delay of
+              responses (e.g., certain sensor applications) need to
+              protect against this kind of threat themselves; see
+              <xref target="I-D.mattsson-core-coap-actuators"/>.
             </t>            
           </section>
 
@@ -527,8 +527,6 @@
             <t>
               The keys used for confidentiality protection MUST
               provide forward secrecy.
-              [[TODO: this implies that asymmetric enryption is
-              required, right?]]
             </t>
 
           </section>
@@ -651,8 +649,7 @@
               <list style="symbols">
                 <t>that the proxy acts on behalf of a client;</t>
                 <t>that the data originates from the client and has not been altered on the way;</t>
-                <t>that the request has not been received previously;</t>
-                <t>that the data has been generated recently by the client. [[TODO: remove this? delaying is covered separately]]</t>
+                <t>that the request has not been received previously.</t>
               </list>
               The proof can, for example, involve a message
               authentication code that the proxy obtains from the
@@ -676,20 +673,20 @@
 
           <section title="Threat 2: Delaying">
             <t>
-              Applications sensitive to delay of requests, e.g. certain actuator
-              applications, must protect against this kind of threats;
-              see <xref target="I-D.mattsson-core-coap-actuators"/>.
-              That is out of scope for this document.
-              [[TODO: which keyword should we use here? NOT REQUIRED?]]
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution. Applications sensitive to delay of
+              requests (e.g., certain actuator applications) need to
+              protect against this kind of threat themselves; see
+              <xref target="I-D.mattsson-core-coap-actuators"/>.
             </t>
           </section>
 
           <section title="Threat 3: Withholding">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
-              security solution because a CoAP server cannot detect if
+              security solution, since a server cannot tell if
               the proxy does not send a request because it has no work
-              to do or if it withholds a request.
+              to do or if it intentionally withholds a request.
             </t>
           </section>
 
@@ -957,7 +954,7 @@
         </t>
         <t>
           that the effective request URI originates from
-          the client and have not been altered on the way;
+          the client and has not been altered on the way;
         </t>
         <t>
           that the request has not been received previously;
@@ -1151,7 +1148,7 @@ Client A           |               |
   
   <section anchor="FR2" title="Functional Requirements">
     <t>
-      The security solution MUST protect request and responses in a
+      The security solution SHOULD protect requests and responses in a
       way that a proxy can perform the following tasks:
       <list style="format FR2.%d">
         <t>
@@ -1167,7 +1164,6 @@ Client A           |               |
         <t>
           Performing validation of a response cached by the proxy as
           well as validation of a response cached by the client.
-          [[TODO: this requirement is very difficult to satisfy]]
         </t>
         <t>
           Observing a resource on behalf of one or more clients.
@@ -1249,7 +1245,7 @@ Client A           |               |
         </t>
         <t>
           that the effective request URI originates from
-          the client and have not been altered on the way;
+          the client and has not been altered on the way;
         </t>
       </list>
     </t>
