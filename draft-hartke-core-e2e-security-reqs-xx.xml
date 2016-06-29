@@ -506,7 +506,7 @@
             </t>
           </section>
           
-          <section title="Threat 5: Eavesdropping" anchor="eavesdrop">
+          <section title="Threat 5: Eavesdropping" anchor="eavesdrop-client">
             
             
             <t>
@@ -702,12 +702,12 @@
     
           </section>
           
-          <section title="Threat 5: Eavesdropping">
+          <section title="Threat 5: Eavesdropping" anchor="eavesdrop-server">
             
             
             <t>
               This threat is REQUIRED to be mitigated by the security
-              solution; see <xref target="eavesdrop"/>.
+              solution; see <xref target="eavesdrop-client"/>.
             </t>
 
           </section>
@@ -938,9 +938,9 @@
   <section anchor="auth-1" title="Authenticity">
 
     <t>
-      A request is considered authentic (<xref target="spoofing-server"/>)
-      by the server if the server can obtain proof for all of the
-      following things:
+      A request is considered authentic by the server
+      (<xref target="spoofing-server"/>)
+      if the server can obtain proof for all of the following things:
       <list style="format A1.%d" counter="A1_count">
         <t>
           that the proxy acts on behalf of a client;
@@ -951,7 +951,7 @@
           <list style="symbols">
             <t>the CoAP version,</t>
             <t>the request method,</t>
-            <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query;</t>
+            <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query, and</t>
             <t>the payload, if any.</t>
           </list>
         </t>
@@ -969,9 +969,9 @@
       </list>
     </t>
     <t>
-      The response is considered authentic (<xref target="spoofing-client"/>)
-      by the client if the client can obtain proof for all of the
-      following things:
+      A response is considered authentic by the client
+      (<xref target="spoofing-client"/>)
+      if the client can obtain proof for all of the following things:
       <list style="format A1.%d" counter="A1_count">
         <t>
           that the following parts of the response originate from
@@ -979,7 +979,7 @@
           <list style="symbols">
             <t>the CoAP version,</t>
             <t>the response code,</t>
-            <t>all options,</t>
+            <t>all options, and</t>
             <t>the payload, if any.</t>
           </list>
         </t>
@@ -1007,7 +1007,7 @@
   <section anchor="conf-1" title="Confidentiality">
     <t>
       A message is considered confidentiality protected
-      (<xref target="eavesdrop"/>) if the following parts of
+      (<xref target="eavesdrop-client"/>) if the following parts of
       the message are confidentiality protected:
       <list style="symbols">
         <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query;</t>
@@ -1151,32 +1151,26 @@ Client A           |               |
   
   <section anchor="FR2" title="Functional Requirements">
     <t>
-      [[TODO: Complete the functional requirements]]
-    </t>
-    
-    <t>
+      The security solution MUST protect request and responses in a
+      way that a proxy can perform the following tasks:
       <list style="format FR2.%d">
         <t>
-          The proxy MUST be able to store cacheable responses in a
-          cache.  Cacheable responses are 2.05 (Content) responses and
-          all error responses.
+          Storing a cacheable response in a cache. This requires that
+          the proxy is able to calculate the cache-key of the request.
+          Cacheable responses include 2.05 (Content) responses and all
+          error responses.
         </t>
         <t>
-          This proxy MUST be able to read the CoAP header, options, and
-          payload and to compute the cache key for a request.
+          Returning a fresh response from its cache without contacting
+          the server.
         </t>
         <t>
-          The proxy MUST be able to return a fresh response from
-          its cache without contacting the server.
+          Performing validation of a response cached by the proxy as
+          well as validation of a response cached by the client.
+          [[TODO: this requirement is very difficult to satisfy]]
         </t>
         <t>
-          The proxy MUST be able to perform validation on a request by
-          a client and a request validation to the server (see Section
-          5.6.2 of <xref target="RFC7252"/>).
-        </t>
-        <t>
-          The proxy MUST be able to observe a resource on behalf of
-          one or more clients.
+          Observing a resource on behalf of one or more clients.
         </t>
       </list>
     </t>
@@ -1239,12 +1233,9 @@ Client A           |               |
   <section anchor="auth-2" title="Authenticity">
     
     <t>
-      [[TODO: Make the analysis and write this section]]
-    </t>
-    <t>
-      A request is considered authentic (<xref target="spoofing-server"/>)
-      by the server if the server can obtain proof for all of the
-      following things:
+      A request is considered authentic by the server
+      (<xref target="spoofing-server"/>)
+      if the server can obtain proof for all of the following things:
       <list style="format A2.%d" counter="A2_count">
         <t>
           that the following parts of the request originate from
@@ -1252,7 +1243,7 @@ Client A           |               |
           <list style="symbols">
             <t>the CoAP version,</t>
             <t>the request method,</t>
-            <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query;</t>
+            <t>all options except ETag, Observe, Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query, and</t>
             <t>the payload, if any.</t>
           </list>
         </t>
@@ -1263,9 +1254,9 @@ Client A           |               |
       </list>
     </t>
     <t>
-      The response is considered authentic (<xref target="spoofing-client"/>)
-      by the client if the client can obtain proof for all of the
-      following things:
+      A response is considered authentic by the client
+      (<xref target="spoofing-client"/>)
+      if the client can obtain proof for all of the following things:
       <list style="format A2.%d" counter="A2_count">
         <t>
           that the following parts of the response originate from
@@ -1273,7 +1264,7 @@ Client A           |               |
           <list style="symbols">
             <t>the CoAP version,</t>
             <t>the response code,</t>
-            <t>all options,</t>
+            <t>all options except Max-Age and Observe, and</t>
             <t>the payload, if any.</t>
           </list>
         </t>
@@ -1290,6 +1281,10 @@ Client A           |               |
         
       </list>
     </t>
+    <t>
+      [[TODO: talking about "all options except" does not really work
+      because we do not know what options might defined in the future.]]
+    </t>
     
   </section>
   
@@ -1298,20 +1293,13 @@ Client A           |               |
   <section anchor="conf-2" title="Confidentiality">
     
     <t>
-      [[TODO: Make the analysis and write this section]]
-    </t>
-    
-    <t>
-      This section defines when a message is considered confidentiality
-      protected (see <xref target="eavesdrop"/>).
+      A request is always considered confidentiality protected
+      (<xref target="eavesdrop-client"/>).
     </t>
     <t>
-      A messages is considered confidentiality protected
-      (<xref target="eavesdrop"/>) if the following parts of
-      the message are confidentiality protected:
-      <list style="symbols">
-        <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query;</t>
-      </list>
+      A response is considered confidentiality protected
+      (<xref target="eavesdrop-server"/>) if the payload of the
+      response is confidentiality protected.      
     </t>
     <t>
       <vspace blankLines="100"/>
