@@ -1308,10 +1308,6 @@ Client A           |               |
         
       </list>
     </t>
-    <t>
-      [[TODO: talking about "all options except" does not really work
-      because we do not know what options might defined in the future.]]
-    </t>
     
   </section>
   
