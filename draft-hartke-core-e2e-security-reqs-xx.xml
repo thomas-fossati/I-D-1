@@ -1323,52 +1323,55 @@ Client A           |               |
     <section title="Publish-Subscribe">
 
       <t>
-        Applying <xref target="proxying"/> to Publish-Subscribe results
-        in <xref target="fig-pubsub-endtoend"/>.
+        Much of the concerns about proxies as described previously in this document
+        also applies to other kind of intermediary nodes. In this section
+        we study brokers in a publish-subscribe setting
+        <xref target="I-D.koster-core-coap-pubsub"/>.
+        The case of combining
+        brokers and proxies is out of scope for this version
+        of the document.
       </t>
+      <t>
+        There are different ways for a pub-sub broker to operate. We consider
+        the following broker operations:
+      <list style="symbols">
+        <t>
+          The broker receives a request for a topic from the subscriber.
+        </t>
+        <t>
+          The broker receives a request for a publication to a topic from
+          the publisher and forwards the request to the subscribers of the
+          topic.
+        </t>
+      </list>
+     </t>
+     <t>
+       We consider the setting where there is a security association between
+       publisher and subscriber such that the publications can be protected
+       during transfer, see <xref target="fig-publisher-req"/>.
+       Note that the broker needs to read the topic
+      to accomplish its task.
+    </t>
+     <t>
 
-      <figure anchor="fig-pubsub-endtoend" title="End-to-End Security">
-        <artwork align="left">
-<![CDATA[     ___________      _      __________      _      ____________
-    |           |    | |    |          |    | |    |            |
-    |           |--->| |--->|          |<---| |<---|            |
-    | Publisher |    | |    |  Broker  |    | |    | Subscriber |
-    |           |<---| |<---|          |--->| |--->|            |
-    |___________|    |_|    |__________|    |_|    |____________|
-          :         Proxy       :  :       Proxy         :
-          :                     :  :                     :
-          '---------------------'  '---------------------'
-                  Security               Security
-                 Association            Association
-                      A                      B]]>
+      <figure anchor="fig-publisher-req" title="Publisher-to-Subscriber Security.">
+        <artwork align="center">
+          <![CDATA[
+ ____________        __________         ___________
+|            |      |          |       |           |
+|            |----->|          |<------|           |
+| Subscriber |      |  Broker  |       | Publisher |
+|            |<-----|          |------>|           |
+|____________|      |__________|       |___________|
+      :                                      :
+      '--------------------------------------'
+                Security Association
+          ]]>
         </artwork>
       </figure>
+      
+      
 
-      <t>
-        This section is about <xref target="fig-pubsub-ptos"/>.
-      </t>
-
-      <figure anchor="fig-pubsub-ptos" title="Publisher-to-Subscriber Security">
-        <artwork align="left">
-<![CDATA[     ___________      _      __________      _      ____________
-    |           |    | |    |          |    | |    |            |
-    |           |--->| |--->|          |<---| |<---|            |
-    | Publisher |    | |    |  Broker  |    | |    | Subscriber |
-    |           |<---| |<---|          |--->| |--->|            |
-    |___________|    |_|    |__________|    |_|    |____________|
-          :         Proxy                  Proxy         :
-          :                                              :
-          '----------------------------------------------'
-                        Security Association]]>
-        </artwork>
-      </figure>
-
-      <t>
-        (But note that a key aspect of pub-sub is that the subscribers
-        do not know the publishers and the publishers do not know the
-        subscribers. They only have to know the broker. In
-        <xref target="fig-pubsub-ptos"/> all subscribers have to know
-        all publishers. That doesn't scale.)
       </t>
 
       <!-- **************************************************************** -->
