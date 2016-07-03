@@ -664,9 +664,8 @@
               on behalf of a client. Since such a
               request does not originate from a client, the server cannot
               tell if the proxy sends the request according to specification
-              or if it spoofs the request. This threat is NOT REQUIRED
-              to be mitigated by the security solution.
-              [[TODO: confirm last sentence]]
+              or if it spoofs the request. It is up to the security
+              solution how this issue is addressed.
             </t>
             
             
