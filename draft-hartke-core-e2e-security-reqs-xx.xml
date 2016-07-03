@@ -442,8 +442,8 @@
             </t>
             <t>
               The definition of an "authentic response"
-              depends on the proxy case
-              (<xref target="proxy-scenarios"/>),
+              depends on the desired proxy functionality and protection
+              level (<xref target="proxy-solutions"/>),
               but usually means that the client can obtain proof for
               some or all of the following things:
               <list style="symbols">
@@ -518,8 +518,9 @@
               Note that this requirement is in conflict with the
               requirement that the proxy needs to be able to read some
               parts of the requests in order to accomplish
-              its task. <xref target="proxy-scenarios"/> analyzes
-              which parts can be encrypted depending on the proxy case.
+              its task. <xref target="proxy-solutions"/> analyzes
+              which parts can be encrypted depending on the desired
+              proxy functionality and protection level.
               In general, a security solution SHOULD confidentiality
               protect all data that is not needed to be read by the
               proxy to accomplish its task.
@@ -642,8 +643,8 @@
             </t>
             <t>
               The definition of an "authentic request"
-              depends on the proxy case
-              (<xref target="proxy-scenarios"/>),
+              depends on the desired proxy functionality and protection
+              level (<xref target="proxy-solutions"/>),
               but usually means that the server can obtain proof for
               some or all of the following things:
               <list style="symbols">
@@ -726,28 +727,59 @@
 
       <!-- **************************************************************** -->
 
-      <section title="Proxy cases" anchor="proxy-scenarios">
-        
-<t>
-  Based on the previous analysis, we study in this section
-  end-to-end security properties across
-  different kinds of proxies. For each kind of proxy, we present
-  <list style="symbols">
-    <t>the functional requirements of the proxy;</t>
-    <t>the processing rules of the proxy;</t>
-    <t>the required authenticity properties of the messages;</t>
-    <t>the required confidentiality properties of the messages.</t>
-  </list>
-</t>
-<t>
-  Multiple intermediary nodes of different kinds may used in one
-  deployment. This is FFS.
-</t>
-<t>
-  Note that since CoAP was not designed for end-to-end security;
-  solutions complying with these security requirements extend the
-  applicability of CoAP beyond its original scope.
-</t>
+      <section title="Solutions" anchor="proxy-solutions">
+
+        <t>
+          A security solution has to find a trade-off between desired
+          proxy functionality (such as caching) and the provided level
+          of protection. From this trade-off results the definition of
+          what constitutes an authentic request or response and when a
+          request or response is considered confidentiality protected.
+        </t>
+        <t>
+          This section presents two exemplary choices of trade-offs:
+          <list style="symbols">
+            <t>
+              The first case focuses on a high protection level by
+              tying requests and responses uniquely together and
+              confidentiality protecting as much as possible, at the
+              cost of reduced proxy functionality.
+            </t>
+            <t>
+              The second case aims to preserve proxy functionality as
+              much as possible, at the cost of reduced confidentiality
+              protection.
+            </t>
+          </list>
+        </t>
+        <t>
+          For both cases, this section presents an overview of the
+          functionality and processing rules of the proxy and analyzes
+          the required authenticity and confidentiality properties of
+          requests and responses. Due to space constraints, the analysis
+          is limited to the CoAP header fields, the payload, and the
+          request and response options shown in <xref target="table-1"/>.
+        </t>
+        <texttable anchor="table-1" title="Analyzed CoAP Options">
+          <ttcol>Requests</ttcol> <ttcol>Responses</ttcol>
+          <c>Accept        </c>   <c>Content-Format</c>
+          <c>Content-Format</c>   <c>ETag          </c>
+          <c>ETag          </c>   <c>Location-Path </c>
+          <c>If-Match      </c>   <c>Location-Query</c>
+          <c>If-None-Match </c>   <c>Max-Age       </c>
+          <c>Observe       </c>   <c>Observe       </c>
+          <c>Proxy-Scheme  </c>   <c>              </c>
+          <c>Proxy-Uri     </c>   <c>              </c>
+          <c>Uri-Host      </c>   <c>              </c>
+          <c>Uri-Port      </c>   <c>              </c>
+          <c>Uri-Path      </c>   <c>              </c>
+          <c>Uri-Query     </c>   <c>              </c>
+        </texttable>
+        <t>
+          Note that, since CoAP was not designed with end-to-end
+          security in mind, a security solution extends the
+          applicability of CoAP beyond its original scope.
+        </t>
 
 <section title="Forwarding" anchor="forwarding" >
   
