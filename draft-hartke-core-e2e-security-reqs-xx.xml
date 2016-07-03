@@ -1405,19 +1405,19 @@ Client A           |               |
         <section title="Subscriber">
 
           <figure anchor="fig-subscriber" title="The Subscriber End">
-            <artwork align="left">
-<![CDATA[                                 _ _ __             ____________
-                                       |   Request |            |
-                                       |<----------|            |
-                               Broker  |           | Subscriber |
-                                       |---------->|            |
-                                 _ _ __| Response  |____________|]]>
-            </artwork>
-          </figure>
+              <artwork align="left">
+                <![CDATA[     __________             __ _ _
+                  |          | Request   |
+                  |  Sub-    |---------->|
+                  |  scriber |           |   Broker
+                  |          |<----------|
+                  |__________|  Response |__ _ _]]>
+              </artwork>
+            </figure>
 
           <t>
-            The subscriber sends a request to the broker (possibly
-            via one or more proxies) and waits for a response.
+            The subscriber sends a request to the broker
+            and waits for a response.
           </t>
           <t>
             From the perspective of the subscriber, there are three
@@ -1468,15 +1468,36 @@ Client A           |               |
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    (Threat 4:) The proxy floods the subscriber with
+                    (Threat 4:) The broker floods the subscriber with
                     responses.
                   </t>
                 </list>
               </t>
             </list>
-            This is repeated as often as needed when the subscriber
-            observes a topic.
           </t>
+          
+          <t>
+            Furthermore, there are threats related to privacy:
+            <list style="symbols">
+              <t>
+                (Threat 5:) The broker eavesdrops on the data in the
+                request from the subscriber.
+              </t>
+              <t>
+                (Threat 6:) The broker measures the size, frequency or
+                distribution of requests from the subscriber.
+              </t>
+            </list>
+          </t>
+          
+          <t>
+            Note that "cache poisioning" -- the case of storing injected
+            incorrect publications -- is covered from the point of view of
+            the subscriber: it may result in the subscriber receiving a spoofed
+            message, or being flooded, or affect other nodes such that the
+            subscriber times out too early.
+          </t>
+
 
           <section title="Threat 1: Spoofing">
             <t>
