@@ -1538,7 +1538,7 @@ Client A           |               |
             </t>
           </section>
 
-          <section title="Threat 2: Delaying">
+          <section title="Threat 2: Delaying" anchor="delay-sub">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
               Pub-sub applications sensitive to delay of publications
@@ -1546,7 +1546,7 @@ Client A           |               |
             </t>
           </section>
 
-          <section title="Threat 3: Withholding">
+          <section title="Threat 3: Withholding" anchor="withhold-sub">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution, since a subscriber cannot tell if the
@@ -1556,7 +1556,7 @@ Client A           |               |
             </t>
           </section>
 
-          <section title="Threat 4: Flooding">
+          <section title="Threat 4: Flooding" anchor="flooding-sub">
             <t>
               A CoAP client like the subscriber is specified to reject
               any response that it does not expect. This can happen
@@ -1571,31 +1571,25 @@ Client A           |               |
           </section>
           
           
-          <section title="Threat 5: Eavesdropping" anchor="eavesdrop-pubsub">
+          <section title="Threat 5: Eavesdropping" anchor="eavesdrop-sub">
             
             <t>
-              This threat is REQUIRED to be mitigated by the security
-              solution: publishers MUST confidentiality protect
-              the data in the requests they send.
+              This threat is NOT REQUIRED to be mitigated by the security
+              solution. The broker needs to read the topic
+              of the subscription request in order to accomplish
+              its task.
             </t>
             <t>
-              Note that this requirement is in conflict with the
-              requirement that the broker needs to read the topic
-              of the publication in order to accomplish
-              its task. <xref target="pubsub-scenarios"/> analyzes
-              which parts can be encrypted.
-              In general, a security solution SHOULD confidentiality
-              protect all data that is not needed to be read by the
-              broker to accomplish its task.
-            </t>
-            <t>
-              The keys used for confidentiality protection MUST
-              provide forward secrecy.
-            </t>
-            
+            It is RECOMMENDED that applications analyse the risks associated with
+            application information leaking from the messages flow and assess the
+            feasibility to protect against various threats, e.g., by obfuscating
+            topic content.
+          </t>
+
+
           </section>
           
-          <section title="Threat 6: Traffic Analysis" anchor="traffic-an-pubsub">
+          <section title="Threat 6: Traffic Analysis" anchor="traffic-an-sub">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
             </t>
@@ -1619,23 +1613,169 @@ Client A           |               |
           
           <figure anchor="fig-publisher" title="The Publisher End">
             <artwork align="left">
-              <![CDATA[     ___________             __ _ _
-        |           | Request   |
-        |           |---------->|
-        | Publisher |           |  Broker
-        |           |<----------|
-        |___________|  Response |__ _ _]]>
+              <![CDATA[
+                                 _ _ __             __________
+                                       | Request   |          |
+                                       |<----------|  Pub-    |
+                               Broker  |           |  lisher  |
+                                       |---------->|          |
+                                 _ _ __|  Response |__________|]]>
             </artwork>
           </figure>
           
           <t>
-            The publisher sends a request to the broker (possibly
-            via one or more proxies) and receives a response.
+            The publisher sends a request to the broker
+            and waits for a response.
           </t>
           <t>
-            From the perspective of the publisher, are there any
-            requirements on the response?
+            From the perspective of the publisher, there are three
+            possible flows:
+            <list style="symbols">
+              <t>
+                The publisher receives a response.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    The broker duly processed the request and returns
+                    a response based on data it obtained from a
+                    publisher.
+                  </t>
+                  <t>
+                    The publisher made a bad request and the broker
+                    returns an error response accordingly (e.g., 4.04
+                    Not Found).
+                  </t>
+                  <t>
+                    The broker encountered an unexpected condition and
+                    returns an error response accordingly (e.g., 5.03
+                    Service Unavailable).
+                  </t>
+                  <t>
+                    (Threat 1:) The publisher spoofs a response.
+                  </t>
+                  <t>
+                    (Threat 2:) The broker duly processed the
+                    request but delays the return of the response.
+                  </t>
+                </list>
+              </t>
+              <t>
+                The publisher does not receive a response.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    The publisher times out too early.
+                  </t>
+                  <t>
+                    (Threat 3:) The broker withholds the response.
+                  </t>
+                </list>
+              </t>
+              <t>
+                The publisher receives too many responses.
+                <vspace/>Reasons include:
+                <list style="symbols">
+                  <t>
+                    (Threat 4:) The broker floods the subscriber with
+                    responses.
+                  </t>
+                </list>
+              </t>
+            </list>
           </t>
+          
+          <t>
+            Furthermore, there are threats related to privacy:
+            <list style="symbols">
+              <t>
+                (Threat 5:) The broker eavesdrops on the publication.
+              </t>
+              <t>
+                (Threat 6:) The broker measures the size, frequency or
+                distribution of publications.
+              </t>
+            </list>
+          </t>
+
+          
+          
+          <section title="Threat 1: Spoofing">
+            <t>
+              This threat is NOT REQUIRED
+              to be mitigated by the security solution. Spoofing the response
+              of a publication request is primarily a threat to
+              the system resources of the publisher.
+            </t>
+            <t>
+              Note that a CoAP server like the broker is specified to
+              return an error response (such as 4.04 Not Found or 5.03
+              Service Unavailable) when it encounters an error
+              condition. Since the condition occurs at the broker,
+              the publisher cannot tell if the broker sends the
+              error response.
+            </t>
+          </section>
+          
+          <section title="Threat 2: Delaying">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the security solution;
+              see <xref target="delay-sub"/>
+            </t>
+          </section>
+          
+          <section title="Threat 3: Withholding">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the
+              security solution, since a publisher cannot tell if the
+              broker does not send a response
+              because it is hasn't received a publication from the
+              publisher yet or if it intentionally withholds the response.
+            </t>
+          </section>
+          
+          <section title="Threat 4: Flooding">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the security
+              solution; see <xref target="traffic-an-sub"/>
+            </t>
+          </section>
+          
+          
+          <section title="Threat 5: Eavesdropping" anchor="eavesdrop-pub">
+            
+            <t>
+              This threat is REQUIRED to be mitigated by the security
+              solution: publishers MUST confidentiality protect
+              the data in the requests they send.
+            </t>
+            <t>
+              Note that this requirement is in conflict with the
+              requirement that the broker needs to read the topic
+              of the publication in order to accomplish
+              its task. <xref target="pubsub-scenarios"/> analyzes
+              which parts can be encrypted.
+              In general, a security solution SHOULD confidentiality
+              protect all data that is not needed to be read by the
+              broker to accomplish its task.
+            </t>
+            <t>
+              The keys used for confidentiality protection MUST
+              provide forward secrecy.
+            </t>
+            
+          </section>
+          
+          <section title="Threat 6: Traffic Analysis" anchor="traffic-an-pub">
+            <t>
+              This threat is NOT REQUIRED to be mitigated by the security
+              solution; see <xref target="traffic-an-sub"/>.
+            
+            </t>
+            
+          </section>
+          
+
+          
           
         </section>
         
