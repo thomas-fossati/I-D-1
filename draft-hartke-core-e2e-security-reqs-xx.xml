@@ -1402,40 +1402,18 @@ Client A           |               |
 
       <section title="Threats and Security Requirements">
 
-        <section title="Publisher">
-
-          <figure anchor="fig-publisher" title="The Publisher End">
-            <artwork align="left">
-<![CDATA[     ___________             __ _ _
-    |           | Request   |
-    |           |---------->|
-    | Publisher |           |  Broker
-    |           |<----------|
-    |___________|  Response |__ _ _]]>
-            </artwork>
-          </figure>
-
-          <t>
-            The publisher sends a request to the broker (possibly
-            via one or more proxies) and receives a response.
-          </t>
-          <t>
-            From the perspective of the publisher, are there any
-            requirements on the response?
-          </t>
-
-        </section>
 
         <section title="Subscriber">
 
           <figure anchor="fig-subscriber" title="The Subscriber End">
               <artwork align="left">
-                <![CDATA[     __________             __ _ _
-                  |          | Request   |
-                  |  Sub-    |---------->|
-                  |  scriber |           |   Broker
-                  |          |<----------|
-                  |__________|  Response |__ _ _]]>
+                <![CDATA[
+      __________             __ _ _
+    |          | Request   |
+    |  Sub-    |---------->|
+    |  scriber |           |   Broker
+    |          |<----------|
+    |__________|  Response |__ _ _]]>
               </artwork>
             </figure>
 
@@ -1635,20 +1613,46 @@ Client A           |               |
           
 
         </section>
-
-
+        
+        
+        <section title="Publisher">
+          
+          <figure anchor="fig-publisher" title="The Publisher End">
+            <artwork align="left">
+              <![CDATA[     ___________             __ _ _
+        |           | Request   |
+        |           |---------->|
+        | Publisher |           |  Broker
+        |           |<----------|
+        |___________|  Response |__ _ _]]>
+            </artwork>
+          </figure>
+          
+          <t>
+            The publisher sends a request to the broker (possibly
+            via one or more proxies) and receives a response.
+          </t>
+          <t>
+            From the perspective of the publisher, are there any
+            requirements on the response?
+          </t>
+          
+        </section>
+        
+        
+        
       </section>
-
+      
       <!-- **************************************************************** -->
-
+      
       <section title="Scenarios" anchor="pubsub-scenarios">
-
+        
         <section title="Multiple Requests - Multiple Responses"><t><vspace blankLines="100"/></t></section>
-
+        
       </section>
-
+      
     </section>
-
+    
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
