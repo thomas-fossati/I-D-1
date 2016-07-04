@@ -1035,7 +1035,7 @@
       (<xref target="eavesdrop-client"/>) if the following parts of
       the message are confidentiality protected:
       <list style="symbols">
-        <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host, Uri-Port, Uri-Path and Uri-Query;</t>
+        <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host and Uri-Port;</t>
         <t>the payload, if any.</t>
       </list>
     </t>
