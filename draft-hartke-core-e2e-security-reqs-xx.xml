@@ -251,6 +251,8 @@
           The scope of this document is
           on threats from intermediaries to
           interactions between two CoAP endpoints.
+          Threats resulting from delay of messages are mentioned, but are out 
+          of scope for this document.
           <!--Threats resulting from collusion between multiple
           intermediaries are also out of scope.-->
         </t>
