@@ -192,6 +192,13 @@
       <section title="Assets and Scope">
 
         <t>
+          While ideally a security solution should protect agains all threats, 
+          it is important to note that a viable solution has to find a 
+          trade-off between desired intermediaries' functionality and the 
+          provided level of protection.
+        </t>
+
+        <t>
           In general, there are the following assets that
           need to be protected:
           <list style="symbols">
