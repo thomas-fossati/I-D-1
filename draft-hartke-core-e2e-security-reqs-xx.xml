@@ -450,7 +450,6 @@
                 <t>that the requested action was executed by the origin server;</t>
                 <t>that the data originates from the origin server and has not been altered on the way;</t>
                 <t>that the data matches the specifications of the request (such as the target resource);</t>
-                <t>that the data is fresh (when the data is cacheable);</t>
                 <t>that the data is in sequence (when observing a resource).</t>
               </list>
               The proof can, for example, involve a message
