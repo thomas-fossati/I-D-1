@@ -1904,7 +1904,8 @@ Client A           |               |
           
           <t>
             A publication is considered authentic by the subscriber
-            if it can obtain proof that the payload has not been altered
+            if it can obtain proof that the payload is associated to the topic,
+            it has not been altered since published
             and that the publications are in sequence.
           </t>
           
