@@ -246,9 +246,7 @@
           The scope of this document is
           on threats from intermediaries to
           interactions between two CoAP endpoints.
-          <!--Threats resulting from delay of messages are mentioned, but are out
-          of scope for this document.
-          Threats resulting from collusion between multiple
+          <!-- Threats resulting from collusion between multiple
           intermediaries are also out of scope.-->
         </t>
         <t>
@@ -481,15 +479,11 @@
 
           <section title="Threat 2: Delaying" anchor="delay-client">
             <t>
-              This threat is NOT REQUIRED to be mitigated by the
+              This threat is REQUIRED to be mitigated by the
               security solution. Delay attacks are important to mitigate,
-              e.g. in certain actuator applications, but they are out of scope
-              for this specification: This threat
-              applies to settings with application layer security as well as
-              settings with e.g. transport layer security (see
-              <xref target="I-D.mattsson-core-coap-actuators"/>), so a solution
-              should not be specified only in the context of application layer
-              security.
+              in certain applications, e.g. when using CoAP with actuators.
+              Problem statment and candiate solution is specified in
+              <xref target="I-D.mattsson-core-coap-actuators"/>.
             </t>            
           </section>
 
@@ -683,7 +677,7 @@
 
           <section title="Threat 2: Delaying">
             <t>
-              This threat is NOT REQUIRED to be mitigated by the
+              This threat is REQUIRED to be mitigated by the
               security solution; see <xref target="delay-client"/>.
             </t>
           </section>
