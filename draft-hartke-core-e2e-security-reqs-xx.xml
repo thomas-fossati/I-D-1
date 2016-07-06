@@ -1387,8 +1387,7 @@ Client A           |               |
 
       <figure anchor="fig-publisher-req" title="Publisher-to-Subscriber Security.">
         <artwork align="center">
-          <![CDATA[
- ____________        __________         ___________
+<![CDATA[ ____________        __________         ___________
 |            |      |          |       |           |
 |            |----->|          |<------|           |
 | Subscriber |      |  Broker  |       | Publisher |
@@ -1396,8 +1395,7 @@ Client A           |               |
 |____________|      |__________|       |___________|
       :                                      :
       '--------------------------------------'
-                Security Association
-          ]]>
+                Security Association]]>
         </artwork>
       </figure>
       Since there is no security association with the broker, we only consider
@@ -1414,8 +1412,7 @@ Client A           |               |
 
           <figure anchor="fig-subscriber" title="The Subscriber End">
               <artwork align="left">
-                <![CDATA[
-      __________             __ _ _
+<![CDATA[     __________             __ _ _
     |          | Request   |
     |  Sub-    |---------->|
     |  scriber |           |   Broker
@@ -1622,8 +1619,7 @@ Client A           |               |
           
           <figure anchor="fig-publisher" title="The Publisher End">
             <artwork align="left">
-              <![CDATA[
-                                 _ _ __             __________
+<![CDATA[                                 _ _ __             __________
                                        | Request   |          |
                                        |<----------|  Pub-    |
                                Broker  |           |  lisher  |
@@ -1812,38 +1808,40 @@ Client A           |               |
           
           <figure anchor="figure-pubsub" title="Message Flow for Publish Subscribe">
             <artwork align="center">
-              <![CDATA[
-            Subscriber A      Broker         Publisher
-                |               |               |
-                |               |    Request    |
-                |            .--|<--------------|
-                |            |  |               |
-                |            '->|-------------->|
-                |               |   Response    |
-                |               |               |
-                |    Request    |               |
-                |-------------->|--.            |
-                |               |  | from cache |
-                |<--------------|<-'            |
-                |    Response   |               |
-                |               |               |
-            Subscriber B        |               |
-                |               |               |
-                |    Request    |               |
-                |-------------->|--.            |
-                |               |  | from cache |
-                |<--------------|<-'            |
-                |    Response   |               |
-                |               |               |
-                |<--------------|<--------------|
-                |  Notification |  Notification |
-                |               |               |
-                |               |
-            Subscriber A        |               |
-                |               |               |
-                |<--------------|               |
-                |  Notification |               |
-                |               |               |]]>
+<![CDATA[Subscriber A       Broker         Publisher
+     |               |               |
+     |               |    Request    |
+     |            .--|<--------------|
+     |            |  |               |
+     |            '->|-------------->|
+     |               |   Response    |
+     |               |               |
+     |    Request    |               |
+     |-------------->|--.            |
+     |               |  | from store |
+     |<--------------|<-'            |
+     |  Notification |               |
+     |               |               |
+                     |               |
+Subscriber B         |               |
+     |               |               |
+     |    Request    |               |
+     |-------------->|--.            |
+     |               |  | from store |
+     |<--------------|<-'            |
+     |  Notification |               |
+     |               |               |
+     |               |    Request    |
+     |<--------------|<--------------|
+     |  Notification |               |
+     |               |-------------->|
+     |               |   Response    |
+                     |               |
+Subscriber A         |               |
+     |               |               |
+     |<--------------|               |
+     |  Notification |               |
+     |               |               |]]>
             </artwork>
           </figure>
           <t>
