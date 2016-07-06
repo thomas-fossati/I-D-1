@@ -482,7 +482,7 @@
             <t>
               This threat is NOT REQUIRED to be mitigated by the
               security solution. Delay attacks are important to mitigate,
-              e.g. in certain actuator applications, but is out of scope
+              e.g. in certain actuator applications, but they are out of scope
               for this specification: This threat
               applies to settings with application layer security as well as
               settings with e.g. transport layer security (see
