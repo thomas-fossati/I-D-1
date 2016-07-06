@@ -1546,8 +1546,10 @@ Client A           |               |
           <section title="Threat 2: Delaying" anchor="delay-sub">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
+              <!--
               In the pub-sub setting, this threat is similar to Withholding
               (<xref target="withhold-sub"/>).
+              -->
             </t>
           </section>
 
