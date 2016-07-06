@@ -6,7 +6,6 @@
   <!ENTITY RFC6347 SYSTEM "reference.RFC.6347.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
-  <!ENTITY RFC7258 SYSTEM "reference.RFC.7258.xml">
   <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
   <!ENTITY I-D.ietf-cose-msg SYSTEM "reference.I-D.ietf-cose-msg.xml">
   <!ENTITY I-D.mattsson-core-coap-actuators SYSTEM "reference.I-D.mattsson-core-coap-actuators.xml">
@@ -2002,8 +2001,6 @@ Subscriber A         |               |
       &RFC2119;
 
       &RFC7252;
-      
-      &RFC7258;
       
       &RFC7641;
 
