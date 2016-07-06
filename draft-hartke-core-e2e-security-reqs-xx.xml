@@ -524,7 +524,7 @@
               Note that this requirement is in conflict with the
               requirement that the proxy needs to be able to read some
               parts of the requests in order to accomplish
-              its task. <xref target="proxy-solutions"/> analyzes
+              its task. <xref target="proxy-solutions"/> analyses
               which parts can be encrypted depending on the desired
               proxy functionality and protection level.
               In general, a security solution SHOULD confidentiality
@@ -756,13 +756,13 @@
         </t>
         <t>
           For both cases, this section presents an overview of the
-          functionality and processing rules of the proxy and analyzes
+          functionality and processing rules of the proxy and analyses
           the required authenticity and confidentiality properties of
           requests and responses. Due to space constraints, the analysis
           is limited to the CoAP header fields, the payload, and the
           request and response options shown in <xref target="table-1"/>.
         </t>
-        <texttable anchor="table-1" title="Analyzed CoAP Options">
+        <texttable anchor="table-1" title="Analysed CoAP Options">
           <ttcol>Requests</ttcol> <ttcol>Responses</ttcol>
           <c>Accept        </c>   <c>Content-Format</c>
           <c>Content-Format</c>   <c>ETag          </c>
@@ -1760,7 +1760,7 @@ Client A           |               |
               Note that this requirement is in conflict with the
               requirement that the broker needs to read the topic
               of the publication in order to accomplish
-              its task. <xref target="pubsub-solutions"/> analyzes
+              its task. <xref target="pubsub-solutions"/> analyses
               which parts can be encrypted.
               In general, a security solution SHOULD confidentiality
               protect all data that is not needed to be read by the
