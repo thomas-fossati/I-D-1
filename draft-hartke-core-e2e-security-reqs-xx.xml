@@ -1383,9 +1383,8 @@ Client A           |               |
        publisher and subscriber such that the publications can be protected
        during transfer, see <xref target="fig-publisher-req"/>.
     </t>
-     <t>
 
-      <figure anchor="fig-publisher-req" title="Publisher-to-Subscriber Security.">
+      <figure anchor="fig-publisher-req" title="Publisher-to-Subscriber Security">
         <artwork align="center">
 <![CDATA[ ____________        __________         ___________
 |            |      |          |       |           |
@@ -1398,8 +1397,10 @@ Client A           |               |
                 Security Association]]>
         </artwork>
       </figure>
+
+      <t>
       Since there is no security association with the broker, we only consider
-      the subscribe and publish funcitonality of the broker. Note that the broker needs
+      the subscribe and publish functionality of the broker. Note that the broker needs
       to read the topic to accomplish this task.
       </t>
 
@@ -1408,7 +1409,7 @@ Client A           |               |
       <section title="Threats and Security Requirements">
 
 
-        <section title="Subscriber">
+        <section title="Subscriber-side">
 
           <figure anchor="fig-subscriber" title="The Subscriber End">
               <artwork align="left">
@@ -1615,7 +1616,7 @@ Client A           |               |
         </section>
         
         
-        <section title="Publisher">
+        <section title="Publisher-side">
           
           <figure anchor="fig-publisher" title="The Publisher End">
             <artwork align="left">
