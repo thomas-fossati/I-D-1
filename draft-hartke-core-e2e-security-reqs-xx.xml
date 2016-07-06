@@ -191,8 +191,6 @@
 
       <section title="Assets and Scope">
 
-
-
         <t>
           In general, there are the following assets that
           need to be protected:
@@ -246,13 +244,13 @@
           The scope of this document is
           on threats from intermediaries to
           interactions between two CoAP endpoints.
-          <!-- Threats resulting from collusion between multiple
+          <!--Threats resulting from collusion between multiple
           intermediaries are also out of scope.-->
         </t>
         <t>
           Since intermediaries may perform a service for the interacting
           endpoints, there is a trade-off between the intermediaries' desired
-          functionality and the ability to mitigate threats to the the endpoints
+          functionality and the ability to mitigate threats to the endpoints
           executed through an intermediary.
         </t>
 
@@ -458,7 +456,8 @@
                 <t>that the requested action was executed by the origin server;</t>
                 <t>that the data originates from the origin server and has not been altered on the way;</t>
                 <t>that the data matches the specifications of the request (such as the target resource);</t>
-                <t>that the data is in sequence.</t>
+                <t>that the data is fresh (when the data is cacheable);</t>
+                <t>that the data is in sequence (when observing a resource).</t>
               </list>
               The proof can, for example, involve a message
               authentication code of the server.
@@ -480,9 +479,9 @@
           <section title="Threat 2: Delaying" anchor="delay-client">
             <t>
               This threat is REQUIRED to be mitigated by the
-              security solution. Delay attacks are important to mitigate,
-              in certain applications, e.g. when using CoAP with actuators.
-              Problem statment and candiate solution is specified in
+              security solution. Delay attacks are important to mitigate
+              in certain applications, e.g., when using CoAP with actuators.
+              A problem statement and candidate solution can be found in
               <xref target="I-D.mattsson-core-coap-actuators"/>.
             </t>            
           </section>
@@ -914,6 +913,11 @@
           the CoAP option Max-Age of the responses SHALL be 0
           (see Section 5.7.1 of <xref target="RFC7252"/>).
         </t>
+        <t>
+          To limit information leaking about the resource (see
+          <xref target="conf-1"/>) the Proxy-Uri
+          does not contain Uri-Path or Uri-Query.
+        </t>
       </list>
     </t>
   </section>
@@ -956,11 +960,6 @@
         </t>
         <t>
           Responses are forwarded by the proxy, without any modification.
-        </t>
-        <t>
-          To limit information leaking about the resource (see
-          <xref target="conf-1"/>) the Proxy-Uri
-          does not contain Uri-Path or Uri-Query.
         </t>
       </list>
     </t>
@@ -1047,7 +1046,6 @@
         <t>the payload, if any.</t>
       </list>
     </t>
-    
   </section>
   
   <!-- *************************************************************** -->
@@ -1305,7 +1303,7 @@ Client A           |               |
           that the response matches the specifications of the request;
         </t>
         <t>
-          that the data is fresh (when the data is cacheble);
+          that the data is fresh (when the response is cacheable);
         </t>
         <t>
           that the response is in sequence (when observing a resource).
@@ -1321,7 +1319,7 @@ Client A           |               |
   <section anchor="conf-2" title="Confidentiality">
     
     <t>
-      No parts of the request is confidentiality protected
+      No parts of a request are confidentiality protected
       (<xref target="eavesdrop-server"/>).
     </t>
     <t>
@@ -1511,11 +1509,11 @@ Client A           |               |
             <t>
               With one exception (see below), this threat is REQUIRED
               to be mitigated by the security solution: the subscriber
-              MUST verify that a publiction is an
+              MUST verify that a publication is an
               <spanx>authentic publication</spanx> (<xref target="pubsub-scenarios"/>) before processing it.
             </t>
             <t>
-              The definition of an "authentic publiction" depends on the setting
+              The definition of an "authentic publication" depends on the setting
               (<xref target="pubsub-scenarios"/>),
               but usually means that the subscriber can obtain proof
               for some or all of the following things:
