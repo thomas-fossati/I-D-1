@@ -1213,9 +1213,11 @@ Client A           |               |
   <!-- *************************************************************** -->
   
   <section anchor="PR2" title="Processing Rules">
+    <!--
     <t>
       [[TODO: Complete the processing rules]]
     </t>
+    -->
     
     <t>
       The proxy complies with the forwarding rules PR1.1 - 1.3
