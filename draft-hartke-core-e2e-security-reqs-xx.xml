@@ -1916,10 +1916,22 @@ Subscriber A         |               |
         <section anchor="auth-3" title="Authenticity">
           
           <t>
-            A publication is considered an authentic publication by the subscriber
-            if it can obtain proof that the payload is associated to the topic,
-            it has not been altered since published
-            and that the publication is in sequence.
+            A publication is considered authentic by the subscriber
+            if the subscriber can obtain proof for all all of the following things:
+            <list style="format A3.%d" counter="A3_count">
+              <t>
+                that the payload is associated to the topic;
+              </t>
+              <t>
+                that the payload has not been altered since published;
+              </t>
+              <t>
+                that the publication is in sequence.
+              </t>
+            </list>
+            <!--
+            TODO: check why this is different from the list in 3.1.1.1.
+            -->
           </t>
           
         </section>
