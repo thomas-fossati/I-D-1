@@ -929,7 +929,7 @@
   
   <section anchor="PR1" title="Processing Rules">
     <t>
-      In this scenario, the desired proxy functionality is
+      In this case, the desired proxy functionality is
       to forward a translated request to the determined destination.
       There are two modes of operation for requests:
       Either using the Proxy-Uri option (PR1.1) or using the
@@ -1511,11 +1511,11 @@ Client A           |               |
               With one exception (see below), this threat is REQUIRED
               to be mitigated by the security solution: the subscriber
               MUST verify that a publication is an
-              <spanx>authentic publication</spanx> (<xref target="pubsub-scenarios"/>) before processing it.
+              <spanx>authentic publication</spanx> (<xref target="pubsub-solutions"/>) before processing it.
             </t>
             <t>
               The definition of an "authentic publication" depends on the setting
-              (<xref target="pubsub-scenarios"/>),
+              (<xref target="pubsub-solutions"/>),
               but usually means that the subscriber can obtain proof
               for some or all of the following things:
               <list style="symbols">
@@ -1758,7 +1758,7 @@ Client A           |               |
               Note that this requirement is in conflict with the
               requirement that the broker needs to read the topic
               of the publication in order to accomplish
-              its task. <xref target="pubsub-scenarios"/> analyzes
+              its task. <xref target="pubsub-solutions"/> analyzes
               which parts can be encrypted.
               In general, a security solution SHOULD confidentiality
               protect all data that is not needed to be read by the
@@ -1791,7 +1791,7 @@ Client A           |               |
       
       <!-- **************************************************************** -->
       
-      <section title="Solutions" anchor="pubsub-scenarios">
+      <section title="Solutions" anchor="pubsub-solutions">
         
         <section title="Brokering">
         
