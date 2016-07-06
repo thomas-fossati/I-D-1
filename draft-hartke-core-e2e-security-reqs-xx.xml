@@ -962,6 +962,11 @@
         <t>
           Responses are forwarded by the proxy, without any modification.
         </t>
+        <t>
+          To limit information leaking about the resource (see
+          <xref target="conf-1"/>) the Proxy-Uri
+          does not contain Uri-Path or Uri-Query.
+        </t>
       </list>
     </t>
   </section>
@@ -1047,6 +1052,7 @@
         <t>the payload, if any.</t>
       </list>
     </t>
+    
   </section>
   
   <!-- *************************************************************** -->
