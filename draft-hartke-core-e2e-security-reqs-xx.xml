@@ -432,7 +432,7 @@
           </t>
           
           <t>
-            Note that "cache poisioning" -- the case of caching injected
+            Note that "cache poisoning" -- the case of caching injected
             incorrect responses -- is covered from the point of view of
             the client: it may result in the client receiving a spoofed
             message, or being flooded, or affect other nodes such that the
@@ -1500,7 +1500,7 @@ Client A           |               |
           </t>
           
           <t>
-            Note that "cache poisioning" -- the case of storing injected
+            Note that "cache poisoning" -- the case of storing injected
             incorrect publications -- is covered from the point of view of
             the subscriber: it may result in the subscriber receiving a spoofed
             message, or being flooded, or affect other nodes such that the
@@ -1584,7 +1584,7 @@ Client A           |               |
           <section title="Threat 5: Eavesdropping" anchor="eavesdrop-sub">
             
             <t>
-              It is NOT REQUIRED to be mitigated against eavesdroping on
+              It is NOT REQUIRED to be mitigated against eavesdropping on
               the subscription request. The broker needs to read the
               topic in order to accomplish its task.
             </t>
@@ -1870,7 +1870,7 @@ Subscriber A         |               |
         
         <section anchor="FR3" title="Functional Requirements">
           <t>
-            The security solution SHOULD protect subcription and publication
+            The security solution SHOULD protect subscription and publication
             requests in a way that a broker can perform the following tasks:
             <list style="format FR3.%d">
               <t>
