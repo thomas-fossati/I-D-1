@@ -454,7 +454,9 @@
                 <t>that the data is in sequence (when observing a resource).</t>
               </list>
               The proof can, for example, involve a message
-              authentication code of the server.
+              authentication code that the proxy obtains from the origin
+              server and includes in the response or an additional
+              challenge-response roundtrip.
             </t>
             <t>
               Note that a CoAP proxy is specified to return an error
@@ -651,8 +653,9 @@
                 <t>that the request has not been received previously.</t>
               </list>
               The proof can, for example, involve a message
-              authentication code of the
-              client.
+              authentication code that the proxy obtains from the
+              client and includes in the request or a
+              challenge-response roundtrip.
             </t>
             
             <t>
