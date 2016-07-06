@@ -192,7 +192,7 @@
       <section title="Assets and Scope">
 
         <t>
-          While ideally a security solution should protect agains all threats, 
+          While ideally a security solution should protect against all threats,
           it is important to note that a viable solution has to find a 
           trade-off between desired intermediaries' functionality and the 
           provided level of protection.
@@ -251,9 +251,9 @@
           The scope of this document is
           on threats from intermediaries to
           interactions between two CoAP endpoints.
-          Threats resulting from delay of messages are mentioned, but are out 
+          <!--Threats resulting from delay of messages are mentioned, but are out
           of scope for this document.
-          <!--Threats resulting from collusion between multiple
+          Threats resulting from collusion between multiple
           intermediaries are also out of scope.-->
         </t>
 
@@ -459,7 +459,7 @@
                 <t>that the requested action was executed by the origin server;</t>
                 <t>that the data originates from the origin server and has not been altered on the way;</t>
                 <t>that the data matches the specifications of the request (such as the target resource);</t>
-                <t>that the data is in sequence (when observing a resource).</t>
+                <t>that the data is in sequence.</t>
               </list>
               The proof can, for example, involve a message
               authentication code of the server.
@@ -481,10 +481,14 @@
           <section title="Threat 2: Delaying" anchor="delay-client">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
-              security solution. Applications sensitive to delay of
-              responses (e.g., certain sensor applications) need to
-              protect against this kind of threat themselves; see
-              <xref target="I-D.mattsson-core-coap-actuators"/>.
+              security solution. Delay attacks are important to mitigate,
+              e.g. in certain actuator applications, but is out of scope
+              for this specification: This threat
+              applies to settings with application layer security as well as
+              settings with e.g. transport layer security (see
+              <xref target="I-D.mattsson-core-coap-actuators"/>), so a solution
+              should not be specified only in the context of application layer
+              security.
             </t>            
           </section>
 
@@ -679,10 +683,7 @@
           <section title="Threat 2: Delaying">
             <t>
               This threat is NOT REQUIRED to be mitigated by the
-              security solution. Applications sensitive to delay of
-              requests (e.g., certain actuator applications) need to
-              protect against this kind of threat themselves; see
-              <xref target="I-D.mattsson-core-coap-actuators"/>.
+              security solution; see <xref target="delay-client"/>.
             </t>
           </section>
 
@@ -1530,8 +1531,8 @@ Client A           |               |
           <section title="Threat 2: Delaying" anchor="delay-sub">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
-              Pub-sub applications sensitive to delay of publications
-              need to protect against this kind of threat themselves.
+              In the pub-sub setting, this threat is similar to Withholding
+              (<xref target="withhold-sub"/>).
             </t>
           </section>
 
@@ -1908,8 +1909,7 @@ Client A           |               |
         <section anchor="conf-3" title="Confidentiality">
 
           <t>
-            A publication is considered confidentiality protected
-             if the payload is confidentiality protected.
+            The payload of a publication is confidentiality protected.
           </t>
 
         </section>
