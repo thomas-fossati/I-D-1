@@ -1517,11 +1517,11 @@ Client A           |               |
             <t>
               With one exception (see below), this threat is REQUIRED
               to be mitigated by the security solution: the subscriber
-              MUST verify that the response is an
-              <spanx>authentic response</spanx> (<xref target="pubsub-scenarios"/>) before processing it.
+              MUST verify that a publiction is an
+              <spanx>authentic publication</spanx> (<xref target="pubsub-scenarios"/>) before processing it.
             </t>
             <t>
-              The definition of an "authentic response" depends on the setting
+              The definition of an "authentic publiction" depends on the setting
               (<xref target="pubsub-scenarios"/>),
               but usually means that the subscriber can obtain proof
               for some or all of the following things:
@@ -1920,7 +1920,7 @@ Client A           |               |
         <section anchor="auth-3" title="Authenticity">
           
           <t>
-            A publication is considered authentic by the subscriber
+            A publication is considered an authentic publication by the subscriber
             if it can obtain proof that the payload is associated to the topic,
             it has not been altered since published
             and that the publications are in sequence.
