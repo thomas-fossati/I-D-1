@@ -247,6 +247,12 @@
           <!--Threats resulting from collusion between multiple
           intermediaries are also out of scope.-->
         </t>
+        <t>
+          Since intermediaries may perform a service for the interacting
+          endpoints, there is a trade-off between the intermediaries' desired
+          functionality and the ability to mitigate threats to the endpoints
+          executed through an intermediary.
+        </t>
 
       </section>
     
@@ -474,10 +480,10 @@
 
           <section title="Threat 2: Delaying" anchor="delay-client">
             <t>
-              This threat is NOT REQUIRED to be mitigated by the
-              security solution. Applications sensitive to delay of
-              responses (e.g., certain sensor applications) need to
-              protect against this kind of threat themselves; see
+              This threat is REQUIRED to be mitigated by the
+              security solution. Delay attacks are important to mitigate
+              in certain applications, e.g., when using CoAP with actuators.
+              A problem statement and candidate solution can be found in
               <xref target="I-D.mattsson-core-coap-actuators"/>.
             </t>            
           </section>
@@ -673,11 +679,8 @@
 
           <section title="Threat 2: Delaying">
             <t>
-              This threat is NOT REQUIRED to be mitigated by the
-              security solution. Applications sensitive to delay of
-              requests (e.g., certain actuator applications) need to
-              protect against this kind of threat themselves; see
-              <xref target="I-D.mattsson-core-coap-actuators"/>.
+              This threat is REQUIRED to be mitigated by the
+              security solution; see <xref target="delay-client"/>.
             </t>
           </section>
 
@@ -913,6 +916,11 @@
           the CoAP option Max-Age of the responses SHALL be 0
           (see Section 5.7.1 of <xref target="RFC7252"/>).
         </t>
+        <t>
+          To limit information leaking about the resource (see
+          <xref target="conf-1"/>) the Proxy-Uri
+          does not contain Uri-Path or Uri-Query.
+        </t>
       </list>
     </t>
   </section>
@@ -1034,9 +1042,8 @@
   <!-- *************************************************************** -->
   <section anchor="conf-1" title="Confidentiality">
     <t>
-      A message is considered confidentiality protected
-      (<xref target="eavesdrop-client"/>) if the following parts of
-      the message are confidentiality protected:
+      The following parts of the message are confidentiality protected
+      (<xref target="eavesdrop-client"/>):
       <list style="symbols">
         <t>all options except Proxy-Uri, Proxy-Scheme, Uri-Host and Uri-Port;</t>
         <t>the payload, if any.</t>
@@ -1299,11 +1306,10 @@ Client A           |               |
           that the response matches the specifications of the request;
         </t>
         <t>
-          that the data is fresh;
+          that the data is fresh (when the response is cacheable);
         </t>
         <t>
-          that the response is in sequence if there are multiple
-          responses.
+          that the response is in sequence (when observing a resource).
         </t>
         
       </list>
@@ -1316,8 +1322,8 @@ Client A           |               |
   <section anchor="conf-2" title="Confidentiality">
     
     <t>
-      A request is always considered confidentiality protected
-      (<xref target="eavesdrop-client"/>).
+      No parts of a request are confidentiality protected
+      (<xref target="eavesdrop-server"/>).
     </t>
     <t>
       A response is considered confidentiality protected
@@ -1506,8 +1512,25 @@ Client A           |               |
             <t>
               With one exception (see below), this threat is REQUIRED
               to be mitigated by the security solution: the subscriber
-              MUST verify that the response is an
-              <spanx>authentic response</spanx> (<xref target="pubsub-scenarios"/>) before processing it.
+              MUST verify that a publication is an
+              <spanx>authentic publication</spanx> (<xref target="pubsub-scenarios"/>) before processing it.
+            </t>
+            <t>
+              The definition of an "authentic publication" depends on the setting
+              (<xref target="pubsub-scenarios"/>),
+              but usually means that the subscriber can obtain proof
+              for some or all of the following things:
+              <list style="symbols">
+                <t>that the publication matches the topic;</t>
+                <t>that the publication originates from a publisher that
+                  is authorized to publish to the topic;</t>
+                <t>that the publication has not been altered on the way between
+                  publisher and subscriber;</t>
+                <t>that the publication is fresh;</t>
+                <t>that the publication is in sequence</t>
+              </list>
+              The proof can, for example, involve a message authentication code
+              generated by the publisher.
             </t>
             <t>
               Note that a CoAP server like the broker is specified to
@@ -1526,8 +1549,10 @@ Client A           |               |
           <section title="Threat 2: Delaying" anchor="delay-sub">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
-              Pub-sub applications sensitive to delay of publications
-              need to protect against this kind of threat themselves.
+              <!--
+              In the pub-sub setting, this threat is similar to Withholding
+              (<xref target="withhold-sub"/>).
+              -->
             </t>
           </section>
 
@@ -1892,9 +1917,10 @@ Client A           |               |
         <section anchor="auth-3" title="Authenticity">
           
           <t>
-            A publication is considered authentic by the subscriber
-            if it can obtain proof that the payload has not been altered
-            and that the publications are in sequence.
+            A publication is considered an authentic publication by the subscriber
+            if it can obtain proof that the payload is associated to the topic,
+            it has not been altered since published
+            and that the publication is in sequence.
           </t>
           
         </section>
@@ -1904,8 +1930,7 @@ Client A           |               |
         <section anchor="conf-3" title="Confidentiality">
 
           <t>
-            A publication is considered confidentiality protected
-             if the payload is confidentiality protected.
+            The payload of a publication is confidentiality protected.
           </t>
 
         </section>
