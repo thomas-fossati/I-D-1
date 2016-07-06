@@ -1310,11 +1310,10 @@ Client A           |               |
           that the response matches the specifications of the request;
         </t>
         <t>
-          that the data is fresh;
+          that the data is fresh (when the data is cacheble);
         </t>
         <t>
-          that the response is in sequence if there are multiple
-          responses.
+          that the response is in sequence (when observing a resource).
         </t>
         
       </list>
