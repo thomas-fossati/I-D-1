@@ -462,7 +462,7 @@
                 <t>that the data is fresh (when the data is cacheable);</t>
                 <t>that the data is in sequence (when observing a resource).</t>
               </list>
-              The proof can, for example, involve a message
+              The proof can, for example, include a message
               authentication code that the proxy obtains from the origin
               server and includes in the response or an additional
               challenge-response roundtrip.
@@ -661,7 +661,7 @@
                 <t>that the data originates from the client and has not been altered on the way;</t>
                 <t>that the request has not been received previously.</t>
               </list>
-              The proof can, for example, involve a message
+              The proof can, for example, include a message
               authentication code that the proxy obtains from the
               client and includes in the request or a
               challenge-response roundtrip.
@@ -1530,7 +1530,7 @@ Client A           |               |
                 <t>that the data is fresh (when the data is cacheable);</t>
                 <t>that the data is in sequence (when observing a topic).</t>
               </list>
-              The proof can, for example, involve a message
+              The proof can, for example, include a message
               authentication code that the proxy obtains from the origin
               server and includes in the response or an additional
               challenge-response roundtrip.
