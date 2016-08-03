@@ -383,7 +383,11 @@
                     (e.g., 5.02 Bad Gateway or 5.04 Gateway Timeout).
                   </t>
                   <t>
-                    (Threat 1:) The proxy spoofs a response.
+                    (Threat 1:) The proxy spoofs a response. For
+                    example, the proxy could return a stale or outdated
+                    response based on data it previously obtained from
+                    the server or some fourth party, or could craft an
+                    illicit response itself.
                   </t>
                   <t>
                     (Threat 2:) The proxy duly processed the request
