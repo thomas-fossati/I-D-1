@@ -154,8 +154,8 @@
       <t>
         One way to mitigate this threat is to secure CoAP communication
         at the application layer using an object-based security
-        mechanism such as <xref target="I-D.ietf-cose-msg">CBOR
-        Encoded Message Syntax</xref> instead of or in addition to
+        mechanism such as <xref target="I-D.ietf-cose-msg">CBOR Object
+        Signing and Encryption (COSE)</xref> instead of or in addition to
         the security mechanisms at the network layer or transport
         layer. Such a mechanism can provide "end-to-end security"
         at the application layer (<xref target="fig-endtoend"/>)
