@@ -19,6 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core-apps", "core-apps", "{
 		core-apps\draft-hartke-core-apps-latest.xml = core-apps\draft-hartke-core-apps-latest.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-bulletin-board", "t2trg-bulletin-board", "{2E030392-03F1-4B33-9FBF-415D676189F7}"
+	ProjectSection(SolutionItems) = preProject
+		t2trg-bulletin-board\draft-hartke-t2trg-bulletin-board-latest.xml = t2trg-bulletin-board\draft-hartke-t2trg-bulletin-board-latest.xml
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-coral", "t2trg-coral", "{D7344E3B-5635-49D1-AC05-E9A5CAD556C4}"
 	ProjectSection(SolutionItems) = preProject
 		t2trg-coral\coral.cddl = t2trg-coral\coral.cddl

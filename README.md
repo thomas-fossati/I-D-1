@@ -21,3 +21,14 @@
   [html](https://tools.ietf.org/html/draft-hartke-t2trg-coral) |
   [datatracker](https://datatracker.ietf.org/doc/draft-hartke-t2trg-coral/) |
   [sources](t2trg-coral)
+
+* <b>Bulletin Board</b> <br>
+  <i>draft-hartke-t2trg-bulletin-board</i> <br>
+  A bulletin board is a hypermedia-driven REST application
+  that can be used in Thing-to-Thing communication for publishing
+  information such as thing descriptions, configurations,
+  resource descriptions or sleep schedules at a central location. <br>
+  [text](https://tools.ietf.org/id/draft-hartke-t2trg-bulletin-board.txt) |
+  [html](https://tools.ietf.org/html/draft-hartke-t2trg-bulletin-board) |
+  [datatracker](https://datatracker.ietf.org/doc/draft-hartke-t2trg-bulletin-board/) |
+  [sources](t2trg-bulletin-board)
