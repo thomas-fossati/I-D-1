@@ -626,15 +626,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Guidelines for Application Designers">
-
-      <t>
-        This section provides guidelines and recommendations for
-        designers of constrained, RESTful, hypertext-driven
-        applications.
-      </t>
-
-      <section title="URI Design" anchor="resource-identifiers">
+      <section title="URI Considerations">
 
         <t>
           <xref target="RFC3986">URIs</xref> are a cornerstone of
@@ -663,38 +655,14 @@
           Application Description must not mandate any particular form
           of URI substructure that is not explicitly allowed by
           <xref target="RFC3986">RFC 3986</xref>.
-        </t>
-
-        <t>
           <xref target="RFC7320">RFC 7320</xref> describes the
           problematic practice of fixed URI structures in detail
           and provides some acceptable alternatives.
-          <xref target="uri-design"/> gives some recommendations
-          on URI design for application implementers.
         </t>
 
-      </section>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <section title="Guidelines for Application Implementers">
-
-      <t>
-        This section provides guidelines and recommendations for
-        implementers of application descriptions, on both the client
-        and the server side.
-      </t>
-
-      <section title="URI Design" anchor="uri-design">
-
         <t>
-          Even though URIs are not part of the application interface
-          (see <xref target="resource-identifiers"/>), the design of
+          Even though URIs are not part of the application interface,
+          the design of
           the URI structure on a server is an essential part of
           implementing a RESTful application. The server
           implementer is responsible for binding the nouns identified
@@ -741,8 +709,6 @@
         </t>
 
       </section>
-
-    </section>
 
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
