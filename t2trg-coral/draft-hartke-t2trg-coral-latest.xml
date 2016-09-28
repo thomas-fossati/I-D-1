@@ -407,6 +407,77 @@
 
     <section title="Reference Resolution" anchor="resolution">
 
+      <t>
+        This section defines the process of resolving the sequence of Href.*
+        options to an absolute URI suitable for inclusion in a CoAP request.
+        The URI reference is resolved against a base URI that is determined
+        as specified in <xref target="base-uri"/>.
+      </t>
+
+      <section title="Establishing a Base URI" anchor="base-uri">
+      </section>
+
+      <section title="Relative Resolution">
+
+        <t>
+          The following pseudocode describes an algorithm for transforming a
+          URI reference R into its target URI T, using the Href Type H, the
+          Link or Form Relation Type S and the base URI B. The URI reference
+          and base URI are assumed to be pre-parsed into a sequence of Href.*
+          options; the result is returned as a sequence of Href.* options as
+          well.
+        </t>
+
+        <figure>
+          <artwork>
+<![CDATA[   if (R starts with Href.Scheme) then
+      T = R
+
+   elif (R starts with Href.Host.*) then
+      T = [ (k, v) | (k, v) <- B, k == Href.Scheme ] ++
+          [ (k, v) | (k, v) <- R, k >  Href.Scheme ]
+
+   elif (R starts with Href.Port) then
+      T = [ (k, v) | (k, v) <- B, k <  Href.Port ] ++
+          [ (k, v) | (k, v) <- R, k >= Href.Port ]
+
+   elif (H is append-relation) then
+      T = [ (k, v) | (k, v) <- B, k <= Href.Path ] ++
+          [ (Href.Path, (hex S)) ]
+
+   elif (H is append-path) then
+      T = [ (k, v) | (k, v) <- B, k <= Href.Path ] ++
+          [ (k, v) | (k, v) <- R, k >= Href.Path ]
+
+   elif (H is relative-path) then
+      T = [ (k, v) | (k, v) <- B, k <  Href.Path ] ++
+    (init [ (k, v) | (k, v) <- B, k == Href.Path ]) ++
+          [ (k, v) | (k, v) <- R, k >= Href.Path ]
+
+   elif (H is absolute-path) then
+      T = [ (k, v) | (k, v) <- B, k <  Href.Path ] ++
+          [ (k, v) | (k, v) <- R, k >= Href.Path ]
+
+   endif]]>
+          </artwork>
+        </figure>
+
+        <t>
+          The "init" function returns all the elements of the input list except
+          the last one. For example, (init [1, 2, 3]) returns [1, 2] and
+          (init []) returns [].
+        </t>
+
+        <t>
+          The "hex" function returns a hexadecimal representation of the input
+          number. For example, (hex 421) returns "1A5" and (hex 0) returns "0".
+        </t>
+
+      </section>
+
+      <section title="Remove Dot Segments">
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
