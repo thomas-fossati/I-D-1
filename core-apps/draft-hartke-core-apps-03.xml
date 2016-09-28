@@ -1,0 +1,1131 @@
+<?xml version="1.0" encoding="us-ascii"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC1945 SYSTEM "reference.RFC.1945.xml">
+  <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
+  <!ENTITY RFC5785 SYSTEM "reference.RFC.5785.xml">
+  <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
+  <!ENTITY RFC6415 SYSTEM "reference.RFC.6415.xml">
+  <!ENTITY RFC6570 SYSTEM "reference.RFC.6570.xml">
+  <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
+  <!ENTITY RFC6838 SYSTEM "reference.RFC.6838.xml">
+  <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
+  <!ENTITY RFC7230 SYSTEM "reference.RFC.7230.xml">
+  <!ENTITY RFC7231 SYSTEM "reference.RFC.7231.xml">
+  <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY RFC7301 SYSTEM "reference.RFC.7301.xml">
+  <!ENTITY RFC7320 SYSTEM "reference.RFC.7320.xml">
+  <!ENTITY RFC7540 SYSTEM "reference.RFC.7540.xml">
+  <!ENTITY RFC7595 SYSTEM "reference.RFC.7595.xml">
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+
+<?rfc compact="yes"?>
+<?rfc sortrefs="no"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="no"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="3"?>
+
+<rfc category="info" docName="draft-hartke-core-apps-03" ipr="trust200902">
+
+  <front>
+
+    <title>CoRE Application Descriptions</title>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>D-28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
+      </address>
+    </author>
+
+    <date />
+
+    <area>Applications</area>
+
+    <workgroup>Thing-to-Thing Research Group</workgroup>
+
+    <abstract>
+
+      <t>
+        The interfaces of RESTful, hypertext-driven applications
+        consist of reusable components such as Internet media types
+        and link relation types. This document defines a simple
+        standard that application designers can use to describe the
+        interface of their application in a structured way so that
+        other parties can develop interoperable clients and servers
+        or reuse the components in their own applications.
+      </t>
+
+    </abstract>
+
+    <note title="Note to Readers">
+
+      <t>
+        This Internet-Draft should be discussed on the Thing-to-Thing
+        Research Group (T2TRG) mailing list &lt;t2trg@irtf.org&gt;.
+      </t>
+
+    </note>
+
+  </front>
+
+  <middle>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Introduction">
+
+      <t>
+        <xref target="REST">Representational State Transfer
+        (REST)</xref> is an architectural style for distributed
+        hypermedia systems. Over the years, REST has gained
+        popularity not only as an approach for large-scale
+        information dissemination, but also as the basic principle
+        for designing and building Internet-based applications
+        in general.
+      </t>
+
+      <t>
+        In the coming years, the size and scope of the Internet is
+        expected to greatly increase as physical-world objects
+        become smart enough to communicate over the Internet --
+        a phenomenon known as the Internet of Things (IoT). As things
+        learn to speak the languages of the net, the idea of
+        applying REST principles to the design of IoT application
+        architectures suggests itself. To this end, the
+        <xref target="RFC7252">Constrained Application Protocol
+        (CoAP)</xref> has been created, an application-layer protocol
+        that enables RESTful applications in
+        <xref target="RFC7228">Constrained-Node Networks</xref>,
+        thus giving rise to a new setting for Internet-based
+        applications: the Constrained RESTful Environment (CoRE).
+      </t>
+
+      <t>
+        To realize the full benefits and advantages of the REST style,
+        a set of constraints needs to be maintained when designing new
+        applications and their application programming interfaces
+        (APIs). One of the fundamental principles is that
+        <xref target="RESTAPI">"REST APIs must be
+        hypertext-driven"</xref>. This principle is often ignored by
+        application designers who instead specify their APIs in
+        terms of fixed URIs through some out-of-band mechanism, e.g.,
+        in an API documentation. Although this approach may appear easy
+        for clients to use, the fixed resource names and data formats
+        lead to a tight coupling between client and server
+        implementations and make the system less flexible. Violations
+        of REST design principles like this result in APIs that may not
+        be as scalable, extensible, and interoperable as promised by
+        REST <xref target="SDNREST"/>.
+      </t>
+
+      <t>
+        REST is intended for long-lived network-based applications
+        that span multiple organizations <xref target="RESTAPI"/>.
+        Principled REST APIs require some design effort, as
+        application designers do not only have to take current
+        requirements into consideration, but also have to anticipate
+        changes that may be required in the future -- years or even
+        decades after the application has been deployed for the first
+        time. The reward is long-term stability and evolvability, both
+        of which are desirable features in the Internet of Things.
+      </t>
+
+      <t>
+        To aid application designers in the design process, this
+        document proposes CoRE Application Descriptions, a simple
+        standard for describing the APIs of constrained, RESTful,
+        hypertext-driven applications. CoRE Application Descriptions
+        help application designers avoid common mistakes by focusing
+        almost all of the descriptive effort on defining the Internet
+        media type(s) that are used for representing resources and
+        driving application state.
+      </t>
+
+      <t>
+        A template provides a consistent format for the description of
+        APIs so that implementers can easily build interoperable
+        clients and servers, and other application designers can reuse
+        application components in their own applications.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Application Descriptions">
+
+      <t>
+        A CoRE Application Description is a named set of reusable
+        components. It is comprised of:
+        <list style="symbols">
+          <t>URI schemes that identify communication protocols,</t>
+          <t>Internet media types that identify representation formats,</t>
+          <t>link relation types that identify link semantics,</t>
+          <t>form relation types that identify form semantics, and</t>
+          <t>optionally, well-known locations.</t>
+        </list>
+        Together, these components provide the specific, in-band
+        instructions for interfacing with a given service.
+      </t>
+
+      <section title="URI Schemes">
+
+        <t>
+          The foundation of a hypertext-driven REST API are the
+          communication protocol(s) spoken between a client and a
+          server. Although <xref target="RFC7230">HTTP/1.1</xref>
+          is by far the most common communication protocol for REST
+          APIs, a REST API should typically not be dependent on any
+          specific communication protocol.
+        </t>
+
+        <t>
+          The use of a particular protocol is guided by
+          <xref target="RFC7595">URI schemes</xref>. URI schemes
+          specify the syntax and semantics of
+          <xref target="RFC3986">URI references</xref> found in links
+          (<xref target="links"/>) and forms (<xref target="forms"/>).
+        </t>
+
+        <t>
+          A URI scheme refers to a family of protocols,
+          typically distinguished by a version number. For example,
+          the "http" URI scheme refers to the three members of the
+          HTTP family of protocols:
+          <xref target="RFC1945">HTTP/1.0</xref>,
+          <xref target="RFC7230">HTTP/1.1</xref> and
+          <xref target="RFC7540">HTTP/2</xref>. The specific HTTP
+          version is negotiated between the client and the server
+          through version indicators in the protocol or the TLS
+          <xref target="RFC7301">application-layer protocol
+          negotiation (ALPN) extension</xref>.
+        </t>
+
+        <t>
+          <list>
+            <t>
+              IANA maintains a list of registered URI schemes at
+              &lt;http://www.iana.org/assignments/uri-schemes&gt;.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Internet Media Types">
+
+        <t>
+          One of the most important aspect of hypertext-driven
+          communications is the concept of Internet media types
+          <xref target="RFC6838"/>. Media types are used to label
+          representations so that it is known how the representation
+          should be interpreted and how it is encoded. The core
+          of a CoRE application description should be one or more
+          media types.
+        </t>
+
+        <t>
+          A media type identifies a versioned series of representation
+          formats (<xref target="representation-formats"/>): a media
+          type does not identify a particular version of a
+          representation format; rather, the media type identifies the
+          family, and includes provisions for version indicator(s)
+          embedded in the representations themselves to determine more
+          precisely the nature of how the data is to be interpreted
+          <xref target="MIMEWEB"/>.
+          A new media type is only needed to designate a completely
+          incompatible format <xref target="MIMEWEB"/>.
+        </t>
+
+        <t>
+          Media types consist of a top-level type and a subtype,
+          structured into trees <xref target="RFC6838"/>.
+          Optionally, media types can have parameters.
+          For example, the media type "text/plain; charset=utf-8" is
+          a subtype for plain text under the "text" top-level type
+          in the standards tree and has a parameter "charset" set to
+          "utf-8".
+        </t>
+
+        <t>
+          Media types can be further refined by structured type name
+          suffixes (e.g., "+xml" appended to the base subtype name;
+          see Section 4.2.8 of RFC 6838), or by subtype information
+          embedded in the representations themselves (e.g., "xmlns"
+          declarations in XML documents <xref target="XMLNS"/>).
+          Structured type name suffixes should be preferred, because
+          embedded subtype information cannot be negotiated (e.g.,
+          using the CoAP Accept option).
+        </t>
+
+        <t>
+          In CoAP, media types are combined with 
+          <xref target="RFC7231">content coding information</xref>
+          to indicate the "content format" <xref target="RFC7252"/>
+          of a representation. Content formats are assigned a
+          numeric identifier that can be used instead of the
+          (typically much longer) media type string in representation
+          formats with space constraints.
+        </t>
+
+        <t>
+          A media type must be determined from in-band information
+          (e.g., from the CoAP Content-Format option). Clients must
+          not assume a structure from the application context or other
+          out-of-band information.
+        </t>
+
+        <t>
+          <list>
+            <t>
+              IANA maintains a list of registered Internet media types
+              at
+              &lt;http://www.iana.org/assignments/media-types&gt;.
+            </t>
+            <t>
+              IANA maintains a list of registered structured suffixes
+              at
+              &lt;http://www.iana.org/assignments/media-type-structured-suffix&gt;.
+            </t>
+            <t>
+              IANA maintains a list of registered CoAP content formats
+              at
+              &lt;http://www.iana.org/assignments/core-parameters&gt;.
+            </t>
+          </list>
+        </t>
+
+        <section title="Representation Formats" anchor="representation-formats">
+
+          <t>
+            In RESTful applications, clients and servers exchange
+            representations that capture the current or intended state
+            of a resource and that are labeled with a media type. A
+            representation is a sequence of bytes whose structure and
+            semantics are specified by a representation format: a
+            set of rules for encoding information.
+          </t>
+
+          <t>
+            Representation formats should generally allow clients with
+            different goals, so they can do different things with the
+            same data. The specification of a representation format
+            "describes a problem space, not a prescribed relationship
+            between client and server. Client and server must share an
+            understanding of the representations they're passing back
+            and forth, but they don't need to have the same idea of
+            what the problem is that needs to be
+            solved."&nbsp;<xref target="WEBAPIS"/>
+          </t>
+
+          <t>
+            Representation formats and their specifications evolve over
+            time. It is part of the responsibility of the designer of a
+            new version of a format to try to insure both forward and
+            backward compatibility: new documents should work reasonably
+            (with some fallback) with old processors, and old documents
+            should work reasonably with new processors
+            <xref target="MIMEWEB" />.
+          </t>
+
+          <t>
+            Representation formats enable hypertext-driven applications
+            when they support the expression of hypermedia controls:
+            links (<xref target="links"/>) and/or forms
+            (<xref target="forms"/>).
+          </t>
+
+          <t>
+            It is beyond the scope of this document to specify how
+            hypermedia controls can be expressed. The appropriate syntax,
+            when available, is described by the representation format
+            specification associated with each media type.
+          </t>
+
+        </section>
+
+        <section title="Links" anchor="links">
+
+          <t>
+            A link is the primary means for a client to change
+            application state, i.e., to navigate from one resource
+            to another. A link is a typed connection between two
+            resources <xref target="RFC5988"/>, and is comprised of:
+            <list style="symbols">
+              <t>
+                a context (usually the current resource),
+              </t>
+              <t>
+                a link relation type that identifies the semantics of
+                the link (<xref target="link-relations"/>),
+              </t>
+              <t>
+                a target resource URI, and
+              </t>
+              <t>
+                optionally, attributes that further describe the link
+                target.
+              </t>
+            </list>
+            A link can be viewed as a statement of the form "{context}
+            has a {relation type} resource at {target URI}, which
+            has {target attributes}" <xref target="RFC5988"/>. For
+            example, the resource &lt;http://example.com/&gt; could
+            have a "terms-of-service" resource at
+            &lt;http://example.com/tos&gt;, which has the media type
+            "text/html".
+          </t>
+
+          <t>
+            There are two special kinds of links:
+            <list style="symbols">
+              <t>
+                An embedding link is a link with the additional hint
+                that it, when processed, should be substituted with a
+                representation of the referenced resource. Thus,
+                traversing an embedding link adds to the application
+                state, rather than replacing it.
+                <vspace blankLines="1"/>
+                The most well known example for an embedding link is
+                the HTML &lt;img&gt; element. When a web browser
+                processes this element, it automatically
+                dereferences the "src" and renders the returned
+                image in place of the &lt;img&gt; element.
+              </t>
+              <t>
+                A templated link is a link where the client constructs
+                the target resource URI from provided in-band
+                instructions. The specific rules for such instructions
+                are described by the representation format.
+                <xref target="RFC6570">URI Templates</xref> provide a
+                generic way to construct URIs through variable
+                expansion.
+                <vspace blankLines="1"/>
+                Templated links allow a client to construct resource
+                URIs without being coupled to the resource structure at
+                the server (provided that the client learns the
+                template from a representation sent by the server and
+                does not have the template hard coded).
+              </t>
+            </list>
+          </t>
+
+        </section>
+
+        <section title="Forms" anchor="forms">
+
+          <t>
+            A form is the primary means for a client to change resource
+            state. It is comprised of:
+            <list style="symbols">
+              <t>
+                a context (usually the current resource),
+              </t>
+              <t>
+                a form relation type that identifies the semantics of
+                the form (<xref target="form-relations"/>),
+              </t>
+              <t>
+                a target resource URI,
+              </t>
+              <t>
+                a submission method (PUT, POST, PATCH, or DELETE), and
+              </t>
+              <t>
+                a description of a representation that the service
+                accepts as part of form submission. This description
+                can be a set of form fields or simply a list of
+                acceptable media types.
+              </t>
+            </list>
+            A form can be viewed as an instruction of the form "To
+            {relation type} the {context}, make a {method} request to
+            {target URI}". For example, to "update" the resource
+            &lt;http://example.com/config&gt;, a client should make a
+            PUT request to
+            &lt;http://example.com/config&gt;.
+          </t>
+
+          <t>
+            <list style="hanging">
+              <t hangText="Note:">
+                A form with a submission method of GET is, strictly
+                speaking, a templated link, since it provides a way to
+                construct a URI and does not change resource state.
+              </t>
+            </list>
+          </t>
+
+        </section>
+
+      </section>
+
+      <section title="Link Relation Types" anchor="link-relations">
+
+        <t>
+          A link relation type identifies the semantics of a link
+          <xref target="RFC5988"/>. For example, a link with the
+          relation type "copyright" indicates that the resource
+          identified by the target URI is a statement of the
+          copyright terms applying to the current context.
+        </t>
+
+        <t>
+          Relation types are not to be confused with media types; they
+          do not identify the format of the representation that results
+          when the link is dereferenced. Rather, they only describe how
+          the current context is related to another resource.
+        </t>
+
+        <t>
+          <list>
+            <t>
+              IANA maintains a list of registered link relation types
+              at
+              &lt;http://www.iana.org/assignments/link-relations&gt;.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Applications that don't wish to register a relation type can
+          use an extension relation type, which is a URI that uniquely
+          identifies the relation type (similar to a URI used as an XML
+          namespace names). For example, an application can use
+          "http://example.com/foo" as link relation type
+          without having to register it.
+        </t>
+
+        <t>
+          In order to minimize the overhead of link relation types in
+          representation formats with space constraints, link relation
+          types are assigned a small numeric identifier that can be
+          used in place of the link relation type name
+          (see also <xref target="iana-link"/>). For example,
+          the link relation type "copyright" has the numeric
+          identifier 12.
+        </t>
+
+      </section>
+
+      <section title="Form Relation Types" anchor="form-relations">
+
+        <t>
+          A form relation type identifies the semantics of a form.
+          For example, a form with the relation type "create-item"
+          indicates that a new item can be created within the current
+          context by making a request to the resource identified by
+          the target URI.
+        </t>
+
+        <t>
+          <list>
+            <t>
+              IANA maintains a list of registered link relation types
+              at<vspace/>
+              &lt;TBD&gt;.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Similar to link relation types, applications can use
+          extension relation types when they don't wish to register a
+          relation type.
+        </t>
+
+        <t>
+          Form relation types are also assigned a numeric identifier
+          that can be used in place of the form relation type name.
+        </t>
+
+      </section>
+
+      <section title="Well-Known Locations">
+
+        <t>
+          Some applications may require the discovery of information
+          about a host (known as "site-wide metadata" in
+          <xref target="RFC5785">RFC 5785</xref>). For example,
+          <xref target="RFC6415">RFC 6415</xref> defines a metadata
+          document format for describing hosts; similarly,
+          <xref target="RFC6690">RFC 6690</xref> defines a link format
+          for the discovery of resources hosted by a server.
+        </t>
+
+        <t>
+          Applications that need to define a resource for this kind of
+          metadata can register new "well-known locations".
+          <xref target="RFC5785">RFC 5785</xref> defines a path prefix
+          in "http" and "https" URIs for this purpose, "/.well-known/";
+          <xref target="RFC7252">RFC 7252</xref> extends this concept
+          to "coap" and "coaps" URIs.
+        </t>
+
+        <t>
+          <list>
+            <t>
+              IANA maintains a list of registered well-known URIs at
+              &lt;http://www.iana.org/assignments/well-known-uris&gt;.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Template">
+
+      <t>Application name:</t>
+
+      <t>URI schemes:</t>
+
+      <t>Media types:</t>
+
+      <t>Link relation types:</t>
+
+      <t>Form relation types:</t>
+
+      <t>Well-known locations:</t>
+
+      <t>Interoperability considerations:</t>
+
+      <t>Security considerations:</t>
+
+      <t>Contact:</t>
+
+      <t>Author/Change controller:</t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Guidelines for Application Designers">
+
+      <t>
+        This section provides guidelines and recommendations for
+        designers of constrained, RESTful, hypertext-driven
+        applications.
+      </t>
+
+      <section title="URI Design" anchor="resource-identifiers">
+
+        <t>
+          <xref target="RFC3986">URIs</xref> are a cornerstone of
+          RESTful applications. They enable uniform identification of
+          resources via <xref target="RFC7595">URI schemes</xref> and
+          are used every time a client interacts with a particular
+          resource or when a resource representation references another
+          resource.
+        </t>
+
+        <t>
+          URIs often include structured application data in the path
+          and query components, such as paths in a filesystem or
+          keys in a database.
+          It is common for many REST APIs to prescribe a fixed format
+          for this data.
+          However, there are a number of problems with this
+          practice <xref target="RFC7320"/>, in particular if the
+          application designer and the server owner are not the
+          same entity.
+        </t>
+
+        <t>
+          Therefore, in hypertext-driven applications URIs
+          are not included in the application interface. A CoRE
+          Application Description must not mandate any particular form
+          of URI substructure that is not explicitly allowed by
+          <xref target="RFC3986">RFC 3986</xref>.
+        </t>
+
+        <t>
+          <xref target="RFC7320">RFC 7320</xref> describes the
+          problematic practice of fixed URI structures in detail
+          and provides some acceptable alternatives.
+          <xref target="uri-design"/> gives some recommendations
+          on URI design for application implementers.
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Guidelines for Application Implementers">
+
+      <t>
+        This section provides guidelines and recommendations for
+        implementers of application descriptions, on both the client
+        and the server side.
+      </t>
+
+      <section title="Resource Navigation">
+
+        <t>
+          Links
+          (<xref target="links"/>) and forms (<xref target="forms"/>)
+          afford a potential next or future request from the client to
+          a server. To make the request, the client needs to select
+          a link or a form from a set of candidates.
+          The process is as follows:
+          <list style="numbers">
+            <t>
+              The first step for a client is to decide what to do
+              next, i.e., which link to follow or which form to submit,
+              based on the link relation types
+              (<xref target="link-relations"/>) and form relation types
+              (<xref target="form-relations"/>) it understands.
+            </t>
+            <t>
+              The client finds the link(s) or form(s) with the
+              given relation type. This may yield one or more
+              candidates from which the client must select the most
+              appropriate one. The set of candidates may be empty if
+              the transition is not allowed, for example, when the
+              client is unauthorized.
+            </t>
+            <t>
+              The client selects one of the candidates based on
+              the metadata associated with the hypermedia control.
+              This includes the media type of the target resource
+              representation, the URI scheme, the request method,
+              and other attributes that describe the link target.
+            </t>
+            <t>
+              The client resolves the target resource URI
+              reference to its absolute form in order to obtain the
+              "request URI". The process for reference resolution is
+              specified in Section 5 of
+              <xref target="RFC3986">RFC 3986</xref>.
+            </t>
+            <t>
+              The client constructs the request. The request URI
+              is the target resource URI resolved in the previous step.
+              The request method is either GET for links or indicated
+              by the hypermedia control for forms. The client should
+              set request metadata according to the link/form
+              attributes (e.g., set the CoAP Accept option when the
+              media type of the target resource is specified). In case
+              of a form, the client also constructs a request payload
+              according to the instructions specified in the form.
+            </t>
+            <t>
+              Finally, the client sends the request and retrieves the
+              response. The application thereby transitions to a new
+              state and the client can decide again what to do next.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="URI Design" anchor="uri-design">
+
+        <t>
+          Even though URIs are not part of the application interface
+          (see <xref target="resource-identifiers"/>), the design of
+          the URI structure on a server is an essential part of
+          implementing a RESTful application. The server
+          implementer is responsible for binding the nouns identified
+          by the application designer to URIs.
+        </t>
+
+        <t>
+          A good RESTful URI is:
+          <list style="symbols">
+            <t>
+              Short. Short URIs are easier to remember and cause less
+              overhead in requests and representations.
+            </t>
+            <t>
+              Meaningful. A URI should describe the resource in a way
+              that is meaningful and useful to humans.
+            </t>
+            <t>
+              Consistent. URIs should follow a consistent pattern to
+              make it easy to reason about the application.
+            </t>
+            <t>
+              Bookmarkable. Cool URIs don't change <xref
+              target="COOLURI"/>. However, application resource
+              structures change. That should naturally cause URIs to
+              change so they better reflect reality. So implementations
+              should not depend on unchanging URIs.
+            </t>
+            <t>
+              Shareable. A URI should not be context sensitive,
+              e.g., to the currently logged-in user. It should be
+              possible to share a URI with third parties so they
+              can access the same resource.
+            </t>
+            <t>
+              Extension-less. Some applications return different data
+              for different extensions, e.g., for "contacts.xml" or
+              "contacts.json". But different URIs imply different
+              resources. RESTful URIs should identify a single
+              resource. Different representations of the resource
+              can be negotiated (e.g., using the CoAP Accept option).
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Security Considerations">
+
+      <t>
+        The security considerations of
+        <xref target="RFC3986">RFC 3986</xref>,
+        <xref target="RFC5785">RFC 5785</xref>,
+        <xref target="RFC5988">RFC 5988</xref>,
+        <xref target="RFC6570">RFC 6570</xref>,
+        <xref target="RFC6838">RFC 6838</xref>,
+        <xref target="RFC7320">RFC 7320</xref>, and
+        <xref target="RFC7595">RFC 7595</xref>
+        are inherited.
+      </t>
+
+      <t>
+        All components of an application description are expected to
+        contain clear security considerations. CoRE Application
+        Descriptions should furthermore contain security considerations
+        that need to be taken into account for the security of the
+        overall application.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="IANA Considerations">
+
+      <t>
+        [Note to RFC Editor: Please replace XXXX in this section with
+        the RFC number of this specification.]
+      </t>
+
+      <section title="Content-Format Registry">
+
+        <t>
+          <xref target="RFC6838">RFC 6838</xref> establishes a IANA
+          registry for media types. Many of these media types are also
+          useful in constrained environments as CoAP content formats.
+          <xref target="RFC7252">RFC 7252</xref> establishes a IANA
+          registry for these content formats. This specification tasks
+          IANA with the allocation of a content format for any existing
+          or new media type registration that does not define any
+          parameters (required or optional). The content formats
+          shall be allocated in the range 1000-9999.
+        </t>
+
+      </section>
+
+      <section title="Link Relation Type Registry" anchor="iana-link">
+
+        <t>
+          <xref target="RFC5988">RFC 5988</xref> establishes a IANA
+          registry for link relation types. This specification extends
+          the registration template with a "Relation ID": a numeric
+          identifier that can be used instead of the "Relation Name"
+          to identify a link relation type. IANA is tasked with the
+          assignment of an ID to any existing or new link relation
+          type. The IDs shall be assigned in the range 1-9999.
+        </t>
+
+      </section>
+
+      <section title="Form Relation Type Registry">
+
+        <t>
+          This specification establishes a IANA registry for form
+          relation types.
+        </t>
+
+        <section title="Registering New Form Relation Types">
+
+          <t>
+            Form relation types are registered in the same way as
+            <xref target="RFC5988">link relation types</xref>, i.e.,
+            they are registered on the advice of a Designated Expert
+            with a Specification Required.
+          </t>
+
+          <t>
+            The requirements for registered relation types are adopted
+            from Section 4.1 of <xref target="RFC5988">RFC 5988</xref>.
+          </t>
+
+          <t>
+            The registration template is:
+            <list style="symbols">
+              <t>Relation Name:</t>
+              <t>Relation ID:</t>
+              <t>Description:</t>
+              <t>Reference:</t>
+              <t>Notes: [optional]</t>
+            </list>
+          </t>
+
+          <t>
+            The IDs shall be assigned in the range 1-9999.
+          </t>
+
+        </section>
+
+        <section title="Initial Registry Contents">
+
+          <t>
+            The Form Relation Type registry's initial contents are:
+            <list style="symbols">
+              <t>
+                Relation Name: create-item<vspace/>
+                Relation ID: 1<vspace/>
+                Description: Refers to a resource that can be used
+                to create a resource in a collection of
+                resources.<vspace/>
+                Reference: [RFCXXXX]
+              </t>
+              <t>
+                Relation Name: delete<vspace/>
+                Relation ID: 2<vspace/>
+                Description: Refers to a resource that can be used
+                to delete a resource in a collection of
+                resources.<vspace/>
+                Reference: [RFCXXXX]
+              </t>
+              <t>
+                Relation Name: update<vspace/>
+                Relation ID: 3<vspace/>
+                Description: Refers to a resource that can be used
+                to update the state of the form's context.<vspace/>
+                Reference: [RFCXXXX]
+              </t>
+            </list>
+          </t>
+
+        </section>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC3986; <!--Berners-Lee-->
+
+      &RFC6838; <!--Freed-->
+
+      &RFC6570; <!--Gregorio-->
+
+      &RFC5785; <!--Nottingham-->
+
+      &RFC5988; <!--Nottingham-->
+
+      &RFC7320; <!--Nottingham-->
+
+      &RFC7595; <!--Thaler-->
+
+    </references>
+
+    <references title="Informative References">
+
+      &RFC7540; <!--Belshe-->
+
+      <reference anchor="COOLURI" target="http://www.w3.org/Provider/Style/URI.html">
+        <front>
+          <title>Cool URIs don't change</title>
+          <author initials="T." surname="Berners-Lee" fullname="Tim Berners-Lee" />
+          <date year="1998" />
+        </front>
+      </reference>
+
+      &RFC1945; <!--Berners-Lee-->
+
+      &RFC7228; <!--Bormann-->
+
+      <reference anchor="XMLNS" target="http://www.w3.org/TR/2009/REC-xml-names-20091208">
+        <front>
+          <title>Namespaces in XML 1.0 (Third Edition)</title>
+          <author initials="T." surname="Bray" fullname="Tim Bray" />
+          <author initials="D." surname="Hollander" fullname="Dave Hollander" />
+          <author initials="A." surname="Layman" fullname="Andrew Layman" />
+          <author initials="R." surname="Tobin" fullname="Richard Tobin" />
+          <author initials="H." surname="Thompson" fullname="Henry Thompson" />
+          <date month="December" day="8" year="2009" />
+        </front>
+        <seriesInfo name="World Wide Web Consortium Recommendation" value="REC-xml-names-20091208" />
+        <format type="HTML" target="http://www.w3.org/TR/2009/REC-xml-names-20091208" />
+      </reference>
+
+      &RFC7230; <!--Fielding-->
+
+      &RFC7231; <!--Fielding-->
+
+      <reference anchor="REST" target="http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf">
+        <front>
+          <title>Architectural Styles and the Design of Network-based Software Architectures</title>
+          <author initials="R." surname="Fielding" fullname="Roy Fielding">
+            <organization>University of California, Irvine</organization>
+          </author>
+          <date year="2000" />
+        </front>
+        <seriesInfo name="Ph.D." value="Dissertation, University of California, Irvine"/>
+        <format type="PDF" target="http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf"/>
+      </reference>
+
+      <reference anchor="RESTAPI" target="http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">
+        <front>
+          <title>REST APIs must be hypertext-driven</title>
+          <author initials="R." surname="Fielding" fullname="Roy Fielding">
+            <organization>University of California, Irvine</organization>
+          </author>
+          <date month="October" day="20" year="2008" />
+        </front>
+      </reference>
+
+      &RFC7301; <!--Friedl-->
+
+      &RFC6415; <!--Hammer-Lahav-->
+
+      <reference anchor="SDNREST">
+        <front>
+          <title>Requirements and Design Patterns for REST Northbound API in SDN</title>
+          <author initials="L." surname="Li" fullname="Li Li" />
+          <author initials="Z." surname="Wei" fullname="Wei Zhou" />
+          <author initials="M." surname="Luo" fullname="Min Luo" />
+          <author initials="W." surname="Chou" fullname="Wu Chou" />
+          <date month="March" day="30" year="2015" />
+        </front>
+        <seriesInfo name="Internet-Draft" value="draft-li-sdnrg-design-restapi-00" />
+        <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-li-sdnrg-design-restapi-00.txt" />
+      </reference>
+
+      <reference anchor="MIMEWEB">
+        <front>
+          <title>MIME and the Web</title>
+          <author initials="L." surname="Masinter" fullname="Larry Masinter" />
+          <date month="January" day="10" year="2011" />
+        </front>
+        <seriesInfo name="Internet-Draft" value="draft-masinter-mime-web-info-02" />
+        <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-masinter-mime-web-info-02.txt" />
+      </reference>
+
+      <reference anchor="WEBAPIS">
+        <front>
+          <title>RESTful Web APIs</title>
+          <author initials="L." surname="Richardson" fullname="Leonard Richardson"/>
+          <author initials="M." surname="Amundsen" fullname="Mike Amundsen"/>
+          <date day="10" month="September" year="2013"/>
+        </front>
+        <seriesInfo name="O'Reilly" value="Media"/>
+        <seriesInfo name="ISBN" value="978-1-4493-5806-8"/>
+      </reference>
+
+      &RFC6690; <!--Shelby-->
+
+      &RFC7252; <!--Shelby-->
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Acknowledgements" numbered="no">
+
+      <t>
+        Thanks to
+        Jan Algermissen,
+        Mike Amundsen,
+        Olaf Bergmann,
+        Carsten Bormann,
+        Stefanie Gerdes,
+        Mike Kelly,
+        Ari Keranen,
+        Michael Koster,
+        Matthias Kovatsch,
+        Julian Reschke,
+        Teemu Savolainen,
+        Bilhanan Silverajan,
+        and Erik Wilde
+        for helpful comments and discussions that have shaped the
+        document.
+      </t>
+
+      <t>
+        Some of the text in this document has been borrowed from
+        <xref target="RFC5988" />, <xref target="RFC7320" />,
+        <xref target="RESTAPI" />, <xref target="SDNREST" />,
+        and <xref target="MIMEWEB" />. All errors are my own.
+      </t>
+
+      <t>
+        This work was funded in part by Nokia.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </back>
+
+</rfc>
