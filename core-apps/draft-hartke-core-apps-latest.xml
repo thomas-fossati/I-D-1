@@ -1003,20 +1003,24 @@
     <section title="Acknowledgements" numbered="no">
 
       <t>
-        Thanks to
         Jan Algermissen,
         Mike Amundsen,
+        Mike Kelly,
+        Julian Reschke,
+        and Erik Wilde
+        provided valuable input on link and form relation types.
+      </t>
+
+      <t>
+        Thanks to
         Olaf Bergmann,
         Carsten Bormann,
         Stefanie Gerdes,
-        Mike Kelly,
         Ari Keranen,
         Michael Koster,
         Matthias Kovatsch,
-        Julian Reschke,
         Teemu Savolainen,
-        Bilhanan Silverajan,
-        and Erik Wilde
+        and Bilhanan Silverajan
         for helpful comments and discussions that have shaped the
         document.
       </t>
