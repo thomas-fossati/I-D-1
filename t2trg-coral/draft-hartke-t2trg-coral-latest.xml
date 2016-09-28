@@ -2,6 +2,7 @@
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
   <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
   <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
@@ -163,9 +164,8 @@
     <section title="Options">
 
       <t>
-        The CoRAL options defined in this document are summarized in
-        <xref target="table-options"/> below and explained in the following
-        subsections:
+        <xref target="table-options"/> summarizes the CoRAL options defined in
+        this document. The options explained in the following subsections.
       </t>
 
       <texttable title="Options" anchor="table-options">
@@ -233,13 +233,168 @@
         </list>
       </t>
 
-      <section title="Accept.*"></section>
-      <section title="Format.*"></section>
-      <section title="Href.*"></section>
-      <section title="Method"></section>
-      <section title="Title"></section>
-      <section title="Updatable"></section>
-      <section title="Deletable"></section>
+      <section title="Accept.*">
+
+        <t>
+          The Accept and Accept.Local Options indicate the acceptable content
+          formats for the representation included in a form submission.
+        </t>
+
+        <t>
+          The option value of an Accept Option is one of the content format IDs
+          defined in the CoAP Content-Formats registry. The option value of an
+          Accept.Local Option is one of the content format IDs defined by the
+          media type of the CoRAL document.
+        </t>
+
+        <t>
+          If a form does not include an Accept.* Option, the service accepts any
+          content format.
+        </t>
+
+      </section>
+
+      <section title="Format.*">
+
+        <t>
+          The Format and Format.Local Options, when present in a link or a form,
+          provide a hint indicating what the content format of the payload of
+          the CoAP response should be when following the link or submitting the
+          form. Note that this is only a hint; it does not override the
+          Content-Format Option included in the CoAP response.
+        </t>
+
+        <t>
+          A Format or Format.Local Option is REQUIRED if a link embeds a
+          representation in the link body. A Format or Format.Local Option
+          is also REQUIRED in a literal. In either case, the option indicates
+          the content format of the embedded representation.
+        </t>
+
+        <t>
+          Each option value is one of the content format IDs defined in the CoAP
+          Content-Formats registry.
+        </t>
+
+      </section>
+
+      <section title="Href.*">
+
+        <t>
+          The Href.Scheme, Href.Host.Name, Href.Host.IPv4, Href.IPv6,
+          Href.Port, Href.Path, Href.Query and Href.Fragment Options are used
+          to specify the target resource URI of a link or form and the base URI
+          of a literal. They hold the following values:
+          <list style="symbols">
+            <t>
+              the Href.Scheme Option specifies the URI scheme name,
+            </t>
+            <t>
+              the Href.Host.Name Option specifies the host as a registered name
+              <xref target="RFC3986"/>,
+            </t>
+            <t>
+              the Href.Host.IPv4 Option specifies the host as a 32-bit IPv4
+              address,
+            </t>
+            <t>
+              the Href.Host.IPv6 Option specifies the host as a 128-bit IPv6
+              address,
+            </t>
+            <t>
+              the Href.Port Option specifies the port number,
+            </t>
+            <t>
+              each Href.Path Option specifies one segment of the path,
+            </t>
+            <t>
+              each Href.Query Option specifies one argument of the query string,
+              and
+            </t>
+            <t>
+              the Href.Fragment Option specifies the fragment identifier.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          The Href.Host.Name, Href.Host.IPv4 and Href.Host.IPv6 options are
+          mutually exclusive.
+        </t>
+
+        <t>
+          The default value of the Href.Port Option is the default port for the
+          URI scheme.
+        </t>
+
+        <t>
+          <xref target="table-href"/> lists the permitted Href.* options by Href
+          Type. A 'yes' indicates that an option of this type MAY be present; a
+          'no' indicates that an option of this type MUST NOT be present. The
+          resolution of Href.* options against a base URI is specified in
+          <xref target="resolution"/>.
+        </t>
+
+        <texttable title="Permitted Href.* Options by Href Type" anchor="table-href">
+          <ttcol align="left"></ttcol>
+          <ttcol align="center">absolute- path</ttcol>
+          <ttcol align="center">relative- path</ttcol>
+          <ttcol align="center">append- path</ttcol>
+          <ttcol align="center">append- relation</ttcol>
+
+          <c>Href.Scheme</c>    <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Host.Name</c> <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Host.IPv4</c> <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Host.IPv6</c> <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Port</c>      <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Path</c>      <c>yes</c> <c>yes</c> <c>yes</c> <c>no</c>
+          <c>Href.Query</c>     <c>yes</c> <c>yes</c> <c>yes</c> <c>no</c>
+          <c>Href.Fragment</c>  <c>yes</c> <c>yes</c> <c>yes</c> <c>no</c>
+        </texttable>
+
+      </section>
+
+      <section title="Method">
+
+        <t>
+          The Method Option indicates the CoAP method to use for form
+          submission. The option value is one of the CoAP method codes defined
+          in the CoAP Method Codes registry.
+        </t>
+
+      </section>
+
+      <section title="Title">
+
+        <t>
+          The Title Option, when present, is used to label the target of a link
+          such that it can be used as a human-readable identifier (e.g., a menu
+          entry).
+        </t>
+
+      </section>
+
+      <section title="Updatable">
+
+        <t>
+          The Updatable Option, when present in a link, defines a form that
+          can be used to update the target resource.  The context and target
+          resource of that form is the target resource of the link, the
+          submission method is PUT and the content format of the submitted
+          representation is defined by the Format Option of the link.
+        </t>
+
+      </section>
+
+      <section title="Deletable">
+
+        <t>
+          The Deletable Option, when present in a link, defines a form that
+          can be used to delete the target resource.  The submission method is
+          DELETE and no representation is included in the request.
+        </t>
+
+      </section>
 
     </section>
 
@@ -291,6 +446,7 @@
     <references title="Normative References">
 
       &RFC2119;
+      &RFC3986;
       &RFC5988;
       &RFC7049;
       &RFC7252;
