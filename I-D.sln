@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core-apps", "core-apps", "{
 		core-apps\draft-hartke-core-apps-01.xml = core-apps\draft-hartke-core-apps-01.xml
 		core-apps\draft-hartke-core-apps-02.xml = core-apps\draft-hartke-core-apps-02.xml
 		core-apps\draft-hartke-core-apps-03.xml = core-apps\draft-hartke-core-apps-03.xml
+		core-apps\draft-hartke-core-apps-latest.xml = core-apps\draft-hartke-core-apps-latest.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-coral", "t2trg-coral", "{D7344E3B-5635-49D1-AC05-E9A5CAD556C4}"
