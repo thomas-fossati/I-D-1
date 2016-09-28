@@ -162,6 +162,10 @@
         application components in their own applications.
       </t>
 
+      <t>
+        <vspace blankLines="10"/>
+      </t>
+
     </section>
 
     <!-- **************************************************************** -->
@@ -626,7 +630,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="URI Considerations">
+    <section title="URI Design Considerations">
 
       <t>
         <xref target="RFC3986">URIs</xref> are a cornerstone of
@@ -655,13 +659,16 @@
         Application Description must not mandate any particular form
         of URI substructure that is not explicitly allowed by
         <xref target="RFC3986">RFC 3986</xref>.
+      </t>
+
+      <t>
         <xref target="RFC7320">RFC 7320</xref> describes the
         problematic practice of fixed URI structures in detail
         and provides some acceptable alternatives.
       </t>
 
       <t>
-        Even though URIs are not part of the application interface,
+        However, even though URIs are not part of the application interface,
         the design of
         the URI structure on a server is an essential part of
         implementing a RESTful application. The server
