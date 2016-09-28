@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="us-ascii"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
+  <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
+  <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
+  <!ENTITY I-D.hartke-core-apps SYSTEM "reference.I-D.hartke-core-apps.xml">
+  <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+
+<?rfc compact="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="2"?>
+
+<rfc category="exp" docName="draft-hartke-t2trg-coral-01" ipr="trust200902">
+
+  <front>
+
+    <title abbrev="CoRAL">The Constrained RESTful Application Language (CoRAL)</title>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>D-28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
+      </address>
+    </author>
+
+    <date />
+
+    <workgroup>Thing-to-Thing Research Group</workgroup>
+
+    <abstract>
+
+      <t>
+        The Constrained RESTful Application Language (CoRAL) is a compact,
+        binary representation format for building RESTful, hypermedia-driven
+        applications that run in constrained environments.
+      </t>
+
+    </abstract>
+
+  </front>
+
+  <middle>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Introduction">
+
+      <t>
+        Constrained RESTful Environments (CoRE) realize the
+        <xref target="WEBARCH">Web architecture</xref> in a suitable form for
+        <xref target="RFC7228">constrained nodes and networks</xref>.
+      </t>
+
+      <t>
+        In the Web, hypertext documents contain links and forms that allow a
+        user to navigate between resources and submit information to a server
+        for processing.  By annotating these elements with machine-readable
+        <xref target="RFC5988">link relation types</xref> and form relation
+        types, it is possible to extend this interaction model to
+        machine-to-machine communication.
+      </t>
+
+      <t>
+        This document describes the Constrained RESTful Application Language
+        (CoRAL), a serialization format for Web links and forms that is based
+        on the <xref target="RFC7049">Concise Binary Object Representation
+        (CBOR)</xref>. The format also supports the embedding of representations
+        of resources. Thus, CoRAL can be used as a building block for RESTful,
+        hypermedia-driven applications.
+      </t>
+
+      <section title="Terminology">
+
+        <t>
+          Readers are expected to be familiar with the terms and
+          concepts described in <xref target="RFC5988"/> and
+          <xref target="I-D.hartke-core-apps"/>.
+        </t>
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+          RECOMMENDED", "MAY", and "OPTIONAL" in this document are
+          to be interpreted as described in <xref target="RFC2119"/>.
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Overview">
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Data Format" anchor="format">
+
+      <figure>
+        <artwork type="cddl">
+<![CDATA[   document     = [*element]
+   element      = tiny-link / tiny-literal / tiny-form
+                / fat-link  / fat-literal  / fat-form
+                / base
+
+   tiny-link    = [1, href-type, relation]
+   tiny-literal = [2, href-type, relation, format, body]
+   tiny-form    = [3, href-type, relation, accept]
+   base         = [4, href-type, options]
+   fat-link     = [5, href-type, options, ?body]
+   fat-literal  = [6, href-type, options, ?body]
+   fat-form     = [7, href-type, options, ?body]
+
+   href-type    = &(append-relation: 0,
+                    absolute-path: 1,
+                    append-path: 2,
+                    relative-path: 3)
+
+   relation     = uint
+   format       = uint
+   accept       = uint
+   options      = [*(delta, value)]
+   delta        = uint
+   value        = uint / text / bytes
+   body         = bytes]]>
+        </artwork>
+      </figure>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Options">
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Reference Resolution" anchor="resolution">
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Security Considerations" anchor="security">
+
+      <t>
+        TODO.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="IANA Considerations">
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC2119;
+      &RFC5988;
+      &RFC7049;
+      &I-D.hartke-core-apps;
+
+    </references>
+
+    <references title="Informative References">
+
+      &RFC7228;
+      &I-D.kelly-json-hal;
+
+      <reference anchor="WEBARCH" target="http://www.w3.org/TR/2004/REC-webarch-20041215">
+        <front>
+          <title>Architecture of the World Wide Web, Volume One</title>
+          <author initials="I." surname="Jacobs" fullname="Ian Jacobs"/>
+          <author initials="N." surname="Walsh" fullname="Norman Walsh"/>
+          <date month="December" day="15" year="2004" />
+        </front>
+        <seriesInfo name="World Wide Web Consortium Recommendation" value="REC-webarch-20041215" />
+        <format type="HTML" target="http://www.w3.org/TR/2004/REC-webarch-20041215" />
+      </reference>
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Acknowledgements" numbered="no">
+
+      <t>
+        This specification is heavily inspired by the
+        <xref target="I-D.kelly-json-hal">JSON Hypertext Application Language
+        (HAL)</xref>; the author of and contributors to that specification are
+        acknowledged for their great work.
+      </t>
+
+      <t>
+        Yassin Nasir Hassan suggested placing the hypermedia controls for
+        modifying a link target in the link context rather than in the
+        representation of the link target.
+      </t>
+
+      <t>
+        Carsten Bormann contributed the CDDL grammar and CBOR examples.
+      </t>
+
+      <!--
+      <t>
+        The author would like to thank
+        X,
+        Y, and
+        Z
+        for helpful comments and discussions that have shaped the
+        document.
+      </t>
+      -->
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </back>
+
+</rfc>
