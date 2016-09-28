@@ -595,16 +595,17 @@
               <vspace/>&SELF;
             </t>
             <t hangText="Applications that use this media type:">
-              <vspace/>N/A
+              <vspace/>Hypermedia-driven Web applications that run in
+              constrained nodes and networks.
             </t>
             <t hangText="Fragment identifier considerations:">
-              <vspace/>TODO
+              <vspace/>N/A
             </t>
             <t hangText="Additional information:">
               <list style="hanging">
                 <t hangText="Deprecated alias names for this type:">N/A</t>
                 <t hangText="Magic number(s):">N/A</t>
-                <t hangText="File extension(s):">N/A</t>
+                <t hangText="File extension(s):">.coral</t>
                 <t hangText="Macintosh file type code(s):">N/A</t>
               </list>
             </t>
@@ -644,7 +645,7 @@
               <vspace/>&SELF;
             </t>
             <t hangText="Encoding considerations:">
-              <vspace/>CoRAL is a binary encoding.
+              <vspace/>CoRAL is a binary format.
             </t>
             <t hangText="Interoperability considerations:">
               <vspace/>There are no known interoperability issues.
@@ -652,6 +653,8 @@
             <t hangText="Fragment identifier considerations:">
               <vspace/>The syntax and semantics of fragment identifiers
               specified for +coral are as specified for "application/coral".
+              (At publication of this document, there is no fragment
+              identification syntax defined for "application/coral".)
             </t>
             <t hangText="Security considerations:">
               <vspace/>See <xref target="security"/> of &SELF;.
