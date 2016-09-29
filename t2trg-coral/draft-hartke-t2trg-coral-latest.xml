@@ -310,8 +310,7 @@
               each Href.Path Option specifies one segment of the path,
             </t>
             <t>
-              each Href.Query Option specifies one argument of the query string,
-              and
+              each Href.Query Option specifies one argument of the query, and
             </t>
             <t>
               the Href.Fragment Option specifies the fragment identifier.
