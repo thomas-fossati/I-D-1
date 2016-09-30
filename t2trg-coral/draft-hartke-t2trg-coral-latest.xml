@@ -410,21 +410,37 @@
     <section title="Reference Resolution" anchor="resolution">
 
       <t>
-        This section defines the process of resolving the sequence of Href.*
-        options to an absolute URI suitable for inclusion in a CoAP request.
-        The URI reference is resolved against a base URI that is determined
-        as specified in <xref target="base-uri"/>.
+        This section defines the process of resolving a URI reference within a
+        link, literal or form to an absolute URI suitable for inclusion in a
+        CoAP request.
       </t>
 
-      <section title="Establishing a Base URI" anchor="base-uri">
+      <section title="Establish a Base URI">
+
+        <t>
+          URI references may be relative and thus are only usable when a base
+          URI is known. This means that a base URI must be established before
+          the use of all URI references that might be relative.
+        </t>
+
+        <t>
+          The base URI of a reference in a link, literal or form is established
+          as specified in Section 5.1 of <xref target="RFC3986"/>. CoRAL
+          supports a "Base URI Embedded in Content" in the form of base
+          elements. A base element applies to all subsequent elements in a
+          document until the next base element is encountered. The URI reference
+          in a base element itself is resolved relative to the base URI of next
+          lower precedence.
+        </t>
+
       </section>
 
-      <section title="Relative Resolution">
+      <section title="Transform References">
 
         <t>
           The following pseudocode describes an algorithm for transforming a
-          URI reference R into its target URI T, using the Href Type H, the
-          Link or Form Relation Type S and the base URI B. The URI reference
+          URI reference R into its target URI T using the base URI B, the Href
+          Type H, and the Link or Form Relation Type S. The URI reference
           and base URI are assumed to be pre-parsed into a sequence of Href.*
           options; the result is returned as a sequence of Href.* options as
           well.
@@ -478,6 +494,42 @@
       </section>
 
       <section title="Remove Dot Segments">
+
+        <t>
+          After transforming a the URI reference into its target URI, the
+          special path segments "." and ".." need to be removed. Although there
+          are many ways to accomplish this removal process, we describe a simple
+          method using two string buffers.
+          <list style="numbers">
+            <t>
+              The input buffer is initialized with the sequence of path segments
+              and the output buffer is initialized to the empty sequence.
+            </t>
+            <t>
+              While the input buffer is not empty, loop as follows:
+              <list style="symbols">
+                <t>
+                  If the input buffer begins with ".", then remove this segment
+                  from the input buffer; otherwise,
+                </t>
+                <t>
+                  if the input buffer begins with "..", then remove this segment
+                  from the input buffer and and remove the last segment (if any)
+                  from the output buffer; otherwise,
+                </t>
+                <t>
+                  move the first path segment in the input buffer to the end of
+                  the output buffer.
+                </t>
+              </list>
+            </t>
+            <t>
+              Finally, the sequence of path segments in the target URI is
+              replaced by the sequence of path segments in the output buffer.
+            </t>
+          </list>
+        </t>
+
       </section>
 
     </section>
