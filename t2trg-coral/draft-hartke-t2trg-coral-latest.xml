@@ -384,7 +384,8 @@
           can be used to update the target resource.  The context and target
           resource of that form is the target resource of the link, the
           submission method is PUT and the content format of the submitted
-          representation is defined by the Format Option of the link.
+          representation is defined by the Format Option or Format.Local
+          Option of the link.
         </t>
 
       </section>
