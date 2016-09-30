@@ -8,6 +8,7 @@
   <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY I-D.greevenbosch-appsawg-cbor-cddl SYSTEM "reference.I-D.greevenbosch-appsawg-cbor-cddl.xml">
   <!ENTITY I-D.hartke-core-apps SYSTEM "reference.I-D.hartke-core-apps.xml">
   <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
   <!ENTITY SELF "[RFCXXXX]">
@@ -950,6 +951,7 @@
 
       &RFC7228;
       &I-D.kelly-json-hal;
+      &I-D.greevenbosch-appsawg-cbor-cddl;
 
       <reference anchor="WEBARCH" target="http://www.w3.org/TR/2004/REC-webarch-20041215">
         <front>
