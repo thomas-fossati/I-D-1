@@ -134,47 +134,42 @@
         The process is as follows:
         <list style="numbers">
           <t>
-            The first step for a client is to decide what to do
-            next, i.e., which link to follow or which form to submit,
-            based on the link relation types and form relation types
-            it understands.
+            The first step for a client is to decide what to do next, i.e.,
+            which link to follow or which form to submit, based on the link
+            relation types and form relation types it understands.
           </t>
           <t>
-            The client finds the link(s) or form(s) with the
-            given relation type. This may yield one or more
-            candidates from which the client must select the most
-            appropriate one. The set of candidates may be empty if
-            the transition is not allowed, for example, when the
-            client is unauthorized.
+            The client finds the link(s) or form(s) with the given relation
+            type. This may yield one or more candidates from which the client
+            must select the most appropriate one. The set of candidates may be
+            empty if the transition is not allowed, for example, when the client
+            is unauthorized.
           </t>
           <t>
-            The client selects one of the candidates based on
-            the metadata associated with the hypermedia control.
-            This includes the media type of the target resource
-            representation, the URI scheme, the request method,
-            and other attributes that describe the link target.
+            The client selects one of the candidates based on the metadata
+            associated with the hypermedia control. This includes the media type
+            of the target resource representation, the URI scheme, the request
+            method, and other attributes that describe the target.
           </t>
           <t>
-            The client resolves the target resource URI
-            reference to its absolute form in order to obtain the
-            "request URI". The process for reference resolution is
-            specified in <xref target="resolution"/>.
+            The client resolves the target resource URI reference to its
+            absolute form in order to obtain the "request URI". The process for
+            reference resolution is specified in <xref target="resolution"/>.
           </t>
           <t>
-            The client constructs the request. The request URI
-            is the target resource URI resolved in the previous step.
-            The request method is either GET for links or indicated
-            by the hypermedia control for forms. The client should
-            set request metadata according to the link/form
-            attributes (e.g., set the CoAP Accept option when the
-            media type of the target resource is specified). In case
-            of a form, the client also constructs a request payload
-            according to the instructions specified in the form.
+            The client constructs the request. The request URI is the target
+            resource URI resolved in the previous step. The request method is
+            either GET for links or indicated by the hypermedia control for
+            forms. The client should set request metadata according to the
+            link/form attributes (e.g., set the CoAP Accept option when the
+            media type of the target resource is specified). In case of a form,
+            the client also constructs a request payload according to the
+            instructions specified in the form.
           </t>
           <t>
-            Finally, the client sends the request and retrieves the
-            response. The application thereby transitions to a new
-            state and the client again can decide what to do next.
+            Finally, the client sends the request and retrieves the response.
+            The application thereby transitions to a new state and the client
+            again can decide what to do next.
           </t>
         </list>
       </t>
