@@ -274,8 +274,10 @@
         </t>
 
         <t>
-          Each option value is one of the content format IDs defined in the CoAP
-          Content-Formats registry.
+          The option value of a Format Option is one of the content format IDs
+          defined in the CoAP Content-Formats registry. The option value of a
+          Format.Local Option is one of the content format IDs defined by the
+          media type of the CoRAL document.
         </t>
 
       </section>
