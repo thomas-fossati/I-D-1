@@ -1054,7 +1054,7 @@
         </figure>
 
         <t>
-          This example is encoded in CoRAL as follows (using CBOR diagnostic
+          The example can be encoded in CoRAL as follows (using CBOR diagnostic
           notation):
         </t>
 
