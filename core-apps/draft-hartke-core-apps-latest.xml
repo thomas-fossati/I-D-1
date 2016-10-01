@@ -32,7 +32,9 @@
 
   <front>
 
-    <title>CoRE Application Descriptions</title>
+    <title abbrev="CoRE Application Descriptions">
+      Constrained RESTful Environments (CoRE) Application Descriptions
+    </title>
 
     <author initials="K." surname="Hartke" fullname="Klaus Hartke">
       <organization>Universitaet Bremen TZI</organization>
@@ -72,7 +74,8 @@
 
       <t>
         This Internet-Draft should be discussed on the Thing-to-Thing
-        Research Group (T2TRG) mailing list &lt;t2trg@irtf.org&gt;.
+        Research Group (T2TRG) mailing list &lt;t2trg@irtf.org&gt;
+        &lt;https://www.irtf.org/mailman/listinfo/t2trg&gt;.
       </t>
 
     </note>
