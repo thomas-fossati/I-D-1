@@ -5,11 +5,14 @@
   <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
   <!ENTITY RFC5226 SYSTEM "reference.RFC.5226.xml">
   <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
+  <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
   <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY I-D.greevenbosch-appsawg-cbor-cddl SYSTEM "reference.I-D.greevenbosch-appsawg-cbor-cddl.xml">
   <!ENTITY I-D.hartke-core-apps SYSTEM "reference.I-D.hartke-core-apps.xml">
+  <!ENTITY I-D.ietf-core-interfaces SYSTEM "reference.I-D.ietf-core-interfaces.xml">
+  <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
   <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
   <!ENTITY SELF "[RFCXXXX]">
 ]>
@@ -949,9 +952,12 @@
 
     <references title="Informative References">
 
+      &RFC6690;
       &RFC7228;
-      &I-D.kelly-json-hal;
       &I-D.greevenbosch-appsawg-cbor-cddl;
+      &I-D.ietf-core-interfaces;
+      &I-D.ietf-core-links-json;
+      &I-D.kelly-json-hal;
 
       <reference anchor="WEBARCH" target="http://www.w3.org/TR/2004/REC-webarch-20041215">
         <front>
