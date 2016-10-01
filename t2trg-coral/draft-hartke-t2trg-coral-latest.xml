@@ -11,6 +11,7 @@
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY I-D.greevenbosch-appsawg-cbor-cddl SYSTEM "reference.I-D.greevenbosch-appsawg-cbor-cddl.xml">
   <!ENTITY I-D.hartke-core-apps SYSTEM "reference.I-D.hartke-core-apps.xml">
+  <!ENTITY I-D.hartke-core-lighting SYSTEM "reference.I-D.hartke-core-lighting.xml">
   <!ENTITY I-D.ietf-core-interfaces SYSTEM "reference.I-D.ietf-core-interfaces.xml">
   <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
   <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
@@ -955,6 +956,7 @@
       &RFC6690;
       &RFC7228;
       &I-D.greevenbosch-appsawg-cbor-cddl;
+      &I-D.hartke-core-lighting;
       &I-D.ietf-core-interfaces;
       &I-D.ietf-core-links-json;
       &I-D.kelly-json-hal;
@@ -978,6 +980,67 @@
     <!-- **************************************************************** -->
 
     <section title="Examples">
+
+      <section title="CoRE Lighting">
+
+        <t>
+          <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> defines
+          a benchmark scenario for the exploration of hypermedia-oriented design
+          in constrained, RESTful environments. The bulletin board example in
+          Section 5.2.1 of <xref target="I-D.hartke-core-lighting"/> can be
+          encoded in CoRAL as follows:
+        </t>
+
+        <figure>
+          <artwork>
+<![CDATA[  [[7, 3, [1, 1, 4, 65200, 13, "bulletins"]],
+   [5, 1, [1, 33, 6, 65200, 9, "light-bulb.example"], <<1>>],
+   [5, 1, [1, 33, 6, 65200, 9, "remote-control.example"], <<2>>]]]]>
+          </artwork>
+        </figure>
+
+        <t>
+          where &lt;&lt;1&gt;&gt; is a byte string that encodes the following
+          CoRAL structure:
+        </t>
+
+        <figure>
+          <artwork>
+<![CDATA[  [[5, 3, [2, 100, 6, 65202, 13, "config"]],
+   [2, 3, 101, 0, "Light 2"],
+   [2, 3, 102, 0, "Illuminates the couch."],
+   [2, 3, 103, 0, "Living Room"]]]]>
+          </artwork>
+        </figure>
+
+        <t>
+          and &lt;&lt;2&gt;&gt; is a byte string that encodes the following
+          CoRAL structure:
+        </t>
+
+        <figure>
+          <artwork>
+<![CDATA[  [[5, 3, [1, 1, 6, 65203, 13, "state"]],
+   [2, 3, 101, 0, "LRC 1"],
+   [2, 3, 102, 0, "Controls Light 2."],
+   [2, 3, 103, 0, "Living Room"]]]]>
+          </artwork>
+        </figure>
+
+        <t>
+          <xref target="table-lighting-comparison"/> shows a comparison of
+          sizes of the example encoded in CoRAL and JSON.
+        </t>
+
+        <texttable align="center" anchor="table-lighting-comparison" title="Size Comparison">
+          <ttcol>Format</ttcol>
+          <ttcol>Size</ttcol>
+          
+          <c>JSON</c>                   <c>515 bytes</c>
+          <c>CoRAL</c>                  <c>245 bytes</c>
+        </texttable>
+
+      </section>
 
       <section title="CoRE Link Format">
 

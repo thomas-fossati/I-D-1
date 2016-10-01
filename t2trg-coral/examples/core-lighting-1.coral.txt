@@ -1,0 +1,1 @@
+[[5,3,[2,100,6,65202,13,"config"]],[2,3,101,0,"Light 2"],[2,3,102,0,"Illuminates the couch."],[2,3,103,0,"Living Room"]]
