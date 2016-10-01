@@ -1026,7 +1026,7 @@
           
           <c>Link Format</c>            <c>251 bytes</c>
           <c>Link Format (JSON)</c>     <c>320 bytes</c>
-          <c>Link Format (CBOR)</c>     <c>208 bytes</c>
+          <c>Link Format (CBOR)</c>     <c>203 bytes</c>
           <c>CoRAL</c>                  <c>181 bytes</c>
         </texttable>
 
