@@ -1,0 +1,1 @@
+</s/>;rt="simple.sen";if="core.b",</s/lt>;rt="simple.sen.lt";if="core.s",</s/tmp>;rt="simple.sen.tmp";if="core.s";obs,</s/hum>;rt="simple.sen.hum";if="core.s",</a/>;rt="simple.act";if="core.b",</a/1/led>;rt="simple.act.led";if="core.a",</a/2/led>;rt="simple.act.led";if="core.a",</d/>;rt="simple.dev";if="core.ll",</l/>;if="core.lb"

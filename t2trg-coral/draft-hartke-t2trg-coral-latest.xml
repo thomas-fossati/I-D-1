@@ -977,6 +977,76 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
+    <section title="Examples">
+
+      <section title="CoRE Interfaces">
+
+        <t>
+          The example in this section is based on an example on page 10 of
+          <xref target="I-D.ietf-core-interfaces"/>:
+        </t>
+
+        <figure>
+          <artwork>
+<![CDATA[   </s/>;rt="simple.sen";if="core.b",
+   </s/lt>;rt="simple.sen.lt";if="core.s",
+   </s/tmp>;rt="simple.sen.tmp";if="core.s";obs,
+   </s/hum>;rt="simple.sen.hum";if="core.s",
+   </a/>;rt="simple.act";if="core.b",
+   </a/1/led>;rt="simple.act.led";if="core.a",
+   </a/2/led>;rt="simple.act.led";if="core.a",
+   </d/>;rt="simple.dev";if="core.ll",
+   </l/>;if="core.lb"]]>
+          </artwork>
+        </figure>
+
+        <t>
+          This example is encoded in CoRAL as follows (using CBOR diagnostic
+          notation):
+        </t>
+
+        <figure>
+          <artwork>
+<![CDATA[  [[5, 1, [13, "d", 13, "", 19, "simple.dev", 20, "core.ll"]],
+   [5, 1, [13, "l", 13, "", 20, "core.lb"]],
+   [4, 1, [20, "core.b"]],
+   [5, 2, [13, "s", 13, "", 19, "simple.sen"]],
+   [5, 2, [13, "a", 13, "", 19, "simple.act"]],
+   [4, 1, [13, "s", 20, "core.s"]],
+   [5, 2, [13, "lt", 19, "simple.sen.lt"]],
+   [5, 2, [13, "tmp", 19, "simple.sen.tmp", 22, true]],
+   [5, 2, [13, "hum", 19, "simple.sen.hum"]],
+   [4, 1, [13, "a", 19, "simple.act.led", 20, "core.a"]],
+   [5, 2, [13, "1", 13, "led"]],
+   [5, 2, [13, "2", 13, "led"]]]]]>
+          </artwork>
+        </figure>
+
+        <t>
+          <xref target="table-interfaces-comparison"/> shows a comparison of
+          sizes of the example encoded in CoRAL and a number of Link Format
+          variants.
+        </t>
+
+        <texttable align="center" anchor="table-interfaces-comparison" title="Size Comparison">
+          <ttcol>Format</ttcol>
+          <ttcol>Size</ttcol>
+
+          <c>Link Format</c>            <c>332 bytes</c>
+          <c>Link Format (JSON)</c>     <c>456 bytes</c>
+          <c>Link Format (CBOR)</c>     <c>264 bytes</c>
+          <c>CoRAL</c>                  <c>248 bytes</c>
+        </texttable>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
     <section title="Acknowledgements" numbered="no">
 
       <t>
