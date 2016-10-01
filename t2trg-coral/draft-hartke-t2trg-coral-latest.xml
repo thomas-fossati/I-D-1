@@ -979,6 +979,59 @@
 
     <section title="Examples">
 
+      <section title="Link Format">
+
+        <t>
+          The example in this section is based on an example on page 14 of
+          <xref target="RFC6690"/>:
+        </t>
+
+        <figure>
+          <artwork>
+<![CDATA[   </sensors>;ct=40;title="Sensor Index",
+   </sensors/temp>;rt="temperature-c";if="sensor",
+   </sensors/light>;rt="light-lux";if="sensor",
+   <http://www.example.com/sensors/t123>;anchor="/sensors/temp"
+   ;rel="describedby",
+   </t>;anchor="/sensors/temp";rel="alternate"]]>
+          </artwork>
+        </figure>
+
+        <t>
+          The example can be encoded in CoRAL as follows (using CBOR diagnostic
+          notation):
+        </t>
+
+        <figure>
+          <artwork>
+<![CDATA[  [[4, 1, [13, "sensors"]],
+   [5, 2, [6, 40, 16, "Sensor Index"]],
+   [5, 2, [13, "temp", 19, "temperature-c", 20, "sensor"]],
+   [5, 2, [13, "light", 19, "light-lux", 20, "sensor"]],
+   [5, 1, [1, 18, 8, "http", 9, "www.example.com", 
+           13, "sensors", 13, "t123", 21, "/sensors/temp"]],
+   [5, 1, [1, 2, 13, "t", 21, "/sensors/temp"]]]]]>
+          </artwork>
+        </figure>
+
+        <t>
+          <xref target="table-link-comparison"/> shows a comparison of
+          sizes of the example encoded in CoRAL and a number of Link Format
+          variants.
+        </t>
+
+        <texttable align="center" anchor="table-link-comparison" title="Size Comparison">
+          <ttcol>Format</ttcol>
+          <ttcol>Size</ttcol>
+          
+          <c>Link Format</c>            <c>251 bytes</c>
+          <c>Link Format (JSON)</c>     <c>320 bytes</c>
+          <c>Link Format (CBOR)</c>     <c>208 bytes</c>
+          <c>CoRAL</c>                  <c>181 bytes</c>
+        </texttable>
+
+      </section>
+
       <section title="CoRE Interfaces">
 
         <t>

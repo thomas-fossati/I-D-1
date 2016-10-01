@@ -1,0 +1,1 @@
+[{1:"/sensors",12:"40","title":"Sensor Index"},{1:"/sensors/temp",9:"temperature-c",10:"sensor"},{1:"/sensors/light",9:"light-lux",10:"sensor"},{1:"http://www.example.com/sensors/t123",3:"/sensors/temp",2:"describedby"},{1:"/t",3:"/sensors/temp",2:"alternate"}]
