@@ -226,8 +226,14 @@
         </list>
       </t>
 
-      <!--traversing the history-->
-      <!--bookmarks-->
+      <t>
+        A browsing context's session history consists of a flat list of session
+        history entries. Each session history entry consists of a URI and may
+        have other information associated with it. Session history entries are
+        added to the session history as the client navigates from resource to
+        resource. A client can traverse the session history to any entry by
+        navigating the browsing context to the resource for that entry.
+      </t>
 
     </section>
 
