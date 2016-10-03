@@ -210,8 +210,8 @@
           <t>
             The client constructs the request with the request URI. If the
             client follows a link, the request method is GET; if the client
-            submits a form, the request method is indicated by an option with
-            a default value of POST. The client should set request metadata
+            submits a form, the request method is indicated by an option.
+            The client should set request metadata
             according to the link/form attributes (e.g., set the CoAP Accept
             option when the content format of the target resource is specified).
             In case of a form, the client also needs to construct a payload
