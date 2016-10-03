@@ -280,6 +280,18 @@
         the option numbers are in ascending order.
       </t>
 
+      <t>
+        Tiny elements expand as follows:
+      </t>
+
+      <figure>
+        <artwork align="center">
+<![CDATA[[1, H, R]        ->  [5, H, [1, R]]
+[2, H, R, F, B]  ->  [6, H, [1, R, 6, F], B]
+[3, H, R, A]     ->  [7, H, [1, R, 4, A]]]]>
+        </artwork>
+      </figure>
+
     </section>
 
     <!-- **************************************************************** -->
