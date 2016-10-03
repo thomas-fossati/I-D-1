@@ -243,6 +243,37 @@
     <!-- **************************************************************** -->
 
     <section title="Data Format" anchor="format">
+      
+      <t>
+        CoRAL can be used as a standalone format or as a format embedded in
+        other representation formats. The structure is in either case the same.
+      </t>
+
+      <t>
+        A CoRAL document consists of a sequence of links, forms, literals and
+        bases, which are collectively called elements. Elements consist of an
+        type specifier, a "href type" that indicates how Href.* options are to
+        be interpreted in reference resolution, a sequence of zero or more
+        options and, optionally, a body.
+      </t>
+
+      <t>
+        Link, form and literal elements come in two flavors: a "fat" format and
+        a "tiny" format. The tiny formats provide a concise way to express
+        elements that match certain patterns.        
+      </t>
+      
+      <t>
+        A base element encodes a base URI for reference relation and applies to
+        all subsequent elements in a document until the next base element is
+        encountered.
+      </t>
+
+      <t>
+        Using the notation of
+        <xref target="I-D.greevenbosch-appsawg-cbor-cddl"/>,
+        the CoRAL data format can be expressed as follows:
+      </t>
 
       <figure>
         <artwork type="cddl">
@@ -275,13 +306,13 @@
       </figure>
 
       <t>
-        The options are an array that contains a sequence of pairs of a CoRAL
-        option number and an option value. The pairs MUST be sorted such that
-        the option numbers are in ascending order.
+        The options are an array that contains a sequence of pairs where each
+        pair consists of a CoRAL option number and an option value. The pairs
+        MUST be sorted such that the option numbers are in ascending order.
       </t>
 
       <t>
-        Tiny elements expand as follows:
+        The tiny formats expand as follows:
       </t>
 
       <figure>
