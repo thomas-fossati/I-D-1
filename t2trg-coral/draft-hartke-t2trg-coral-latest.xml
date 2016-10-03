@@ -296,24 +296,24 @@
         <ttcol>Length</ttcol>
         <ttcol>Default</ttcol>
 
-        <c>  1</c><c>x</c><c>Relation      </c><c>uint  </c><c>0-2   </c><c>(none)     </c>
-        <c>  2</c><c>x</c><c>Relation.Local</c><c>uint  </c><c>0-2   </c><c>(none)     </c>
-        <c>  3</c><c> </c><c>Method        </c><c>uint  </c><c>1     </c><c>2 (POST)   </c>
-        <c>  4</c><c>x</c><c>Accept        </c><c>uint  </c><c>0-2   </c><c>(none)     </c>
-        <c>  5</c><c>x</c><c>Accept.Local  </c><c>uint  </c><c>0-2   </c><c>(none)     </c>
-        <c>  6</c><c>x</c><c>Format        </c><c>uint  </c><c>0-2   </c><c>(none)     </c>
-        <c>  7</c><c>x</c><c>Format.Local  </c><c>uint  </c><c>0-2   </c><c>(none)     </c>
-        <c>  8</c><c> </c><c>Href.Scheme   </c><c>string</c><c>1-255 </c><c>(none)     </c>
-        <c>  9</c><c> </c><c>Href.Host.Name</c><c>string</c><c>1-255 </c><c>(none)     </c>
-        <c> 10</c><c> </c><c>Href.Host.IPv4</c><c>opaque</c><c>4     </c><c>(none)     </c>
-        <c> 11</c><c> </c><c>Href.Host.IPv6</c><c>opaque</c><c>16    </c><c>(none)     </c>
-        <c> 12</c><c> </c><c>Href.Port     </c><c>uint  </c><c>0-2   </c><c>(see below)</c>
-        <c> 13</c><c>x</c><c>Href.Path     </c><c>string</c><c>0-255 </c><c>(none)     </c>
-        <c> 14</c><c>x</c><c>Href.Query    </c><c>string</c><c>0-255 </c><c>(none)     </c>
-        <c> 15</c><c> </c><c>Href.Fragment </c><c>string</c><c>0-255 </c><c>(empty)    </c>
-        <c> 16</c><c> </c><c>Title         </c><c>string</c><c>0-255 </c><c>(none)     </c>
-        <c> 17</c><c> </c><c>Updatable     </c><c>empty </c><c>0     </c><c>(none)     </c>
-        <c> 18</c><c> </c><c>Deletable     </c><c>empty </c><c>0     </c><c>(none)     </c>
+        <c>1</c>   <c>x</c>  <c>Relation</c>        <c>uint</c>    <c>0-2</c>    <c>(none)</c>
+        <c>2</c>   <c>x</c>  <c>Relation.Local</c>  <c>uint</c>    <c>0-2</c>    <c>(none)</c>
+        <c>3</c>   <c></c>   <c>Method</c>          <c>uint</c>    <c>1</c>      <c>2 (POST)</c>
+        <c>4</c>   <c>x</c>  <c>Accept</c>          <c>uint</c>    <c>0-2</c>    <c>(none)</c>
+        <c>5</c>   <c>x</c>  <c>Accept.Local</c>    <c>uint</c>    <c>0-2</c>    <c>(none)</c>
+        <c>6</c>   <c>x</c>  <c>Format</c>          <c>uint</c>    <c>0-2</c>    <c>(none)</c>
+        <c>7</c>   <c>x</c>  <c>Format.Local</c>    <c>uint</c>    <c>0-2</c>    <c>(none)</c>
+        <c>8</c>   <c></c>   <c>Href.Scheme</c>     <c>string</c>  <c>1-255</c>  <c>(none)</c>
+        <c>9</c>   <c></c>   <c>Href.Host.Name</c>  <c>string</c>  <c>1-255</c>  <c>(none)</c>
+        <c>10</c>  <c></c>   <c>Href.Host.IPv4</c>  <c>opaque</c>  <c>4</c>      <c>(none)</c>
+        <c>11</c>  <c></c>   <c>Href.Host.IPv6</c>  <c>opaque</c>  <c>16</c>     <c>(none)</c>
+        <c>12</c>  <c></c>   <c>Href.Port</c>       <c>uint</c>    <c>0-2</c>    <c>(see below)</c>
+        <c>13</c>  <c>x</c>  <c>Href.Path</c>       <c>string</c>  <c>0-255</c>  <c>(none)</c>
+        <c>14</c>  <c>x</c>  <c>Href.Query</c>      <c>string</c>  <c>0-255</c>  <c>(none)</c>
+        <c>15</c>  <c></c>   <c>Href.Fragment</c>   <c>string</c>  <c>0-255</c>  <c>(empty)</c>
+        <c>16</c>  <c></c>   <c>Title</c>           <c>string</c>  <c>0-255</c>  <c>(none)</c>
+        <c>17</c>  <c></c>   <c>Updatable</c>       <c>empty</c>   <c>0</c>      <c>(none)</c>
+        <c>18</c>  <c></c>   <c>Deletable</c>       <c>empty</c>   <c>0</c>      <c>(none)</c>
       </texttable>
 
       <t>
