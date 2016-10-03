@@ -274,6 +274,12 @@
         </artwork>
       </figure>
 
+      <t>
+        The options are an array that contains a sequence of pairs of a CoRAL
+        option number and an option value. The pairs MUST be sorted such that
+        the option numbers are in ascending order.
+      </t>
+
     </section>
 
     <!-- **************************************************************** -->
