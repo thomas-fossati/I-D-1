@@ -414,6 +414,16 @@
 
       </section>
 
+      <section title="Deletable">
+
+        <t>
+          The Deletable Option, when present in a link, defines a form that
+          can be used to delete the target resource.  The submission method is
+          DELETE and no representation is included in the request.
+        </t>
+
+      </section>
+
       <section title="Format.*">
 
         <t>
@@ -544,16 +554,6 @@
           submission method is PUT and the content format of the submitted
           representation is defined by the Format Option or Format.Local
           Option of the link.
-        </t>
-
-      </section>
-
-      <section title="Deletable">
-
-        <t>
-          The Deletable Option, when present in a link, defines a form that
-          can be used to delete the target resource.  The submission method is
-          DELETE and no representation is included in the request.
         </t>
 
       </section>
