@@ -1234,19 +1234,12 @@
       </t>
 
       <t>
-        Carsten Bormann contributed to the CDDL grammar and CBOR examples.
-      </t>
-
-      <!--
-      <t>
-        The author would like to thank
-        X,
-        Y, and
-        Z
+        Thanks to
+        Carsten Bormann and
+        Matthias Kovatsch
         for helpful comments and discussions that have shaped the
         document.
       </t>
-      -->
 
     </section>
 
