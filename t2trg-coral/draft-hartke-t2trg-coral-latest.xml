@@ -15,6 +15,7 @@
   <!ENTITY I-D.ietf-core-interfaces SYSTEM "reference.I-D.ietf-core-interfaces.xml">
   <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
   <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
+  <!ENTITY W3C.REC-webarch-20041215 SYSTEM "reference.W3C.REC-webarch-20041215.xml">
   <!ENTITY SELF "[RFCXXXX]">
 ]>
 
@@ -74,7 +75,8 @@
 
       <t>
         Constrained RESTful Environments (CoRE) realize the
-        <xref target="WEBARCH">Web architecture</xref> in a suitable form for
+        <xref target="W3C.REC-webarch-20041215">Web architecture</xref>
+        in a suitable form for
         <xref target="RFC7228">constrained nodes and networks</xref>.
       </t>
 
@@ -1015,17 +1017,7 @@
       &I-D.ietf-core-interfaces;
       &I-D.ietf-core-links-json;
       &I-D.kelly-json-hal;
-
-      <reference anchor="WEBARCH" target="http://www.w3.org/TR/2004/REC-webarch-20041215">
-        <front>
-          <title>Architecture of the World Wide Web, Volume One</title>
-          <author initials="I." surname="Jacobs" fullname="Ian Jacobs"/>
-          <author initials="N." surname="Walsh" fullname="Norman Walsh"/>
-          <date month="December" day="15" year="2004" />
-        </front>
-        <seriesInfo name="World Wide Web Consortium Recommendation" value="REC-webarch-20041215" />
-        <format type="HTML" target="http://www.w3.org/TR/2004/REC-webarch-20041215" />
-      </reference>
+      &W3C.REC-webarch-20041215;
 
     </references>
 
