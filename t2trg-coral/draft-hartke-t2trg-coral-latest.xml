@@ -243,28 +243,28 @@
     <section title="Data Format" anchor="format">
       
       <t>
-        CoRAL can be used as a standalone format or as a format embedded in
-        other representation formats. The structure is in either case the same.
+        CoRAL can be used as a standalone representation format or embedded in
+        representations of other formats. As a standalone format, CoRAL
+        representations have the media type "application/coral" or a derived
+        media type with the suffix "+coral". The data format is in all cases the
+        same.
       </t>
 
       <t>
-        A CoRAL document consists of a sequence of links, forms, literals and
-        bases, which are collectively called elements. Elements consist of an
-        type specifier, a "href type" that indicates how Href.* options are to
-        be interpreted in reference resolution, a sequence of zero or more
-        options and, optionally, a body.
+        A CoRAL document consists of a sequence of links, forms, literals
+        and bases, which are collectively called elements. Elements consist of
+        a number indicating the element type, a "href type" that indicates how
+        URI references are to be interpreted in reference resolution, a sequence
+        of zero or more options and, optionally, a body.
       </t>
 
       <t>
-        Link, form and literal elements come in two flavors: a "fat" format and
-        a "tiny" format. The tiny formats provide a concise way to express
-        elements that match certain patterns.        
-      </t>
-      
-      <t>
-        A base element encodes a base URI for reference relation and applies to
-        all subsequent elements in a document until the next base element is
-        encountered.
+        Link, form and literal elements come in two flavors: a "fat" format that
+        includes all the items listed above, and a "tiny" format. The tiny
+        formats provide a concise way to express elements that match a certain
+        pattern. Base elements are always in the "fat" format; they encode a
+        base URI for reference resolution and apply to all following elements
+        until the next base element is encountered.
       </t>
 
       <t>
