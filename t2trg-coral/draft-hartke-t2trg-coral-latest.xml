@@ -179,7 +179,7 @@
         <list style="numbers">
           <t>
             The first step for a client is to decide what to do next, i.e.,
-            which link to follow or which form to submit, based on the link
+            which type of link to follow or form to submit, based on the link
             relation types and form relation types it understands.
           </t>
           <t>
@@ -194,8 +194,8 @@
             The client selects one of the candidates based on the metadata
             associated with the link or form. Metadata may include the content
             format of the target resource representation, the URI scheme, the
-            request method and/or other attributes that describe the target.
-            Metadata is encoded in CoRAL as CoAP-style options, which are
+            request method and other attributes that describe the target. This
+            metadata is encoded in CoRAL as CoAP-style options, which are
             specified in <xref target="options"/>.
           </t>
           <t>
@@ -207,16 +207,16 @@
             The client constructs a request with the request URI. If the client
             follows a link, the request method is GET; if the client submits a
             form, the request method is indicated by an option. The client
-            should set request parameters according to the link/form attributes
-            (e.g., set the CoAP Accept option when the content format of the
-            target resource is indicated). In case of a form, the client also
+            should set request parameters according to the link/form attributes,
+            for example, set the CoAP Accept option when the content format of
+            the target resource is indicated. In case of a form, the client also
             needs to construct a payload that matches the specifications of the
             form.
           </t>
           <t>
             Finally, the client sends the request and retrieves the response.
-            The client updates the browsing context to the new resource,
-            processes the enclosed representation, and can decide again what to
+            The client processes the enclosed representation, updates the
+            browsing context to the new resource, and again can decide what to
             do next.
           </t>
         </list>
