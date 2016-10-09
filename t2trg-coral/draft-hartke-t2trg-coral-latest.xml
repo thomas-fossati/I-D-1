@@ -261,6 +261,17 @@
       </t>
 
       <t>
+        In the Web, link relation types are identified by strings, such as
+        "stylesheet", "terms-of-service" or "item". In order to minimize the
+        overhead of using these relation types in constrained environments,
+        <xref target="I-D.hartke-core-apps"/> extends the link relation types
+        registry with a numeric identifier for each link relation type. CoRAL
+        uses these numeric identifiers instead of the link relation type name.
+        The same principle is applied to form relation types, request methods,
+        and media types.
+      </t>
+
+      <t>
         Using the notation of
         <xref target="I-D.greevenbosch-appsawg-cbor-cddl"/>,
         the CoRAL data format can be expressed as follows:
@@ -531,6 +542,23 @@
           The Method Option indicates the CoAP method to use for form
           submission. The option value is one of the CoAP method codes defined
           in the CoAP Method Codes registry.
+        </t>
+
+      </section>
+
+      <section title="Relation.*">
+
+        <t>
+          The Relation and Relation.Local Options indicate the link relation
+          type of a link or literal and the form relation type of a form.
+          At least one Relation or Relation.Local Option is REQUIRED.
+        </t>
+
+        <t>
+          The option value of a Relation Option is one of the relation type IDs
+          defined in the Link Relation Types registry. The option value of a
+          Relation.Local Option is one of the relation type IDs defined by the
+          media type of the CoRAL document.
         </t>
 
       </section>
