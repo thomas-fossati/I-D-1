@@ -89,11 +89,10 @@
 
       <t>
         This document describes the Constrained RESTful Application Language
-        (CoRAL), a serialization format for Web links and forms that is based
-        on the <xref target="RFC7049">Concise Binary Object Representation
-        (CBOR)</xref>. The format also supports the embedding of representations
-        of resources. Thus, CoRAL can be used as a building block for RESTful,
-        hypermedia-driven applications.
+        (CoRAL), a compact serialization format for Web links and forms that is
+        based on the <xref target="RFC7049">Concise Binary Object Representation
+        (CBOR)</xref> and naturally augments the
+        <xref target="RFC7252">Constrained Application Protocol (CoAP)</xref>.
       </t>
 
       <section title="Terminology">
@@ -150,57 +149,54 @@
       
       <t>
         A link indicates a relationship between two resources, the link context
-        and the link target, and affords the navigation between these. The
+        and the link target, and affords the navigation between these two. The
         semantics of the relationship are identified by a link relation type,
         which in CoRAL may be IANA-registered or application-specific. To
-        minimize round trips, a link may optionally embed a (complete or
-        partial) representation of the link target. The target of a link may be
-        an anonymous resource; in this case, the link turns into a "literal"
-        which consists only of a link relation type and a representation.
+        minimize round-trips, a link in CoRAL may optionally embed a (complete
+        or partial) representation of the link target. Furthermore, the link
+        target may be an anonymous resource; in this case, the link turns into
+        a "literal" which consists only of a link relation type and a
+        representation.
       </t>
 
       <t>
-        A form likewise indicates a relationship between two resources, the form
-        context and the form target, and affords the interaction with the
-        context through the submission of the form to the target. The semantics
-        of a form are identified by a form relation type, which again may be
-        IANA-registered or application-specific. In many cases the target of a
-        form is the same resource as the context, but this is not required. The
-        submission of a form typically requires the client to construct a
-        payload that is included with the request. For this purpose, a form
-        indicates acceptable content formats for the payload and may optionally
-        embed a description of the expected data, for example, a list of form
-        fields. (The syntax for such a description is outside this document's
-        scope.)
+        A form similarly indicates a relationship between two resources, the
+        form context and the form target, and affords the interaction with the
+        context through the submission of the form to the target. In many cases
+        the target of a form is the same resource as the context, but this is
+        not required. The semantics of a form are identified by a form relation
+        type, which again in CoRAL may be IANA-registered or
+        application-specific. The submission of a form typically requires the
+        client to construct a payload that is included with the request. For
+        this purpose, a form indicates the acceptable content formats for the
+        payload and may optionally embed a detailed description of the expected
+        data, for example, in the form of a list of form fields. (The syntax for
+        such a description is outside this document's scope.)
       </t>
 
       <t>
-        Despite the different semantics, both links and forms ultimately afford
-        a potential next or future request from the client to a server. To make
-        the request, the client needs to select a link or a form from a set of
-        candidates as follows:
+        The CoRAL interaction model is as follows:
         <list style="numbers">
           <t>
             The first step for a client is to decide what to do next, i.e.,
-            which link to follow or which form to submit from the current
-            resource, based on the link relation types and form relation types
-            it understands.
+            which link to follow or which form to submit, based on the link
+            relation types and form relation types it understands.
           </t>
           <t>
             The client finds the link(s) or form(s) with the given relation type
             in the current resource. This may yield one or more candidates from
             which the client must select the most appropriate one. The set of
             candidates may be empty if the transition is not allowed, for
-            example, when the client is unauthorized. The format of CoRAL
-            links and forms is specified in <xref target="format"/>.
+            example, when the client is unauthorized. The format of links and
+            forms in CoRAL is specified in <xref target="format"/>.
           </t>
           <t>
             The client selects one of the candidates based on the metadata
             associated with the link or form. Metadata may include the content
             format of the target resource representation, the URI scheme, the
-            request method, and/or other attributes that describe the target.
-            Metadata is encoded as CoRAL options, which are specified in
-            <xref target="options"/>.
+            request method and/or other attributes that describe the target.
+            Metadata is encoded in CoRAL as CoAP-style options, which are
+            specified in <xref target="options"/>.
           </t>
           <t>
             The client resolves the URI reference in the link or form to its
@@ -208,26 +204,28 @@
             reference resolution is specified in <xref target="resolution"/>.
           </t>
           <t>
-            The client constructs the request with the request URI. If the
-            client follows a link, the request method is GET; if the client
-            submits a form, the request method is indicated by an option.
-            The client should set request metadata
-            according to the link/form attributes (e.g., set the CoAP Accept
-            option when the content format of the target resource is specified).
-            In case of a form, the client also needs to construct a payload
-            that matches the description specified by the form.
+            The client constructs a request with the request URI. If the client
+            follows a link, the request method is GET; if the client submits a
+            form, the request method is indicated by an option. The client
+            should set request parameters according to the link/form attributes
+            (e.g., set the CoAP Accept option when the content format of the
+            target resource is indicated). In case of a form, the client also
+            needs to construct a payload that matches the specifications of the
+            form.
           </t>
           <t>
             Finally, the client sends the request and retrieves the response.
             The client updates the browsing context to the new resource,
-            processes the enclosed representation, and again can decide what to
+            processes the enclosed representation, and can decide again what to
             do next.
           </t>
         </list>
       </t>
 
       <t>
-        A browsing context's session history consists of a flat list of session
+        A client may implement further ways to navigate the browsing context,
+        for example, by traversing the browsing context's session history.
+        A session history consists of a flat list of session
         history entries. Each session history entry consists of a URI and may
         have other information associated with it. Session history entries are
         added to the session history as the client navigates from resource to
