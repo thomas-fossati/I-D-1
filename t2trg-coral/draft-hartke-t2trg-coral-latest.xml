@@ -193,8 +193,10 @@
           </t>
           <t>
             The client resolves the URI reference in the link or form to its
-            absolute form in order to obtain the "request URI". The process of
-            reference resolution is specified in <xref target="resolution"/>.
+            absolute form in order to obtain the "request URI". CoRAL encodes
+            URI references like CoAP as a sequence of options, which simplifies
+            working with URIs. The process of reference resolution is specified
+            in <xref target="resolution"/>.
           </t>
           <t>
             The client constructs a request with the request URI. If the client
