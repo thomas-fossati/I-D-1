@@ -963,10 +963,10 @@
           <author initials="Z." surname="Wei" fullname="Wei Zhou" />
           <author initials="M." surname="Luo" fullname="Min Luo" />
           <author initials="W." surname="Chou" fullname="Wu Chou" />
-          <date month="March" day="30" year="2015" />
+          <date month="July" day="8" year="2016" />
         </front>
-        <seriesInfo name="Internet-Draft" value="draft-li-sdnrg-design-restapi-00" />
-        <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-li-sdnrg-design-restapi-00.txt" />
+        <seriesInfo name="Internet-Draft" value="draft-li-sdnrg-design-restapi-02" />
+        <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-li-sdnrg-design-restapi-02.txt" />
       </reference>
 
       <reference anchor="MIMEWEB">

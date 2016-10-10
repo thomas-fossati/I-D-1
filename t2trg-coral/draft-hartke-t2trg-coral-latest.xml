@@ -1025,7 +1025,6 @@
       &RFC5988;
       &RFC7049;
       &RFC7252;
-      &I-D.hartke-core-apps;
 
     </references>
 
@@ -1034,6 +1033,7 @@
       &RFC6690;
       &RFC7228;
       &I-D.greevenbosch-appsawg-cbor-cddl;
+      &I-D.hartke-core-apps;
       &I-D.hartke-core-lighting;
       &I-D.ietf-core-interfaces;
       &I-D.ietf-core-links-json;
