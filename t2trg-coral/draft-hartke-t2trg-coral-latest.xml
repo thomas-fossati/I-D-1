@@ -378,7 +378,7 @@
           <t hangText="Repeatable (R):">
             An option that is repeatable MAY be included one or more times in an
             element. An option that is not repeatable MUST NOT be included more
-            than once. If an agent encounters an option with more occurrences
+            than once. If a client encounters an option with more occurrences
             than the option is defined for, each supernumerary option occurrence
             MUST be ignored.
           </t>
@@ -393,7 +393,7 @@
             form of an upper and lower bound. For unsigned integer options the
             length is counted as the number of bytes that would be needed to
             represent the unsigned integer as a binary number. The length of an
-            option value MUST NOT be outside the defined range. If an agent
+            option value MUST NOT be outside the defined range. If a client
             encounters an option with a length outside the defined range, that
             option MUST be ignored.
           </t>
