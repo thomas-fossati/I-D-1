@@ -32,9 +32,7 @@
 
   <front>
 
-    <title abbrev="CoRE Application Descriptions">
-      Constrained RESTful Environments (CoRE) Application Descriptions
-    </title>
+    <title>CoRE Application Descriptions</title>
 
     <author initials="K." surname="Hartke" fullname="Klaus Hartke">
       <organization>Universitaet Bremen TZI</organization>
