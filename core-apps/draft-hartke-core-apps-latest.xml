@@ -288,8 +288,8 @@
           to indicate the "content format" <xref target="RFC7252"/>
           of a representation. Content formats are assigned a
           numeric identifier that can be used instead of the
-          (typically much longer) media type string in representation
-          formats with space constraints.
+          (typically much larger) textual name of the media type in
+          representation formats with space constraints.
         </t>
 
         <t>
@@ -523,8 +523,8 @@
         <t>
           In order to minimize the overhead of link relation types in
           representation formats with space constraints, link relation
-          types are assigned a small numeric identifier that can be
-          used in place of the link relation type name
+          types are assigned a numeric identifier that can be
+          used in place of the textual name of the link relation type
           (see also <xref target="iana-link"/>). For example,
           the link relation type "copyright" has the numeric
           identifier 12.
@@ -671,11 +671,11 @@
       </t>
 
       <t>
-        However, even though URIs are not part of the application interface,
+        Even though URIs are not part of the application interface,
         the design of
         the URI structure on a server is an essential part of
         implementing a RESTful application. The server
-        implementer is responsible for binding the nouns identified
+        implementer is responsible for binding the resources identified
         by the application designer to URIs.
       </t>
 
