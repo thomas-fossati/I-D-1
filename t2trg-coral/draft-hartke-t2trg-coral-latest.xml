@@ -380,19 +380,12 @@
             MUST be ignored.
           </t>
           <t hangText="Format:">
-            Option values are defined to have a certain format. In the same
-            manner as the types defined in Section 3.2 of
-            <xref target="RFC7252"/>, "string" stands for a text string;
-            "opaque" for a byte string, and "uint" for an unsigned integer.
+            Option values are defined to have a certain format.
           </t>
           <t hangText="Length:">
-            Option values are defined to have a specific length, often in the
-            form of an upper and lower bound. For unsigned integer options the
-            length is counted as the number of bytes that would be needed to
-            represent the unsigned integer as a binary number. The length of an
-            option value MUST NOT be outside the defined range. If a client
-            encounters an option with a length outside the defined range, that
-            option MUST be ignored.
+            Option values of text and bytes are defined to have a specific
+            length, often in the form of an upper and lower bound. The length of
+            an option value MUST NOT be outside the defined range.
           </t>
           <t hangText="Default Value:">
             Options may be defined to have a default value.  If the value of an
