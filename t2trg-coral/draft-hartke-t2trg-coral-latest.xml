@@ -279,9 +279,8 @@
         the CoRAL data format can be expressed as follows:
       </t>
 
-      <figure>
-        <artwork type="cddl">
-<![CDATA[   document      = [*element]
+<figure><artwork type="cddl"><![CDATA[
+   document      = [*element]
    element       = tiny-link / tiny-literal / tiny-form
                  / fat-link  / fat-literal  / fat-form
                  / base
@@ -305,9 +304,8 @@
    options       = [*(option-number, option-value)]
    option-number = uint
    option-value  = uint / int / text / bytes
-   body          = bytes]]>
-        </artwork>
-      </figure>
+   body          = bytes
+]]></artwork></figure>
 
       <t>
         The options are an array that contains a sequence of pairs where each
@@ -319,13 +317,11 @@
         The tiny formats expand as follows:
       </t>
 
-      <figure>
-        <artwork align="center">
-<![CDATA[[1, H, R]        ->  [5, H, [1, R]]
+<figure><artwork align="center"><![CDATA[
+[1, H, R]        ->  [5, H, [1, R]]
 [2, H, R, F, B]  ->  [6, H, [1, R, 6, F], B]
-[3, H, R, A]     ->  [7, H, [1, R, 4, A]]]]>
-        </artwork>
-      </figure>
+[3, H, R, A]     ->  [7, H, [1, R, 4, A]]
+]]></artwork></figure>
 
     </section>
 
@@ -623,9 +619,8 @@
           well.
         </t>
 
-        <figure>
-          <artwork>
-<![CDATA[   if (R starts with Href.Scheme) then
+<figure><artwork><![CDATA[
+   if (R starts with Href.Scheme) then
       T = R
 
    elif (R starts with Href.Host.*) then
@@ -653,9 +648,8 @@
       T = [ (k, v) | (k, v) <- B, k <  Href.Path ] ++
           [ (k, v) | (k, v) <- R, k >= Href.Path ]
 
-   endif]]>
-          </artwork>
-        </figure>
+   endif
+]]></artwork></figure>
 
         <t>
           The "init" function returns all the elements of the input list except
