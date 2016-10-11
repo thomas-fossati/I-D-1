@@ -299,12 +299,12 @@
                      append-path: 2,
                      relative-path: 3)
 
-   relation      = uint
-   format        = uint
-   accept        = uint
+   relation      = int
+   format        = int
+   accept        = int
    options       = [*(option-number, option-value)]
    option-number = uint
-   option-value  = uint / text / bytes
+   option-value  = uint / int / text / bytes
    body          = bytes]]>
         </artwork>
       </figure>
