@@ -349,24 +349,21 @@
         <ttcol>Length</ttcol>
         <ttcol>Default</ttcol>
 
-        <c>1</c>   <c>x</c>  <c>Relation</c>        <c>uint</c>    <c>0-2</c>    <c>(none)</c>
-        <c>2</c>   <c>x</c>  <c>Relation.Local</c>  <c>uint</c>    <c>0-2</c>    <c>(none)</c>
-        <c>3</c>   <c></c>   <c>Method</c>          <c>uint</c>    <c>1</c>      <c>2 (POST)</c>
-        <c>4</c>   <c>x</c>  <c>Accept</c>          <c>uint</c>    <c>0-2</c>    <c>(none)</c>
-        <c>5</c>   <c>x</c>  <c>Accept.Local</c>    <c>uint</c>    <c>0-2</c>    <c>(none)</c>
-        <c>6</c>   <c>x</c>  <c>Format</c>          <c>uint</c>    <c>0-2</c>    <c>(none)</c>
-        <c>7</c>   <c>x</c>  <c>Format.Local</c>    <c>uint</c>    <c>0-2</c>    <c>(none)</c>
-        <c>8</c>   <c></c>   <c>Href.Scheme</c>     <c>string</c>  <c>1-255</c>  <c>(none)</c>
-        <c>9</c>   <c></c>   <c>Href.Host.Name</c>  <c>string</c>  <c>1-255</c>  <c>(none)</c>
-        <c>10</c>  <c></c>   <c>Href.Host.IPv4</c>  <c>opaque</c>  <c>4</c>      <c>(none)</c>
-        <c>11</c>  <c></c>   <c>Href.Host.IPv6</c>  <c>opaque</c>  <c>16</c>     <c>(none)</c>
-        <c>12</c>  <c></c>   <c>Href.Port</c>       <c>uint</c>    <c>0-2</c>    <c>(see below)</c>
-        <c>13</c>  <c>x</c>  <c>Href.Path</c>       <c>string</c>  <c>0-255</c>  <c>(none)</c>
-        <c>14</c>  <c>x</c>  <c>Href.Query</c>      <c>string</c>  <c>0-255</c>  <c>(none)</c>
-        <c>15</c>  <c></c>   <c>Href.Fragment</c>   <c>string</c>  <c>0-255</c>  <c>(empty)</c>
-        <c>16</c>  <c></c>   <c>Title</c>           <c>string</c>  <c>0-255</c>  <c>(none)</c>
-        <c>17</c>  <c></c>   <c>Updatable</c>       <c>empty</c>   <c>0</c>      <c>(none)</c>
-        <c>18</c>  <c></c>   <c>Deletable</c>       <c>empty</c>   <c>0</c>      <c>(none)</c>
+        <c>1</c>   <c>x</c>  <c>Relation</c>        <c>int</c>     <c></c>       <c>(none)</c>
+        <c>2</c>   <c></c>   <c>Method</c>          <c>uint</c>    <c></c>       <c>2 (POST)</c>
+        <c>3</c>   <c>x</c>  <c>Accept</c>          <c>int</c>     <c></c>       <c>(none)</c>
+        <c>4</c>   <c>x</c>  <c>Format</c>          <c>int</c>     <c></c>       <c>(none)</c>
+        <c>5</c>   <c></c>   <c>Href.Scheme</c>     <c>text</c>    <c>1-255</c>  <c>(none)</c>
+        <c>6</c>   <c></c>   <c>Href.Host.Name</c>  <c>text</c>    <c>1-255</c>  <c>(none)</c>
+        <c>7</c>   <c></c>   <c>Href.Host.IPv4</c>  <c>bytes</c>   <c>4</c>      <c>(none)</c>
+        <c>8</c>   <c></c>   <c>Href.Host.IPv6</c>  <c>bytes</c>   <c>16</c>     <c>(none)</c>
+        <c>9</c>   <c></c>   <c>Href.Port</c>       <c>uint</c>    <c></c>       <c>(see below)</c>
+        <c>10</c>  <c>x</c>  <c>Href.Path</c>       <c>text</c>    <c>0-255</c>  <c>(none)</c>
+        <c>11</c>  <c>x</c>  <c>Href.Query</c>      <c>text</c>    <c>0-255</c>  <c>(none)</c>
+        <c>12</c>  <c></c>   <c>Href.Fragment</c>   <c>text</c>    <c>0-255</c>  <c>(none)</c>
+        <c>13</c>  <c></c>   <c>Title</c>           <c>text</c>    <c>0-255</c>  <c>(none)</c>
+        <c>14</c>  <c></c>   <c>Updatable</c>       <c>bool</c>    <c></c>       <c>false</c>
+        <c>15</c>  <c></c>   <c>Deletable</c>       <c>bool</c>    <c></c>       <c>false</c>
       </texttable>
 
       <t>
@@ -406,22 +403,22 @@
         </list>
       </t>
 
-      <section title="Accept.*">
+      <section title="Accept">
 
         <t>
-          The Accept and Accept.Local Options indicate the acceptable content
-          formats for the representation included in a form submission.
+          The Accept Option indicates the acceptable content formats for the
+          representation included in a form submission.
         </t>
 
         <t>
-          The option value of an Accept Option is one of the content format IDs
-          defined in the CoAP Content-Formats registry. The option value of an
-          Accept.Local Option is one of the content format IDs defined by the
-          media type of the CoRAL document.
+          The option value of an Accept Option is either one of the content
+          format IDs defined in the CoAP Content-Formats registry (&gt;= 0) or
+          one of the content format IDs defined by the media type of the CoRAL
+          document (&lt; 0).
         </t>
 
         <t>
-          If a form does not include an Accept.* Option, the service accepts any
+          If a form does not include an Accept Option, the service accepts any
           content format.
         </t>
 
@@ -437,28 +434,28 @@
 
       </section>
 
-      <section title="Format.*">
+      <section title="Format">
 
         <t>
-          The Format and Format.Local Options, when present in a link or a form,
-          provide a hint indicating what the content format of the payload of
-          the CoAP response should be when following the link or submitting the
-          form. Note that this is only a hint; it does not override the
-          Content-Format Option included in the CoAP response.
+          The Format Option, when present in a link or a form, provides a hint
+          indicating what the content format of the payload of the CoAP response
+          should be when following the link or submitting the form. Note that
+          this is only a hint; it does not override the Content-Format Option
+          included in the CoAP response.
         </t>
 
         <t>
-          A Format or Format.Local Option is REQUIRED if a link embeds a
-          representation in the link body. A Format or Format.Local Option
-          is also REQUIRED in a literal. In either case, the option indicates
-          the content format of the embedded representation.
+          The Format Option is REQUIRED if a link embeds a representation in the
+          link body. The Format Option is also REQUIRED in a literal. In both
+          cases the first occurence of the option indicates the content format
+          of the embedded representation.
         </t>
 
         <t>
-          The option value of a Format Option is one of the content format IDs
-          defined in the CoAP Content-Formats registry. The option value of a
-          Format.Local Option is one of the content format IDs defined by the
-          media type of the CoRAL document.
+          The option value of a Format Option is either one of the content
+          format IDs defined in the CoAP Content-Formats registry (&gt;= 0) or
+          one of the content format IDs defined by the media type of the CoRAL
+          document (&lt; 0).
         </t>
 
       </section>
@@ -548,19 +545,19 @@
 
       </section>
 
-      <section title="Relation.*">
+      <section title="Relation">
 
         <t>
-          The Relation and Relation.Local Options indicate the link relation
-          type of a link or literal and the form relation type of a form.
-          At least one Relation or Relation.Local Option is REQUIRED.
+          The Relation Option indicate the link relation type of a link or
+          literal and the form relation type of a form. At least one Relation
+          Option is REQUIRED.
         </t>
 
         <t>
-          The option value of a Relation Option is one of the relation type IDs
-          defined in the Link Relation Types registry. The option value of a
-          Relation.Local Option is one of the relation type IDs defined by the
-          media type of the CoRAL document.
+          The option value of a Relation Option is either one of the relation
+          type IDs defined in the Link Relation Types registry (&gt;= 0) or
+          one of the relation type IDs defined by the media type of the CoRAL
+          document (&lt; 0).
         </t>
 
       </section>
@@ -582,8 +579,7 @@
           can be used to update the target resource.  The context and target
           resource of that form is the target resource of the link, the
           submission method is PUT and the content format of the submitted
-          representation is defined by the Format Option or Format.Local
-          Option of the link.
+          representation is defined by the Format Option of the link.
         </t>
 
       </section>
@@ -787,86 +783,71 @@
               </t>
               <t>
                 Option Number: 2<vspace />
-                Option Name: Relation.Local<vspace />
-                Reference: &SELF;
-              </t>
-              <t>
-                Option Number: 3<vspace />
                 Option Name: Method<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 4<vspace />
+                Option Number: 3<vspace />
                 Option Name: Accept<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 5<vspace />
-                Option Name: Accept.Local<vspace />
-                Reference: &SELF;
-              </t>
-              <t>
-                Option Number: 6<vspace />
+                Option Number: 4<vspace />
                 Option Name: Format<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 7<vspace />
-                Option Name: Format.Local<vspace />
-                Reference: &SELF;
-              </t>
-              <t>
-                Option Number: 8<vspace />
+                Option Number: 5<vspace />
                 Option Name: Href.Scheme<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 9<vspace />
+                Option Number: 6<vspace />
                 Option Name: Href.Host.Name<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 10<vspace />
+                Option Number: 7<vspace />
                 Option Name: Href.Host.IPv4<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 11<vspace />
+                Option Number: 8<vspace />
                 Option Name: Href.Host.IPv6<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 12<vspace />
+                Option Number: 9<vspace />
                 Option Name: Href.Port<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 13<vspace />
+                Option Number: 10<vspace />
                 Option Name: Href.Path<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 14<vspace />
+                Option Number: 11<vspace />
                 Option Name: Href.Query<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 15<vspace />
+                Option Number: 12<vspace />
                 Option Name: Href.Fragment<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 16<vspace />
+                Option Number: 13<vspace />
                 Option Name: Title<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 17<vspace />
+                Option Number: 14<vspace />
                 Option Name: Updatable<vspace />
                 Reference: &SELF;
               </t>
               <t>
-                Option Number: 18<vspace />
+                Option Number: 15<vspace />
                 Option Name: Deletable<vspace />
                 Reference: &SELF;
               </t>
