@@ -74,42 +74,41 @@
     <section title="Introduction">
 
       <t>
-        Constrained RESTful Environments (CoRE) realize the
-        <xref target="W3C.REC-webarch-20041215">Web architecture</xref>
-        in a suitable form for
-        <xref target="RFC7228">constrained nodes and networks</xref>.
+        Constrained RESTful Environments (CoRE) realize the <xref
+        target="W3C.REC-webarch-20041215">Web architecture</xref> in a suitable
+        form for <xref target="RFC7228">constrained nodes and networks</xref>.
       </t>
 
       <t>
         In the Web, hypertext documents contain links and forms that allow a
         user to navigate between resources and submit information to a server
-        for processing.  By annotating these elements with machine-readable
-        <xref target="RFC5988">link relation types</xref> and form relation
-        types, it is possible to extend this interaction model to
-        machine-to-machine communication.
+        for processing. By annotating these elements with machine-readable <xref
+        target="RFC5988">link relation types</xref> and form relation types, it
+        is possible to extend this interaction model to machine-to-machine
+        communication.
       </t>
 
       <t>
         This document describes the Constrained RESTful Application Language
         (CoRAL), a compact serialization format for Web links and forms that is
         based on the <xref target="RFC7049">Concise Binary Object Representation
-        (CBOR)</xref> and aligns closely with the
-        <xref target="RFC7252">Constrained Application Protocol (CoAP)</xref>.
+        (CBOR)</xref> and aligns closely with the <xref
+        target="RFC7252">Constrained Application Protocol (CoAP)</xref>.
       </t>
 
       <section title="Terminology">
 
         <t>
-          Readers are expected to be familiar with the terms and
-          concepts described in <xref target="RFC5988"/> and
-          <xref target="I-D.hartke-core-apps"/>.
+          Readers are expected to be familiar with the terms and concepts
+          described in <xref target="RFC5988"/> and <xref
+          target="I-D.hartke-core-apps"/>.
         </t>
 
         <t>
-          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
-          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
-          RECOMMENDED", "MAY", and "OPTIONAL" in this document are
-          to be interpreted as described in <xref target="RFC2119"/>.
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+          "OPTIONAL" in this document are to be interpreted as described in
+          <xref target="RFC2119"/>.
         </t>
 
       </section>
@@ -131,13 +130,13 @@
 
       <t>
         Each CoRAL client maintains a "browsing context", an environment in
-        which resource representations are processed by the machine. (In the
-        Web of humans, the browsing context typically corresponds to a tab or
-        window in a Web browser.) A browsing context has a session history,
-        which lists the resources that that browsing context has visited, is
-        visiting, or will visit. At any time, one resource in a browsing context
-        is designated the "current" resource. Following a link or submitting a
-        form causes the browsing context to navigate to a new resource.
+        which resource representations are processed by the machine. (In the Web
+        of humans, the browsing context typically corresponds to a tab or window
+        in a Web browser.) A browsing context has a session history, which lists
+        the resources that that browsing context has visited, is visiting, or
+        will visit. At any time, one resource in a browsing context is
+        designated the "current" resource. Following a link or submitting a form
+        causes the browsing context to navigate to a new resource.
       </t>
       
       <t>
@@ -147,8 +146,8 @@
         which in CoRAL may be IANA-registered or application-specific. To
         minimize round-trips, a link in CoRAL may optionally embed a (complete
         or partial) representation of the link target. Furthermore, the link
-        target may be an anonymous resource; in this case, the link turns into
-        a "literal" which consists only of a link relation type and a
+        target may be an anonymous resource; in this case, the link turns into a
+        "literal" which consists only of a link relation type and a
         representation.
       </t>
 
@@ -219,13 +218,13 @@
 
       <t>
         A client may implement further ways to navigate the browsing context,
-        for example, by traversing the browsing context's session history.
-        A session history consists of a flat list of session
-        history entries. Each session history entry consists of a URI and may
-        have other information associated with it. Session history entries are
-        added to the session history as the client navigates from resource to
-        resource. A client can traverse the session history to any entry by
-        navigating the browsing context to the resource for that entry.
+        for example, by traversing the browsing context's session history. A
+        session history consists of a flat list of session history entries. Each
+        session history entry consists of a URI and may have other information
+        associated with it. Session history entries are added to the session
+        history as the client navigates from resource to resource. A client can
+        traverse the session history to any entry by navigating the browsing
+        context to the resource for that entry.
       </t>
 
     </section>
@@ -246,9 +245,9 @@
       </t>
 
       <t>
-        A CoRAL document consists of a sequence of links, forms, literals
-        and bases, which are collectively called elements. Elements consist of
-        a number indicating the element type, a "href type" that indicates how
+        A CoRAL document consists of a sequence of links, forms, literals and
+        bases, which are collectively called elements. Elements consist of a
+        number indicating the element type, a "href type" that indicates how
         CoRAL-encoded URI references are to be interpreted in reference
         resolution, a sequence of zero or more options and, optionally, a body.
       </t>
@@ -274,9 +273,9 @@
       </t>
 
       <t>
-        Using the notation of
-        <xref target="I-D.greevenbosch-appsawg-cbor-cddl"/>,
-        the CoRAL data format can be expressed as follows:
+        Using the notation of <xref
+        target="I-D.greevenbosch-appsawg-cbor-cddl"/>, the CoRAL data format can
+        be expressed as follows:
       </t>
 
 <figure><artwork type="cddl"><![CDATA[
@@ -384,7 +383,7 @@
             an option value MUST NOT be outside the defined range.
           </t>
           <t hangText="Default Value:">
-            Options may be defined to have a default value.  If the value of an
+            Options may be defined to have a default value. If the value of an
             option is intended to be this default value, the option SHOULD NOT
             be included in the element. If the option is not present, the
             default value MUST be assumed.
@@ -416,9 +415,9 @@
       <section title="Deletable">
 
         <t>
-          The Deletable Option, when present in a link, defines a form that
-          can be used to delete the target resource.  The submission method is
-          DELETE and no representation is included in the request.
+          The Deletable Option, when present in a link, defines a form that can
+          be used to delete the target resource. The submission method is DELETE
+          and no representation is included in the request.
         </t>
 
       </section>
@@ -452,10 +451,10 @@
       <section title="Href.*">
 
         <t>
-          The Href.Scheme, Href.Host.Name, Href.Host.IPv4, Href.IPv6,
-          Href.Port, Href.Path, Href.Query and Href.Fragment Options are used
-          to specify the target resource URI of a link or form and the base URI
-          of a literal. They hold the following values:
+          The Href.Scheme, Href.Host.Name, Href.Host.IPv4, Href.IPv6, Href.Port,
+          Href.Path, Href.Query and Href.Fragment Options are used to specify
+          the target resource URI of a link or form and the base URI of a
+          literal. They hold the following values:
           <list style="symbols">
             <t>
               the Href.Scheme Option specifies the URI scheme name,
@@ -501,8 +500,8 @@
           <xref target="table-href"/> lists the permitted Href.* options by Href
           Type. A 'yes' indicates that an option of this type MAY be present; a
           'no' indicates that an option of this type MUST NOT be present. The
-          resolution of Href.* options against a base URI is specified in
-          <xref target="resolution"/>.
+          resolution of Href.* options against a base URI is specified in <xref
+          target="resolution"/>.
         </t>
 
         <texttable title="Permitted Href.* Options by Href Type" anchor="table-href">
@@ -544,8 +543,8 @@
 
         <t>
           The option value of a Relation Option is either one of the relation
-          type IDs defined in the Link Relation Types registry (&gt;= 0) or
-          one of the relation type IDs defined by the media type of the CoRAL
+          type IDs defined in the Link Relation Types registry (&gt;= 0) or one
+          of the relation type IDs defined by the media type of the CoRAL
           document (&lt; 0).
         </t>
 
@@ -564,11 +563,11 @@
       <section title="Updatable">
 
         <t>
-          The Updatable Option, when present in a link, defines a form that
-          can be used to update the target resource.  The context and target
-          resource of that form is the target resource of the link, the
-          submission method is PUT and the content format of the submitted
-          representation is defined by the Format Option of the link.
+          The Updatable Option, when present in a link, defines a form that can
+          be used to update the target resource. The context and target resource
+          of that form is the target resource of the link, the submission method
+          is PUT and the content format of the submitted representation is
+          defined by the Format Option of the link.
         </t>
 
       </section>
@@ -611,12 +610,11 @@
       <section title="Transform References">
 
         <t>
-          The following pseudocode describes an algorithm for transforming a
-          URI reference R into its target URI T using the base URI B, the Href
-          Type H, and the Link or Form Relation Type S. The URI reference
-          and base URI are assumed to be pre-parsed into a sequence of Href.*
-          options; the result is returned as a sequence of Href.* options as
-          well.
+          The following pseudocode describes an algorithm for transforming a URI
+          reference R into its target URI T using the base URI B, the Href Type
+          H, and the Link or Form Relation Type S. The URI reference and base
+          URI are assumed to be pre-parsed into a sequence of Href.* options;
+          the result is returned as a sequence of Href.* options as well.
         </t>
 
 <figure><artwork><![CDATA[
@@ -653,8 +651,8 @@
 
         <t>
           The "init" function returns all the elements of the input list except
-          the last one. For example, (init [1, 2, 3]) returns [1, 2] and
-          (init []) returns [].
+          the last one. For example, (init [1, 2, 3]) returns [1, 2] and (init
+          []) returns [].
         </t>
 
         <t>
@@ -729,8 +727,8 @@
 
         <t>
           This document establishes the CoRAL Option Number registry for the
-          option numbers used in CoRAL. The registry is located within the
-          CoRE Parameters registry.
+          option numbers used in CoRAL. The registry is located within the CoRE
+          Parameters registry.
         </t>
 
         <section title="Registering New Option Numbers">
@@ -913,8 +911,8 @@
       <section title="Structured Syntax Suffix">
 
         <t>
-          This document registers the suffix "+coral" in the
-          "Structured Syntax Suffix" registry.
+          This document registers the suffix "+coral" in the "Structured Syntax
+          Suffix" registry.
           <list style="hanging">
             <t hangText="Name:">
               <vspace/>Constrained RESTful Application Language (CoRAL)
@@ -954,9 +952,8 @@
       <section anchor="coap-content-format" title="CoAP Content-Format">
 
         <t>
-          This document registers a content format for the
-          "application/coral" media type in the "CoAP Content-Formats"
-          registry.
+          This document registers a content format for the "application/coral"
+          media type in the "CoAP Content-Formats" registry.
           <list style="symbols">
             <t>
               Media Type: application/coral<vspace/>
@@ -1020,8 +1017,8 @@
       <section title="CoRE Lighting">
 
         <t>
-          <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> defines
-          a benchmark scenario for the exploration of hypermedia-oriented design
+          <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> defines a
+          benchmark scenario for the exploration of hypermedia-oriented design
           in constrained, RESTful environments. The bulletin board example in
           Section 5.2.1 of <xref target="I-D.hartke-core-lighting"/> can be
           encoded in CoRAL as follows:
@@ -1058,8 +1055,8 @@
 ]]></artwork></figure>
 
         <t>
-          <xref target="table-lighting-comparison"/> shows a comparison of
-          sizes of the example encoded in CoRAL and JSON.
+          <xref target="table-lighting-comparison"/> shows a comparison of sizes
+          of the example encoded in CoRAL and JSON.
         </t>
 
         <texttable align="center" anchor="table-lighting-comparison" title="Size Comparison">
@@ -1075,8 +1072,8 @@
       <section title="CoRE Link Format">
 
         <t>
-          The example in this section is based on an example on page 14 of
-          <xref target="RFC6690"/>:
+          The example in this section is based on an example on page 14 of <xref
+          target="RFC6690"/>:
         </t>
 
 <figure><artwork><![CDATA[
@@ -1112,9 +1109,8 @@
 ]]></artwork></figure>
 
         <t>
-          <xref target="table-link-comparison"/> shows a comparison of
-          sizes of the example encoded in CoRAL and a number of Link Format
-          variants.
+          <xref target="table-link-comparison"/> shows a comparison of sizes of
+          the example encoded in CoRAL and a number of Link Format variants.
         </t>
 
         <texttable align="center" anchor="table-link-comparison" title="Size Comparison">
@@ -1132,8 +1128,8 @@
       <section title="CoRE Interfaces">
 
         <t>
-          The example in this section is based on an example on page 10 of
-          <xref target="I-D.ietf-core-interfaces"/>:
+          The example in this section is based on an example on page 10 of <xref
+          target="I-D.ietf-core-interfaces"/>:
         </t>
 
 <figure><artwork><![CDATA[
@@ -1196,8 +1192,8 @@
     <section title="Acknowledgements" numbered="no">
 
       <t>
-        This specification is heavily inspired by the
-        <xref target="I-D.kelly-json-hal">JSON Hypertext Application Language
+        This specification is heavily inspired by the <xref
+        target="I-D.kelly-json-hal">JSON Hypertext Application Language
         (HAL)</xref>; the author of and contributors to that specification are
         acknowledged for their great work.
       </t>
