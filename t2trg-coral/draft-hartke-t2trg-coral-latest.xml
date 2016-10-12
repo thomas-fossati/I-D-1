@@ -15,6 +15,8 @@
   <!ENTITY I-D.ietf-core-interfaces SYSTEM "reference.I-D.ietf-core-interfaces.xml">
   <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
   <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
+  <!ENTITY W3C.REC-rdf11-concepts-20140225 SYSTEM "reference.W3C.REC-rdf11-concepts-20140225.xml">
+  <!ENTITY W3C.REC-turtle-20140225 SYSTEM "reference.W3C.REC-turtle-20140225.xml">
   <!ENTITY W3C.REC-webarch-20041215 SYSTEM "reference.W3C.REC-webarch-20041215.xml">
   <!ENTITY SELF "[RFCXXXX]">
 ]>
@@ -1003,7 +1005,18 @@
       &I-D.ietf-core-interfaces;
       &I-D.ietf-core-links-json;
       &I-D.kelly-json-hal;
+      &W3C.REC-rdf11-concepts-20140225;
+      &W3C.REC-turtle-20140225;
       &W3C.REC-webarch-20041215;
+
+      <reference anchor="FOAF" target="http://xmlns.com/foaf/spec/20140114.html">
+        <front>
+          <title>FOAF Vocabulary Specification 0.99</title>
+          <author initials="D." surname="Brickley" fullname="Dan Brickley"/>
+          <author initials="L." surname="Miller" fullname="Libby Miller"/>
+          <date month="January" day="14" year="2014"/>
+        </front>
+      </reference>
 
     </references>
 
