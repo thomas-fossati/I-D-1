@@ -589,7 +589,7 @@
           be used to update the link target. The context and target of that form
           are the target of the link, the submission method is PUT and the
           content format of the submitted representation must be one of the
-          formats indicated by the Format Option of the link.
+          formats indicated by the Format Option in the link.
         </t>
 
       </section>
