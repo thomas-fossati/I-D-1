@@ -301,7 +301,7 @@
    tiny-form     = [3, href-type, relation, accept]
    base          = [4, href-type, options]
    fat-link      = [5, href-type, options, ?body]
-   fat-literal   = [6, href-type, options, ?body]
+   fat-literal   = [6, href-type, options, body]
    fat-form      = [7, href-type, options, ?body]
 
    href-type     = &(append-relation: 0,
