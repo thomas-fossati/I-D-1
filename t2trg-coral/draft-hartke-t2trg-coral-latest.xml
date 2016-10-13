@@ -659,7 +659,8 @@
 
         <t>
           The "hex" function returns a hexadecimal representation of the input
-          number. For example, (hex 421) returns "1A5" and (hex 0) returns "0".
+          number. For example, (hex -421) returns "-1A5" and (hex 0) returns
+          "0".
         </t>
 
       </section>
