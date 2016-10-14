@@ -1045,6 +1045,311 @@
 
     <section title="Examples">
 
+      <section title="Overview">
+
+        <section title="Links">
+
+          <t>
+            At its core, CoRAL is yet another serialization format for Web
+            links. For example, the following Web link (in RFC 5988 syntax):
+          </t>
+
+<figure><artwork><![CDATA[
+   <coap://example.com/info/tos>;rel=terms-of-service;type=text/plain
+]]></artwork></figure>
+
+          <t>
+            can be serialized in CoRAL as the following CBOR data item (in CBOR
+            extended diagnostic format; forward slashes indicate comments):
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       1,                     / absolute-path                       /
+       [  1, 70,              /  relation       = terms-of-service  /
+          4, 0,               /  format         = text\plain        /
+          5, "coap",          /  href.scheme    = "coap"            /
+          6, "example.com",   /  href.host.name = "example.com"     /
+         10, "info",          /  href.path      = "info"            /
+         10, "tos" ] ] ]      /  href.path      = "tos"             /
+]]></artwork></figure>
+
+          <t>
+            Multiple links are serialized as items of the top-level array:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 26,              /  relation  = first                  /
+          4, 0,               /  format    = text\plain             /
+         10, "page1" ] ],     /  href.path = "page1"                /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 55,              /  relation  = previous               /
+          4, 0,               /  format    = text\plain             /
+         10, "page6" ] ],     /  href.path = "page6"                /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 41,              /  relation  = next                   /
+          4, 0,               /  format    = text\plain             /
+         10, "page8" ] ],     /  href.path = "page8"                /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 34,              /  relation  = last                   /
+          4, 0,               /  format    = text\plain             /
+         10, "page42" ] ] ]   /  href.path = "page42"               /
+]]></artwork></figure>
+
+          <t>
+            The Format Option, when present, is a hint indicating what the CoAP
+            content format of the result of dereferencing the link should be. If
+            more than one format is available, the Format Option can be
+            repeated:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 33,              /  relation  = item                   /
+          4, 47,              /  format    = application\exi        /
+          4, 50,              /  format    = application\json       /
+          4, 60,              /  format    = application\cbor       /
+         10, "item1" ] ] ]    /  href.path = "item1"                /
+]]></artwork></figure>
+
+        </section>
+
+        <section title="Embedding">
+
+          <t>
+            If a representation links to many resources, it may be inefficient
+            to retrieve a representation of each link target individually. For
+            this reason, CoRAL supports the embedding of a representation of the
+            link target in the link itself:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 33,              /  relation  = item                   /
+          4, 50,              /  format    = application\json       /
+         10, "item1" ],       /  href.path = "item1"                /
+       h'7b20227461736b223a20
+         2252657475726e207468
+         6520626f6f6b7320746f
+         20746865206c69627261
+         7279222c202261737369
+         676e6565223a2022416c
+         69636522207d' ] ]
+]]></artwork></figure>
+
+          <t>
+            where the byte string in this example encodes the following JSON
+            object:
+          </t>
+
+<figure><artwork><![CDATA[
+   {
+     "task":     "Return the books to the library",
+     "assignee": "Alice"
+   }
+]]></artwork></figure>
+
+          <t>
+            By embedding representations, it is possible to use CoRAL as a (very
+            basic) substitute for <xref
+            target="W3C.REC-rdf11-concepts-20140225">RDF</xref>. For example,
+            the RDF graph (in <xref
+            target="W3C.REC-turtle-20140225">Turtle</xref> syntax)
+          </t>
+
+<figure><artwork><![CDATA[
+   @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+   <> foaf:name     "John Doe" ;
+      foaf:age      32 ;
+      foaf:homepage <coap://www.doe.example/> .
+]]></artwork></figure>
+
+          <t>
+            can be serialized in CoRAL as follows:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 2,                     / tiny-literal                        /
+       2,                     / append-path                         /
+       -100,                  /  relation       = name              /
+       0,                     /  format         = text\plain        /
+       h'4a6f686e20446f65' ], / "John Doe"                          /
+     [ 2,                     / tiny-literal                        /
+       2,                     / append-path                         /
+       -101,                  /  relation       = name              /
+       7,                     /  format         = uint8             /
+       h'20' ],               / 32                                  /
+     [ 5,                     / fat-link                            /
+       1,                     / absolute-path                       /
+       [ 1, -102,             /  relation       = homepage          /
+         5, "coap",           /  href.scheme    = "coap"            /
+         6, "www.doe.example" /  href.host.name = "www.doe.example" /
+   ] ] ]
+]]></artwork></figure>
+
+        </section>
+
+        <section title="Namespaces">
+
+          <t>
+            The link relation type in a serialized link may be from the "global"
+            or the "local" namespace. The global namespace is indicated by an
+            unsigned number and is made up of the link relation types registered
+            with IANA. The local namespace is indicated by a negative number and
+            is defined by the media type of the CoRAL representation.
+          </t>
+
+          <t>
+            By default, CoRAL representations have the "application/coral" media
+            type where the local namespace is empty. However, it is possible to
+            create new media types based on CoRAL and to register these with the
+            "+coral" suffix. In this case, the media type specification can fill
+            the local namespace with application-specific link relation types.
+          </t>
+
+          <t>
+            For example, a media type "application/example.shop+coral" could
+            define the following set of local link relation types:
+          </t>
+
+          <texttable>
+            <ttcol>ID</ttcol>
+            <ttcol>Meaning</ttcol>
+
+            <c>-80</c>  <c>http://example.com/rels/order</c>
+            <c>-81</c>  <c>http://example.com/rels/basket</c>
+            <c>-82</c>  <c>http://example.com/rels/customer</c>
+          </texttable>
+
+          <t>
+            Similarly, a media type "application/example.foaf+coral" could
+            define the following mapping from link relation type IDs to the
+            <xref target="FOAF">FOAF RDF model</xref>:
+          </t>
+
+          <texttable>
+            <ttcol>ID</ttcol>
+            <ttcol>Meaning</ttcol>
+
+            <c>-100</c>  <c>http://xmlns.com/foaf/0.1/name</c>
+            <c>-101</c>  <c>http://xmlns.com/foaf/0.1/age</c>
+            <c>-102</c>  <c>http://xmlns.com/foaf/0.1/homepage</c>
+          </texttable>
+
+        </section>
+
+        <section title="Forms">
+
+          <t>
+            In addition to Web links, CoRAL supports forms. An agent can use a
+            form to perform an operation on the form context, such as updating a
+            resource or creating a new item in a collection.
+          </t>
+
+          <t>
+            Similar to link relation types, the semantics of a form are
+            indicated by the form relation type. The Href.* Options encode the
+            URI of the form target to which the agent should submit the form. A
+            form additionally encodes the submission method (POST, PUT, PATCH,
+            DELETE) and the description of a representation that the service
+            expects as part of form submission:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 7,                     / fat-form                            /
+       3,                     / relative-path                       /
+       [  1, 1,               /  relation  = create-item            /
+          2, 2,               /  method    = POST                   /
+          3, 60,              /  accept    = application\cbor       /
+         10, "items" ] ] ]    /  href.path = "items"                /
+]]></artwork></figure>
+
+          <t>
+            The Accept Option specifies the content format of the expected
+            representation. A content format may use the payload of a form to
+            describe the expected representation in more detail, for example, by
+            specifying a set of form fields that the agent needs to fill out:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 7,                     / fat-form                            /
+       3,                     / relative-path                       /
+       [  1, 1,               /  relation  = create-item            /
+          2, 2,               /  method    = POST                   /
+          3, -65535,          /  accept    = example\form           /
+         10, "items" ],       /  href.path = "items"                /
+       h'6e616d652c206167652c / "name, age, homepage"               /
+         20686f6d6570616765' ] ]
+]]></artwork></figure>
+
+        </section>
+
+        <section title="Editing">
+
+          <t>
+            The target resource of a link may be editable. In this case, the
+            representation of such a resource typically contains one or more
+            forms that allow an agent to edit the resource. However, it may be
+            inefficient to include these forms in every representation of the
+            link target and more efficient to include it in a representation
+            that links to the resource. CoRAL supports this with two options.
+          </t>
+
+          <t>
+            Setting the Updatable Option in a link to true defines a form that
+            can be used to update the target resource. The context and target of
+            that form are both the target of the link, the submission method is
+            PUT and the content format of the submitted representation must be
+            one of the formats indicated by the Format Option in the link. For
+            example, given the following CoRAL representation, an agent can
+            change the recipient by making a PUT request to &lt;./to&gt; with
+            the new value in "text/plain" format:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, -120,            /  relation  = sender                 /
+          4, 0,               /  format    = text\plain             /
+         10, "from",          /  href.path = "from"                 /
+         14, true ],          /  updatable = true                   /
+       h'4a756c696574' ],     / "Juliet"                            /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, -121,            /  relation  = recipient              /
+          4, 0,               /  format    = text\plain             /
+         10, "to",            /  href.path = "to"                   /
+         14, true ],          /  updatable = true                   /
+       h'526f6d656f' ],       / "Romeo"                             /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, -122,            /  relation  = message                /
+          4, 0,               /  format    = text\plain             /
+         10, "message",       /  href.path = "message"              /
+         14, true ],          /  updatable = true                   /
+       h'4172742074686f75206e / "Art thou not Romeo,                /
+         6f7420526f6d656f2c20 /  and a Montague?"                   /
+         616e642061204d6f6e74
+         616775653f' ] ]
+]]></artwork></figure>
+
+          <t>
+            Setting the Deletable Flag in a link to true likewise defines a form
+            that can be used to delete the target resource.
+          </t>
+
+        </section>
+
+      </section>
+
       <section title="CoRE Lighting">
 
         <t>
