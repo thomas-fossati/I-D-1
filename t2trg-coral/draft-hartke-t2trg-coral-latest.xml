@@ -94,7 +94,7 @@
         This document describes the Constrained RESTful Application Language
         (CoRAL), a compact serialization format for Web links and forms that is
         based on the <xref target="RFC7049">Concise Binary Object Representation
-        (CBOR)</xref> and aligns closely with the <xref
+        (CBOR)</xref> and that aligns closely with the <xref
         target="RFC7252">Constrained Application Protocol (CoAP)</xref>.
       </t>
 
@@ -131,7 +131,7 @@
       </t>
 
       <t>
-        Each CoRAL agent maintains a "browsing context", an environment in which
+        Each agent maintains a "browsing context", an environment in which
         resource representations are processed. (In the traditional Web, the
         browsing context corresponds to a tab or window in a Web browser.) A
         browsing context has a session history, which lists the resources that
@@ -148,8 +148,8 @@
         which in CoRAL can be IANA-registered or application-specific. To
         minimize round-trips, a link in CoRAL can optionally embed a (complete
         or partial) representation of the link target. Furthermore, a link
-        target can be an anonymous resource; in this case, the link turns into a
-        "literal" which consists only of a link relation type and a
+        target can be an anonymous resource in CoRAL; in this case, the link
+        turns into a "literal" which consists only of a link relation type and a
         representation.
       </t>
 
@@ -189,26 +189,26 @@
             associated with the link or form. Metadata can include the content
             format of the target resource representation, the URI scheme, the
             request method and other attributes that describe the target.
-            Metadata is encoded in CoRAL as CoAP-style options which are
+            Metadata is encoded in CoRAL as CoAP-style options, which are
             specified in <xref target="options"/>.
           </t>
           <t>
             The agent resolves the URI reference in the link or form to its
             absolute form in order to obtain the "request URI". CoRAL encodes
             URI references like CoAP as a sequence of options, which
-            significantly simplifies the implementation of URI handlers. The
+            significantly simplifies the implementation of URI processors. The
             process of reference resolution is specified in <xref
             target="resolution"/>.
           </t>
           <t>
-            The agent constructs a request with the request URI. If the agent
-            follows a link, the request method is GET; if the agent submits a
-            form, the request method is indicated by an option. The agent should
-            set request parameters according to the link/form attributes, for
-            example (e.g., set the CoAP Accept option when the content format of
-            the target resource is indicated). In case of a form, the agent also
-            needs to construct a request payload that matches the specifications
-            of the form.
+            The agent constructs a new request with the request URI. If the
+            agent follows a link, the request method is GET; if the agent
+            submits a form, the request method is indicated by an option. The
+            agent should set request parameters according to the link/form
+            attributes (e.g., set the CoAP Accept option when the content format
+            of the target resource is indicated). In case of a form, the agent
+            also needs to construct a request payload that matches the
+            specifications of the form.
           </t>
           <t>
             Finally, the agent sends the request and retrieves the response. The
@@ -219,13 +219,13 @@
       </t>
 
       <t>
-        An agent can also traverse the browsing context's session history. The
-        session history consists of a flat list of session history entries. Each
-        session history entry consists of a URI and may have other information
-        associated with it. Session history entries are added to the session
-        history as the agent navigates from resource to resource. An agent can
-        traverse the session history to any entry by navigating the browsing
-        context to the resource for that entry.
+        An agent can also navigate a browsing context by traversing the browsing
+        context's session history. The session history consists of a flat list
+        of session history entries. Each session history entry consists of a URI
+        and may have other information associated with it. Session history
+        entries are added to the session history as the agent navigates from
+        resource to resource. An agent can traverse the session history to any
+        entry by updating the browsing context to the resource for that entry.
       </t>
 
     </section>
@@ -240,27 +240,28 @@
       <t>
         CoRAL can be used as a standalone representation format or embedded in
         representations of other formats. As a standalone format, CoRAL
-        representations have the media type "application/coral" or a derived
-        media type with the structured syntax suffix "+coral". CoRAL is
+        representations have the media type "application/coral" or a media type
+        derived from CoRAL with the structured syntax suffix "+coral". CoRAL is
         typically embedded in CBOR media types, but other media types can embed
         CoRAL as well. The CoRAL format is in all cases the same.
       </t>
 
       <t>
-        A CoRAL document consists of a sequence of links, forms, literals and
-        bases, which are collectively called elements. Elements consist of a
-        number indicating the element type, a "href type" that indicates how
-        CoRAL-encoded URI references are to be interpreted in reference
-        resolution, a sequence of zero or more options and, optionally, a body.
+        The top-level structure of CoRAL is a CoRAL document. A CoRAL document
+        consists of a sequence of links, forms, literals and bases, which are
+        collectively called elements. Elements consist of a number indicating
+        the element type, a "href type" that indicates how CoRAL-encoded URI
+        references are to be interpreted in reference resolution, a sequence of
+        zero or more options and, optionally, a body.
       </t>
 
       <t>
         Link, form and literal elements come in two flavors: a "fat" format that
-        explicitly includes all the items listed above, and a "tiny" format. The
-        tiny formats provide a concise way to express elements that match
-        certain patterns. Base elements encode a base URI for reference
-        resolution; they are always in the "fat" format and apply to all
-        following elements until the next base element is encountered.
+        includes all the items listed above, and a "tiny" format. The tiny
+        formats provide a concise way to express elements that match certain
+        patterns. Base elements encode a base URI for reference resolution; they
+        are always in the "fat" format and apply to all following elements until
+        the next base element is encountered.
       </t>
 
       <t>
@@ -268,9 +269,10 @@
         "stylesheet", "terms-of-service" or "item". In order to minimize the
         overhead of using these relation types in constrained environments,
         <xref target="I-D.hartke-core-apps"/> extends the IANA Link Relation
-        Types registry with a for each type. CoRAL uses these non-negative
-        numbers instead of the textual names. The same optimization is applied
-        to form relation types, content formats and CoAP request methods.
+        Types registry with a number for each type. CoRAL uses these
+        (non-negative) numbers instead of the textual names. The same
+        optimization is applied to form relation types, content formats and CoAP
+        request methods.
       </t>
 
       <t>
@@ -284,9 +286,9 @@
       </t>
 
       <t>
-        CoRAL defines a number of options that can be included in link, form and
-        literal elements. Options are used to encode the relation type, the
-        target resource URI and target attributes. They are serialized as an
+        CoRAL defines a number of options that can be included in link, form,
+        literal and base elements. Options are used to encode the relation type,
+        the target resource URI and target attributes. They are serialized as an
         array that contains a sequence of unwrapped pairs where each pair
         consists of a CoRAL option number and an option value. The pairs MUST be
         sorted such that the option numbers are in ascending order.
@@ -385,7 +387,7 @@
             An option that is repeatable MAY be included one or more times in an
             element. An option that is not repeatable MUST NOT be included more
             than once. If an agent encounters an option with more occurrences
-            than the option is defined for, each extra option occurrence MUST be
+            than the option is defined for, each extra occurrence MUST be
             ignored.
           </t>
           <t hangText="Format:">
@@ -393,7 +395,7 @@
             CBOR encoding of the specified type.
           </t>
           <t hangText="Length:">
-            Option values with type "text" and "bytes" are defined to have a
+            Option values with types "text" and "bytes" are defined to have a
             specific length, often in the form of an upper and lower bound. The
             length of an option value MUST NOT be outside the defined range. If
             an agent encounters an option with a length outside the defined
@@ -421,8 +423,9 @@
 
         <t>
           The option value of an Accept Option is either one of the content
-          format IDs defined in the CoAP Content-Formats registry (&gt;= 0) or
-          one of the content format IDs defined by the media type (&lt; 0).
+          format IDs registered in the CoAP Content-Formats registry (&gt;= 0)
+          or one of the application-specific content format IDs defined by the
+          media type (&lt; 0).
         </t>
 
         <t>
@@ -437,8 +440,8 @@
         <t>
           The Deletable Option, when present in a link, defines a form that can
           be used to delete the link target. The context and target of that form
-          are the target of the link, the submission method is DELETE and the
-          request has no payload.
+          are the link target, the submission method is DELETE and no
+          representation must be submitted.
         </t>
 
       </section>
@@ -464,8 +467,9 @@
 
         <t>
           The option value of a Format Option is either one of the content
-          format IDs defined in the CoAP Content-Formats registry (&gt;= 0) or
-          one of the content format IDs defined by the media type (&lt; 0).
+          format IDs registered in the CoAP Content-Formats registry (&gt;= 0)
+          or one of the application-specific content format IDs defined by the
+          media type (&lt; 0).
         </t>
 
       </section>
@@ -548,10 +552,10 @@
       <section title="Method">
 
         <t>
-          The Method Option indicates the CoAP method to use for form
-          submission. The option value is one of the CoAP method codes defined
-          in the CoAP Method Codes registry. The option value defaults to POST
-          when the Method Option is not present in a form.
+          The Method Option, when present in a form, indicates the CoAP method
+          to use for form submission. The option value is one of the CoAP method
+          codes registered in the CoAP Method Codes registry. The option value
+          defaults to POST when the Method Option is not present in a form.
         </t>
 
       </section>
@@ -559,15 +563,16 @@
       <section title="Relation">
 
         <t>
-          The Relation Option indicate the link relation type of a link or
+          The Relation Option indicates the link relation type of a link or
           literal and the form relation type of a form. At least one Relation
-          Option is REQUIRED.
+          Option is REQUIRED in a link, literal or form.
         </t>
 
         <t>
           The option value of a Relation Option is either one of the relation
-          type IDs defined in the Link Relation Types registry (&gt;= 0) or one
-          of the relation type IDs defined by the media type (&lt; 0).
+          type IDs registered in the Link Relation Types registry (&gt;= 0) or
+          one of the application-specific relation type IDs defined by the media
+          type (&lt; 0).
         </t>
 
       </section>
@@ -587,9 +592,9 @@
         <t>
           The Updatable Option, when present in a link, defines a form that can
           be used to update the link target. The context and target of that form
-          are the target of the link, the submission method is PUT and the
-          content format of the submitted representation must be one of the
-          formats indicated by the Format Option in the link.
+          are the link target, the submission method is PUT and the content
+          format of the submitted representation must be one of the formats
+          indicated by the Format Option in the link.
         </t>
 
       </section>
@@ -605,8 +610,8 @@
 
       <t>
         This section defines the process of resolving a URI reference within a
-        link, literal or form to an absolute URI suitable for inclusion in a
-        CoAP request.
+        link or form to an absolute URI suitable for inclusion in a CoAP
+        request.
       </t>
 
       <section title="Establish a Base URI">
@@ -618,13 +623,12 @@
         </t>
 
         <t>
-          The base URI of a reference in a link, literal or form is established
-          as specified in Section 5.1 of <xref target="RFC3986"/>. CoRAL
-          supports a "Base URI Embedded in Content" in the form of base
-          elements. A base element applies to all subsequent elements in a
-          document until the next base element is encountered. The URI reference
-          in a base element itself is resolved relative to the base URI of next
-          lower precedence (and not relative to a previous base element).
+          The base URI of a reference in a link or form is established as
+          specified in Section 5.1 of <xref target="RFC3986"/>. CoRAL supports a
+          "Base URI Embedded in Content" in the form of base elements. A base
+          element applies to all subsequent elements in a document until the
+          next base element is encountered. The URI reference in a base element
+          itself is resolved relative to the base URI of next lower precedence.
         </t>
 
       </section>
