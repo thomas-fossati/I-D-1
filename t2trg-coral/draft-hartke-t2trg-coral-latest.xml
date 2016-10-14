@@ -1422,8 +1422,7 @@
 ]]></artwork></figure>
 
         <t>
-          The example can be encoded in CoRAL as follows (using CBOR diagnostic
-          notation):
+          The example can be encoded in CoRAL as follows:
         </t>
 
 <figure><artwork type="cbor"><![CDATA[
@@ -1473,8 +1472,7 @@
 ]]></artwork></figure>
 
         <t>
-          The example can be encoded in CoRAL as follows (using CBOR diagnostic
-          notation):
+          The example can be encoded in CoRAL as follows:
         </t>
 
 <figure><artwork type="cbor"><![CDATA[
