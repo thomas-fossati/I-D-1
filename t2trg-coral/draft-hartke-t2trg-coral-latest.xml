@@ -985,7 +985,7 @@
         </t>
 
       </section>
-      
+
     </section>
 
     <!-- **************************************************************** -->
@@ -1387,7 +1387,7 @@
   [[5, 3, [1, 1, 4, 65203, 10, "state"]],
    [2, 3, -101, 0, "LRC 1"],
    [2, 3, -102, 0, "Controls Light 2."],
-   [2, 3, -103, 0, "Living Room"]]           
+   [2, 3, -103, 0, "Living Room"]]
 ]]></artwork></figure>
 
         <t>
@@ -1398,7 +1398,7 @@
         <texttable align="center" anchor="table-lighting-comparison" title="Size Comparison">
           <ttcol>Format</ttcol>
           <ttcol>Size</ttcol>
-          
+
           <c>JSON</c>                   <c>515 bytes</c>
           <c>CoRAL</c>                  <c>245 bytes</c>
         </texttable>
@@ -1443,7 +1443,7 @@
         <texttable align="center" anchor="table-link-comparison" title="Size Comparison">
           <ttcol>Format</ttcol>
           <ttcol>Size</ttcol>
-          
+
           <c>Link Format</c>            <c>251 bytes</c>
           <c>Link Format (JSON)</c>     <c>320 bytes</c>
           <c>Link Format (CBOR)</c>     <c>203 bytes</c>
