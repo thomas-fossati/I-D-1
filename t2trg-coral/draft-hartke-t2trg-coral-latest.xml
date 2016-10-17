@@ -154,12 +154,12 @@
       </t>
 
       <t>
-        A form indicates a relationship between two resources as well, the form
-        context and the form target, and affords the interaction with the
-        context through the submission of the form to the target. In many cases
+        A form similarly indicates a relationship between two resources, the
+        form context and the form target, and affords the interaction with the
+        context through the submission of the form to the target. In many cases,
         the target of a form is the same resource as the context, but this is
         not required. The semantics of a form are identified by a form relation
-        type, which again in CoRAL can be IANA-registered or
+        type, which in CoRAL again can be IANA-registered or
         application-specific. The submission of a form typically requires the
         agent to construct a payload that is included with the request. For this
         purpose, a form indicates the acceptable content formats for the payload
@@ -206,8 +206,8 @@
             submits a form, the request method is indicated by an option. The
             agent should set request parameters according to the link/form
             attributes (e.g., set the CoAP Accept option when the content format
-            of the target resource is indicated). In case of a form, the agent
-            also needs to construct a request payload that matches the
+            of the target resource is indicated). In the case of a form, the
+            agent also needs to construct a request payload that matches the
             specifications of the form.
           </t>
           <t>
@@ -219,13 +219,14 @@
       </t>
 
       <t>
-        An agent can also navigate a browsing context by traversing the browsing
-        context's session history. The session history consists of a flat list
-        of session history entries. Each session history entry consists of a URI
-        and may have other information associated with it. Session history
-        entries are added to the session history as the agent navigates from
-        resource to resource. An agent can traverse the session history to any
-        entry by updating the browsing context to the resource for that entry.
+        An agent can furthermore navigate a browsing context by traversing the
+        browsing context's session history. The session history consists of a
+        flat list of session history entries. Each session history entry
+        consists of a URI and may have other information associated with it.
+        Session history entries are added to the session history as the agent
+        navigates from resource to resource. An agent can traverse the session
+        history to any entry by updating the browsing context to the resource
+        for that entry.
       </t>
 
     </section>
@@ -239,11 +240,11 @@
 
       <t>
         CoRAL can be used as a standalone representation format or embedded in
-        representations of other formats. As a standalone format, CoRAL
+        representations in other formats. As a standalone format, CoRAL
         representations have the media type "application/coral" or a media type
         derived from CoRAL with the structured syntax suffix "+coral". CoRAL is
-        typically embedded in CBOR media types, but other media types can embed
-        CoRAL as well. The CoRAL format is in all cases the same.
+        typically embedded in CBOR-based media types, but other media types can
+        embed CoRAL as well. The CoRAL format is in all cases the same.
       </t>
 
       <t>
@@ -259,9 +260,9 @@
         Link, form and literal elements come in two flavors: a "fat" format that
         includes all the items listed above, and a "tiny" format. The tiny
         formats provide a concise way to express elements that match certain
-        patterns. Base elements encode a base URI for reference resolution; they
-        are always in the "fat" format and apply to all following elements until
-        the next base element is encountered.
+        patterns. Base elements are always in the "fat" format. They encode a
+        base URI for reference resolution and apply to all subsequent elements
+        until the next base element is encountered.
       </t>
 
       <t>
@@ -269,29 +270,29 @@
         "stylesheet", "terms-of-service" or "item". In order to minimize the
         overhead of using these relation types in constrained environments,
         <xref target="I-D.hartke-core-apps"/> extends the IANA Link Relation
-        Types registry with a number for each type. CoRAL uses these
-        (non-negative) numbers instead of the textual names. The same
-        optimization is applied to form relation types, content formats and CoAP
-        request methods.
+        Types registry with a numeric identifier for each type. CoRAL uses these
+        (non-negative) numeric identifiers instead of the textual names. The
+        same optimization is applied to form relation types, CoAP content
+        formats and CoAP request methods.
       </t>
 
       <t>
         Applications can use negative numbers to indicate application-specific
         link relation types, form relation types and content formats, which do
-        not need to be IANA-registered. The mapping from numbers to textual
-        names needs to be provided by the respective media type definition
-        (i.e., a media type with the "+coral" suffix or a media type embedding
-        CoRAL; the "application/coral" media type itself does not define any
+        not need to be IANA-registered. The mappings from numbers to textual
+        names need to be provided by the respective media type definition (i.e.,
+        a media type with the "+coral" suffix or a media type embedding CoRAL;
+        the "application/coral" media type itself does not define any
         application-specific values).
       </t>
 
       <t>
         CoRAL defines a number of options that can be included in link, form,
         literal and base elements. Options are used to encode the relation type,
-        the target resource URI and target attributes. They are serialized as an
-        array that contains a sequence of unwrapped pairs where each pair
-        consists of a CoRAL option number and an option value. The pairs MUST be
-        sorted such that the option numbers are in ascending order.
+        the target resource URI and target attributes. They are serialized as a
+        sequence of unwrapped pairs where each pair consists of a CoRAL option
+        number and an option value. The pairs MUST be sorted such that the
+        option numbers are in ascending order.
       </t>
 
       <t>
@@ -461,7 +462,7 @@
         <t>
           The Format Option is REQUIRED if a link embeds a representation in the
           link body. The Format Option is also REQUIRED in a literal. In both
-          cases the first occurence of the option indicates the content format
+          cases the first occurrence of the option indicates the content format
           of the embedded representation.
         </t>
 
@@ -479,8 +480,8 @@
         <t>
           The Href.Scheme, Href.Host.Name, Href.Host.IPv4, Href.IPv6, Href.Port,
           Href.Path, Href.Query and Href.Fragment Options are used to specify
-          the target resource URI of a link or form and the base URI of a
-          literal. They hold the following values:
+          the target resource URI of a link or form. They hold the following
+          values:
           <list style="symbols">
             <t>
               the Href.Scheme Option specifies the URI scheme name,
@@ -526,8 +527,8 @@
           <xref target="table-href"/> lists the permitted Href.* options by Href
           Type. A 'yes' indicates that an option of this type MAY be present; a
           'no' indicates that an option of this type MUST NOT be present. The
-          resolution of Href.* options against a base URI is specified in <xref
-          target="resolution"/>.
+          resolution of a sequence of Href.* options against a base URI is
+          specified in <xref target="resolution"/>.
         </t>
 
         <texttable title="Permitted Href.* Options by Href Type" anchor="table-href">
@@ -555,7 +556,8 @@
           The Method Option, when present in a form, indicates the CoAP method
           to use for form submission. The option value is one of the CoAP method
           codes registered in the CoAP Method Codes registry. The option value
-          defaults to POST when the Method Option is not present in a form.
+          defaults to the POST method when the Method Option is not present in a
+          form.
         </t>
 
       </section>
@@ -565,7 +567,7 @@
         <t>
           The Relation Option indicates the link relation type of a link or
           literal and the form relation type of a form. At least one Relation
-          Option is REQUIRED in a link, literal or form.
+          Option is REQUIRED in each link, literal and form element.
         </t>
 
         <t>
@@ -637,8 +639,8 @@
 
         <t>
           The following pseudocode describes an algorithm for transforming a URI
-          reference R into its target URI T using the base URI B, the Href Type
-          H, and the Link or Form Relation Type S. The URI reference and base
+          reference R into its target URI T using the base URI B, the href type
+          H, and the link or form relation type S. The URI reference and base
           URI are assumed to be pre-parsed into a sequence of Href.* options;
           the result is returned as a sequence of Href.* options as well.
         </t>
@@ -698,13 +700,13 @@
               While the input buffer is not empty, loop as follows:
               <list style="symbols">
                 <t>
-                  If the input buffer begins with ".", then remove this segment
-                  from the input buffer; otherwise,
+                  If the input buffer begins with a "." path segment, then
+                  remove this segment from the input buffer; otherwise,
                 </t>
                 <t>
-                  if the input buffer begins with "..", then remove this segment
-                  from the input buffer and and remove the last segment (if any)
-                  from the output buffer; otherwise,
+                  if the input buffer begins with a ".." path segment, then
+                  remove this segment from the input buffer and and remove the
+                  last segment (if any) from the output buffer; otherwise,
                 </t>
                 <t>
                   move the first path segment in the input buffer to the end of
@@ -1274,7 +1276,7 @@
 
           <t>
             The Accept Option specifies the content format of the expected
-            representation. A content format may use the payload of a form to
+            representation. A content format can use the body of a form to
             describe the expected representation in more detail, for example, by
             specifying a set of form fields that the agent needs to fill out:
           </t>
@@ -1298,9 +1300,10 @@
             The target resource of a link may be editable. In this case, the
             representation of such a resource typically contains one or more
             forms that allow an agent to edit the resource. However, it may be
-            inefficient to include these forms in every representation of the
-            link target and more efficient to include it in a representation
-            that links to the resource. CoRAL supports this with two options.
+            inefficient to include these forms every time a representation of
+            the link target is retrieved and more efficient to include them in
+            representations that link to the resource. CoRAL supports this with
+            two options.
           </t>
 
           <t>
@@ -1533,7 +1536,7 @@
       <t>
         Thanks to
         Carsten Bormann,
-        Jaime Jimenez, and
+        Jaime Jimenez and
         Matthias Kovatsch
         for helpful comments and discussions that have shaped the
         document.
