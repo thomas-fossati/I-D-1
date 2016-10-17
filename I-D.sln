@@ -30,6 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-coral", "t2trg-coral"
 	ProjectSection(SolutionItems) = preProject
 		t2trg-coral\coral.cddl = t2trg-coral\coral.cddl
 		t2trg-coral\draft-hartke-t2trg-coral-00.xml = t2trg-coral\draft-hartke-t2trg-coral-00.xml
+		t2trg-coral\draft-hartke-t2trg-coral-01.xml = t2trg-coral\draft-hartke-t2trg-coral-01.xml
 		t2trg-coral\draft-hartke-t2trg-coral-latest.xml = t2trg-coral\draft-hartke-t2trg-coral-latest.xml
 	EndProjectSection
 EndProject
