@@ -47,10 +47,10 @@
     <abstract>
 
       <t>
-        A bulletin board is a hypermedia-driven REST application that can be
-        used in Thing-to-Thing communication for publishing information such as
-        thing descriptions, configurations, resource descriptions or sleep
-        schedules at a central location.
+        A bulletin board is a RESTful, hypermedia-driven Web application that
+        can be used in Thing-to-Thing communication for publishing information
+        such as thing descriptions, configurations, resource descriptions or
+        sleep schedules at a central location.
       </t>
 
     </abstract>
@@ -69,35 +69,36 @@
       <t>
         <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> defines a
         "bulletin board" application that can be used for sharing the thing
-        descriptions of sensor and actuator nodes. The present document
-        generalizes the bulletin board to support representations in any media
-        type and defines means for creating, reading, observing, updating,
-        deleting and finding items in a bulletin board.
+        descriptions of sensor and actuator nodes. This document generalizes the
+        bulletin board to support representations of any media type and defines
+        means for creating, reading, observing, updating, deleting and finding
+        items in a bulletin board.
       </t>
 
       <t>
         The generalization to any media type provides two advantages: The first
-        ist media type agility -- applications won't be stuck forever with the
+        ist media type agility: applications won't be stuck forever with the
         media types of CoRE Lighting. The second is that it may be useful to
         share also other information than thing descriptions, such as default
-        configurations for new devices, service locations or sleep schedules.
+        configurations for new devices, Web service locations or sleep
+        schedules.
       </t>
 
       <t>
-        Finding items provides a powerful mechanism for retrieving a subset of
+        Searching for items is a powerful mechanism for retrieving a subset of
         items from a bulletin board. In CoRE Lighting, a configurator needs to
         download the whole set of thing descriptions, filter the set and
         configure compatible devices. It is more efficient to filter the set at
         the bulletin board server. To make this work with any media type, a
-        search request needs to specify both the media type and a media
-        type-specific query.
+        search request needs to specify both the media type of the desired items
+        and a media type-specific query.
       </t>
 
       <t>
         The generalized bulletin board is presented as a <xref
         target="I-D.hartke-core-apps">CoRE Application</xref>. That is, the
-        focus is on media types and interactions are driven by <xref
-        target="RFC5988">Web links</xref> and forms.
+        focus is on the media types used in the bulletin board application and
+        interactions are driven by links and forms.
       </t>
 
       <section title="Terminology">
@@ -163,14 +164,14 @@ Bulletin /  \
               <vspace blankLines="1"/>
               A bulletin board is a service intended for the posting of public
               messages, for example, to share thing descriptions, announce
-              services, or provide information. Nodes can leave and erase
+              services or provide information. Nodes can leave and erase
               messages for other nodes to read and see.
             </t>
             <t>
               A bulletin board represents a collection of items. Its
               representation mainly consists of links to the item resources
-              using the "item" link relation type. However, it may also include
-              (abbreviated or full) representations of those item resources.
+              using the "item" link relation type. However, it can also include
+              (complete or partial) representations of those item resources.
             </t>
             <t>
               For a start, a bulletin board has only a depth of one level; this
@@ -187,7 +188,7 @@ Bulletin /  \
             </t>
             <t>
               Item representations can in principle be formatted in any media
-              type; a bulletin board deployment may restrict the media types it
+              type; a bulletin board deployment MAY restrict the media types it
               accepts for publication, though.
             </t>
           </list>
@@ -207,20 +208,20 @@ Bulletin /  \
           <list style="hanging">
             <t hangText="Discovery">
               <vspace blankLines="1"/>
-              For a start, nodes are pre-configured out-of-band with a link to a
-              bulletin board.
+              For a start, nodes are assumed to be pre-configured out-of-band
+              with a link to a bulletin board.
             </t>
             <t hangText="Read Bulletin Board">
               <vspace blankLines="1"/>
               A node can retrieve a representation of the bulletin board by
-              following the pre-configured link. The representation of the
-              bulletin board includes links to and/or embedded representations
-              of the items in the bulletin board. The representation may also
+              following the discovered link. The representation of the bulletin
+              board includes links to and/or literals with representations of
+              the items in the bulletin board. The representation MAY also
               include forms for creating, updating, deleting and finding items.
             </t>
             <t hangText="Create Item">
               <vspace blankLines="1"/>
-              The representation of a bulletin board may contain a form with the
+              The representation of a bulletin board MAY contain a form with the
               "create-item" form relation type. Submitting this form with a
               representation in one of the accepted content formats creates a
               new item in the bulletin board.
@@ -241,7 +242,7 @@ Bulletin /  \
             <t hangText="Update Item">
               <vspace blankLines="1"/>
               For each item in a bulletin board, the representation of the
-              bulletin board may indicate that the item is updatable. If an item
+              bulletin board MAY indicate that the item is updatable. If an item
               is updatable, a form with the "update" form relation type is
               implied. Submitting this form updates the item in the bulletin
               board to the submitted representation.
@@ -249,7 +250,7 @@ Bulletin /  \
             <t hangText="Delete Item">
               <vspace blankLines="1"/>
               For each item in a bulletin board, the representation of the
-              bulletin board may indicate that the item is deletable. If an item
+              bulletin board MAY indicate that the item is deletable. If an item
               is deletable, a form with the "delete" form relation type is
               implied. Submitting this form deletes the item from the bulletin
               board.
@@ -287,6 +288,7 @@ Bulletin /  \
               <vspace/><xref target="I-D.hartke-core-apps">create-item</xref>
               <vspace/><xref target="I-D.hartke-core-apps">update</xref>
               <vspace/><xref target="I-D.hartke-core-apps">delete</xref>
+              <vspace/>search
             </t>
             <t hangText="Well-known locations:">
               <vspace/>None.
