@@ -24,7 +24,7 @@
 
   <front>
 
-    <title>Bulletin Board</title>
+    <title>Thing-to-Thing Bulletin Board</title>
 
     <author initials="K." surname="Hartke" fullname="Klaus Hartke">
       <organization>Universitaet Bremen TZI</organization>
@@ -47,10 +47,10 @@
     <abstract>
 
       <t>
-        A bulletin board is a RESTful, hypermedia-driven Web application that
-        can be used in Thing-to-Thing communication for publishing information
-        such as thing descriptions, configurations, resource descriptions or
-        sleep schedules at a central location.
+        A Thing-to-Thing Bulletin Board is a RESTful, hypermedia-driven Web
+        application that can be used in Thing-to-Thing communication to publish
+        information such as thing descriptions, configurations, resource
+        descriptions or sleep schedules at a central location.
       </t>
 
     </abstract>
@@ -70,35 +70,35 @@
         <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> defines a
         "bulletin board" application that can be used for sharing the thing
         descriptions of sensor and actuator nodes. This document generalizes the
-        bulletin board to support representations of any media type and defines
+        bulletin board to support representations in any media type and defines
         means for creating, reading, observing, updating, deleting and finding
         items in a bulletin board.
       </t>
 
       <t>
         The generalization to any media type provides two advantages: The first
-        ist media type agility: applications won't be stuck forever with the
+        is media type agility: applications won't be stuck forever with the
         media types of CoRE Lighting. The second is that it may be useful to
         share also other information than thing descriptions, such as default
-        configurations for new devices, Web service locations or sleep
-        schedules.
+        configurations for new devices, service locations or sleep schedules.
       </t>
 
       <t>
         Searching for items is a powerful mechanism for retrieving a subset of
-        items from a bulletin board. In CoRE Lighting, a configurator needs to
+        items from a bulletin board. In CoRE Lighting, a configurator has to
         download the whole set of thing descriptions, filter the set and
-        configure compatible devices. It is more efficient to filter the set at
-        the bulletin board server. To make this work with any media type, a
+        configure compatible devices. It may be more efficient to filter the set
+        at the bulletin board server. To make this work with any media type, a
         search request needs to specify both the media type of the desired items
-        and a media type-specific query.
+        and a media type-specific filter query.
       </t>
 
       <t>
         The generalized bulletin board is presented as a <xref
         target="I-D.hartke-core-apps">CoRE Application</xref>. That is, the
-        focus is on the media types used in the bulletin board application and
-        interactions are driven by links and forms.
+        focus of the application interface is on the media types used in the
+        bulletin board application and interactions are driven by links and
+        forms.
       </t>
 
       <section title="Terminology">
@@ -162,10 +162,10 @@ Bulletin /  \
           <list style="hanging">
             <t hangText="Bulletin Board">
               <vspace blankLines="1"/>
-              A bulletin board is a service intended for the posting of public
-              messages, for example, to share thing descriptions, announce
-              services or provide information. Nodes can leave and erase
-              messages for other nodes to read and see.
+              A bulletin board is a Web application intended for the posting of
+              public messages, for example, to share thing descriptions,
+              announce services or provide information. Things can leave and
+              erase messages for other things to read and see.
             </t>
             <t>
               A bulletin board represents a collection of items. Its
@@ -179,7 +179,7 @@ Bulletin /  \
             </t>
             <t>
               Bulletin board representations are formatted in the <xref
-              target="I-D.hartke-t2trg-coral">'application/coral' media
+              target="I-D.hartke-t2trg-coral">"application/coral" media
               type</xref>.
             </t>
             <t hangText="Item">
@@ -201,7 +201,8 @@ Bulletin /  \
         <t>
           The interaction model consists of eight possible interactions with a
           bulletin board: discovering and reading the bulletin board, and
-          creating, reading, observing, updating, deleting and finding items.
+          creating, reading, observing, updating, deleting and finding items
+          in the bulletin board.
         </t>
 
         <t>
@@ -259,8 +260,8 @@ Bulletin /  \
               <vspace blankLines="1"/>
               A form with the "search" form relation type can be used to find
               items. Submitting this form with a media type and a media
-              type-specific query returns a subset of the bulletin board that
-              matches the query.
+              type-specific filter query returns a subset of the bulletin board
+              that matches the filter. (The details of this are TBD.)
             </t>
           </list>
         </t>
