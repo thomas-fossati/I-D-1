@@ -135,9 +135,8 @@
         detected by DTLS.
       </t>
 
-      <figure anchor="fig-hopbyhop" title="Hop-by-Hop Security">
-        <artwork align="left">
-<![CDATA[     __________       _________       _________       __________
+<figure anchor="fig-hopbyhop" title="Hop-by-Hop Security"><artwork align="left"><![CDATA[
+     __________       _________       _________       __________
     |          |     |         |     |         |     |          |
     |          |---->|         |---->|         |---->|          |
     |  Client  |     |  Proxy  |     |  Proxy  |     |  Server  |
@@ -147,9 +146,8 @@
           '-------------'   '-----------'   '-------------'
              Security         Security         Security
             Association      Association      Association
-                 A                B                C]]>
-        </artwork>
-      </figure>
+                 A                B                C
+]]></artwork></figure>
 
       <t>
         One way to mitigate this threat is to secure CoAP communication
@@ -163,9 +161,8 @@
         (<xref target="fig-hopbyhop"/>).
       </t>
 
-      <figure anchor="fig-endtoend" title="End-to-End Security">
-        <artwork align="left">
-<![CDATA[     __________       _________       _________       __________
+<figure anchor="fig-endtoend" title="End-to-End Security"><artwork align="left"><![CDATA[
+     __________       _________       _________       __________
     |          |     |         |     |         |     |          |
     |          |---->|         |---->|         |---->|          |
     |  Client  |     |  Proxy  |     |  Proxy  |     |  Server  |
@@ -173,9 +170,8 @@
     |__________|     |_________|     |_________|     |__________|
           :                                               :
           '-----------------------------------------------'
-                        Security Association]]>
-        </artwork>
-      </figure>
+                        Security Association
+]]></artwork></figure>
 
       <t>
         This document analyses security aspects of sensor and actuator
@@ -308,16 +304,14 @@
         and analyse how the proxies operate.
       </t>
 
-      <figure anchor="fig-proxy" title="A Proxy">
-        <artwork align="left">
-<![CDATA[         _ _ __             ___________             __ _ _
+<figure anchor="fig-proxy" title="A Proxy"><artwork align="left"><![CDATA[
+         _ _ __             ___________             __ _ _
                | Request   |           | Request   |
        Client  |---------->|           |---------->|  Server
          or    |           |   Proxy   |           |    or
        Proxy   |<----------|           |<----------|  Proxy
-         _ _ __|  Response |___________|  Response |__ _ _]]>
-        </artwork>
-      </figure>
+         _ _ __|  Response |___________|  Response |__ _ _
+]]></artwork></figure>
 
       <t>
         The proxy receives a request from the client and sends a
@@ -349,16 +343,14 @@
 
         <section title="Client-side" anchor="sec-client">
 
-          <figure anchor="fig-client" title="The Client End">
-            <artwork align="left">
-<![CDATA[     __________             __ _ _
+<figure anchor="fig-client" title="The Client End"><artwork align="left"><![CDATA[
+     __________             __ _ _
     |          | Request   |
     |          |---------->|
     |  Client  |           |   Proxy
     |          |<----------|
-    |__________|  Response |__ _ _]]>
-            </artwork>
-          </figure>
+    |__________|  Response |__ _ _
+]]></artwork></figure>
 
           <t>
             The client sends a request to the proxy and waits for a
@@ -563,16 +555,14 @@
 
         <section title="Server-side">
 
-          <figure anchor="fig-server" title="The Server End">
-            <artwork align="left">
-<![CDATA[                                 _ _ __             __________
+<figure anchor="fig-server" title="The Server End"><artwork align="left"><![CDATA[
+                                 _ _ __             __________
                                        | Request   |          |
                                        |---------->|          |
                                Proxy   |           |  Server  |
                                        |<----------|          |
-                                 _ _ __|  Response |__________|]]>
-            </artwork>
-          </figure>
+                                 _ _ __|  Response |__________|
+]]></artwork></figure>
 
           <t>
             A server listens for a request and returns a response.
@@ -808,18 +798,16 @@
       alarm status retrieval and actuator command confirmation.
     </t>
 
-    <figure anchor="figure-1" title="Message Flow with a Unique Response for Each Request">
-      <artwork align="center">
-<![CDATA[Client          Proxy          Server
+<figure anchor="figure-1" title="Message Flow with a Unique Response for Each Request"><artwork align="center"><![CDATA[
+Client          Proxy          Server
   |               |               |
   |    Request    |    Request    |
   |-------------->|-------------->|--.
   |               |               |  |
   |<--------------|<--------------|<-'
   |    Response   |    Response   |
-  |               |               |]]>
-      </artwork>
-    </figure>
+  |               |               |
+]]></artwork></figure>
 
 
     <t>
@@ -861,10 +849,8 @@
     </t>
 
 
-    <figure anchor="figure-2" title="Message Flow of Notifications of
-      Linked to a Unique Request">
-      <artwork align="center">
-<![CDATA[Client          Proxy          Server
+<figure anchor="figure-2" title="Message Flow of Notifications of Linked to a Unique Request"><artwork align="center"><![CDATA[
+Client          Proxy          Server
   |               |               |
   |    Request    |    Request    |
   |-------------->|-------------->|--.
@@ -877,9 +863,8 @@
   |               |               |
   |<--------------|<--------------|
   |  Notification |  Notification |
-  |               |               |]]>
-      </artwork>
-    </figure>
+  |               |               |
+]]></artwork></figure>
 
     <t>
 
@@ -1084,9 +1069,8 @@
       The first example is a simple case of caching.
     </t>
 
-    <figure anchor="figure-3" title="Message Flow for Cached Responses">
-      <artwork align="center">
-<![CDATA[Client A         Proxy           Server
+<figure anchor="figure-3" title="Message Flow for Cached Responses"><artwork align="center"><![CDATA[
+Client A         Proxy           Server
    |               |               |
    |    Request    |    Request    |
    |-------------->|-------------->|--.
@@ -1102,9 +1086,8 @@ Client B           |               |
    |               |  | from cache |
    |<--------------|<-'            |
    |    Response   |               |
-   |               |               |]]>
-      </artwork>
-    </figure>
+   |               |               |
+]]></artwork></figure>
 
     <t>
       <list style="hanging">
@@ -1132,9 +1115,8 @@ Client B           |               |
     </t>
 
 
-    <figure anchor="figure-observe" title="Message Flow for Observe with Multiple Observers">
-      <artwork align="center">
-<![CDATA[Client A         Proxy          Server
+<figure anchor="figure-observe" title="Message Flow for Observe with Multiple Observers"><artwork align="center"><![CDATA[
+Client A         Proxy          Server
    |               |               |
    |    Request    |    Request    |
    |-------------->|-------------->|--.
@@ -1159,9 +1141,8 @@ Client A           |               |
    |               |               |
    |<--------------|               |
    |  Notification |               |
-   |               |               |]]>
-      </artwork>
-    </figure>
+   |               |               |
+]]></artwork></figure>
     <t>
       <list style="hanging">
         <t hangText="Example: Observe with caching">
@@ -1389,9 +1370,8 @@ Client A           |               |
        during transfer, see <xref target="fig-publisher-req"/>.
     </t>
 
-      <figure anchor="fig-publisher-req" title="Publisher-to-Subscriber Security">
-        <artwork align="center">
-<![CDATA[ ____________        __________         ___________
+<figure anchor="fig-publisher-req" title="Publisher-to-Subscriber Security"><artwork align="center"><![CDATA[
+ ____________        __________         ___________
 |            |      |          |       |           |
 |            |----->|          |<------|           |
 | Subscriber |      |  Broker  |       | Publisher |
@@ -1399,9 +1379,8 @@ Client A           |               |
 |____________|      |__________|       |___________|
       :                                      :
       '--------------------------------------'
-                Security Association]]>
-        </artwork>
-      </figure>
+                Security Association
+]]></artwork></figure>
 
       <t>
       Since there is no security association with the broker, we only consider
@@ -1416,16 +1395,14 @@ Client A           |               |
 
         <section title="Subscriber-side">
 
-          <figure anchor="fig-subscriber" title="The Subscriber End">
-              <artwork align="left">
-<![CDATA[     __________             __ _ _
+<figure anchor="fig-subscriber" title="The Subscriber End"><artwork align="left"><![CDATA[
+     __________             __ _ _
     |          | Request   |
     |  Sub-    |---------->|
     |  scriber |           |   Broker
     |          |<----------|
-    |__________|  Response |__ _ _]]>
-              </artwork>
-            </figure>
+    |__________|  Response |__ _ _
+]]></artwork></figure>
 
           <t>
             The subscriber sends a subscription request to the broker
@@ -1623,16 +1600,14 @@ Client A           |               |
 
         <section title="Publisher-side">
 
-          <figure anchor="fig-publisher" title="The Publisher End">
-            <artwork align="left">
-<![CDATA[                                 _ _ __             __________
+<figure anchor="fig-publisher" title="The Publisher End"><artwork align="left"><![CDATA[
+                                 _ _ __             __________
                                        | Request   |          |
                                        |<----------|  Pub-    |
                                Broker  |           |  lisher  |
                                        |---------->|          |
-                                 _ _ __|  Response |__________|]]>
-            </artwork>
-          </figure>
+                                 _ _ __|  Response |__________|
+]]></artwork></figure>
 
           <t>
             The publisher sends a publication request to the broker
@@ -1687,9 +1662,8 @@ Client A           |               |
         </t>
 
 
-          <figure anchor="figure-pubsub" title="Message Flow for Publish Subscribe">
-            <artwork align="center">
-<![CDATA[Subscriber A       Broker         Publisher
+<figure anchor="figure-pubsub" title="Message Flow for Publish Subscribe"><artwork align="center"><![CDATA[
+Subscriber A       Broker         Publisher
      |               |               |
      |               |    Request    |
      |            .--|<--------------|
@@ -1722,9 +1696,8 @@ Subscriber A         |               |
      |               |               |
      |<--------------|               |
      |  Notification |               |
-     |               |               |]]>
-            </artwork>
-          </figure>
+     |               |               |
+]]></artwork></figure>
           <t>
             <list style="hanging">
               <t hangText="Example">
