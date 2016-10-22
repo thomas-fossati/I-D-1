@@ -22,7 +22,7 @@
 <?rfc tocdepth="4"?>
 
 <rfc category="info" docName="draft-hartke-core-e2e-security-reqs-03" ipr="trust200902">
-    
+
     <front>
 
     <title>Requirements for CoAP End-To-End Security</title>
@@ -39,7 +39,7 @@
         <email>goran.selander@ericsson.com</email>
       </address>
     </author>
-    
+
     <author initials="F." surname="Palombini" fullname="Francesca Palombini">
       <organization>Ericsson AB</organization>
       <address>
@@ -52,7 +52,7 @@
         <email>francesca.palombini@ericsson.com</email>
       </address>
     </author>
-   
+
     <author initials="K." surname="Hartke" fullname="Klaus Hartke">
       <organization>Universitaet Bremen TZI</organization>
       <address>
@@ -66,7 +66,7 @@
         <email>hartke@tzi.org</email>
       </address>
     </author>
-    
+
     <!--
     <author initials="L." surname="Seitz" fullname="Ludwig Seitz">
       <organization>SICS Swedish ICT AB</organization>
@@ -81,7 +81,7 @@
       </address>
     </author>
     -->
-    
+
     <date />
 
 
@@ -92,7 +92,7 @@
     <abstract>
 
       <t>
-        This document analyses threats to CoAP message 
+        This document analyses threats to CoAP message
         exchanges traversing proxies and derives the security requirements
         for mitigating those threats.
       </t>
@@ -121,8 +121,8 @@
         reduce response time and network bandwidth use by serving
         responses from a cache or enable clients to make requests that
         they otherwise could not make.
-      </t> 
-       
+      </t>
+
       <t>
         CoAP proxies need to perform a
         number of operations on requests and responses to fulfill their purpose, which requires
@@ -150,7 +150,7 @@
                  A                B                C]]>
         </artwork>
       </figure>
-      
+
       <t>
         One way to mitigate this threat is to secure CoAP communication
         at the application layer using an object-based security
@@ -254,7 +254,7 @@
         </t>
 
       </section>
-    
+
       <section title="Terminology">
 
         <!--
@@ -302,12 +302,12 @@
     <!-- **************************************************************** -->
 
     <section title="Proxying" anchor="proxying">
-      
+
       <t>
         To assess what impact various threats have to the assets, we need to specify
         and analyse how the proxies operate.
       </t>
-      
+
       <figure anchor="fig-proxy" title="A Proxy">
         <artwork align="left">
 <![CDATA[         _ _ __             ___________             __ _ _
@@ -318,7 +318,7 @@
          _ _ __|  Response |___________|  Response |__ _ _]]>
         </artwork>
       </figure>
-      
+
       <t>
         The proxy receives a request from the client and sends a
         response back to the client. There are two ways for the
@@ -338,7 +338,7 @@
         request from the client and the response from the server
         to accomplish its task.
       </t>
-      
+
       <t>
         <vspace blankLines="100"/>
       </t>
@@ -419,7 +419,7 @@
               </t>
             </list>
           </t>
-          
+
           <t>
             Furthermore, there are threats related to privacy:
             <list style="symbols">
@@ -433,7 +433,7 @@
               </t>
             </list>
           </t>
-          
+
           <t>
             Note that "cache poisoning" -- the case of caching injected
             incorrect responses -- is covered from the point of view of
@@ -488,7 +488,7 @@
               in certain applications, e.g., when using CoAP with actuators.
               A problem statement and candidate solution can be found in
               <xref target="I-D.mattsson-core-coap-actuators"/>.
-            </t>            
+            </t>
           </section>
 
           <section title="Threat 3: Withholding">
@@ -500,7 +500,7 @@
               or if it intentionally withholds the response.
             </t>
           </section>
-          
+
           <section title="Threat 4: Flooding">
             <t>
               A CoAP client is specified to reject any response that
@@ -514,10 +514,10 @@
               generally defend against flooding attacks.
             </t>
           </section>
-          
+
           <section title="Threat 5: Eavesdropping" anchor="eavesdrop-client">
-            
-            
+
+
             <t>
               This threat is REQUIRED to be mitigated by the security
               solution: clients MUST confidentiality protect
@@ -540,7 +540,7 @@
             </t>
 
           </section>
-          
+
           <section title="Threat 6: Traffic Analysis" anchor="traffic-an">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
@@ -553,7 +553,7 @@
               traffic between the different cases, adding padding so different
               messages become indistinguishable, etc.
             </t>
-            
+
             <t>
               <vspace blankLines="100"/>
             </t>
@@ -625,7 +625,7 @@
               </t>
             </list>
           </t>
-          
+
           <t>
             A proxy eavesdropping or
             inferring information from messages it operates on has an impact
@@ -666,7 +666,7 @@
               client and includes in the request or a
               challenge-response roundtrip.
             </t>
-            
+
             <t>
               Note that a CoAP proxy may make certain
               requests (e.g., to validate cached data) without acting
@@ -676,8 +676,8 @@
               or if it spoofs the request. It is up to the security
               solution how this issue is addressed.
             </t>
-            
-            
+
+
           </section>
 
           <section title="Threat 2: Delaying">
@@ -702,19 +702,19 @@
               security solution in particular, but a server SHOULD
               generally defend against flooding attacks.
             </t>
-    
+
           </section>
-          
+
           <section title="Threat 5: Eavesdropping" anchor="eavesdrop-server">
-            
-            
+
+
             <t>
               This threat is REQUIRED to be mitigated by the security
               solution; see <xref target="eavesdrop-client"/>.
             </t>
 
           </section>
-          
+
           <section title="Threat 6: Traffic Analysis">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security
@@ -723,11 +723,11 @@
             <t>
               <vspace blankLines="100"/>
             </t>
-  
+
           </section>
-          
+
         </section>
-        
+
       </section>
 
       <!-- **************************************************************** -->
@@ -787,7 +787,7 @@
         </t>
 
 <section title="Forwarding" anchor="forwarding" >
-  
+
   <t>
     In this case we study forwarding functionality of a CoAP
     forward proxy, and assume that caching is disabled.
@@ -801,13 +801,13 @@
     (see <xref target="figure-1"/>) or multiple responses for each
     request (see <xref target="figure-2"/>).
   </t>
-  
+
   <section title="Examples" >
     <t>
       Examples of the need for unique response for each request include
       alarm status retrieval and actuator command confirmation.
     </t>
-    
+
     <figure anchor="figure-1" title="Message Flow with a Unique Response for Each Request">
       <artwork align="center">
 <![CDATA[Client          Proxy          Server
@@ -820,8 +820,8 @@
   |               |               |]]>
       </artwork>
     </figure>
-    
-    
+
+
     <t>
       <list style="hanging">
         <t hangText="Example: Alarm status retrieval">
@@ -859,8 +859,8 @@
       client to the same resource, constrained node resources and bandwidth
       is saved.
     </t>
-    
-    
+
+
     <figure anchor="figure-2" title="Message Flow of Notifications of
       Linked to a Unique Request">
       <artwork align="center">
@@ -880,9 +880,9 @@
   |               |               |]]>
       </artwork>
     </figure>
-    
+
     <t>
-      
+
       <list style="hanging">
         <t hangText="Example: Secure parameter monitoring">
           <vspace blankLines="1"/>
@@ -906,12 +906,12 @@
         </t>
       </list>
     </t>
-    
+
   </section>
-  
-  
+
+
   <section anchor="FR1" title="Functional Requirement">
-    
+
     <t>
       <list style="format FR1.%d">
         <t>
@@ -927,9 +927,9 @@
       </list>
     </t>
   </section>
-  
+
   <!-- *************************************************************** -->
-  
+
   <section anchor="PR1" title="Processing Rules">
     <t>
       In this case, the desired proxy functionality is
@@ -970,9 +970,9 @@
       </list>
     </t>
   </section>
-  
-  
-  
+
+
+
   <!-- *************************************************************** -->
   <section anchor="auth-1" title="Authenticity">
 
@@ -1039,9 +1039,9 @@
         </t>
       </list>
     </t>
-    
+
   </section>
-  
+
   <!-- *************************************************************** -->
   <section anchor="conf-1" title="Confidentiality">
     <t>
@@ -1053,15 +1053,15 @@
       </list>
     </t>
   </section>
-  
+
   <!-- *************************************************************** -->
-  
-  
+
+
 </section>
 
 
 <section title="Caching">
-  
+
   <t>
     In this case we study caching: how a proxy may serve the same
     cached response to multiple clients requesting the same resource.
@@ -1072,18 +1072,18 @@
     from different clients. This saves system resources, bandwidth, and
     round-trip time.
   </t>
-  
+
   <t>
     There may be one response for each request
     (see <xref target="figure-3"/>) or multiple responses for each
     request (see <xref target="figure-observe"/>).
   </t>
-  
+
   <section title="Examples" >
     <t>
       The first example is a simple case of caching.
     </t>
-    
+
     <figure anchor="figure-3" title="Message Flow for Cached Responses">
       <artwork align="center">
 <![CDATA[Client A         Proxy           Server
@@ -1105,7 +1105,7 @@ Client B           |               |
    |               |               |]]>
       </artwork>
     </figure>
-    
+
     <t>
       <list style="hanging">
         <t hangText="Example: Caching">
@@ -1122,7 +1122,7 @@ Client B           |               |
         </t>
       </list>
     </t>
-    
+
     <t>
       In addition to multiple clients' requests being served by one
       response, each request may result in multiple responses.
@@ -1130,8 +1130,8 @@ Client B           |               |
       is that in this example multiple clients may be served
       with the same response, further saving server resources.
     </t>
-    
-    
+
+
     <figure anchor="figure-observe" title="Message Flow for Observe with Multiple Observers">
       <artwork align="center">
 <![CDATA[Client A         Proxy          Server
@@ -1180,13 +1180,13 @@ Client A           |               |
         </t>
       </list>
     </t>
-    
-    
+
+
   </section>
-  
-  
+
+
   <!-- *************************************************************** -->
-  
+
   <section anchor="FR2" title="Functional Requirements">
     <t>
       The security solution SHOULD protect requests and responses in a
@@ -1212,16 +1212,16 @@ Client A           |               |
       </list>
     </t>
   </section>
-  
+
   <!-- *************************************************************** -->
-  
+
   <section anchor="PR2" title="Processing Rules">
     <!--
     <t>
       [[TODO: Complete the processing rules]]
     </t>
     -->
-    
+
     <t>
       The proxy complies with the forwarding rules PR1.1 - 1.3
       (<xref target="PR1"/>) and the rules below.  The rules below have
@@ -1233,28 +1233,28 @@ Client A           |               |
           request and replies with that response, else it makes a
           translated request.
         </t>
-        
+
         <t>
           The proxy caches and forwards cacheable responses.  If there is
           already a response in the cache with the cache key of the
           corresponding request, then the old response in the cache is
           marked as stale.
         </t>
-        
+
         <t>
           If the proxy receives a request that contains an ETag option
           and the proxy has a fresh response with the same cache key and
           ETag, then the proxy replies to the request with a 2.03 (Valid)
           response without payload, else it forwards a translated request.
         </t>
-        
+
         <t>
           The proxy updates the Max-Age option according to the
           Max-Age associated with the resource representation it receives,
           decreasing its value to reflect the time spent in the
           cache.
         </t>
-        
+
         <t>
           If the request contains an Accept option and if there is a
           fresh response that matches the cache key for the corresponding
@@ -1264,13 +1264,13 @@ Client A           |               |
         </t>
       </list>
     </t>
-    
+
   </section>
-  
+
   <!-- *************************************************************** -->
-  
+
   <section anchor="auth-2" title="Authenticity">
-    
+
     <t>
       A request is considered authentic by the server
       (<xref target="spoofing-server"/>)
@@ -1316,16 +1316,16 @@ Client A           |               |
         <t>
           that the response is in sequence (when observing a resource).
         </t>
-        
+
       </list>
     </t>
-    
+
   </section>
-  
+
   <!-- *************************************************************** -->
-  
+
   <section anchor="conf-2" title="Confidentiality">
-    
+
     <t>
       No parts of a request are confidentiality protected
       (<xref target="eavesdrop-server"/>).
@@ -1333,17 +1333,17 @@ Client A           |               |
     <t>
       A response is considered confidentiality protected
       (<xref target="eavesdrop-server"/>) if the payload of the
-      response is confidentiality protected.      
+      response is confidentiality protected.
     </t>
     <t>
       <vspace blankLines="100"/>
     </t>
-    
+
   </section>
-  
+
   <!-- *************************************************************** -->
-  
-  
+
+
 </section>
 
 
@@ -1487,7 +1487,7 @@ Client A           |               |
               </t>
             </list>
           </t>
-          
+
           <t>
             Furthermore, there are threats related to privacy:
             <list style="symbols">
@@ -1501,7 +1501,7 @@ Client A           |               |
               </t>
             </list>
           </t>
-          
+
           <t>
             Note that "topic poisoning" -- the case of storing injected
             incorrect publications -- is covered from the point of view of
@@ -1582,10 +1582,10 @@ Client A           |               |
               generally defend against flooding attacks.
             </t>
           </section>
-          
-          
+
+
           <section title="Threat 5: Eavesdropping" anchor="eavesdrop-sub">
-            
+
             <t>
               This threat is NOT REQUIRED to be mitigated:
               The broker needs to read all parts of the request from
@@ -1600,7 +1600,7 @@ Client A           |               |
 
 
           </section>
-          
+
           <section title="Threat 6: Traffic Analysis" anchor="traffic-an-sub">
             <t>
               This threat is NOT REQUIRED to be mitigated by the security solution.
@@ -1613,16 +1613,16 @@ Client A           |               |
               traffic between the different cases, adding padding so different
               messages become indistinguishable, etc.
             </t>
-            
+
           </section>
-          
-          
+
+
 
         </section>
-        
-        
+
+
         <section title="Publisher-side">
-          
+
           <figure anchor="fig-publisher" title="The Publisher End">
             <artwork align="left">
 <![CDATA[                                 _ _ __             __________
@@ -1633,7 +1633,7 @@ Client A           |               |
                                  _ _ __|  Response |__________|]]>
             </artwork>
           </figure>
-          
+
           <t>
             The publisher sends a publication request to the broker
             and waits for a response.
@@ -1646,7 +1646,7 @@ Client A           |               |
             that the broker needs to read to perform its job, e.g.,
             the topic.
           </t>
-          
+
           <t>
             The threat of the broker measuring the size, frequency or
             distribution of publication requests is NOT REQUIRED to be
@@ -1661,20 +1661,20 @@ Client A           |               |
             A proof that the broker has notified all subscribers
             is NOT REQUIRED.
           </t>
-          
+
         </section>
-          
-          
+
+
         </section>
-        
-        
-        
+
+
+
       <!-- **************************************************************** -->
-      
+
       <section title="Solutions" anchor="pubsub-solutions">
-        
+
         <section title="Brokering">
-        
+
         <t>
           In this case we study brokering: how a broker may serve the same
           publication to multiple subscribers observing the same topic.
@@ -1685,8 +1685,8 @@ Client A           |               |
           from different subscribers. This saves system resources, bandwidth, and
           round-trip time.
         </t>
-          
-          
+
+
           <figure anchor="figure-pubsub" title="Message Flow for Publish Subscribe">
             <artwork align="center">
 <![CDATA[Subscriber A       Broker         Publisher
@@ -1744,10 +1744,10 @@ Subscriber A         |               |
               </t>
             </list>
           </t>
-          
-        
+
+
         <!-- *************************************************************** -->
-        
+
         <section anchor="FR3" title="Functional Requirements">
           <t>
             The security solution SHOULD protect subscription and publication
@@ -1764,12 +1764,12 @@ Subscriber A         |               |
             </list>
           </t>
         </section>
-        
+
         <!-- *************************************************************** -->
-        
+
         <section anchor="PR3" title="Processing Rules">
 
-          
+
           <t>
             The broker complies with the following rules:
             <list style="format PR3.%d">
@@ -1778,20 +1778,20 @@ Subscriber A         |               |
                 that of a cached publication, then the broker responds
                 with that publication.
               </t>
-              
+
               <t>
                 The broker caches and forwards publication notifications.
               </t>
-              
+
             </list>
           </t>
-          
+
         </section>
-        
+
         <!-- *************************************************************** -->
-        
+
         <section anchor="auth-3" title="Authenticity">
-          
+
           <t>
             A publication is considered authentic by the subscriber
             if the subscriber can obtain proof for all all of the following things:
@@ -1810,11 +1810,11 @@ Subscriber A         |               |
             TODO: check why this is different from the list in 3.1.1.1.
             -->
           </t>
-          
+
         </section>
-        
+
         <!-- *************************************************************** -->
-        
+
         <section anchor="conf-3" title="Confidentiality">
 
           <t>
@@ -1822,15 +1822,15 @@ Subscriber A         |               |
           </t>
 
         </section>
-        
-        <!-- *************************************************************** -->
-        
-        
-          
-        </section>
-        
 
-      
+        <!-- *************************************************************** -->
+
+
+
+        </section>
+
+
+
     </section>
 
     </section>
@@ -1853,7 +1853,7 @@ Subscriber A         |               |
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
-    
+
 
     <section title="IANA Considerations">
 
@@ -1882,7 +1882,7 @@ Subscriber A         |               |
       &RFC2119;
 
       &RFC7252;
-      
+
       &RFC7641;
 
     </references>
@@ -1892,22 +1892,22 @@ Subscriber A         |               |
       &RFC6347;
 
       &RFC7228;
-      
+
       &I-D.ietf-core-coap-pubsub;
 
       &I-D.ietf-cose-msg;
-      
+
       &I-D.mattsson-core-coap-actuators;
 
     </references>
-    
+
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
     <section title="Acknowledgments" numbered="no">
-  
+
       <!-- sorted by last name -->
       <t>
         Thanks to
@@ -1918,7 +1918,7 @@ Subscriber A         |               |
         for helpful comments and discussions that have shaped the
         document.
       </t>
-  
+
     </section>
 
   </back>
