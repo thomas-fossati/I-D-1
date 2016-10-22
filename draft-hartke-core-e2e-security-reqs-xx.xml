@@ -886,7 +886,7 @@ Client          Proxy          Server
 
           </section>
 
-          <section anchor="FR1" title="Functional Requirement">
+          <section anchor="FR1" title="Functional Requirements">
 
             <t>
               <list style="format FR1.%d">
