@@ -9,7 +9,7 @@
   <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
   <!ENTITY I-D.ietf-cose-msg SYSTEM "reference.I-D.ietf-cose-msg.xml">
   <!ENTITY I-D.mattsson-core-coap-actuators SYSTEM "reference.I-D.mattsson-core-coap-actuators.xml">
-  <!ENTITY I-D.koster-core-coap-pubsub SYSTEM "reference.I-D.koster-core-coap-pubsub.xml">
+  <!ENTITY I-D.ietf-core-coap-pubsub SYSTEM "reference.I-D.ietf-core-coap-pubsub.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -1364,7 +1364,7 @@ Client A           |               |
         Much of the concerns about proxies as described previously in this document
         also applies to other kind of intermediary nodes. In this section
         we study brokers in a publish-subscribe setting
-        <xref target="I-D.koster-core-coap-pubsub"/>.
+        <xref target="I-D.ietf-core-coap-pubsub"/>.
         The case of combining
         brokers and proxies is out of scope for this version
         of the document.
@@ -1734,7 +1734,7 @@ Subscriber A         |               |
                 reading of a temperature sensor).  Multiple subscribers are
                 interested in the current state of the topic and observe
                 the topic as specified in
-                <xref target="I-D.koster-core-coap-pubsub"/>.
+                <xref target="I-D.ietf-core-coap-pubsub"/>.
                 The goal is to keep the state observed by
                 the subscribers closely in sync with the actual state of the
                 resource at the publisher.  Another goal is to minimize the
@@ -1893,11 +1893,11 @@ Subscriber A         |               |
 
       &RFC7228;
       
+      &I-D.ietf-core-coap-pubsub;
+
       &I-D.ietf-cose-msg;
       
       &I-D.mattsson-core-coap-actuators;
-      
-      &I-D.koster-core-coap-pubsub;
 
     </references>
     
