@@ -7,9 +7,9 @@
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
+  <!ENTITY I-D.ietf-core-coap-pubsub SYSTEM "reference.I-D.ietf-core-coap-pubsub.xml">
   <!ENTITY I-D.ietf-cose-msg SYSTEM "reference.I-D.ietf-cose-msg.xml">
   <!ENTITY I-D.mattsson-core-coap-actuators SYSTEM "reference.I-D.mattsson-core-coap-actuators.xml">
-  <!ENTITY I-D.ietf-core-coap-pubsub SYSTEM "reference.I-D.ietf-core-coap-pubsub.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
