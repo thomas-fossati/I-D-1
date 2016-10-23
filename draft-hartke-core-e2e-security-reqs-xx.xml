@@ -115,14 +115,15 @@
         target="RFC7228">constrained nodes and networks</xref>. CoAP makes use
         of <xref target="RFC6347">Datagram Transport Layer Security
         (DTLS)</xref> for security. At the same time, CoAP relies on proxies for
-        scalability and efficiency; proxies can reduce response time and network
-        bandwidth use by serving responses from a cache or enable clients to
-        make requests that they otherwise could not make.
+        scalability and efficiency. Proxies reduce response time and network
+        bandwidth use by serving responses from a shared cache or enable clients
+        to make requests that these otherwise could not make.
       </t>
 
       <t>
         CoAP proxies need to perform a number of operations on requests and
-        responses to fulfill their purpose, which requires DTLS to be terminated
+        responses to fulfill their purpose, which requires the DTLS security
+        associations to be terminated
         at each proxy. The proxies therefore do not only have access to the data
         required for performing the desired functionality, but are also able to
         eavesdrop on or manipulate any part of the CoAP payload and metadata
@@ -169,9 +170,11 @@
 
       <t>
         This document analyses security aspects of sensor and actuator
-        communications over CoAP that involve proxies and other similar
-        intermediaries. The analysis is based on the identification of assets
-        associated with this communication and considering the potential threats
+        communications over CoAP that involve proxies (<xref
+        target="proxying"/>) and publish-subscribe brokers (<xref
+        target="publish-subscribe"/>). The analysis is based on the
+        identification of assets
+        associated with these communications and considering the potential threats
         posed by proxies to these assets. The threat analysis provides the basis
         for deriving security requirements that a solution for CoAP end-to-end
         security should meet.
@@ -217,7 +220,7 @@
 
         <t>
           Even if an intermediary is trustworthy, it may be an attractive target
-          for an attack itself, since such nodes are aggregation points for
+          for an attack, since such nodes are aggregation points for
           message flows and may be an easier target from the Internet than the
           sensor and actuator nodes residing behind them. An intermediary may
           become subject to intrusion or be infected by malware and perform the
@@ -226,10 +229,12 @@
         </t>
 
         <t>
-          The scope of this document is on threats from intermediaries to
+          The focus of this document is on threats from intermediaries to
           interactions between two CoAP endpoints.
           <!--Threats resulting from collusion between multiple
           intermediaries are also out of scope.-->
+          Other types of threats, for example, attacks involving physical access
+          to the CoAP-speaking devices, are out of scope of this document.
         </t>
 
         <t>
@@ -302,20 +307,30 @@
 ]]></artwork></figure>
 
       <t>
-        The proxy receives a request from the client and sends a response back
-        to the client. There are two ways for the proxy to do this:
+        Generally speaking, the functionality of a proxy is to receive a request
+        from a client and to send a response back to that client. There are two
+        ways for the proxy to satisfy the request:
         <list style="symbols">
           <t>
-            The proxy constructs and sends a request to the server, receives a
-            response from the server and uses the received data to construct the
-            response to the client.
+            The proxy constructs and sends a request to the server indicated in
+            the client's request, receives a response from that server and uses
+            the received data to construct the response to the client.
           </t>
           <t>
             The proxy uses cached data to construct the response to the client.
           </t>
         </list>
-        In both cases, the proxy needs to read some parts of the request from
-        the client and the response from the server to accomplish its task.
+        In both cases, the proxy needs to read some parts both of the request
+        from the client and the response from the server to accomplish its task.
+      </t>
+
+      <t>
+        The following subsections analyse the threats posed by a proxy from the
+        perspective of the client on the one hand (<xref target="sec-client"/>)
+        and the perspective of the server on the other hand (<xref
+        target="sec-server"/>). <xref target="proxy-solutions"/> then presents
+        the design space for possible security solutions to mitigate the
+        threats.
       </t>
 
       <t>
@@ -419,13 +434,12 @@
             <t>
               With one exception (see below), this threat is REQUIRED to be
               mitigated by the security solution: the client MUST verify that
-              the response is an <spanx>authentic response</spanx> before
-              processing it.
+              the response is an "authentic response" before processing it.
             </t>
 
             <t>
               The definition of an "authentic response" depends on the desired
-              proxy functionality and protection level (<xref
+              proxy functionality and protection level (see <xref
               target="proxy-solutions"/>), but usually means that the client can
               obtain proof for some or all of the following things:
               <list style="symbols">
@@ -441,14 +455,20 @@
             </t>
 
             <t>
-              Note that a CoAP proxy is specified to return an error response
-              (such as 5.02 Bad Gateway or 5.04 Gateway Timeout) when it
-              encounters an error condition. Since the condition occurs at the
-              proxy and not at the origin server, the response will not be an
-              "authentic response" according to the above definition. Thus a
-              client cannot tell if the proxy sends the response according to
-              specification or if it spoofs the response. This threat is NOT
-              REQUIRED to be mitigated by the security solution.
+              <list style="hanging">
+                <t hangText="Exception:">
+                  A CoAP proxy is specified to return an error response (such as
+                  5.02 Bad Gateway or 5.04 Gateway Timeout) when it encounters
+                  an error condition. Since the condition occurs at the proxy
+                  and not at the origin server, the response will not be an
+                  "authentic response" according to the above definition. (A
+                  proxy cannot obtain a proof that the server is unreachable
+                  from an unreachable server.) Thus, a client cannot tell if the
+                  proxy sends the response according to specification or if it
+                  spoofs the response. This threat is NOT REQUIRED to be
+                  mitigated by the security solution.
+                </t>
+              </list>
             </t>
 
           </section>
@@ -480,11 +500,11 @@
 
             <t>
               A CoAP client is specified to reject any response that it does not
-              expect. This can happen before the client verifies if the response
-              is authentic. Therefore a flood of responses is primarily a threat
-              to the system resources of the client, in particular to its
-              energy. This threat is NOT REQUIRED to be mitigated by the
-              security solution in particular, but a client SHOULD generally
+              expect. This can happen before the client verifies whether the
+              response is authentic. Therefore, a flood of responses is
+              primarily a threat to the system resources of the client, in
+              particular to its energy. This threat is NOT REQUIRED to be
+              mitigated by the security solution, but a client SHOULD generally
               defend against flooding attacks.
             </t>
 
@@ -505,7 +525,7 @@
               analyses which parts can be encrypted depending on the desired
               proxy functionality and protection level. In general, a security
               solution SHOULD confidentiality protect all data that is not
-              needed to be read by the proxy to accomplish its task.
+              needed by the proxy to accomplish its task.
             </t>
 
             <t>
@@ -539,7 +559,7 @@
 
         </section>
 
-        <section title="Server-side">
+        <section title="Server-side" anchor="sec-server">
 
 <figure anchor="fig-server" title="The Server End"><artwork align="left"><![CDATA[
                                  _ _ __             __________
@@ -603,8 +623,8 @@
 
           <t>
             A proxy eavesdropping or inferring information from messages it
-            operates on has an impact on a server in the same way as on a client
-            (<xref target="sec-client"/>):
+            operates on has an impact on a server in the same way as on a
+            client:
             <list style="symbols">
               <t>
                 (Threat 5:) The proxy eavesdrops on the data in the response
@@ -642,12 +662,16 @@
             </t>
 
             <t>
-              Note that a CoAP proxy may make certain requests (e.g., to
-              validate cached data) without acting on behalf of a client. Since
-              such a request does not originate from a client, the server cannot
-              tell if the proxy sends the request according to specification or
-              if it spoofs the request. It is up to the security solution how
-              this issue is addressed.
+              <list style="hanging">
+                <t hangText="Exception:">
+                  A CoAP proxy may make certain requests without acting on
+                  behalf of a client (e.g., to validate cached data). Since such
+                  a request does not originate from a client, the server cannot
+                  tell if the proxy sends the request according to specification
+                  or if it spoofs the request. It is up to the security solution
+                  how this issue is addressed.
+                </t>
+              </list>
             </t>
 
           </section>
@@ -716,8 +740,8 @@
           A security solution has to find a trade-off between desired proxy
           functionality (such as caching) and the provided level of protection.
           From this trade-off results the definition of what constitutes an
-          authentic request or response and when a request or response is
-          considered confidentiality protected.
+          "authentic request" or "authentic response" and when a request or
+          response is considered confidentiality protected.
         </t>
 
         <t>
@@ -741,7 +765,7 @@
           and processing rules of the proxy and analyses the required
           authenticity and confidentiality properties of requests and responses.
           Due to space constraints, the analysis is limited to the CoAP header
-          fields, the payload, and the request and response options shown in
+          fields, the payload and the request and response options shown in
           <xref target="table-1"/>.
         </t>
 
@@ -812,7 +836,7 @@ Client          Proxy          Server
                   the current alarm status and not a cached or spoofed response
                   to the same resource, it must be able to verify that the
                   received response is a response to this particular request
-                  made by the client. Therefore the response must be securely
+                  made by the client. Therefore, the response must be securely
                   linked to the request.
                 </t>
                 <t hangText="Example: Actuation confirmation">
@@ -828,7 +852,7 @@ Client          Proxy          Server
                   e.g., whether the request was performed or not. Again, the
                   client wants to ensure that the response is reflecting the
                   result of this particular actuation request made by the client
-                  and not a cached or spoofed response. Therefore the response
+                  and not a cached or spoofed response. Therefore, the response
                   must be securely linked to the request.
                 </t>
               </list>
@@ -1321,11 +1345,11 @@ Client A           |               |
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Publish-Subscribe">
+    <section title="Publish-Subscribe" anchor="publish-subscribe">
 
       <t>
         Much of the concerns about proxies as described previously in this
-        document also applies to other kind of intermediary nodes. In this
+        document also applies to other kinds of intermediary nodes. In this
         section we study brokers in a publish-subscribe setting <xref
         target="I-D.ietf-core-coap-pubsub"/>. The case of combining brokers and
         proxies is out of scope for this version of the document.
@@ -1336,10 +1360,10 @@ Client A           |               |
         the following broker operations:
         <list style="symbols">
           <t>
-            The broker receives a request for a topic from the subscriber.
+            The broker receives a request for a topic from a subscriber.
           </t>
           <t>
-            The broker receives a request for a publication to a topic from the
+            The broker receives a request for a publication to a topic from a
             publisher and forwards the request to the subscribers of the topic.
           </t>
         </list>
@@ -1470,8 +1494,8 @@ Client A           |               |
             <t>
               With one exception (see below), this threat is REQUIRED to be
               mitigated by the security solution: the subscriber MUST verify
-              that a response is an <spanx>authentic publication</spanx> before
-              processing it.
+              that a response is an "authentic publication" before processing
+              it.
             </t>
 
             <t>
@@ -1492,15 +1516,19 @@ Client A           |               |
             </t>
 
             <t>
-              Note that a CoAP server like the broker is specified to return an
-              error response (such as 4.04 Not Found or 5.03 Service
-              Unavailable) when it encounters an error condition. Since the
-              condition occurs at the broker and not at the publisher, the
-              response will not be an "authentic response" according to the
-              above definition. Thus a subscriber cannot tell if the broker
-              sends the error response according to specification or if it
-              spoofs the response. This threat is NOT REQUIRED to be mitigated
-              by the security solution.
+              <list style="hanging">
+                <t hangText="Exception:">
+                  A CoAP server like the broker is specified to return an error
+                  response (such as 4.04 Not Found or 5.03 Service Unavailable)
+                  when it encounters an error condition. Since the condition
+                  occurs at the broker and not at the publisher, the response
+                  will not be an "authentic response" according to the above
+                  definition. Thus, a subscriber cannot tell if the broker sends
+                  the error response according to specification or if it spoofs
+                  the response. This threat is NOT REQUIRED to be mitigated by
+                  the security solution.
+                </t>
+              </list>
             </t>
 
           </section>
@@ -1532,11 +1560,11 @@ Client A           |               |
             <t>
               A CoAP client like the subscriber is specified to reject any
               response that it does not expect. This can happen before the
-              subscriber verifies if the response is authentic. Therefore a
+              subscriber verifies if the response is authentic. Therefore, a
               flood of responses is primarily a threat to the system resources
               of the client, in particular to its energy. This threat is NOT
-              REQUIRED to be mitigated by the security solution in particular,
-              but a subscriber SHOULD generally defend against flooding attacks.
+              REQUIRED to be mitigated by the security solution, but a
+              subscriber SHOULD generally defend against flooding attacks.
             </t>
 
           </section>
@@ -1611,8 +1639,8 @@ Client A           |               |
           <t>
             The broker is in full control of the response and may therefore
             arbitrarily spoof, delay, or withhold it. This threat is NOT
-            REQUIRED to be mitigated. A proof that the broker has notified all
-            subscribers is NOT REQUIRED.
+            REQUIRED to be mitigated. For example, a proof that the broker has
+            notified all subscribers is NOT REQUIRED.
           </t>
 
         </section>
