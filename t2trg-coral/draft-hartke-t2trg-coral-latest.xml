@@ -440,9 +440,10 @@
 
         <t>
           The Deletable Option, when present in a link, defines a form that can
-          be used to delete the link target. The context and target of that form
-          are the link target, the submission method is DELETE and no
-          representation must be submitted.
+          be used to delete the link target. The form relation type of that form
+          is "delete", the context and target are identical to the link target,
+          the submission method is DELETE and no representation must be
+          submitted.
         </t>
 
       </section>
@@ -593,10 +594,11 @@
 
         <t>
           The Updatable Option, when present in a link, defines a form that can
-          be used to update the link target. The context and target of that form
-          are the link target, the submission method is PUT and the content
-          format of the submitted representation must be one of the formats
-          indicated by the Format Option in the link.
+          be used to update the link target. The form relation type of that form
+          is "update", the context and target are identical to the link target,
+          the submission method is PUT and the content format of the submitted
+          representation must be one of the formats indicated by the Format
+          Option in the link.
         </t>
 
       </section>
