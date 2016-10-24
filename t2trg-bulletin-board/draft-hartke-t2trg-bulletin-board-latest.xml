@@ -71,12 +71,12 @@
     <section title="Introduction">
 
       <t>
-        <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> defines a
-        "bulletin board" application that can be used for sharing the thing
-        descriptions of sensor and actuator nodes. This document generalizes the
-        bulletin board to support representations in any media type and defines
-        means for creating, reading, observing, updating, deleting and finding
-        items in a bulletin board.
+        The <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> draft
+        defines a "bulletin board" application that can be used for sharing the
+        thing descriptions of sensor and actuator nodes. This document
+        generalizes the bulletin board to support representations in any media
+        type and defines means for creating, reading, observing, updating,
+        deleting and finding items in a bulletin board.
       </t>
 
       <t>
@@ -88,31 +88,32 @@
       </t>
 
       <t>
-        Searching for items is a powerful mechanism for retrieving a subset of
-        items from a bulletin board. In CoRE Lighting, a configurator has to
-        download the whole set of thing descriptions, filter the set and
-        configure compatible devices. It may be more efficient to filter the set
-        at the bulletin board server. To make this work with any media type, a
-        search request needs to specify both the media type of the desired items
-        and a media type-specific filter query.
+        Findings items is a powerful mechanism for retrieving a subset of items
+        from a bulletin board. In CoRE Lighting, a configurator has to download
+        the whole set of thing descriptions, filter the set and configure
+        compatible devices. It may be more efficient to filter the set at the
+        bulletin board server. To make this work with any media type, a search
+        request needs to specify both the media type of the desired items and a
+        media type-specific filter query.
       </t>
 
       <t>
         The generalized bulletin board is presented as a <xref
-        target="I-D.hartke-core-apps">CoRE Application</xref>. That is, the
-        focus of the application interface is on the media types used in the
-        bulletin board application and interactions are driven by links and
+        target="I-D.hartke-core-apps">CoRE Application Description</xref>. That
+        is, the focus of the application interface is on the media types used in
+        the bulletin board application and interactions are driven by links and
         forms.
       </t>
 
       <t>
-        The bulletin board is an instance of the well-known collection resource
-        pattern. As such, it could be used in places where a more specific
+        The bulletin board is an instance of the well-known REST collection
+        pattern. As such, it might be used in places where a more specific
         instance of the collection pattern is currently used, such as the <xref
         target="I-D.ietf-core-coap-pubsub">Publish-Subscribe Broker</xref> or
-        the <xref target="I-D.ietf-core-resource-directory">Resource
-        Directory</xref>. <xref target="proof-of-concept"/> this direction and
-        provides a proof-of-concept.
+        the <xref target="I-D.ietf-core-resource-directory">CoRE Resource
+        Directory</xref>. <xref target="proof-of-concept"/> explores this
+        direction and provides a proof-of-concept mapping from publish-subscribe
+        broker and resource directory to bulletin boards.
       </t>
 
       <section title="Terminology">
@@ -153,24 +154,22 @@
           number of published items (<xref target="fig-bb"/>).
         </t>
 
-        <figure anchor="fig-bb" title="A Bulletin Board with a Number of Items">
-          <artwork align="center">
-<![CDATA[          __
-Bulletin /  \
-   Board \__/         __
-           |_________/  \ Item 1
-           |         \__/
-           |          __
-           |_________/  \ Item 2
-           |         \__/
-           |                .
-           |                .
-           |                .
-           |          __
-           |_________/  \ Item N
-                     \__/]]>
-          </artwork>
-        </figure>
+<figure anchor="fig-bb" title="A Bulletin Board with a Number of Published Items"><artwork align="center"><![CDATA[
+          ___
+Bulletin /   \
+   Board \___/         ___
+           |__________/   \ Item 1
+           |   item   \___/
+           |           ___
+           |__________/   \ Item 2
+           |   item   \___/
+           :                  .
+           :                  .
+           :                  .
+           |           ___
+           |__________/   \ Item N
+               item   \___/
+]]></artwork></figure>
 
         <t>
           <list style="hanging">
@@ -178,18 +177,22 @@ Bulletin /  \
               <vspace blankLines="1"/>
               A bulletin board is a Web application intended for the posting of
               public messages, for example, to share thing descriptions,
-              announce services or provide information. Things can leave and
-              erase messages for other things to read and see.
+              announce services or provide information. Sensor and actuator
+              nodes can leave and erase messages for other nodes to read and
+              see.
             </t>
             <t>
-              A bulletin board represents a collection of items. Its
-              representation mainly consists of links to the item resources
-              using the "item" link relation type. However, it can also include
-              (complete or partial) representations of those item resources.
+              A bulletin board resource is a collection of published items. Its
+              representation consists mainly of links to the item resources
+              using the <xref target="RFC6573">"item" link relation type</xref>.
+              To reduce the number of round-trips, it can also embed (complete
+              or partial) representations of those item resources.
             </t>
             <t>
-              For a start, a bulletin board has only a depth of one level; this
-              could be extended to multiple levels in a future version.
+              For a start, a bulletin board has only a depth of one level; i.e.,
+              all published items are organized under the bulletin board
+              resource. This could be extended to multiple levels in a future
+              revision of this draft.
             </t>
             <t>
               Bulletin board representations are formatted in the <xref
@@ -198,7 +201,7 @@ Bulletin /  \
             </t>
             <t hangText="Item">
               <vspace blankLines="1"/>
-              An item represents a member of the collection.
+              A bulletin board item is a member of the collection.
             </t>
             <t>
               Item representations can in principle be formatted in any media
@@ -215,8 +218,8 @@ Bulletin /  \
         <t>
           The interaction model consists of eight possible interactions with a
           bulletin board: discovering and reading the bulletin board, and
-          creating, reading, observing, updating, deleting and finding items
-          in the bulletin board.
+          creating, reading, observing, updating, deleting and finding published
+          items in the bulletin board.
         </t>
 
         <t>
@@ -257,18 +260,19 @@ Bulletin /  \
             <t hangText="Update Item">
               <vspace blankLines="1"/>
               For each item in a bulletin board, the representation of the
-              bulletin board MAY indicate that the item is updatable. If an item
-              is updatable, a form with the "update" form relation type is
-              implied. Submitting this form updates the item in the bulletin
-              board to the submitted representation.
+              bulletin board MAY indicate that the item is updatable using the
+              CoRAL Updatable Option. If an item is updatable, a form with the
+              "update" form relation type is implied. Submitting this form
+              updates the item in the bulletin board to the submitted
+              representation.
             </t>
             <t hangText="Delete Item">
               <vspace blankLines="1"/>
               For each item in a bulletin board, the representation of the
-              bulletin board MAY indicate that the item is deletable. If an item
-              is deletable, a form with the "delete" form relation type is
-              implied. Submitting this form deletes the item from the bulletin
-              board.
+              bulletin board MAY indicate that the item is deletable using the
+              CoRAL Deletable Option. If an item is deletable, a form with the
+              "delete" form relation type is implied. Submitting this form
+              deletes the item from the bulletin board.
             </t>
             <t hangText="Find Items">
               <vspace blankLines="1"/>
@@ -287,7 +291,7 @@ Bulletin /  \
         <t>
           <list style="hanging">
             <t hangText="Application name:">
-              <vspace/>Bulletin Board 1.0
+              <vspace/>Thing-to-Thing Bulletin Board 1.0
             </t>
             <t hangText="URI schemes:">
               <vspace/><xref target="RFC7252">coap</xref>
@@ -407,8 +411,8 @@ Bulletin /  \
       <t>
         There are a number of specifications (CoRE Lighting, CoAP
         Publish-Subscribe Broker, CoRE Resource Directory and CoRE Mirror
-        Server) that implement variations of the collection resource pattern.
-        This section shows how they could be implemented using a bulletin board
+        Server) that implement variations of the collection pattern. This
+        section shows how they might be implemented using a bulletin board
         (without trying to replicate them in full detail).
       </t>
 
@@ -425,30 +429,32 @@ Bulletin /  \
 
 <figure anchor="fig-td" title="A Bulletin Board Storing Thing Descriptions"><artwork align="center"><![CDATA[
 +----------------------------------+
-|    __                            |
-|   /  \ Bulletin Board            |
-|   \__/         __                |
-|     |_________/  \ Thing         |    +------------------------+
-|     |   item  \__/ Description   |    |    __                  |
-|     |           |________________|____|___/  \ Light Bulb      |
-|     |                    config  |    |   \__/ Configuration   |
-|     |                            |    |                        |
-|     |          __                |    +------------------------+
-|     |_________/  \ Thing         |    +------------------------+
-|         item  \__/ Description   |    |    __                  |
-|                 |________________|____|___/  \ Light Remote    |
-|                           about  |    |   \__/ Control State   |
+|   ___                            |
+|  /   \ Bulletin Board            |
+|  \___/         ___               |
+|    |__________/   \ Thing        |    +------------------------+
+|    |   item   \___/ Description  |    |   ___                  |
+|    |            |________________|____|__/   \ Light Bulb      |
+|    |                     config  |    |  \___/ Configuration   |
+|    |                             |    |                        |
+|    |           ___               |    +------------------------+
+|    |__________/   \ Thing        |    +------------------------+
+|        item   \___/ Description  |    |   ___                  |
+|                 |________________|____|__/   \ Light Remote    |
+|                           about  |    |  \___/ Control State   |
 |                                  |    |                        |
 +----------------------------------+    +------------------------+
 ]]></artwork></figure>
 
         <t>
-          <xref target="fig-td"/> shows a bulletin board with two thing
-          descriptions. The first thing description describes a light bulb and
-          has a link with the "config" link relation type pointing to the
-          configuration of the light bulb. The second thing description
-          describes a light remote control (LRC) and has a link with the "about"
-          link relation type pointing the observable state of the LRC.
+          Matching the example in Section 5.2.1 of <xref
+          target="I-D.hartke-core-lighting"/>, <xref target="fig-td"/> shows a
+          bulletin board with two thing descriptions. The first thing
+          description describes a light bulb and has a link with the "config"
+          link relation type pointing to the configuration of the light bulb.
+          The second thing description describes a light remote control (LRC)
+          and has a link with the "about" link relation type pointing the
+          observable state of the LRC.
         </t>
 
         <t>
@@ -461,21 +467,24 @@ Bulletin /  \
 <figure anchor="fig-bbexample" title="A Bulletin Board Representation Embedding Two Thing Descriptions"><artwork align="center"><![CDATA[
  ______________________________
 |                              |
-|  Form rel = 1 (create-item)  |
-|  - method = 2 (POST)         |
-|  - accept = 65200            |
+|  Form                        |
+|   relation: 1 (create-item)  |
+|   method: 2 (POST)           |
+|   accept: 65200              |
 |______________________________|
 |                              |
-|  Link rel = 30 (item)        |
-|  - format = 65200            |
+|  Link                        |
+|   relation: 33 (item)        |
+|   format: 65200              |
 |   ________________________   |
 |  |                        |  |
 |  |  Thing Description 1   |  |
 |  |________________________|  |
 |______________________________|
 |                              |
-|  Link rel = 30 (item)        |
-|  - format = 65200            |
+|  Link                        |
+|   relation: 33 (item)        |
+|   format: 65200              |
 |   ________________________   |
 |  |                        |  |
 |  |  Thing Description 2   |  |
@@ -489,12 +498,12 @@ Bulletin /  \
 
         <t>
           <xref target="I-D.ietf-core-coap-pubsub">CoAP
-          Publish-Subscribe</xref> provides means for nodes with limited
-          reachability to publish and receive data without having to be
-          reachable at the same time. The basic operation involves clients
+          Publish-Subscribe</xref> provides means for sensor and actuator nodes
+          with limited reachability to publish and receive data without having
+          to be reachable at the same time. The basic operation involves clients
           called "publishers" updating "topic" resources at a server called the
-          "broker", and clients called "subscribers" observing these topic
-          resources (see <xref target="fig-broker"/>).
+          "broker", and clients called "subscribers" observing these resources
+          (<xref target="fig-broker"/>).
         </t>
 
 <figure anchor="fig-broker" title="CoAP Publish-Subscribe"><artwork align="center"><![CDATA[
@@ -506,27 +515,27 @@ Bulletin /  \
 ]]></artwork></figure>
 
         <t>
-          A broker could be implemented as a bulletin board by creating the
-          topics as resources on the bulletin board server and linking to them
-          from the bulletin board resource with the 'item' link relation type
+          A broker might be implemented as a bulletin board by creating the
+          topics as resources on the bulletin board server and linking to these
+          from the bulletin board resource with the "item" link relation type
           (<xref target="fig-pubsub"/>). Hypermedia controls in the bulletin
-          board representation would enable clients to create, read/observe,
-          update and delete topic resources.
+          board representation enable publishers to create, update and delete
+          topics, and subscribers to read/observe these topics.
         </t>
 
 <figure anchor="fig-pubsub" title="A Bulletin Board Acting as a Publish-Subscribe Broker"><artwork align="center"><![CDATA[
 +----------------------------------+
-|    __                            |
-|   /  \ Bulletin Board            |
-|   \__/         __                |
-|     |_________/  \ Topic A       |
-|     |   item  \__/               |
-|     |          __                |
-|     |_________/  \ Topic B       |
-|     |   item  \__/               |
-|     |          __                |
-|     |_________/  \ Topic C       |
-|         item  \__/               |
+|    ___                           |
+|   /   \ Bulletin Board           |
+|   \___/         ___              |
+|     |__________/   \ Topic A     |
+|     |   item   \___/             |
+|     |           ___              |
+|     |__________/   \ Topic B     |
+|     |   item   \___/             |
+|     |           ___              |
+|     |__________/   \ Topic C     |
+|         item   \___/             |
 |                                  |
 +----------------------------------+
 ]]></artwork></figure>
@@ -569,26 +578,27 @@ Bulletin /  \
           A <xref target="I-D.ietf-core-resource-directory">CoRE Resource
           Directory</xref> hosts descriptions of resources held on other
           servers, allowing lookups to be performed for those resources. The
-          descriptions are represented as links in <xref target="RFC6690">CoRE
-          Link Format</xref> that are annotated with a variety of link
-          attributes providing the type of and hints about the linked resources.
+          descriptions are represented as Web links in <xref
+          target="RFC6690">CoRE Link Format</xref> that are annotated with a
+          variety of link attributes providing the type of and hints about the
+          linked resources.
         </t>
 
         <section title="Variant A: Bulletin Board Links to Resources">
 
 <figure anchor="fig-rd1" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
 +----------------------------------+
-|    __                            |
-|   /  \ Bulletin Board            |    +------------------------+
-|   \__/                           |    |    __                  |
-|     |____________________________|____|___/  \ Resource X      |
-|     |                     hosts  |    |   \__/                 |
-|     |                            |    |                        |
-|     |                            |    +------------------------+
-|     |                            |    +------------------------+
-|     |                            |    |    __                  |
-|     |____________________________|____|___/  \ Resource Y      |
-|                           hosts  |    |   \__/                 |
+|   ___                            |
+|  /   \ Bulletin Board            |    +------------------------+
+|  \___/                           |    |   ___                  |
+|    |_____________________________|____|__/   \ Resource X      |
+|    |                       item  |    |  \___/                 |
+|    |                             |    |                        |
+|    |                             |    +------------------------+
+|    |                             |    +------------------------+
+|    |                             |    |   ___                  |
+|    |_____________________________|____|__/   \ Resource Y      |
+|                            item  |    |  \___/                 |
 |                                  |    |                        |
 +----------------------------------+    +------------------------+
 ]]></artwork></figure>
@@ -633,19 +643,19 @@ Bulletin /  \
 
 <figure anchor="fig-rd2" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
 +----------------------------------+
-|    __                            |
-|   /  \ Bulletin Board            |
-|   \__/         __                |
-|     |_________/  \ Link          |    +------------------------+
-|     |   item  \__/ Format        |    |    __                  |
-|     |           |________________|____|___/  \ Resource A      |
-|     |                     hosts  |    |   \__/                 |
-|     |                            |    |                        |
-|     |          __                |    +------------------------+
-|     |_________/  \ Link          |    +------------------------+
-|         item  \__/ Format        |    |    __                  |
-|                 |________________|____|___/  \ Resource B      |
-|                           hosts  |    |   \__/                 |
+|   ___                            |
+|  /   \ Bulletin Board            |
+|  \___/         ___               |
+|    |__________/   \ Link Format  |    +------------------------+
+|    |    item  \___/ Resource     |    |   ___                  |
+|    |            |________________|____|__/   \ Resource A      |
+|    |                      hosts  |    |  \___/                 |
+|    |                             |    |                        |
+|    |           ___               |    +------------------------+
+|    |__________/   \ Link Format  |    +------------------------+
+|         item  \___/ Resource     |    |   ___                  |
+|                 |________________|____|__/   \ Resource B      |
+|                           hosts  |    |  \___/                 |
 |                                  |    |                        |
 +----------------------------------+    +------------------------+
 ]]></artwork></figure>
