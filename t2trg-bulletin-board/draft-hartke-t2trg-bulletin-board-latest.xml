@@ -163,9 +163,9 @@ Bulletin /   \
            |           ___
            |__________/   \ Item 2
            |   item   \___/
-           :                  .
-           :                  .
-           :                  .
+           |                  .
+           |                  .
+           |                  .
            |           ___
            |__________/   \ Item N
                item   \___/
@@ -195,7 +195,7 @@ Bulletin /   \
               revision of this draft.
             </t>
             <t>
-              Bulletin board representations are formatted in the <xref
+              Bulletin board representations are formatted in CoRAL in the <xref
               target="I-D.hartke-t2trg-coral">"application/coral" media
               type</xref>.
             </t>
@@ -459,12 +459,12 @@ Bulletin /   \
 
         <t>
           Thing descriptions are represented in the
-          "application/thing-description+json" media type (content format
-          65200). A bulletin board representation thus could look as shown in
-          <xref target="fig-bbexample"/>.
+          "application/thing-description+json" media type (content format 65200
+          in the example). A bulletin board representation thus could look as
+          shown in <xref target="fig-bbexample"/>.
         </t>
 
-<figure anchor="fig-bbexample" title="A Bulletin Board Representation Embedding Two Thing Descriptions"><artwork align="center"><![CDATA[
+<figure anchor="fig-bbexample" title="A Bulletin Board Representation With Two Thing Descriptions"><artwork align="center"><![CDATA[
  ______________________________
 |                              |
 |  Form                        |
@@ -473,7 +473,7 @@ Bulletin /   \
 |   accept: 65200              |
 |______________________________|
 |                              |
-|  Link                        |
+|  Literal                     |
 |   relation: 33 (item)        |
 |   format: 65200              |
 |   ________________________   |
@@ -482,7 +482,7 @@ Bulletin /   \
 |  |________________________|  |
 |______________________________|
 |                              |
-|  Link                        |
+|  Literal                     |
 |   relation: 33 (item)        |
 |   format: 65200              |
 |   ________________________   |
@@ -507,11 +507,11 @@ Bulletin /   \
         </t>
 
 <figure anchor="fig-broker" title="CoAP Publish-Subscribe"><artwork align="center"><![CDATA[
- ____________            __________            ___________
-|            |--------->|          |          |           |
-| Subscriber |          |  Broker  |<---------| Publisher |
-|  (Client)  |          | (Server) |--------->| (Client)  |
-|____________|<---------|__________|          |___________|
+ ____________            ____________            ____________
+|            |--------->|            |          |            |
+|  Publisher |<---------|   Broker   |          | Subscriber |
+|  (Client)  |          |  (Server)  |<---------|  (Client)  |
+|____________|          |____________|--------->|____________|
 ]]></artwork></figure>
 
         <t>
@@ -524,20 +524,20 @@ Bulletin /   \
         </t>
 
 <figure anchor="fig-pubsub" title="A Bulletin Board Acting as a Publish-Subscribe Broker"><artwork align="center"><![CDATA[
-+----------------------------------+
-|    ___                           |
-|   /   \ Bulletin Board           |
-|   \___/         ___              |
-|     |__________/   \ Topic A     |
-|     |   item   \___/             |
-|     |           ___              |
-|     |__________/   \ Topic B     |
-|     |   item   \___/             |
-|     |           ___              |
-|     |__________/   \ Topic C     |
-|         item   \___/             |
-|                                  |
-+----------------------------------+
++------------------------------+
+|   ___                        |
+|  /   \ Bulletin Board        |
+|  \___/         ___           |
+|    |__________/   \ Topic A  |
+|    |   item   \___/          |
+|    |           ___           |
+|    |__________/   \ Topic B  |
+|    |   item   \___/          |
+|    |           ___           |
+|    |__________/   \ Topic C  |
+|        item   \___/          |
+|                              |
++------------------------------+
 ]]></artwork></figure>
 
         <texttable anchor="mapping-pubsub" title="Mapping of Pub/Sub Interactions to Bulletin Board">
@@ -653,17 +653,17 @@ Bulletin /   \
 
 <figure anchor="fig-mirror" title="A Bulletin Board Acting as a Mirror Server"><artwork align="center"><![CDATA[
 +----------------------------------+
-|    __                            |
-|   /  \ Bulletin Board            |
-|   \__/         __                |
-|     |_________/  \ Mirrored      |
-|     |   item  \__/ Resource A    |
-|     |          __                |
-|     |_________/  \ Mirrored      |
-|     |   item  \__/ Resource B    |
-|     |          __                |
-|     |_________/  \ Mirrored      |
-|         item  \__/ Resource C    |
+|   ___                            |
+|  /   \ Bulletin Board            |
+|  \___/          ___              |
+|    |___________/   \ Mirrored    |
+|    |    item   \___/ Resource A  |
+|    |            ___              |
+|    |___________/   \ Mirrored    |
+|    |    item   \___/ Resource B  |
+|    |            ___              |
+|    |___________/   \ Mirrored    |
+|         item   \___/ Resource C  |
 |                                  |
 +----------------------------------+
 ]]></artwork></figure>
