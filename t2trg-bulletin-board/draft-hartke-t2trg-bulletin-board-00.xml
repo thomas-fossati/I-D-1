@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="us-ascii"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
+  <!ENTITY RFC6573 SYSTEM "reference.RFC.6573.xml">
+  <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
+  <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
+  <!ENTITY I-D.hartke-core-apps SYSTEM "reference.I-D.hartke-core-apps.xml">
+  <!ENTITY I-D.hartke-core-lighting SYSTEM "reference.I-D.hartke-core-lighting.xml">
+  <!ENTITY I-D.hartke-t2trg-coral SYSTEM "reference.I-D.hartke-t2trg-coral.xml">
+  <!ENTITY I-D.ietf-core-coap-pubsub SYSTEM "reference.I-D.ietf-core-coap-pubsub.xml">
+  <!ENTITY I-D.ietf-core-resource-directory SYSTEM "reference.I-D.ietf-core-resource-directory.xml">
+  <!ENTITY I-D.vial-core-mirror-server SYSTEM "reference.I-D.vial-core-mirror-server.xml">
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+
+<?rfc compact="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="2"?>
+
+<rfc category="exp" docName="draft-hartke-t2trg-bulletin-board-00" ipr="trust200902">
+
+  <front>
+
+    <title>Thing-to-Thing Bulletin Board</title>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>D-28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
+      </address>
+    </author>
+
+    <date />
+
+    <workgroup>Thing-to-Thing Research Group</workgroup>
+
+    <abstract>
+
+      <t>
+        A Thing-to-Thing Bulletin Board is a RESTful, hypermedia-driven Web
+        application that can be used in Thing-to-Thing communication to publish
+        information such as thing descriptions, configurations, resource
+        descriptions or sleep schedules at a central location.
+      </t>
+
+    </abstract>
+
+  </front>
+
+  <middle>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Introduction">
+
+      <t>
+        The <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> draft
+        defines a "bulletin board" application that can be used for sharing the
+        thing descriptions of sensor and actuator nodes. This document
+        generalizes the bulletin board to support representations in any media
+        type and defines means for creating, reading, observing, updating,
+        deleting and finding items in a bulletin board.
+      </t>
+
+      <t>
+        The generalization to any media type provides two advantages: The first
+        is media type agility: applications won't be stuck forever with the
+        media types of CoRE Lighting. The second is that it may be useful to
+        share also other information than thing descriptions, such as default
+        configurations for new devices, service locations or sleep schedules.
+      </t>
+
+      <t>
+        Findings items is a powerful mechanism for retrieving a subset of items
+        from a bulletin board. In CoRE Lighting, a configurator has to download
+        the whole set of thing descriptions, filter the set and configure
+        compatible devices. It may be more efficient to filter the set at the
+        bulletin board server. To make this work with any media type, a search
+        request needs to specify both the media type of the desired items and a
+        media type-specific filter query.
+      </t>
+
+      <t>
+        The generalized bulletin board is presented as a <xref
+        target="I-D.hartke-core-apps">CoRE Application Description</xref>. That
+        is, the focus of the application interface is on the media types used in
+        the bulletin board application and interactions are driven by links and
+        forms.
+      </t>
+
+      <t>
+        The bulletin board is an instance of the well-known REST collection
+        pattern. As such, it might be used in places where a more specific
+        instance of the collection pattern is currently used, such as the <xref
+        target="I-D.ietf-core-coap-pubsub">Publish-Subscribe Broker</xref> or
+        the <xref target="I-D.ietf-core-resource-directory">CoRE Resource
+        Directory</xref>. <xref target="proof-of-concept"/> explores this
+        direction and provides a proof-of-concept mapping from publish-subscribe
+        broker and resource directory to bulletin boards.
+      </t>
+
+      <section title="Terminology">
+
+        <t>
+          Readers are expected to be familiar with the terms and concepts
+          described in <xref target="RFC5988"/>, <xref target="RFC6573"/>, and
+          <xref target="I-D.hartke-core-apps"/>.
+        </t>
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+          "OPTIONAL" in this document are to be interpreted as described in
+          <xref target="RFC2119"/>.
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Bulletin Boards">
+
+      <t>
+        This section defines the data model and the interaction model of
+        bulletin boards.
+      </t>
+
+      <section title="Data Model">
+
+        <t>
+          The data model consists of two elements: the bulletin board and a
+          number of published items (<xref target="fig-bb"/>).
+        </t>
+
+<figure anchor="fig-bb" title="A Bulletin Board with a Number of Published Items"><artwork align="center"><![CDATA[
+          ___
+Bulletin /   \
+   Board \___/         ___
+           |__________/   \ Item 1
+           |   item   \___/
+           |           ___
+           |__________/   \ Item 2
+           |   item   \___/
+           |                  .
+           |                  .
+           |                  .
+           |           ___
+           |__________/   \ Item N
+               item   \___/
+]]></artwork></figure>
+
+        <t>
+          <list style="hanging">
+            <t hangText="Bulletin Board">
+              <vspace blankLines="1"/>
+              A bulletin board is a Web application intended for the posting of
+              public messages, for example, to share thing descriptions,
+              announce services or provide information. Sensor and actuator
+              nodes can leave and erase messages for other nodes to read and
+              see.
+            </t>
+            <t>
+              A bulletin board resource is a collection of published items. Its
+              representation consists mainly of links to the item resources
+              using the <xref target="RFC6573">"item" link relation type</xref>.
+              To reduce the number of round-trips, it can also embed (complete
+              or partial) representations of those item resources.
+            </t>
+            <t>
+              For a start, a bulletin board has only a depth of one level; i.e.,
+              all published items are organized under the bulletin board
+              resource. This could be extended to multiple levels in a future
+              revision of this draft.
+            </t>
+            <t>
+              Bulletin board representations are formatted in CoRAL in the <xref
+              target="I-D.hartke-t2trg-coral">"application/coral" media
+              type</xref>.
+            </t>
+            <t hangText="Item">
+              <vspace blankLines="1"/>
+              A bulletin board item is a member of the collection.
+            </t>
+            <t>
+              Item representations can in principle be formatted in any media
+              type; a bulletin board deployment MAY restrict the media types it
+              accepts for publication, though.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Interaction Model">
+
+        <t>
+          The interaction model consists of eight possible interactions with a
+          bulletin board: discovering and reading the bulletin board, and
+          creating, reading, observing, updating, deleting and finding published
+          items in the bulletin board.
+        </t>
+
+        <t>
+          <list style="hanging">
+            <t hangText="Discovery">
+              <vspace blankLines="1"/>
+              For a start, nodes are assumed to be pre-configured out-of-band
+              with a link to a bulletin board.
+            </t>
+            <t hangText="Read Bulletin Board">
+              <vspace blankLines="1"/>
+              A node can retrieve a representation of the bulletin board by
+              following the discovered link. The representation of the bulletin
+              board includes links to and/or literals with representations of
+              the items in the bulletin board. The representation MAY also
+              include forms for creating, updating, deleting and finding items.
+            </t>
+            <t hangText="Create Item">
+              <vspace blankLines="1"/>
+              The representation of a bulletin board MAY contain a form with the
+              "create-item" form relation type. Submitting this form with a
+              representation in one of the accepted content formats creates a
+              new item in the bulletin board.
+            </t>
+            <t hangText="Read Item">
+              <vspace blankLines="1"/>
+              A node can retrieve a representation of an item by following one
+              of the links with the "item" link relation type in the
+              representation of the bulletin board.
+            </t>
+            <t hangText="Observe Item">
+              <vspace blankLines="1"/>
+              A node can observe an item by following one of the links with the
+              "item" link relation type in the representation of the bulletin
+              board and observing the resource as specified in <xref
+              target="RFC7641"/>.
+            </t>
+            <t hangText="Update Item">
+              <vspace blankLines="1"/>
+              For each item in a bulletin board, the representation of the
+              bulletin board MAY indicate that the item is updatable using the
+              CoRAL Updatable Option. If an item is updatable, a form with the
+              "update" form relation type is implied. Submitting this form
+              updates the item in the bulletin board to the submitted
+              representation.
+            </t>
+            <t hangText="Delete Item">
+              <vspace blankLines="1"/>
+              For each item in a bulletin board, the representation of the
+              bulletin board MAY indicate that the item is deletable using the
+              CoRAL Deletable Option. If an item is deletable, a form with the
+              "delete" form relation type is implied. Submitting this form
+              deletes the item from the bulletin board.
+            </t>
+            <t hangText="Find Items">
+              <vspace blankLines="1"/>
+              A form with the "search" form relation type can be used to find
+              items. Submitting this form with a media type and a media
+              type-specific filter query returns a subset of the bulletin board
+              that matches the filter. (The details of this are TBD.)
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Application Description">
+
+        <t>
+          <list style="hanging">
+            <t hangText="Application name:">
+              <vspace/>Thing-to-Thing Bulletin Board 1.0
+            </t>
+            <t hangText="URI schemes:">
+              <vspace/><xref target="RFC7252">coap</xref>
+            </t>
+            <t hangText="Media types:">
+              <vspace/><xref target="I-D.hartke-t2trg-coral">application/coral</xref>
+              <!-- TODO: query -->
+            </t>
+            <t hangText="Link relation types:">
+              <vspace/><xref target="RFC6573">item</xref>
+            </t>
+            <t hangText="Form relation types:">
+              <vspace/><xref target="I-D.hartke-core-apps">create-item</xref>
+              <vspace/><xref target="I-D.hartke-core-apps">update</xref>
+              <vspace/><xref target="I-D.hartke-core-apps">delete</xref>
+              <vspace/>search
+            </t>
+            <t hangText="Well-known locations:">
+              <vspace/>None.
+            </t>
+            <t hangText="Interoperability considerations:">
+              <vspace/>See <xref target="interoperability"/>.
+            </t>
+            <t hangText="Security considerations:">
+              <vspace/>See <xref target="security"/>.
+            </t>
+            <t hangText="Contact:">
+              <vspace/>See "Author's Address" section.
+            </t>
+            <t hangText="Author/Change controller:">
+              <vspace/>IESG
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Interoperability Considerations" anchor="interoperability">
+
+      <t>
+        TODO.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Security Considerations" anchor="security">
+
+      <t>
+        TODO.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="IANA Considerations">
+
+      <t>
+        This document includes no request to IANA.
+      </t>
+
+    </section>
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC2119;
+      &RFC6573;
+      &RFC7252;
+      &RFC7641;
+      &I-D.hartke-core-apps;
+      &I-D.hartke-t2trg-coral;
+
+    </references>
+
+    <references title="Informative References">
+
+      &RFC5988;
+      &RFC6690;
+      &I-D.hartke-core-lighting;
+      &I-D.ietf-core-coap-pubsub;
+      &I-D.ietf-core-resource-directory;
+      &I-D.vial-core-mirror-server;
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Proof-of-Concept" anchor="proof-of-concept">
+
+      <t>
+        There are a number of specifications (CoRE Lighting, CoAP
+        Publish-Subscribe Broker, CoRE Resource Directory and CoRE Mirror
+        Server) that implement variations of the collection pattern. This
+        section shows how they might be implemented using a bulletin board
+        (without trying to replicate them in full detail).
+      </t>
+
+      <section title="CoRE Lighting">
+
+        <t>
+          <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> uses a
+          JSON-based bulletin board to discover "things" such as light bulbs and
+          light switches. Things are described by a thing description that
+          contains both human-readable information and machine-understandable
+          hypermedia controls which indicate the possible interactions with the
+          thing.
+        </t>
+
+<figure anchor="fig-td" title="A Bulletin Board Storing Thing Descriptions"><artwork align="center"><![CDATA[
++----------------------------------+
+|   ___                            |
+|  /   \ Bulletin Board            |
+|  \___/         ___               |
+|    |__________/   \ Thing        |    +------------------------+
+|    |   item   \___/ Description  |    |   ___                  |
+|    |            |________________|____|__/   \ Light Bulb      |
+|    |                     config  |    |  \___/ Configuration   |
+|    |                             |    |                        |
+|    |           ___               |    +------------------------+
+|    |__________/   \ Thing        |    +------------------------+
+|        item   \___/ Description  |    |   ___                  |
+|                 |________________|____|__/   \ Light Remote    |
+|                           about  |    |  \___/ Control State   |
+|                                  |    |                        |
++----------------------------------+    +------------------------+
+]]></artwork></figure>
+
+        <t>
+          Matching the example in Section 5.2.1 of <xref
+          target="I-D.hartke-core-lighting"/>, <xref target="fig-td"/> shows a
+          bulletin board with two thing descriptions. The first thing
+          description describes a light bulb and has a link with the "config"
+          link relation type pointing to the configuration of the light bulb.
+          The second thing description describes a light remote control (LRC)
+          and has a link with the "about" link relation type pointing the
+          observable state of the LRC.
+        </t>
+
+        <t>
+          Thing descriptions are represented in the
+          "application/thing-description+json" media type (content format 65200
+          in the example). A bulletin board representation thus could look as
+          shown in <xref target="fig-bbexample"/>.
+        </t>
+
+<figure anchor="fig-bbexample" title="A Bulletin Board Representation With Two Thing Descriptions"><artwork align="center"><![CDATA[
+ ______________________________
+|                              |
+|  Form                        |
+|   relation: 1 (create-item)  |
+|   method: 2 (POST)           |
+|   accept: 65200              |
+|______________________________|
+|                              |
+|  Literal                     |
+|   relation: 33 (item)        |
+|   format: 65200              |
+|   ________________________   |
+|  |                        |  |
+|  |  Thing Description 1   |  |
+|  |________________________|  |
+|______________________________|
+|                              |
+|  Literal                     |
+|   relation: 33 (item)        |
+|   format: 65200              |
+|   ________________________   |
+|  |                        |  |
+|  |  Thing Description 2   |  |
+|  |________________________|  |
+|______________________________|
+]]></artwork></figure>
+
+      </section>
+
+      <section title="CoAP Publish-Subscribe">
+
+        <t>
+          <xref target="I-D.ietf-core-coap-pubsub">CoAP
+          Publish-Subscribe</xref> provides means for sensor and actuator nodes
+          with limited reachability to publish and receive data without having
+          to be reachable at the same time. The basic operation involves clients
+          called "publishers" updating "topic" resources at a server called the
+          "broker", and clients called "subscribers" observing these resources
+          (<xref target="fig-broker"/>).
+        </t>
+
+<figure anchor="fig-broker" title="CoAP Publish-Subscribe"><artwork align="center"><![CDATA[
+ ____________            ____________            ____________
+|            |--------->|            |          |            |
+|  Publisher |<---------|   Broker   |          | Subscriber |
+|  (Client)  |          |  (Server)  |<---------|  (Client)  |
+|____________|          |____________|--------->|____________|
+]]></artwork></figure>
+
+        <t>
+          A broker might be implemented as a bulletin board by creating the
+          topics as resources on the bulletin board server and linking to these
+          from the bulletin board resource with the "item" link relation type
+          (<xref target="fig-pubsub"/>). Hypermedia controls in the bulletin
+          board representation enable publishers to create, update and delete
+          topics, and subscribers to read/observe these topics.
+        </t>
+
+<figure anchor="fig-pubsub" title="A Bulletin Board Acting as a Publish-Subscribe Broker"><artwork align="center"><![CDATA[
++------------------------------+
+|   ___                        |
+|  /   \ Bulletin Board        |
+|  \___/         ___           |
+|    |__________/   \ Topic A  |
+|    |   item   \___/          |
+|    |           ___           |
+|    |__________/   \ Topic B  |
+|    |   item   \___/          |
+|    |           ___           |
+|    |__________/   \ Topic C  |
+|        item   \___/          |
+|                              |
++------------------------------+
+]]></artwork></figure>
+
+        <texttable anchor="mapping-pubsub" title="Mapping of Pub/Sub Interactions to Bulletin Board">
+          <ttcol>Interaction</ttcol>
+          <ttcol>Mapped to</ttcol>
+
+          <c>DISCOVER</c>
+          <c>Discovery /</c>
+          <c></c>
+          <c>Read Bulletin Board / </c>
+          <c></c>
+          <c>Find Items</c>
+
+          <c>CREATE</c>
+          <c>Create Item</c>
+
+          <c>PUBLISH</c>
+          <c>Update Item</c>
+
+          <c>SUBSCRIBE</c>
+          <c>Observe Item</c>
+
+          <c>UNSUBSCRIBE</c>
+          <c>Observe Item</c>
+
+          <c>READ</c>
+          <c>Read Item</c>
+
+          <c>REMOVE</c>
+          <c>Delete Item</c>
+        </texttable>
+
+      </section>
+
+      <section title="CoRE Resource Directory">
+
+        <t>
+          A <xref target="I-D.ietf-core-resource-directory">CoRE Resource
+          Directory</xref> hosts descriptions of resources held on other
+          servers, allowing lookups to be performed for those resources. The
+          descriptions are encoded as links in <xref target="RFC6690">CoRE Link
+          Format</xref> that are annotated with a variety of link attributes
+          providing the type of and hints about the linked resources.
+        </t>
+
+<figure anchor="fig-rd" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
++----------------------------------+
+|   ___                            |
+|  /   \ Bulletin Board            |
+|  \___/         ___               |
+|    |__________/   \ Link Format  |    +------------------------+
+|    |    item  \___/ Resource     |    |   ___                  |
+|    |            |________________|____|__/   \ Resource A      |
+|    |                      hosts  |    |  \___/                 |
+|    |                             |    |                        |
+|    |           ___               |    +------------------------+
+|    |__________/   \ Link Format  |    +------------------------+
+|         item  \___/ Resource     |    |   ___                  |
+|                 |________________|____|__/   \ Resource B      |
+|                           hosts  |    |  \___/                 |
+|                                  |    |                        |
++----------------------------------+    +------------------------+
+]]></artwork></figure>
+
+        <t>
+          A bulletin board might store these resource descriptions such that
+          each resource description becomes one item in the bulletin board and
+          each items links to the respective resource (<xref target="fig-rd"/>).
+        </t>
+
+        <texttable anchor="mapping-rd" title="Mapping of Resource Directory Interactions to Bulletin Board">
+          <ttcol>Interaction</ttcol>
+          <ttcol>Mapped to</ttcol>
+
+          <c>Discovery</c>
+          <c>Discovery</c>
+
+          <c>Registration</c>
+          <c>Create Item</c>
+
+          <c>Update</c>
+          <c>Update Item</c>
+
+          <c>Removal</c>
+          <c>Delete Item</c>
+
+          <c>Read Endpoint Links</c>
+          <c>-</c>
+
+          <c>Update Endpoint Links</c>
+          <c>-</c>
+
+          <c>Register a Group</c>
+          <c>-</c>
+
+          <c>Group Removal</c>
+          <c>-</c>
+
+          <c>Lookup</c>
+          <c>Find Items</c>
+        </texttable>
+
+      </section>
+
+      <section title="CoRE Mirror Server">
+
+        <t>
+          Similar to a CoAP Publish-Subscribe Broker, a <xref
+          target="I-D.vial-core-mirror-server">CoRE Mirror Server</xref> allows
+          a sleepy device to store representations of their resources so that
+          other devices can access the representations while it is sleeping.
+        </t>
+
+<figure anchor="fig-mirror" title="A Bulletin Board Acting as a Mirror Server"><artwork align="center"><![CDATA[
++----------------------------------+
+|   ___                            |
+|  /   \ Bulletin Board            |
+|  \___/          ___              |
+|    |___________/   \ Mirrored    |
+|    |    item   \___/ Resource A  |
+|    |            ___              |
+|    |___________/   \ Mirrored    |
+|    |    item   \___/ Resource B  |
+|    |            ___              |
+|    |___________/   \ Mirrored    |
+|         item   \___/ Resource C  |
+|                                  |
++----------------------------------+
+]]></artwork></figure>
+
+        <texttable anchor="mapping-mirror" title="Mapping of Mirror Server Interactions to Bulletin Board">
+          <ttcol>Interaction</ttcol>
+          <ttcol>Mapped to</ttcol>
+
+          <c>Discovery</c>
+          <c>Discovery</c>
+
+          <c>Registration</c>
+          <c>Create Item</c>
+
+          <c>Removal</c>
+          <c>Delete Item</c>
+
+          <c>Update Mirrored Resource</c>
+          <c>Update Item</c>
+
+          <c>Retrieve Mirrored Resource</c>
+          <c>Read Item</c>
+        </texttable>
+
+      </section>
+
+    </section>
+
+  </back>
+
+</rfc>
