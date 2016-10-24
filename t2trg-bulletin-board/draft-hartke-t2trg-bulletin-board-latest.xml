@@ -4,11 +4,15 @@
   <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
   <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
   <!ENTITY RFC6573 SYSTEM "reference.RFC.6573.xml">
+  <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
   <!ENTITY I-D.hartke-core-apps SYSTEM "reference.I-D.hartke-core-apps.xml">
   <!ENTITY I-D.hartke-core-lighting SYSTEM "reference.I-D.hartke-core-lighting.xml">
   <!ENTITY I-D.hartke-t2trg-coral SYSTEM "reference.I-D.hartke-t2trg-coral.xml">
+  <!ENTITY I-D.ietf-core-coap-pubsub SYSTEM "reference.I-D.ietf-core-coap-pubsub.xml">
+  <!ENTITY I-D.ietf-core-resource-directory SYSTEM "reference.I-D.ietf-core-resource-directory.xml">
+  <!ENTITY I-D.vial-core-mirror-server SYSTEM "reference.I-D.vial-core-mirror-server.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -99,6 +103,16 @@
         focus of the application interface is on the media types used in the
         bulletin board application and interactions are driven by links and
         forms.
+      </t>
+
+      <t>
+        The bulletin board is an instance of the well-known collection resource
+        pattern. As such, it could be used in places where a more specific
+        instance of the collection pattern is currently used, such as the <xref
+        target="I-D.ietf-core-coap-pubsub">Publish-Subscribe Broker</xref> or
+        the <xref target="I-D.ietf-core-resource-directory">Resource
+        Directory</xref>. <xref target="proof-of-concept"/> this direction and
+        provides a proof-of-concept.
       </t>
 
       <section title="Terminology">
@@ -375,7 +389,11 @@ Bulletin /  \
     <references title="Informative References">
 
       &RFC5988;
+      &RFC6690;
       &I-D.hartke-core-lighting;
+      &I-D.ietf-core-coap-pubsub;
+      &I-D.ietf-core-resource-directory;
+      &I-D.vial-core-mirror-server;
 
     </references>
 
@@ -384,11 +402,337 @@ Bulletin /  \
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Examples">
+    <section title="Proof-of-Concept" anchor="proof-of-concept">
 
       <t>
-        TODO.
+        There are a number of specifications (CoRE Lighting, CoAP
+        Publish-Subscribe Broker, CoRE Resource Directory and CoRE Mirror
+        Server) that implement variations of the collection resource pattern.
+        This section shows how they could be implemented using a bulletin board
+        (without trying to replicate them in full detail).
       </t>
+
+      <section title="CoRE Lighting">
+
+        <t>
+          <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> uses a
+          JSON-based bulletin board to discover "things" such as light bulbs and
+          light switches. Things are described by a thing description that
+          contains both human-readable information and machine-understandable
+          hypermedia controls which indicate the possible interactions with the
+          thing.
+        </t>
+
+<figure anchor="fig-td" title="A Bulletin Board Storing Thing Descriptions"><artwork align="center"><![CDATA[
++----------------------------------+
+|    __                            |
+|   /  \ Bulletin Board            |
+|   \__/         __                |
+|     |_________/  \ Thing         |    +------------------------+
+|     |   item  \__/ Description   |    |    __                  |
+|     |           |________________|____|___/  \ Light Bulb      |
+|     |                    config  |    |   \__/ Configuration   |
+|     |                            |    |                        |
+|     |          __                |    +------------------------+
+|     |_________/  \ Thing         |    +------------------------+
+|         item  \__/ Description   |    |    __                  |
+|                 |________________|____|___/  \ Light Remote    |
+|                           about  |    |   \__/ Control State   |
+|                                  |    |                        |
++----------------------------------+    +------------------------+
+]]></artwork></figure>
+
+        <t>
+          <xref target="fig-td"/> shows a bulletin board with two thing
+          descriptions. The first thing description describes a light bulb and
+          has a link with the "config" link relation type pointing to the
+          configuration of the light bulb. The second thing description
+          describes a light remote control (LRC) and has a link with the "about"
+          link relation type pointing the observable state of the LRC.
+        </t>
+
+        <t>
+          Thing descriptions are represented in the
+          "application/thing-description+json" media type (content format
+          65200). A bulletin board representation thus could look as shown in
+          <xref target="fig-bbexample"/>.
+        </t>
+
+<figure anchor="fig-bbexample" title="A Bulletin Board Representation Embedding Two Thing Descriptions"><artwork align="center"><![CDATA[
+ ______________________________
+|                              |
+|  Form rel = 1 (create-item)  |
+|  - method = 2 (POST)         |
+|  - accept = 65200            |
+|______________________________|
+|                              |
+|  Link rel = 30 (item)        |
+|  - format = 65200            |
+|   ________________________   |
+|  |                        |  |
+|  |  Thing Description 1   |  |
+|  |________________________|  |
+|______________________________|
+|                              |
+|  Link rel = 30 (item)        |
+|  - format = 65200            |
+|   ________________________   |
+|  |                        |  |
+|  |  Thing Description 2   |  |
+|  |________________________|  |
+|______________________________|
+]]></artwork></figure>
+
+      </section>
+
+      <section title="CoAP Publish-Subscribe">
+
+        <t>
+          <xref target="I-D.ietf-core-coap-pubsub">CoAP
+          Publish-Subscribe</xref> provides means for nodes with limited
+          reachability to publish and receive data without having to be
+          reachable at the same time. The basic operation involves clients
+          called "publishers" updating "topic" resources at a server called the
+          "broker", and clients called "subscribers" observing these topic
+          resources (see <xref target="fig-broker"/>).
+        </t>
+
+<figure anchor="fig-broker" title="CoAP Publish-Subscribe"><artwork align="center"><![CDATA[
+ ____________            __________            ___________
+|            |--------->|          |          |           |
+| Subscriber |          |  Broker  |<---------| Publisher |
+|  (Client)  |          | (Server) |--------->| (Client)  |
+|____________|<---------|__________|          |___________|
+]]></artwork></figure>
+
+        <t>
+          A broker could be implemented as a bulletin board by creating the
+          topics as resources on the bulletin board server and linking to them
+          from the bulletin board resource with the 'item' link relation type
+          (<xref target="fig-pubsub"/>). Hypermedia controls in the bulletin
+          board representation would enable clients to create, read/observe,
+          update and delete topic resources.
+        </t>
+
+<figure anchor="fig-pubsub" title="A Bulletin Board Acting as a Publish-Subscribe Broker"><artwork align="center"><![CDATA[
++----------------------------------+
+|    __                            |
+|   /  \ Bulletin Board            |
+|   \__/         __                |
+|     |_________/  \ Topic A       |
+|     |   item  \__/               |
+|     |          __                |
+|     |_________/  \ Topic B       |
+|     |   item  \__/               |
+|     |          __                |
+|     |_________/  \ Topic C       |
+|         item  \__/               |
+|                                  |
++----------------------------------+
+]]></artwork></figure>
+
+        <texttable anchor="mapping-pubsub" title="Mapping of Pub/Sub Interactions to Bulletin Board">
+          <ttcol>Interaction</ttcol>
+          <ttcol>Mapped to</ttcol>
+
+          <c>DISCOVER</c>
+          <c>Discovery /</c>
+          <c></c>
+          <c>Read Bulletin Board / </c>
+          <c></c>
+          <c>Find Items</c>
+
+          <c>CREATE</c>
+          <c>Create Item</c>
+
+          <c>PUBLISH</c>
+          <c>Update Item</c>
+
+          <c>SUBSCRIBE</c>
+          <c>Observe Item</c>
+
+          <c>UNSUBSCRIBE</c>
+          <c>Observe Item</c>
+
+          <c>READ</c>
+          <c>Read Item</c>
+
+          <c>REMOVE</c>
+          <c>Delete Item</c>
+        </texttable>
+
+      </section>
+
+      <section title="CoRE Resource Directory">
+
+        <t>
+          A <xref target="I-D.ietf-core-resource-directory">CoRE Resource
+          Directory</xref> hosts descriptions of resources held on other
+          servers, allowing lookups to be performed for those resources. The
+          descriptions are represented as links in <xref target="RFC6690">CoRE
+          Link Format</xref> that are annotated with a variety of link
+          attributes providing the type of and hints about the linked resources.
+        </t>
+
+        <section title="Variant A: Bulletin Board Links to Resources">
+
+<figure anchor="fig-rd1" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
++----------------------------------+
+|    __                            |
+|   /  \ Bulletin Board            |    +------------------------+
+|   \__/                           |    |    __                  |
+|     |____________________________|____|___/  \ Resource X      |
+|     |                     hosts  |    |   \__/                 |
+|     |                            |    |                        |
+|     |                            |    +------------------------+
+|     |                            |    +------------------------+
+|     |                            |    |    __                  |
+|     |____________________________|____|___/  \ Resource Y      |
+|                           hosts  |    |   \__/                 |
+|                                  |    |                        |
++----------------------------------+    +------------------------+
+]]></artwork></figure>
+
+          <texttable anchor="mapping-rd1" title="Mapping of Resource Directory Interactions to Bulletin Board">
+            <ttcol>Interaction</ttcol>
+            <ttcol>Mapped to</ttcol>
+
+            <c>Discovery</c>
+            <c>Discovery</c>
+
+            <c>Registration</c>
+            <c>Add Link*</c>
+
+            <c>Update</c>
+            <c>Add Link*</c>
+
+            <c>Removal</c>
+            <c>Remove Link*</c>
+
+            <c>Read Endpoint Links</c>
+            <c>-</c>
+
+            <c>Update Endpoint Links</c>
+            <c>-</c>
+
+            <c>Register a Group</c>
+            <c>-</c>
+
+            <c>Group Removal</c>
+            <c>-</c>
+
+            <c>Lookup</c>
+            <c>Find Items</c>
+
+            <postamble>[*TODO: Not defined yet; needs new form relation types.]</postamble>
+          </texttable>
+
+        </section>
+
+        <section title="Variant B: Bulletin Board Hosts Link Format Resources">
+
+<figure anchor="fig-rd2" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
++----------------------------------+
+|    __                            |
+|   /  \ Bulletin Board            |
+|   \__/         __                |
+|     |_________/  \ Link          |    +------------------------+
+|     |   item  \__/ Format        |    |    __                  |
+|     |           |________________|____|___/  \ Resource A      |
+|     |                     hosts  |    |   \__/                 |
+|     |                            |    |                        |
+|     |          __                |    +------------------------+
+|     |_________/  \ Link          |    +------------------------+
+|         item  \__/ Format        |    |    __                  |
+|                 |________________|____|___/  \ Resource B      |
+|                           hosts  |    |   \__/                 |
+|                                  |    |                        |
++----------------------------------+    +------------------------+
+]]></artwork></figure>
+
+          <texttable anchor="mapping-rd2" title="Mapping of Resource Directory Interactions to Bulletin Board">
+            <ttcol>Interaction</ttcol>
+            <ttcol>Mapped to</ttcol>
+
+            <c>Discovery</c>
+            <c>Discovery</c>
+
+            <c>Registration</c>
+            <c>Create Item</c>
+
+            <c>Update</c>
+            <c>Update Item</c>
+
+            <c>Removal</c>
+            <c>Delete Item</c>
+
+            <c>Read Endpoint Links</c>
+            <c>-</c>
+
+            <c>Update Endpoint Links</c>
+            <c>-</c>
+
+            <c>Register a Group</c>
+            <c>-</c>
+
+            <c>Group Removal</c>
+            <c>-</c>
+
+            <c>Lookup</c>
+            <c>Find Items</c>
+          </texttable>
+
+        </section>
+
+      </section>
+
+      <section title="CoRE Mirror Server">
+
+        <t>
+          Similar to a CoAP Publish-Subscribe Broker, a <xref
+          target="I-D.vial-core-mirror-server">CoRE Mirror Server</xref> allows
+          a sleepy device to store representations of their resources so that
+          other devices can access the representations while it is sleeping.
+        </t>
+
+<figure anchor="fig-mirror" title="A Bulletin Board Acting as a Mirror Server"><artwork align="center"><![CDATA[
++----------------------------------+
+|    __                            |
+|   /  \ Bulletin Board            |
+|   \__/         __                |
+|     |_________/  \ Mirrored      |
+|     |   item  \__/ Resource A    |
+|     |          __                |
+|     |_________/  \ Mirrored      |
+|     |   item  \__/ Resource B    |
+|     |          __                |
+|     |_________/  \ Mirrored      |
+|         item  \__/ Resource C    |
+|                                  |
++----------------------------------+
+]]></artwork></figure>
+
+        <texttable anchor="mapping-mirror" title="Mapping of Mirror Server Interactions to Bulletin Board">
+          <ttcol>Interaction</ttcol>
+          <ttcol>Mapped to</ttcol>
+
+          <c>Discovery</c>
+          <c>Discovery</c>
+
+          <c>Registration</c>
+          <c>Create Item</c>
+
+          <c>Removal</c>
+          <c>Delete Item</c>
+
+          <c>Update Mirrored Resource</c>
+          <c>Update Item</c>
+
+          <c>Retrieve Mirrored Resource</c>
+          <c>Read Item</c>
+        </texttable>
+
+      </section>
 
     </section>
 
