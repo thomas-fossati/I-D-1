@@ -578,70 +578,12 @@ Bulletin /   \
           A <xref target="I-D.ietf-core-resource-directory">CoRE Resource
           Directory</xref> hosts descriptions of resources held on other
           servers, allowing lookups to be performed for those resources. The
-          descriptions are represented as Web links in <xref
-          target="RFC6690">CoRE Link Format</xref> that are annotated with a
-          variety of link attributes providing the type of and hints about the
-          linked resources.
+          descriptions are encoded as links in <xref target="RFC6690">CoRE Link
+          Format</xref> that are annotated with a variety of link attributes
+          providing the type of and hints about the linked resources.
         </t>
 
-        <section title="Variant A: Bulletin Board Links to Resources">
-
-<figure anchor="fig-rd1" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
-+----------------------------------+
-|   ___                            |
-|  /   \ Bulletin Board            |    +------------------------+
-|  \___/                           |    |   ___                  |
-|    |_____________________________|____|__/   \ Resource X      |
-|    |                       item  |    |  \___/                 |
-|    |                             |    |                        |
-|    |                             |    +------------------------+
-|    |                             |    +------------------------+
-|    |                             |    |   ___                  |
-|    |_____________________________|____|__/   \ Resource Y      |
-|                            item  |    |  \___/                 |
-|                                  |    |                        |
-+----------------------------------+    +------------------------+
-]]></artwork></figure>
-
-          <texttable anchor="mapping-rd1" title="Mapping of Resource Directory Interactions to Bulletin Board">
-            <ttcol>Interaction</ttcol>
-            <ttcol>Mapped to</ttcol>
-
-            <c>Discovery</c>
-            <c>Discovery</c>
-
-            <c>Registration</c>
-            <c>Add Link*</c>
-
-            <c>Update</c>
-            <c>Add Link*</c>
-
-            <c>Removal</c>
-            <c>Remove Link*</c>
-
-            <c>Read Endpoint Links</c>
-            <c>-</c>
-
-            <c>Update Endpoint Links</c>
-            <c>-</c>
-
-            <c>Register a Group</c>
-            <c>-</c>
-
-            <c>Group Removal</c>
-            <c>-</c>
-
-            <c>Lookup</c>
-            <c>Find Items</c>
-
-            <postamble>[*TODO: Not defined yet; needs new form relation types.]</postamble>
-          </texttable>
-
-        </section>
-
-        <section title="Variant B: Bulletin Board Hosts Link Format Resources">
-
-<figure anchor="fig-rd2" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
+<figure anchor="fig-rd" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
 +----------------------------------+
 |   ___                            |
 |  /   \ Bulletin Board            |
@@ -660,39 +602,43 @@ Bulletin /   \
 +----------------------------------+    +------------------------+
 ]]></artwork></figure>
 
-          <texttable anchor="mapping-rd2" title="Mapping of Resource Directory Interactions to Bulletin Board">
-            <ttcol>Interaction</ttcol>
-            <ttcol>Mapped to</ttcol>
+        <t>
+          A bulletin board might store these resource descriptions such that
+          each resource description becomes one item in the bulletin board and
+          each items links to the respective resource (<xref target="fig-rd"/>).
+        </t>
 
-            <c>Discovery</c>
-            <c>Discovery</c>
+        <texttable anchor="mapping-rd" title="Mapping of Resource Directory Interactions to Bulletin Board">
+          <ttcol>Interaction</ttcol>
+          <ttcol>Mapped to</ttcol>
 
-            <c>Registration</c>
-            <c>Create Item</c>
+          <c>Discovery</c>
+          <c>Discovery</c>
 
-            <c>Update</c>
-            <c>Update Item</c>
+          <c>Registration</c>
+          <c>Create Item</c>
 
-            <c>Removal</c>
-            <c>Delete Item</c>
+          <c>Update</c>
+          <c>Update Item</c>
 
-            <c>Read Endpoint Links</c>
-            <c>-</c>
+          <c>Removal</c>
+          <c>Delete Item</c>
 
-            <c>Update Endpoint Links</c>
-            <c>-</c>
+          <c>Read Endpoint Links</c>
+          <c>-</c>
 
-            <c>Register a Group</c>
-            <c>-</c>
+          <c>Update Endpoint Links</c>
+          <c>-</c>
 
-            <c>Group Removal</c>
-            <c>-</c>
+          <c>Register a Group</c>
+          <c>-</c>
 
-            <c>Lookup</c>
-            <c>Find Items</c>
-          </texttable>
+          <c>Group Removal</c>
+          <c>-</c>
 
-        </section>
+          <c>Lookup</c>
+          <c>Find Items</c>
+        </texttable>
 
       </section>
 
