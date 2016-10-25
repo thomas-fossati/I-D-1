@@ -208,6 +208,11 @@ Bulletin /   \
               type; a bulletin board deployment MAY restrict the media types it
               accepts for publication, though.
             </t>
+            <t>
+              The representations of items MAY link back to a bulletin board
+              resource using the <xref target="RFC6573">"collection" link
+              relation type</xref>.
+            </t>
           </list>
         </t>
 
