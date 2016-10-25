@@ -24,7 +24,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="2"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-bulletin-board-00" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-bulletin-board-01" ipr="trust200902">
 
   <front>
 
@@ -195,7 +195,7 @@ Bulletin /   \
               revision of this draft.
             </t>
             <t>
-              Bulletin board representations are formatted in CoRAL in the <xref
+              Bulletin board representations are formatted in the <xref
               target="I-D.hartke-t2trg-coral">"application/coral" media
               type</xref>.
             </t>
@@ -260,19 +260,19 @@ Bulletin /   \
             <t hangText="Update Item">
               <vspace blankLines="1"/>
               For each item in a bulletin board, the representation of the
-              bulletin board MAY indicate that the item is updatable using the
-              CoRAL Updatable Option. If an item is updatable, a form with the
-              "update" form relation type is implied. Submitting this form
-              updates the item in the bulletin board to the submitted
-              representation.
+              bulletin board MAY indicate that the item is updatable. If an item
+              is updatable, the link to the item includes the CoRAL Updatable
+              Option, which defines a form with the "update" form relation type.
+              Submitting this form updates the item in the bulletin board to the
+              submitted representation.
             </t>
             <t hangText="Delete Item">
               <vspace blankLines="1"/>
               For each item in a bulletin board, the representation of the
-              bulletin board MAY indicate that the item is deletable using the
-              CoRAL Deletable Option. If an item is deletable, a form with the
-              "delete" form relation type is implied. Submitting this form
-              deletes the item from the bulletin board.
+              bulletin board MAY indicate that the item is deletable. If an item
+              is deleteable, the link to the item includes a CoRAL Deletable
+              Option, which defines a form with the "delete" form relation type.
+              Submitting this form deletes the item from the bulletin board.
             </t>
             <t hangText="Find Items">
               <vspace blankLines="1"/>
@@ -453,7 +453,7 @@ Bulletin /   \
           description describes a light bulb and has a link with the "config"
           link relation type pointing to the configuration of the light bulb.
           The second thing description describes a light remote control (LRC)
-          and has a link with the "about" link relation type pointing the
+          and has a link with the "about" link relation type pointing to the
           observable state of the LRC.
         </t>
 
@@ -520,7 +520,7 @@ Bulletin /   \
           from the bulletin board resource with the "item" link relation type
           (<xref target="fig-pubsub"/>). Hypermedia controls in the bulletin
           board representation enable publishers to create, update and delete
-          topics, and subscribers to read/observe these topics.
+          topics and subscribers to read/observe these topics.
         </t>
 
 <figure anchor="fig-pubsub" title="A Bulletin Board Acting as a Publish-Subscribe Broker"><artwork align="center"><![CDATA[
@@ -605,7 +605,7 @@ Bulletin /   \
         <t>
           A bulletin board might store these resource descriptions such that
           each resource description becomes one item in the bulletin board and
-          each items links to the respective resource (<xref target="fig-rd"/>).
+          each item links to the respective resource (<xref target="fig-rd"/>).
         </t>
 
         <texttable anchor="mapping-rd" title="Mapping of Resource Directory Interactions to Bulletin Board">
