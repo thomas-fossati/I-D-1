@@ -71,16 +71,16 @@
     <section title="Introduction">
 
       <t>
-        The <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> draft
-        defines a "bulletin board" application that can be used for sharing the
-        thing descriptions of sensor and actuator nodes. This document
-        generalizes the bulletin board to support representations in any media
-        type and defines means for creating, reading, observing, updating,
-        deleting and finding items in a bulletin board.
+        <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> defines a
+        "bulletin board" application that can be used to share the thing
+        descriptions of sensor and actuator nodes. This document generalizes the
+        bulletin board concept to support representations in any media type and
+        defines means for creating, reading, observing, updating, deleting and
+        finding items in a bulletin board.
       </t>
 
       <t>
-        The generalization to any media type provides two advantages: The first
+        The generalization to any media type provides two advantages. The first
         is media type agility: applications won't be stuck forever with the
         media types of CoRE Lighting. The second is that it may be useful to
         share also other information than thing descriptions, such as default
@@ -88,13 +88,13 @@
       </t>
 
       <t>
-        Findings items is a powerful mechanism for retrieving a subset of items
-        from a bulletin board. In CoRE Lighting, a configurator has to download
-        the whole set of thing descriptions, filter the set and configure
-        compatible devices. It may be more efficient to filter the set at the
-        bulletin board server. To make this work with any media type, a search
-        request needs to specify both the media type of the desired items and a
-        media type-specific filter query.
+        Finding items by submitting a search query allows clients to retrieve a
+        subset of items from a bulletin board. In CoRE Lighting, a client has to
+        download the whole set of thing descriptions, filter the set and
+        configure compatible devices. It may be more efficient to filter the set
+        at the bulletin board server. To make this work with any media type, a
+        search request needs to specify both the media type of the desired items
+        and a media type-specific search query.
       </t>
 
       <t>
@@ -190,9 +190,9 @@ Bulletin /   \
             </t>
             <t>
               For a start, a bulletin board has only a depth of one level; i.e.,
-              all published items are organized under the bulletin board
-              resource. This could be extended to multiple levels in a future
-              revision of this draft.
+              all published items are organized directly under the bulletin
+              board resource. This could be extended to multiple levels in a
+              future revision of this draft.
             </t>
             <t>
               Bulletin board representations are formatted in the <xref
