@@ -105,16 +105,36 @@
         forms.
       </t>
 
-      <t>
-        The bulletin board is an instance of the well-known REST collection
-        pattern. As such, it might be used in places where a more specific
-        instance of the collection pattern is currently used, such as the <xref
-        target="I-D.ietf-core-coap-pubsub">Publish-Subscribe Broker</xref> or
-        the <xref target="I-D.ietf-core-resource-directory">CoRE Resource
-        Directory</xref>. <xref target="proof-of-concept"/> explores this
-        direction and provides a proof-of-concept mapping from publish-subscribe
-        broker and resource directory to bulletin boards.
-      </t>
+      <section title="Relationship to CoRE Documents">
+
+        <t>
+          The bulletin board is an instance of the well-known REST collection
+          pattern. As such, it might be used in places where a more specific
+          instance of the collection pattern is currently used, such as the
+          <xref target="I-D.ietf-core-coap-pubsub">Publish-Subscribe
+          Broker</xref> or the <xref
+          target="I-D.ietf-core-resource-directory">CoRE Resource
+          Directory</xref>. <xref target="proof-of-concept"/> explores this
+          direction and provides a proof-of-concept mapping from
+          publish-subscribe broker and resource directory to bulletin boards.
+        </t>
+
+        <t>
+          The key differentiator of the bulletin board compared to
+          publish-subscribe broker and resource directory lies in the
+          evolvability, the ability to respond effectively to change (such as
+          the introduction of new features) without negatively impacting new and
+          existing clients. The definition of interfaces purely in terms of
+          standardized URI templates makes it very hard to gradually evolve
+          them; there are no versioning or capability negotiation mechanisms.
+          The bulletin board facilitates fine-grained evolvability by driving
+          all interactions through machine-understandable hypertext. Features
+          can be added, changed or removed in a backwards-compatible way simply
+          by updating the bulletin board to expose corresponding links and
+          forms.
+        </t>
+
+      </section>
 
       <section title="Terminology">
 
