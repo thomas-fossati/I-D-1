@@ -183,7 +183,7 @@ Bulletin /   \
             </t>
             <t>
               A bulletin board resource is a collection of published items. Its
-              representation consists mainly of links to the item resources
+              representation consists primarily of links to the item resources
               using the <xref target="RFC6573">"item" link relation type</xref>.
               To reduce the number of round-trips, it can also embed (complete
               or partial) representations of those item resources.
