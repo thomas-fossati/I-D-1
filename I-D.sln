@@ -35,6 +35,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-coral", "t2trg-coral"
 		t2trg-coral\draft-hartke-t2trg-coral-latest.xml = t2trg-coral\draft-hartke-t2trg-coral-latest.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-cbor-forms", "t2trg-cbor-forms", "{BF9BF3B6-0EE1-4EA0-87CE-9BEF15EC27FB}"
+	ProjectSection(SolutionItems) = preProject
+		t2trg-cbor-forms\draft-hartke-t2trg-cbor-forms-latest.xml = t2trg-cbor-forms\draft-hartke-t2trg-cbor-forms-latest.xml
+		t2trg-cbor-forms\form-body.cddl = t2trg-cbor-forms\form-body.cddl
+		t2trg-cbor-forms\form-data.cddl = t2trg-cbor-forms\form-data.cddl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

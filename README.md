@@ -21,6 +21,18 @@
   [datatracker](https://datatracker.ietf.org/doc/draft-hartke-t2trg-coral/) |
   [sources](t2trg-coral)
 
+* <b>CBOR-encoded Form Data</b> <br>
+  <i>draft-hartke-t2trg-cbor-forms</i> <br>
+  This document describes a media type to encode form data in CBOR format,
+  similar to the well-known "application/x-www-form-urlencoded" and
+  "multipart/form-data" media types. The use of a compact, binary encoding
+  enables the processing of form submissions on systems with very limited
+  memory, processor power, and instruction sets. <br>
+  [text](https://tools.ietf.org/id/draft-hartke-t2trg-cbor-forms.txt) |
+  [html](https://tools.ietf.org/html/draft-hartke-t2trg-cbor-forms) |
+  [datatracker](https://datatracker.ietf.org/doc/draft-hartke-t2trg-cbor-forms/) |
+  [sources](t2trg-cbor-forms)
+
 * <b>Bulletin Board</b> <br>
   <i>draft-hartke-t2trg-bulletin-board</i> <br>
   A Thing-to-Thing Bulletin Board is a RESTful, hypermedia-driven Web
