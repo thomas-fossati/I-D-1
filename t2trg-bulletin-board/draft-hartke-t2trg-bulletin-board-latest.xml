@@ -334,6 +334,9 @@ Bulletin /   \
               <vspace/><xref target="I-D.hartke-core-apps">delete</xref>
               <vspace/>search
             </t>
+            <t hangText="Form field names:">
+              <vspace/>None.
+            </t>
             <t hangText="Well-known locations:">
               <vspace/>None.
             </t>
