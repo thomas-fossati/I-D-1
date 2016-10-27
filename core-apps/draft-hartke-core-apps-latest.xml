@@ -428,7 +428,8 @@
               <t>
                 a description of a representation that the service accepts as
                 part of form submission. This description can be a set of form
-                fields or simply a list of acceptable media types.
+                fields (see also <xref target="form-fields"/>) or simply a list
+                of acceptable media types.
               </t>
             </list>
             A form can be viewed as an instruction of the form "To {relation
@@ -535,6 +536,35 @@
 
       </section>
 
+      <section title="Form Field Names" anchor="form-fields">
+
+        <t>
+          Forms can have a detailed description of the accepted representation.
+          This description typically consists of a set of form fields. A form
+          field is comprised of a field name, a field type, and optionally a
+          number of attributes (such as a default value, a validation rule or a
+          human-readable label).
+        </t>
+
+        <t>
+          To enable an automated client to fill out a form, the field name
+          identifies the semantics of the form field. For example, when
+          controlling a smart light bulb, the field name "brightness" could
+          indicate the field for setting the desired brightness of the light
+          bulb. Field names are scoped to form relation types; i.e., two form
+          fields with the same name can have different semantics if they appear
+          in forms with different form relation types.
+        </t>
+
+        <t>
+          The type of a form field is orthogonal to the field name; i.e., the
+          type should not be implied by the field name even though the client
+          can identify the semantics from the field name. This makes it easy,
+          for example, to expand the set of acceptable types in the future.
+        </t>
+
+      </section>
+
       <section title="Well-Known Locations">
 
         <t>
@@ -563,6 +593,10 @@
           </list>
         </t>
 
+        <t>
+          <vspace blankLines="10"/>
+        </t>
+
       </section>
 
     </section>
@@ -583,6 +617,8 @@
       <t>Link relation types:</t>
 
       <t>Form relation types:</t>
+
+      <t>Form field names:</t>
 
       <t>Well-known locations:</t>
 
