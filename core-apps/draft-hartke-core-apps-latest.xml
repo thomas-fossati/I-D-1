@@ -614,17 +614,18 @@
       <t>
         URIs often include structured application data in the path and query
         components, such as paths in a filesystem or keys in a database. It is
-        common for many REST APIs to prescribe a fixed format for this data.
+        common for many RESTful applications to use these structures not only
+        as an implementation detail but also make them part of the public REST
+        API, prescribing a fixed format for this data.
         However, there are a number of problems with this practice <xref
         target="RFC7320"/>, in particular if the application designer and the
         server owner are not the same entity.
       </t>
 
       <t>
-        Therefore, in hypertext-driven applications URIs are not included in the
+        In hypertext-driven applications URIs are therefore not included in the
         application interface. A CoRE Application Description must not mandate
-        any particular form of URI substructure that is not explicitly allowed
-        by <xref target="RFC3986">RFC 3986</xref>.
+        any particular form of URI substructure.
       </t>
 
       <t>
@@ -634,10 +635,10 @@
       </t>
 
       <t>
-        Even though URIs are not part of the application interface, the design
-        of the URI structure on a server is an essential part of implementing a
-        RESTful application. The server implementer is responsible for binding
-        the resources identified by the application designer to URIs.
+        That said, the design of the URI structure on a server is an essential
+        part of implementing a RESTful application, even though it is not part
+        of the application interface. The server implementer is responsible for
+        binding the resources identified by the application designer to URIs.
       </t>
 
       <t>
