@@ -849,6 +849,13 @@
                 to update the state of the form's context.<vspace/>
                 Reference: [RFCXXXX]
               </t>
+              <t>
+                Relation Name: search<vspace/>
+                Relation ID: 4<vspace/>
+                Description: Refers to a resource that can be used
+                to search the form's context.<vspace/>
+                Reference: [RFCXXXX]
+              </t>
             </list>
           </t>
 

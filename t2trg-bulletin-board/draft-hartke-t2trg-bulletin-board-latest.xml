@@ -335,7 +335,7 @@ Bulletin /   \
               <vspace/><xref target="I-D.hartke-core-apps">create-item</xref>
               <vspace/><xref target="I-D.hartke-core-apps">update</xref>
               <vspace/><xref target="I-D.hartke-core-apps">delete</xref>
-              <vspace/>search
+              <vspace/><xref target="I-D.hartke-core-apps">search</xref>
             </t>
             <t hangText="Form field names:">
               <vspace/>None.
