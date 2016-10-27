@@ -408,8 +408,9 @@
         <section title="Forms" anchor="forms">
 
           <t>
-            A form is the primary means for a client to change resource state.
-            It is comprised of:
+            A form is the primary means for a client to submit information to a
+            server, typically in order to change resource state. It is comprised
+            of:
             <list style="symbols">
               <t>
                 a context (usually the current resource),
@@ -422,7 +423,7 @@
                 a target resource URI,
               </t>
               <t>
-                a submission method (PUT, POST, PATCH, or DELETE), and
+                a submission method (PUT, POST, PATCH, FETCH, or DELETE), and
               </t>
               <t>
                 a description of a representation that the service accepts as
