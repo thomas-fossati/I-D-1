@@ -174,7 +174,8 @@
           <t>URI schemes that identify communication protocols,</t>
           <t>Internet media types that identify representation formats,</t>
           <t>link relation types that identify link semantics,</t>
-          <t>form relation types that identify form semantics, and</t>
+          <t>form relation types that identify form semantics,</t>
+          <t>form field names that identify form field semantics, and</t>
           <t>optionally, well-known locations.</t>
         </list>
         Together, these components provide the specific, in-band instructions
@@ -193,22 +194,22 @@
 
         <t>
           The use of a particular protocol is guided by <xref
-          target="RFC7595">URI schemes</xref>. URI schemes specify the syntax
-          and semantics of <xref target="RFC3986">URI references</xref> found in
-          links (<xref target="links"/>) and forms (<xref target="forms"/>).
-        </t>
-
-        <t>
-          A URI scheme refers to a family of protocols, typically distinguished
-          by a version number. For example, the "http" URI scheme refers to the
-          three members of the HTTP family of protocols: <xref
-          target="RFC1945">HTTP/1.0</xref>, <xref
-          target="RFC7230">HTTP/1.1</xref> and <xref
+          target="RFC7595">URI schemes</xref>. A URI scheme refers to a family
+          of protocols, typically distinguished by a version number. For
+          example, the "http" URI scheme refers to the three members of the HTTP
+          family of protocols: <xref target="RFC1945">HTTP/1.0</xref>, <xref
+          target="RFC7230">HTTP/1.1</xref>, and <xref
           target="RFC7540">HTTP/2</xref>. The specific HTTP version is
           negotiated between the client and the server through version
           indicators in the protocol or the TLS <xref
           target="RFC7301">application-layer protocol negotiation (ALPN)
           extension</xref>.
+        </t>
+
+        <t>
+          URI schemes also specify the syntax and semantics of <xref
+          target="RFC3986">URI references</xref> found in links (<xref
+          target="links"/>) and forms (<xref target="forms"/>).
         </t>
 
         <t>
@@ -234,7 +235,7 @@
 
         <t>
           A media type identifies a versioned series of representation formats
-          (<xref target="representation-formats"/>): a media type does not
+          (<xref target="representations"/>): a media type does not
           identify a particular version of a representation format; rather, the
           media type identifies the family, and includes provisions for version
           indicator(s) embedded in the representations themselves to determine
@@ -256,9 +257,9 @@
           (e.g., "+xml" appended to the base subtype name; see Section 4.2.8 of
           RFC 6838), or by subtype information embedded in the representations
           themselves (e.g., "xmlns" declarations in XML documents <xref
-          target="XMLNS"/>). Structured type name suffixes should be preferred,
-          because embedded subtype information cannot be negotiated (e.g., using
-          the CoAP Accept option).
+          target="XMLNS"/>). Structured type name suffixes should generally be
+          preferred, because embedded subtype information can typically not be
+          negotiated (e.g., using the CoAP Accept option).
         </t>
 
         <t>
@@ -266,8 +267,9 @@
           coding information</xref> to indicate the "content format" <xref
           target="RFC7252"/> of a representation. Content formats are assigned a
           numeric identifier that can be used instead of the (typically much
-          larger) textual name of the media type in representation formats with
-          space constraints.
+          longer) textual name of the media type in representation formats with
+          space constraints. However, a flat number space as in CoAP loses the
+          structural information of textual names.
         </t>
 
         <t>
@@ -293,7 +295,7 @@
           </list>
         </t>
 
-        <section title="Representation Formats" anchor="representation-formats">
+        <section title="Representation Formats" anchor="representations">
 
           <t>
             In RESTful applications, clients and servers exchange
@@ -329,12 +331,14 @@
             target="links"/>) and/or forms (<xref target="forms"/>).
           </t>
 
+          <!--
           <t>
             It is beyond the scope of this document to specify how hypermedia
             controls can be expressed. The appropriate syntax, when available,
             is described by the representation format specification associated
             with each media type.
           </t>
+          -->
 
         </section>
 
@@ -351,7 +355,7 @@
               </t>
               <t>
                 a link relation type that identifies the semantics of the link
-                (<xref target="link-relations"/>),
+                (see also <xref target="link-relations"/>),
               </t>
               <t>
                 a target resource URI, and
@@ -412,7 +416,7 @@
               </t>
               <t>
                 a form relation type that identifies the semantics of the form
-                (<xref target="form-relations"/>),
+                (see also <xref target="form-relations"/>),
               </t>
               <t>
                 a target resource URI,
@@ -430,7 +434,8 @@
             type} the {context}, make a {method} request to {target URI}". For
             example, to "update" the resource &lt;http://example.com/config&gt;,
             a client should make a PUT request to
-            &lt;http://example.com/config&gt;.
+            &lt;http://example.com/config&gt;. (In many cases, the target of a
+            form is the same resource as the context, but this is not required.)
           </t>
 
           <t>
@@ -473,20 +478,24 @@
         </t>
 
         <t>
-          Applications that don't wish to register a relation type can use an
-          extension relation type, which is a URI that uniquely identifies the
-          relation type (similar to a URI used as an XML namespace names). For
-          example, an application can use "http://example.com/foo" as link
-          relation type without having to register it.
+          Applications that don't wish to register a link relation type can use
+          an extension link relation type, which is a URI that uniquely
+          identifies the link relation type (similar to a URI used as an XML
+          namespace name). For example, an application can use the string
+          "http://example.com/foo" as link relation type without having to
+          register it. Using a URI to identify an extension link relation type,
+          rather than a simple string, reduces the probability of different link
+          relation types using the same identifiers.
         </t>
 
         <t>
           In order to minimize the overhead of link relation types in
-          representation formats with space constraints, link relation types are
-          assigned a numeric identifier that can be used in place of the textual
-          name of the link relation type (see also <xref target="iana-link"/>).
-          For example, the link relation type "copyright" has the numeric
-          identifier 12.
+          representation formats with space constraints, IANA-registered link
+          relation types are assigned a numeric identifier that can be used in
+          place of the textual name (see also <xref target="iana-link"/>). For
+          example, the link relation type "copyright" has the numeric identifier
+          12. Representation formats may provide numeric identifiers also for
+          extension link relation types.
         </t>
 
       </section>
@@ -495,8 +504,8 @@
 
         <t>
           A form relation type identifies the semantics of a form. For example,
-          a form with the relation type "create-item" indicates that a new item
-          can be created within the current context by making a request to the
+          a form with the form relation type "create-item" indicates that a new
+          item can be created within the form context by making a request to the
           resource identified by the target URI.
         </t>
 
@@ -511,13 +520,16 @@
         </t>
 
         <t>
-          Similar to link relation types, applications can use extension
-          relation types when they don't wish to register a relation type.
+          Similar to link relation types, applications can use extension form
+          relation types when they don't wish to register a form relation type.
         </t>
 
         <t>
-          Form relation types are also assigned a numeric identifier that can be
-          used in place of the form relation type name.
+          IANA-registered form relation types are assigned a numeric identifier
+          that can be used in place of the textual name. For example, the
+          "create-item" form relation type has the numeric identifier 1.
+          Representation formats may provide numeric identifiers also for
+          extension form relation types.
         </t>
 
       </section>
@@ -528,7 +540,7 @@
           Some applications may require the discovery of information about a
           host (known as "site-wide metadata" in <xref target="RFC5785">RFC
           5785</xref>). For example, <xref target="RFC6415">RFC 6415</xref>
-          defines a metadata document format for describing hosts; similarly,
+          defines a metadata document format for describing a host; similarly,
           <xref target="RFC6690">RFC 6690</xref> defines a link format for the
           discovery of resources hosted by a server.
         </t>
@@ -538,7 +550,7 @@
           can register new "well-known locations". <xref target="RFC5785">RFC
           5785</xref> defines a path prefix in "http" and "https" URIs for this
           purpose, "/.well-known/"; <xref target="RFC7252">RFC 7252</xref>
-          extends this concept to "coap" and "coaps" URIs.
+          extends this convention to "coap" and "coaps" URIs.
         </t>
 
         <t>
