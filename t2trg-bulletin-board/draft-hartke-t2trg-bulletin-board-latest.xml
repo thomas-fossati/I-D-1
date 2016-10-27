@@ -105,7 +105,7 @@
         forms.
       </t>
 
-      <section title="Relationship to CoRE Documents">
+      <section title="Related Work">
 
         <t>
           The bulletin board is an instance of the well-known REST collection
@@ -123,9 +123,9 @@
           The key differentiator of the bulletin board compared to
           publish-subscribe broker and resource directory lies in the
           evolvability, the ability to respond effectively to change (such as
-          the introduction of new features) without negatively impacting new and
-          existing clients. The definition of interfaces purely in terms of
-          standardized URI templates makes it very hard to gradually evolve
+          the introduction of new features) without negatively impacting
+          existing and new clients. The definition of interfaces purely in terms of
+          standardized URI templates makes it very difficult to gradually evolve
           them; there are no versioning or capability negotiation mechanisms.
           The bulletin board facilitates fine-grained evolvability by driving
           all interactions through machine-understandable hypertext. Features
@@ -206,7 +206,9 @@ Bulletin /   \
               representation consists primarily of links to the item resources
               using the <xref target="RFC6573">"item" link relation type</xref>.
               To reduce the number of round-trips, it can also embed (complete
-              or partial) representations of those item resources.
+              or partial) representations of those item resources. Forms
+              contained in the representation enable interactions with the
+              bulletin board.
             </t>
             <t>
               For a start, a bulletin board has only a depth of one level; i.e.,
@@ -326,6 +328,7 @@ Bulletin /   \
               <!-- TODO: query -->
             </t>
             <t hangText="Link relation types:">
+              <vspace/><xref target="RFC6573">collection</xref>
               <vspace/><xref target="RFC6573">item</xref>
             </t>
             <t hangText="Form relation types:">
