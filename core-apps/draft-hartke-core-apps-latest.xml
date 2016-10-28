@@ -351,21 +351,22 @@
             is comprised of:
             <list style="symbols">
               <t>
-                a context (usually the current resource),
+                a link context (usually the current resource),
               </t>
               <t>
                 a link relation type that identifies the semantics of the link
-                (see also <xref target="link-relations"/>),
+                (see <xref target="link-relations"/>),
               </t>
               <t>
-                a target resource URI, and
+                a link target, and
               </t>
               <t>
-                optionally, attributes that further describe the link target.
+                optionally, target attributes that describe the link or its
+                target.
               </t>
             </list>
-            A link can be viewed as a statement of the form "{context} has a
-            {relation type} resource at {target URI}, which has {target
+            A link can be viewed as a statement of the form "{link context} has
+            a {link relation type} resource at {link target}, which has {target
             attributes}" <xref target="RFC5988"/>. For example, the resource
             &lt;http://example.com/&gt; could have a "terms-of-service" resource
             at &lt;http://example.com/tos&gt;, which has the media type
@@ -413,31 +414,38 @@
             of:
             <list style="symbols">
               <t>
-                a context (usually the current resource),
+                a form context (usually the current resource),
               </t>
               <t>
                 a form relation type that identifies the semantics of the form
-                (see also <xref target="form-relations"/>),
+                (see <xref target="form-relations"/>),
               </t>
               <t>
-                a target resource URI,
+                a form target,
               </t>
               <t>
-                a submission method (PUT, POST, PATCH, FETCH, or DELETE), and
+                a submission method (PUT, POST, PATCH, FETCH, or DELETE),
               </t>
               <t>
-                a description of a representation that the service accepts as
-                part of form submission. This description can be a set of form
-                fields (see also <xref target="form-fields"/>) or simply a list
-                of acceptable media types.
+                a description of a representation that the service expects as
+                part of form submission, and
+              </t>
+              <t>
+                optionally, target attributes that describe the form or its
+                target.
               </t>
             </list>
-            A form can be viewed as an instruction of the form "To {relation
-            type} the {context}, make a {method} request to {target URI}". For
-            example, to "update" the resource &lt;http://example.com/config&gt;,
-            a client should make a PUT request to
-            &lt;http://example.com/config&gt;. (In many cases, the target of a
-            form is the same resource as the context, but this is not required.)
+            A form can be viewed as an instruction of the form "To {form
+            relation type} the {form context}, make a {method} request to {form
+            target}". For example, to "update" the resource
+            &lt;http://example.com/config&gt;, a client should make a PUT
+            request to &lt;http://example.com/config&gt;.
+          </t>
+
+          <t>
+            The description of the expected representation can be a set of form
+            fields (see <xref target="form-fields"/>) or simply a list of
+            acceptable media types.
           </t>
 
           <t>
@@ -460,13 +468,13 @@
           A link relation type identifies the semantics of a link <xref
           target="RFC5988"/>. For example, a link with the relation type
           "copyright" indicates that the resource identified by the target URI
-          is a statement of the copyright terms applying to the current context.
+          is a statement of the copyright terms applying to the link context.
         </t>
 
         <t>
           Relation types are not to be confused with media types; they do not
           identify the format of the representation that results when the link
-          is dereferenced. Rather, they only describe how the current context is
+          is dereferenced. Rather, they only describe how the link context is
           related to another resource.
         </t>
 
@@ -539,28 +547,30 @@
       <section title="Form Field Names" anchor="form-fields">
 
         <t>
-          Forms can have a detailed description of the accepted representation.
-          This description typically consists of a set of form fields. A form
-          field is comprised of a field name, a field type, and optionally a
-          number of attributes (such as a default value, a validation rule or a
-          human-readable label).
+          Forms can have a detailed description of the representation expected
+          by the server as part of form submission. This description typically
+          consists of a set of form fields. A form field is comprised of a field
+          name, a field type, and optionally a number of attributes (such as a
+          default value, a validation rule or a human-readable label).
         </t>
 
         <t>
-          To enable an automated client to fill out a form, the field name
-          identifies the semantics of the form field. For example, when
+          To enable an automated client to fill out a form, the field name can
+          be used to identify the semantics of the form field. For example, when
           controlling a smart light bulb, the field name "brightness" could
           indicate the field for setting the desired brightness of the light
-          bulb. Field names are scoped to form relation types; i.e., two form
+          bulb. Field names are scoped to form relation types, i.e., two form
           fields with the same name can have different semantics if they appear
           in forms with different form relation types.
         </t>
 
         <t>
-          The type of a form field is orthogonal to the field name; i.e., the
-          type should not be implied by the field name even though the client
-          can identify the semantics from the field name. This makes it easy,
-          for example, to expand the set of acceptable types in the future.
+          The type of a form field is a data type such as "an integer between 1
+          and 100" or "a color in #RRGGBB format". The type is orthogonal to the
+          field name, i.e., the type should not be determined from the field name
+          even though the client can identify the semantics of the field from
+          the name. This separation makes it easy, for example, to expand the
+          set of acceptable values in the future.
         </t>
 
       </section>
