@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core-apps", "core-apps", "{
 		core-apps\draft-hartke-core-apps-02.xml = core-apps\draft-hartke-core-apps-02.xml
 		core-apps\draft-hartke-core-apps-03.xml = core-apps\draft-hartke-core-apps-03.xml
 		core-apps\draft-hartke-core-apps-04.xml = core-apps\draft-hartke-core-apps-04.xml
+		core-apps\draft-hartke-core-apps-05.xml = core-apps\draft-hartke-core-apps-05.xml
 		core-apps\draft-hartke-core-apps-latest.xml = core-apps\draft-hartke-core-apps-latest.xml
 	EndProjectSection
 EndProject
