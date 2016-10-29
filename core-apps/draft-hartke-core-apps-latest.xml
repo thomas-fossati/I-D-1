@@ -17,6 +17,7 @@
   <!ENTITY RFC7320 SYSTEM "reference.RFC.7320.xml">
   <!ENTITY RFC7540 SYSTEM "reference.RFC.7540.xml">
   <!ENTITY RFC7595 SYSTEM "reference.RFC.7595.xml">
+  <!ENTITY SELF "[RFCXXXX]">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -345,10 +346,9 @@
         <section title="Links" anchor="links">
 
           <t>
-            A link is the primary means for a client to change application
-            state, i.e., to navigate from one resource to another. A link is a
-            typed connection between two resources <xref target="RFC5988"/>, and
-            is comprised of:
+            A link is a typed connection between two resources <xref
+            target="RFC5988"/> and the primary means for a client to navigate
+            from one resource to another. It is comprised of:
             <list style="symbols">
               <t>
                 a link context (usually the current resource),
@@ -361,8 +361,8 @@
                 a link target, and
               </t>
               <t>
-                optionally, target attributes that describe the link or its
-                target.
+                optionally, target attributes that further describe the link or
+                its target.
               </t>
             </list>
             A link can be viewed as a statement of the form "{link context} has
@@ -380,7 +380,7 @@
                 An embedding link is a link with the additional hint that it,
                 when processed, should be substituted with a representation of
                 the referenced resource. Thus, traversing an embedding link adds
-                to the application state, rather than replacing it.
+                to the current state, rather than replacing it.
                 <vspace blankLines="1"/>
                 The most well known example for an embedding link is the HTML
                 &lt;img&gt; element. When a web browser processes this element,
@@ -431,8 +431,8 @@
                 part of form submission, and
               </t>
               <t>
-                optionally, target attributes that describe the form or its
-                target.
+                optionally, target attributes that further describe the form or
+                its target.
               </t>
             </list>
             A form can be viewed as an instruction of the form "To {form
@@ -504,7 +504,7 @@
           relation types are assigned a numeric identifier that can be used in
           place of the textual name (see also <xref target="iana-link"/>). For
           example, the link relation type "copyright" has the numeric identifier
-          12. Representation formats may provide numeric identifiers also for
+          12. Representation formats may provide numeric identifiers for
           extension link relation types.
         </t>
 
@@ -538,8 +538,8 @@
           IANA-registered form relation types are assigned a numeric identifier
           that can be used in place of the textual name. For example, the
           "create-item" form relation type has the numeric identifier 1.
-          Representation formats may provide numeric identifiers also for
-          extension form relation types.
+          Representation formats may provide numeric identifiers for extension
+          form relation types.
         </t>
 
       </section>
@@ -549,9 +549,9 @@
         <t>
           Forms can have a detailed description of the representation expected
           by the server as part of form submission. This description typically
-          consists of a set of form fields. A form field is comprised of a field
-          name, a field type, and optionally a number of attributes (such as a
-          default value, a validation rule or a human-readable label).
+          consists of a set of form fields where each form field is comprised of
+          a field name, a field type, and optionally a number of attributes such
+          as a default value, a validation rule or a human-readable label.
         </t>
 
         <t>
@@ -566,11 +566,11 @@
 
         <t>
           The type of a form field is a data type such as "an integer between 1
-          and 100" or "a color in #RRGGBB format". The type is orthogonal to the
-          field name, i.e., the type should not be determined from the field name
-          even though the client can identify the semantics of the field from
-          the name. This separation makes it easy, for example, to expand the
-          set of acceptable values in the future.
+          and 100" or "a RGB color". The type is orthogonal to the field name,
+          i.e., the type should not be determined from the field name even
+          though the client can identify the semantics of the field from the
+          name. This separation makes it easy to expand the set of acceptable
+          values in the future.
         </t>
 
       </section>
@@ -839,32 +839,30 @@
               <t>
                 Relation Name: create-item<vspace/>
                 Relation ID: 1<vspace/>
-                Description: Refers to a resource that can be used
-                to create a resource in a collection of
-                resources.<vspace/>
-                Reference: [RFCXXXX]
+                Description: Refers to a resource that can be used to create a
+                resource in a collection of resources.<vspace/>
+                Reference: &SELF;
               </t>
               <t>
                 Relation Name: delete<vspace/>
                 Relation ID: 2<vspace/>
-                Description: Refers to a resource that can be used
-                to delete a resource in a collection of
-                resources.<vspace/>
-                Reference: [RFCXXXX]
+                Description: Refers to a resource that can be used to delete a
+                resource in a collection of resources.<vspace/>
+                Reference: &SELF;
               </t>
               <t>
                 Relation Name: update<vspace/>
                 Relation ID: 3<vspace/>
-                Description: Refers to a resource that can be used
-                to update the state of the form's context.<vspace/>
-                Reference: [RFCXXXX]
+                Description: Refers to a resource that can be used to update the
+                state of the form context.<vspace/>
+                Reference: &SELF;
               </t>
               <t>
                 Relation Name: search<vspace/>
                 Relation ID: 4<vspace/>
-                Description: Refers to a resource that can be used
-                to search the form's context.<vspace/>
-                Reference: [RFCXXXX]
+                Description: Refers to a resource that can be used to search the
+                form context.<vspace/>
+                Reference: &SELF;
               </t>
             </list>
           </t>
