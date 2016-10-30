@@ -297,7 +297,7 @@ Bulletin /   \
               <vspace blankLines="1"/>
               For each item in a bulletin board, the representation of the
               bulletin board MAY indicate that the item is deletable. If an item
-              is deleteable, the link to the item includes a CoRAL Deletable
+              is deletable, the link to the item includes the CoRAL Deletable
               Option, which defines a form with the "delete" form relation type.
               Submitting this form deletes the item from the bulletin board.
             </t>
@@ -551,7 +551,7 @@ Bulletin /   \
           from the bulletin board resource with the "item" link relation type
           (<xref target="fig-pubsub"/>). Hypermedia controls in the bulletin
           board representation enable publishers to create, update and delete
-          topics and subscribers to read/observe these topics.
+          topics, and subscribers to read/observe these topics.
         </t>
 
 <figure anchor="fig-pubsub" title="A Bulletin Board Acting as a Publish-Subscribe Broker"><artwork align="center"><![CDATA[
@@ -728,19 +728,19 @@ Bulletin /   \
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
+    <!--
     <section title="Acknowledgements" numbered="no">
 
       <t>
         Thanks to
-        <!--
         X,
-        Y and
-        -->
-        Alexander Pelov
+        Y, and
+        Z
         for helpful comments and discussions that have shaped the document.
       </t>
 
     </section>
+    -->
 
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
