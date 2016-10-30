@@ -25,6 +25,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-bulletin-board", "t2trg-bulletin-board", "{2E030392-03F1-4B33-9FBF-415D676189F7}"
 	ProjectSection(SolutionItems) = preProject
 		t2trg-bulletin-board\draft-hartke-t2trg-bulletin-board-00.xml = t2trg-bulletin-board\draft-hartke-t2trg-bulletin-board-00.xml
+		t2trg-bulletin-board\draft-hartke-t2trg-bulletin-board-01.xml = t2trg-bulletin-board\draft-hartke-t2trg-bulletin-board-01.xml
 		t2trg-bulletin-board\draft-hartke-t2trg-bulletin-board-latest.xml = t2trg-bulletin-board\draft-hartke-t2trg-bulletin-board-latest.xml
 	EndProjectSection
 EndProject
