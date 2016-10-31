@@ -64,7 +64,7 @@
     <section title="Introduction">
 
       <t>
-        This document describes a way to encode form data in <xref
+        This document describes a media type to encode form data in <xref
         target="RFC7049">CBOR</xref> format, similar to the well-known <xref
         target="W3C.REC-html5-20141028">"application/x-www-form-urlencoded"</xref>
         and <xref target="RFC7578">"multipart/form-data"</xref> media types. The
@@ -73,7 +73,6 @@
         and instruction sets <xref target="RFC7228"/>.
       </t>
 
-      <!--
       <section title="Terminology">
 
         <t>
@@ -84,7 +83,6 @@
         </t>
 
       </section>
-      -->
 
     </section>
 
@@ -100,31 +98,53 @@
         representation format for forms that is suitable for constrained
         systems. However, it does not provide a syntax for specifying the fields
         of a form in the form body and leaves this task to other specifications.
-        This section defines such a syntax based on <xref
-        target="I-D.greevenbosch-appsawg-cbor-cddl">CDDL</xref>.
+        This section defines such a syntax.
       </t>
 
       <t>
-        A form body in this syntax consists of a CDDL specification. At the
-        root, the specification defines a type, which describes the set of CBOR
-        data items that are acceptable for submission as form data.
+        A form body in this syntax consists of one or more form fields. Each
+        form field consists of a field name and a type. The field name is an
+        arbitrary text string. The field type is a text string that matches the
+        ABNF production "type" from <xref
+        target="I-D.greevenbosch-appsawg-cbor-cddl"/>.
       </t>
+
+      <t>
+        Form fields can be combined with the operators AND and OR. The AND
+        operator indicates that the form submitter MUST submit all the members
+        of the expression. The OR operator indicates that the form submitter
+        MUST submit exactly one member of the expression.
+      </t>
+
+      <t>
+        Using <xref target="I-D.greevenbosch-appsawg-cbor-cddl">CDDL
+        notation</xref>, the form body syntax can be expressed as follows:
+      </t>
+
+<figure><artwork type="cddl"><![CDATA[
+   form-body   = expr
+   expr        = and-expr / or-expr / field
+   and-expr    = [1, +expr]
+   or-expr     = [2, +expr]
+   field       = [3, field-name, field-type]
+   field-name  = text
+   field-type  = text
+]]></artwork></figure>
 
       <t>
         Example:
       </t>
 
 <figure><artwork type="cbor"><![CDATA[
-   form-data = {"http://xmlns.com/foaf/0.1/firstName": text,
-                "http://xmlns.com/foaf/0.1/lastName": text,
-                "http://xmlns.com/foaf/0.1/age": uint}
+   [1, [3, "http://xmlns.com/foaf/0.1/firstName", "text"],
+       [3, "http://xmlns.com/foaf/0.1/lastName", "text"],
+       [2, [3, "http://xmlns.com/foaf/0.1/age", "uint"],
+           [3, "http://xmlns.com/foaf/0.1/birthday", "tdate"]]]
 ]]></artwork></figure>
 
       <t>
-        This describes three form fields for submitting the first name, last
-        name and age of a person (using the <xref target="FOAF">FOAF</xref>
-        vocabulary to indicate the semantics of the individual form fields to an
-        automated agent).
+        (using the <xref target="FOAF">FOAF</xref> vocabulary to indicate the
+        semantics of the individual form fields to an automated agent).
       </t>
 
     </section>
@@ -137,32 +157,32 @@
     <section title="Form Data Syntax">
 
       <t>
-        Form data is serialized as a CBOR data item that matches the CDDL
-        specification in the form body. The media type is "application/cbor".
+        Form data is serialized as a table where each entry consists of a form
+        field name and a value. The field name MUST the name of one of the
+        fields defined in the form body. The value MUST be a CBOR data item that
+        matches the type specification in the field definition. The media type
+        is "application/form-data+cbor".
       </t>
+
+      <t>
+        Using <xref target="I-D.greevenbosch-appsawg-cbor-cddl">CDDL
+        notation</xref>, the form data syntax can be expressed as follows:
+      </t>
+
+<figure><artwork type="cddl"><![CDATA[
+   form-data   = {*field-name => field-value}
+   field-name  = text
+   field-value = any
+]]></artwork></figure>
 
       <t>
         Example:
       </t>
 
 <figure><artwork type="cbor"><![CDATA[
-   a3                                      # map(3)
-      78 23                                # text(35)
-         687474703a2f2f786d6c6e732e636f6d  #  "http://xmlns.com"
-         2f666f61662f302e312f66697273744e  #  "/foaf/0.1/firstN"
-         616d65                            #  "ame"
-      64                                   # text(4)
-         4a616e65                          #  "Jane"
-      78 22                                # text(34)
-         687474703a2f2f786d6c6e732e636f6d  #  "http://xmlns.com"
-         2f666f61662f302e312f6c6173744e61  #  "/foaf/0.1/lastNa"
-         6d65                              #  "me"
-      63                                   # text(3)
-         446f65                            #  "Doe"
-      78 1d                                # text(29)
-         687474703a2f2f786d6c6e732e636f6d  #  "http://xmlns.com"
-         2f666f61662f302e312f616765        #  "/foaf/0.1/age"
-      18 20                                # unsigned(32)
+   {"http://xmlns.com/foaf/0.1/firstName": "Jane",
+    "http://xmlns.com/foaf/0.1/lastName": "Doe",
+    "http://xmlns.com/foaf/0.1/age": 32}
 ]]></artwork></figure>
 
     </section>
@@ -187,9 +207,32 @@
 
     <section title="IANA Considerations">
 
-      <t>
-        This document includes no request to IANA.
-      </t>
+      <section title="Media Type">
+
+        <t>
+          This document registers the media type "application/form-data+cbor" in
+          the "Media Types" registry.
+        </t>
+
+      </section>
+
+      <section title="CoAP Content-Format">
+
+        <t>
+          This document registers a content format for the
+          "application/form-data+cbor" media type in the "CoAP Content-Formats"
+          registry.
+          <list style="symbols">
+            <t>
+              Media Type: application/form-data+cbor<vspace/>
+              Encoding: -<vspace/>
+              ID: 61<vspace/>
+              Reference: &SELF;
+            </t>
+          </list>
+        </t>
+
+      </section>
 
     </section>
 
@@ -209,7 +252,7 @@
 
     <references title="Normative References">
 
-      <!--&RFC2119;-->
+      &RFC2119;
       &RFC7049;
 
     </references>
