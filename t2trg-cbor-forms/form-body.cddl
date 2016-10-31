@@ -1,7 +1,7 @@
 form-body   = expr
-expr        = and-expr / or-expr / field
-and-expr    = [1, +expr]
-or-expr     = [2, +expr]
+expr        = all-expr / any-expr / field
+all-expr    = [1, +expr]
+any-expr    = [2, +expr]
 field       = [3, field-name, field-type]
 field-name  = text
 field-type  = text
