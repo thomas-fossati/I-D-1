@@ -7,7 +7,6 @@
   <!ENTITY RFC7578 SYSTEM "reference.RFC.7578.xml">
   <!ENTITY I-D.greevenbosch-appsawg-cbor-cddl SYSTEM "reference.I-D.greevenbosch-appsawg-cbor-cddl.xml">
   <!ENTITY I-D.hartke-t2trg-coral SYSTEM "reference.I-D.hartke-t2trg-coral.xml">
-  <!ENTITY W3C.REC-html5-20141028 SYSTEM "reference.W3C.REC-html5-20141028.xml">
   <!ENTITY SELF "[RFCXXXX]">
 ]>
 
@@ -66,7 +65,7 @@
       <t>
         This document describes a media type to encode form data in <xref
         target="RFC7049">CBOR</xref> format, similar to the well-known <xref
-        target="W3C.REC-html5-20141028">"application/x-www-form-urlencoded"</xref>
+        target="URL">"application/x-www-form-urlencoded"</xref>
         and <xref target="RFC7578">"multipart/form-data"</xref> media types. The
         use of a compact, binary representation format enables the processing of
         form submissions on systems with very limited memory, processor power,
@@ -266,7 +265,6 @@
       &RFC7578;
       &I-D.greevenbosch-appsawg-cbor-cddl;
       &I-D.hartke-t2trg-coral;
-      &W3C.REC-html5-20141028;
 
       <reference anchor="FOAF" target="http://xmlns.com/foaf/spec/20140114.html">
         <front>
@@ -274,6 +272,14 @@
           <author initials="D." surname="Brickley" fullname="Dan Brickley"/>
           <author initials="L." surname="Miller" fullname="Libby Miller"/>
           <date month="January" day="14" year="2014"/>
+        </front>
+      </reference>
+
+      <reference anchor="URL" target="https://url.spec.whatwg.org/">
+        <front>
+          <title>URL Standard</title>
+          <author initials="A." surname="van Kesteren" fullname="Anne van Kesteren"/>
+          <date month="November" day="01" year="2016"/>
         </front>
       </reference>
 
