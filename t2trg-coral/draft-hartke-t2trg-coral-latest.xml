@@ -143,7 +143,7 @@
 
       <t>
         A link indicates a relationship between two resources, the link context
-        and the link target, and affords the navigation between these two. The
+        and the link target, and affords the navigation between these. The
         semantics of the relationship are identified by a link relation type,
         which in CoRAL can be IANA-registered or application-specific. To
         minimize round-trips, a link in CoRAL can optionally embed a (complete
@@ -159,7 +159,7 @@
         context through the submission of the form to the target. In many cases,
         the target of a form is the same resource as the context, but this is
         not required. The semantics of a form are identified by a form relation
-        type, which in CoRAL again can be IANA-registered or
+        type, which again in CoRAL can be IANA-registered or
         application-specific. The submission of a form typically requires the
         agent to construct a payload that is included with the request. For this
         purpose, a form indicates the acceptable content formats for the payload
@@ -196,9 +196,9 @@
             The agent resolves the URI reference in the link or form to its
             absolute form in order to obtain the "request URI". CoRAL encodes
             URI references like CoAP as a sequence of options, which
-            significantly simplifies the implementation of URI processors. The
-            process of reference resolution is specified in <xref
-            target="resolution"/>.
+            significantly simplifies the implementation of URI processors
+            compared to full RFC 3986 support. The process of reference
+            resolution is specified in <xref target="resolution"/>.
           </t>
           <t>
             The agent constructs a new request with the request URI. If the
@@ -213,7 +213,7 @@
           <t>
             Finally, the agent sends the request and retrieves the response. The
             agent processes the enclosed representation, updates the browsing
-            context to the new resource, and can decide again what to do next.
+            context to the new resource, and again can decide what to do next.
           </t>
         </list>
       </t>
@@ -221,12 +221,11 @@
       <t>
         An agent can furthermore navigate a browsing context by traversing the
         browsing context's session history. The session history consists of a
-        flat list of session history entries. Each session history entry
-        consists of a URI and may have other information associated with it.
-        Session history entries are added to the session history as the agent
-        navigates from resource to resource. An agent can traverse the session
-        history to any entry by updating the browsing context to the resource
-        for that entry.
+        flat list of session history entries, which consist of a URI and may
+        have other information associated with them. Session history entries are
+        added to the session history as the agent navigates from resource to
+        resource. An agent can traverse the session history by updating the
+        browsing context to the resource for that entry.
       </t>
 
     </section>
@@ -242,27 +241,28 @@
         CoRAL can be used as a standalone representation format or embedded in
         representations in other formats. As a standalone format, CoRAL
         representations have the media type "application/coral" or a media type
-        derived from CoRAL with the structured syntax suffix "+coral". CoRAL is
-        typically embedded in CBOR-based media types, but other media types can
-        embed CoRAL as well. The CoRAL format is in all cases the same.
+        derived from CoRAL with the structured syntax suffix "+coral". When
+        CoRAL is embedded, it is typically embedded in CBOR-based representation
+        formats, but other representation formats can embed CoRAL as well. The
+        CoRAL format is in all cases the same.
       </t>
 
       <t>
-        The top-level structure of CoRAL is a CoRAL document. A CoRAL document
-        consists of a sequence of links, forms, literals and bases, which are
-        collectively called elements. Elements consist of a number indicating
-        the element type, a "href type" that indicates how CoRAL-encoded URI
-        references are to be interpreted in reference resolution, a sequence of
-        zero or more options and, optionally, a body.
+        The top-level structure of CoRAL is called a CoRAL document. A CoRAL
+        document consists of a sequence of links, forms, literals and bases,
+        which are collectively called elements. All elements consist of a number
+        indicating the element type, a "href type" that indicates how
+        CoRAL-encoded URI references are to be interpreted in reference
+        resolution, a sequence of zero or more options and, optionally, a body.
       </t>
 
       <t>
         Link, form and literal elements come in two flavors: a "fat" format that
         includes all the items listed above, and a "tiny" format. The tiny
         formats provide a concise way to express elements that match certain
-        patterns. Base elements are always in the "fat" format. They encode a
-        base URI for reference resolution and apply to all subsequent elements
-        until the next base element is encountered.
+        patterns, which are specified below. Base elements are always in the
+        "fat" format. They encode a base URI for reference resolution and apply
+        to all subsequent elements until the next base element is encountered.
       </t>
 
       <t>
@@ -271,9 +271,9 @@
         overhead of using these relation types in constrained environments,
         <xref target="I-D.hartke-core-apps"/> extends the IANA Link Relation
         Types registry with a numeric identifier for each type. CoRAL uses these
-        (non-negative) numeric identifiers instead of the textual names. The
-        same optimization is applied to form relation types, CoAP content
-        formats and CoAP request methods.
+        numeric identifiers instead of the textual names. The same optimization
+        is applied to form relation types, CoAP content formats and CoAP request
+        methods.
       </t>
 
       <t>
@@ -281,18 +281,18 @@
         link relation types, form relation types and content formats, which do
         not need to be IANA-registered. The mappings from numbers to textual
         names need to be provided by the respective media type definition (i.e.,
-        a media type with the "+coral" suffix or a media type embedding CoRAL;
-        the "application/coral" media type itself does not define any
+        by a media type with the "+coral" suffix or a media type embedding
+        CoRAL; the "application/coral" media type itself does not define any
         application-specific values).
       </t>
 
       <t>
-        CoRAL defines a number of options that can be included in link, form,
-        literal and base elements. Options are used to encode the relation type,
-        the target resource URI and target attributes. They are serialized as a
-        sequence of unwrapped pairs where each pair consists of a CoRAL option
-        number and an option value. The pairs MUST be sorted such that the
-        option numbers are in ascending order.
+        CoRAL defines a number of options that can be included in elements.
+        Options are used to encode the relation type, the target resource URI
+        and target attributes. They are serialized as a sequence of unboxed
+        pairs where each pair consists of a CoRAL option number and an option
+        value. The pairs in a CoRAL element MUST be sorted such that the option
+        numbers appear in ascending order.
       </t>
 
       <t>
@@ -334,9 +334,9 @@
       </t>
 
 <figure><artwork align="center"><![CDATA[
-[1, H, R]        ->  [5, H, [1, R]]
-[2, H, R, F, B]  ->  [6, H, [1, R, 4, F], B]
-[3, H, R, A]     ->  [7, H, [1, R, 3, A]]
+[1, H, R]         ->   [5, H, [1, R]]
+[2, H, R, F, B]   ->   [6, H, [1, R, 4, F], B]
+[3, H, R, A]      ->   [7, H, [1, R, 3, A]]
 ]]></artwork></figure>
 
     </section>
@@ -412,7 +412,8 @@
       </t>
 
       <t>
-        The individual options are explained in the following subsections.
+        The semantics of the individual options are specified in the following
+        subsections.
       </t>
 
       <section title="Accept">
@@ -456,15 +457,16 @@
           should be when following the link or submitting the form. Note that
           this is only a hint; it does not override the Content-Format Option
           included in the CoAP response. If the Format Option occurs more than
-          once, an agent can set the Accept Option in its CoAP request to
-          request a particular content format.
+          once, an agent SHOULD set the Accept Option in the CoAP request
+          message to request a particular content format.
         </t>
 
         <t>
           The Format Option is REQUIRED if a link embeds a representation in the
           link body. The Format Option is also REQUIRED in a literal. In both
-          cases the first occurrence of the option indicates the content format
-          of the embedded representation.
+          cases, the first occurrence of the option indicates the content format
+          of the embedded representation; any additional occurrences indicate
+          available alternative content formats.
         </t>
 
         <t>
@@ -488,8 +490,7 @@
               the Href.Scheme Option specifies the URI scheme name,
             </t>
             <t>
-              the Href.Host.Name Option specifies the host as a registered name
-              <xref target="RFC3986"/>,
+              the Href.Host.Name Option specifies the host as a registered name,
             </t>
             <t>
               the Href.Host.IPv4 Option specifies the host as a 32-bit IPv4
@@ -572,10 +573,17 @@
         </t>
 
         <t>
-          The option value of a Relation Option is either one of the relation
-          type IDs registered in the Link Relation Types registry (&gt;= 0) or
-          one of the application-specific relation type IDs defined by the media
-          type (&lt; 0).
+          In a link or literal, the option value of a Relation Option is either
+          one of the link relation type IDs registered in the Link Relation
+          Types registry (&gt;= 0) or one of the application-specific link
+          relation type IDs defined by the media type (&lt; 0).
+        </t>
+
+        <t>
+          In a form, the option value of Relation Option is either one of the
+          form relation type IDs registered in the Form Relation Types registry
+          (&gt;= 0) or one of the application-specific form relation type IDs
+          defined by the media type (&lt; 0).
         </t>
 
       </section>
@@ -632,7 +640,8 @@
           "Base URI Embedded in Content" in the form of base elements. A base
           element applies to all subsequent elements in a document until the
           next base element is encountered. The URI reference in a base element
-          itself is resolved relative to the base URI of next lower precedence.
+          itself is resolved relative to the base URI of next lower precedence
+          (which is usually the "URI used to retrieve the entity").
         </t>
 
       </section>
@@ -1054,7 +1063,7 @@
         <section title="Links">
 
           <t>
-            At its core, CoRAL is yet another serialization format for Web
+            At its core, CoRAL is just yet another serialization format for Web
             links. For example, the following Web link (in RFC 5988 syntax):
           </t>
 
@@ -1064,7 +1073,8 @@
 
           <t>
             can be serialized in CoRAL as the following CBOR data item (in CBOR
-            extended diagnostic format; forward slashes indicate comments):
+            extended diagnostic format; text enclosed in forward slashes are
+            comments):
           </t>
 
 <figure><artwork type="cbor"><![CDATA[
@@ -1165,7 +1175,7 @@
             basic) substitute for <xref
             target="W3C.REC-rdf11-concepts-20140225">RDF</xref>. For example,
             the RDF graph (in <xref
-            target="W3C.REC-turtle-20140225">Turtle</xref> syntax)
+            target="W3C.REC-turtle-20140225">Turtle</xref> syntax):
           </t>
 
 <figure><artwork><![CDATA[
@@ -1205,10 +1215,10 @@
 
           <t>
             The link relation type in a serialized link may be from the "global"
-            or the "local" namespace. The global namespace is indicated by an
-            unsigned number and is made up of the link relation types registered
-            with IANA. The local namespace is indicated by a negative number and
-            is defined by the media type of the CoRAL representation.
+            or the "local" namespace. The global namespace is indicated by a
+            non-negative number and is made up of the link relation types
+            registered with IANA. The local namespace is indicated by a negative
+            number and is defined by the media type of the CoRAL representation.
           </t>
 
           <t>
@@ -1304,7 +1314,7 @@
             forms that allow an agent to edit the resource. However, it may be
             inefficient to include these forms every time a representation of
             the link target is retrieved and more efficient to include them in
-            representations that link to the resource. CoRAL supports this with
+            representations that link to that resource. CoRAL supports this with
             two options.
           </t>
 
