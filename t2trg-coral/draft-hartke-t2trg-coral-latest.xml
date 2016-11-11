@@ -1188,7 +1188,7 @@
        h'4a6f686e20446f65' ], / "John Doe"                          /
      [ 2,                     / tiny-literal                        /
        2,                     / append-path                         /
-       -101,                  /  relation       = name              /
+       -101,                  /  relation       = age               /
        7,                     /  format         = uint8             /
        h'20' ],               / 32                                  /
      [ 5,                     / fat-link                            /
