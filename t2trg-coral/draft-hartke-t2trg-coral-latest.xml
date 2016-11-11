@@ -135,7 +135,7 @@
         resource representations are processed. (In the traditional Web, the
         browsing context corresponds to a tab or window in a Web browser.) A
         browsing context has a session history, which lists the resources that
-        that browsing context has visited, is visiting, or will visit. At any
+        the browsing context has visited, is visiting, or will visit. At any
         time, one resource in a browsing context is designated the "current"
         resource. Following a link or submitting a form causes the browsing
         context to navigate to a new resource.
