@@ -898,7 +898,7 @@
               <vspace/>&SELF;
             </t>
             <t hangText="Applications that use this media type:">
-              <vspace/>Hypermedia-driven Web applications that run in
+              <vspace/>Hypermedia-driven Web applications that run on
               constrained nodes and networks.
             </t>
             <t hangText="Fragment identifier considerations:">
