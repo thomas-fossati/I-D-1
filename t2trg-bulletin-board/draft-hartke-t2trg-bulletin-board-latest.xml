@@ -24,7 +24,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="2"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-bulletin-board-01" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-bulletin-board-02" ipr="trust200902">
 
   <front>
 
@@ -71,70 +71,100 @@
     <section title="Introduction">
 
       <t>
-        <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> defines a
-        "bulletin board" application that can be used to share the thing
-        descriptions of sensor and actuator nodes. This document generalizes the
-        bulletin board concept to support representations in any media type and
-        defines means for creating, reading, observing, updating, deleting and
+        In Thing-to-Thing communication, there is often a need to publish
+        information of common interest at a central location. For example, a
+        <xref target="I-D.ietf-core-resource-directory">CoRE Resource
+        Directory</xref> stores descriptions of resources held on other servers,
+        which enables things to easily discover these resources. Similarly, a
+        <xref target="WOT">W3C Web-of-Things Thing Description repository</xref>
+        stores the semantic metadata of things as well as functional
+        descriptions of their interfaces, making this information available to
+        Web dashboards, commissioning tools and other things.
+      </t>
+
+      <t>
+        As more and more thing-to-thing applications are implemented, it becomes
+        increasingly important to be able to publish also other data than
+        resource and thing descriptions. Resource directory and thing
+        description repository are not always the best fit for this kind of
+        data, and defining a new specialized application for each use case is
+        not reasonable in the long term.
+      </t>
+
+      <t>
+        This document presents a "bulletin board" application, a RESTful Web
+        application suitable for constrained environments that generalizes the
+        concept of a central entity for publishing information. A bulletin board
+        enables the publication of data in any representations format and
+        provides means for creating, reading, observing, updating, deleting and
         finding items in a bulletin board.
       </t>
 
       <t>
-        The generalization to any media type provides two advantages. The first
-        is media type agility: applications won't be stuck forever with the
-        media types of CoRE Lighting. The second is that it may be useful to
-        share also other information than thing descriptions, such as default
-        configurations for new devices, service locations or sleep schedules.
-      </t>
-
-      <t>
-        Finding items by submitting a search query allows clients to retrieve a
-        subset of items from a bulletin board. In CoRE Lighting, a client has to
-        download the whole set of thing descriptions, filter the set and
-        configure compatible devices. It may be more efficient to filter the set
-        at the bulletin board server. To make this work with any media type, a
-        search request needs to specify both the media type of the desired items
-        and a media type-specific search query.
-      </t>
-
-      <t>
-        The generalized bulletin board is presented as a <xref
+        The bulletin board application is presented in the form of a <xref
         target="I-D.hartke-core-apps">CoRE Application Description</xref>. That
         is, the focus of the application interface is on the media types used in
-        the bulletin board application and interactions are driven by links and
-        forms.
+        the bulletin board application and all interactions are driven by
+        machine-understandable Web links and forms.
       </t>
 
-      <section title="Related Work">
-
-        <t>
-          The bulletin board is an instance of the well-known REST collection
-          pattern. As such, it might be used in places where a more specific
-          instance of the collection pattern is currently used, such as the
-          <xref target="I-D.ietf-core-coap-pubsub">Publish-Subscribe
-          Broker</xref> or the <xref
-          target="I-D.ietf-core-resource-directory">CoRE Resource
-          Directory</xref>. <xref target="proof-of-concept"/> explores this
-          direction and provides a proof-of-concept mapping from
-          publish-subscribe broker and resource directory to bulletin boards.
-        </t>
-
-        <t>
-          The key differentiator of the bulletin board compared to
-          publish-subscribe broker and resource directory lies in the
-          evolvability, the ability to respond effectively to change (such as
-          the introduction of new features) without negatively impacting
-          existing and new clients. The definition of interfaces purely in terms of
-          standardized URI templates makes it very difficult to gradually evolve
-          them; there are no versioning or capability negotiation mechanisms.
-          The bulletin board facilitates fine-grained evolvability by driving
-          all interactions through machine-understandable hypertext. Features
-          can be added, changed or removed in a backwards-compatible way simply
-          by updating the bulletin board to expose corresponding links and
-          forms.
-        </t>
-
-      </section>
+      <t>
+        Features:
+        <list style="symbols">
+          <t>
+            General Purpose
+            <vspace blankLines="1"/>
+            The generalization to any media type provides two advantages. The
+            first is media type agility: applications using the bulletin board
+            won't be stuck forever with the same media types. The second is
+            that, as mentioned above, it may be useful to publish also other
+            information than resource and thing descriptions, such as default
+            configurations for new devices, sleep schedules, firmware updates,
+            or certificate revocation lists.
+          </t>
+          <t>
+            Searchable
+            <vspace blankLines="1"/>
+            Submitting a search query allows clients to retrieve a subset of
+            items from a bulletin board. Without this feature, a client would
+            have to download and sort through the whole set of published items.
+            It is typically more efficient to filter the set at the bulletin
+            board server. To make this work with any media type, a search
+            request needs to specify both the media type of the desired items
+            and a media type-specific search query.
+          </t>
+          <t>
+            Observable
+            <vspace blankLines="1"/>
+            The items published to a bulletin board are exposed as resources and
+            as such can be <xref target="RFC7641">observed</xref>. This allows
+            clients to stay informed of information that other clients update
+            over time. In effect, the bulletin board is similar in functioning
+            to a <xref target="I-D.ietf-core-coap-pubsub">CoAP Publish-Subscribe
+            Broker</xref>.
+          </t>
+          <t>
+            Evolvable
+            <vspace blankLines="1"/>
+            The key differentiator of the bulletin board compared to
+            publish-subscribe broker and resource directory lies in the
+            evolvability: the ability to respond effectively to change (such as
+            the introduction of new features) without negatively impacting
+            existing and new clients.
+            <vspace blankLines="1"/>
+            The definition of the application interface purely in terms of
+            standardized URI templates makes it very difficult to gradually
+            evolve them; there are no designated versioning or capability
+            negotiation mechanisms.
+            <vspace blankLines="1"/>
+            The bulletin board facilitates fine-grained evolvability by driving
+            all interactions by machine-understandable hypertext. Features can
+            be added, changed or removed in a safe, backwards-compatible way
+            simply by updating the bulletin board to expose matching links and
+            forms.
+          </t>
+        </list>
+      </t>
 
       <section title="Terminology">
 
@@ -429,6 +459,15 @@ Bulletin /   \
       &I-D.ietf-core-coap-pubsub;
       &I-D.ietf-core-resource-directory;
       &I-D.vial-core-mirror-server;
+
+      <reference anchor="WOT" target="http://w3c.github.io/wot/current-practices/wot-practices.html">
+        <front>
+          <title>WoT Current Practices</title>
+          <author initials="M." surname="Kovatsch" fullname="Matthias Kovatsch"/>
+          <author initials="D." surname="Peintner" fullname="Daniel Peintner"/>
+          <date month="November" day="11" year="2016"/>
+        </front>
+      </reference>
 
     </references>
 
