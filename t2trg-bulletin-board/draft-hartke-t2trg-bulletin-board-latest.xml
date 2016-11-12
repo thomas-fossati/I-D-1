@@ -24,11 +24,11 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="2"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-bulletin-board-02" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-notice-board-00" ipr="trust200902">
 
   <front>
 
-    <title>Thing-to-Thing Bulletin Board</title>
+    <title>Thing-to-Thing Notice Board</title>
 
     <author initials="K." surname="Hartke" fullname="Klaus Hartke">
       <organization>Universitaet Bremen TZI</organization>
@@ -51,7 +51,7 @@
     <abstract>
 
       <t>
-        A Thing-to-Thing Bulletin Board is a RESTful, hypermedia-driven Web
+        A Thing-to-Thing Notice Board is a RESTful, hypermedia-driven Web
         application that can be used in Thing-to-Thing communication to publish
         information such as thing descriptions, configurations, resource
         descriptions or sleep schedules at a central location.
@@ -92,19 +92,19 @@
       </t>
 
       <t>
-        This document presents a "bulletin board" application, a RESTful Web
+        This document presents a "notice board" application, a RESTful Web
         application suitable for constrained environments that generalizes the
-        concept of a central entity for publishing information. A bulletin board
+        concept of a central entity for publishing information. A notice board
         enables the publication of data in any representations format and
         provides means for creating, reading, observing, updating, deleting and
-        finding items in a bulletin board.
+        finding items in a notice board.
       </t>
 
       <t>
-        The bulletin board application is presented in the form of a <xref
+        The notice board application is presented in the form of a <xref
         target="I-D.hartke-core-apps">CoRE Application Description</xref>. That
         is, the focus of the application interface is on the media types used in
-        the bulletin board application and all interactions are driven by
+        the notice board application and all interactions are driven by
         machine-understandable Web links and forms.
       </t>
 
@@ -115,7 +115,7 @@
             General Purpose
             <vspace blankLines="1"/>
             The generalization to any media type provides two advantages. The
-            first is media type agility: applications using the bulletin board
+            first is media type agility: applications using the notice board
             won't be stuck forever with the same media types. The second is
             that, as mentioned above, it may be useful to publish also other
             information than resource and thing descriptions, such as default
@@ -126,9 +126,9 @@
             Searchable
             <vspace blankLines="1"/>
             Submitting a search query allows clients to retrieve a subset of
-            items from a bulletin board. Without this feature, a client would
+            items from a notice board. Without this feature, a client would
             have to download and sort through the whole set of published items.
-            It is typically more efficient to filter the set at the bulletin
+            It is typically more efficient to filter the set at the notice
             board server. To make this work with any media type, a search
             request needs to specify both the media type of the desired items
             and a media type-specific search query.
@@ -136,17 +136,17 @@
           <t>
             Observable
             <vspace blankLines="1"/>
-            The items published to a bulletin board are exposed as resources and
+            The items published to a notice board are exposed as resources and
             as such can be <xref target="RFC7641">observed</xref>. This allows
             clients to stay informed of information that other clients update
-            over time. In effect, the bulletin board is similar in functioning
+            over time. In effect, the notice board is similar in functioning
             to a <xref target="I-D.ietf-core-coap-pubsub">CoAP Publish-Subscribe
             Broker</xref>.
           </t>
           <t>
             Evolvable
             <vspace blankLines="1"/>
-            The key differentiator of the bulletin board compared to
+            The key differentiator of the notice board compared to
             publish-subscribe broker and resource directory lies in the
             evolvability: the ability to respond effectively to change (such as
             the introduction of new features) without negatively impacting
@@ -157,10 +157,10 @@
             evolve them; there are no designated versioning or capability
             negotiation mechanisms.
             <vspace blankLines="1"/>
-            The bulletin board facilitates fine-grained evolvability by driving
+            The notice board facilitates fine-grained evolvability by driving
             all interactions by machine-understandable hypertext. Features can
             be added, changed or removed in a safe, backwards-compatible way
-            simply by updating the bulletin board to expose matching links and
+            simply by updating the notice board to expose matching links and
             forms.
           </t>
         </list>
@@ -190,78 +190,78 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Bulletin Boards">
+    <section title="Notice Boards">
 
       <t>
         This section defines the data model and the interaction model of
-        bulletin boards.
+        notice boards.
       </t>
 
       <section title="Data Model">
 
         <t>
-          The data model consists of two elements: the bulletin board and a
+          The data model consists of two elements: the notice board and a
           number of published items (<xref target="fig-bb"/>).
         </t>
 
-<figure anchor="fig-bb" title="A Bulletin Board with a Number of Published Items"><artwork align="center"><![CDATA[
-          ___
-Bulletin /   \
-   Board \___/         ___
-           |__________/   \ Item 1
-           |   item   \___/
-           |           ___
-           |__________/   \ Item 2
-           |   item   \___/
-           |                  .
-           |                  .
-           |                  .
-           |           ___
-           |__________/   \ Item N
-               item   \___/
+<figure anchor="fig-bb" title="A Notice Board with a Number of Published Items"><artwork align="center"><![CDATA[
+        ___
+Notice /   \
+ Board \___/         ___
+         |__________/   \ Item 1
+         |   item   \___/
+         |           ___
+         |__________/   \ Item 2
+         |   item   \___/
+         |                  .
+         |                  .
+         |                  .
+         |           ___
+         |__________/   \ Item N
+             item   \___/
 ]]></artwork></figure>
 
         <t>
           <list style="hanging">
-            <t hangText="Bulletin Board">
+            <t hangText="Notice Board">
               <vspace blankLines="1"/>
-              A bulletin board is a Web application intended for the posting of
+              A notice board is a Web application intended for the posting of
               public messages, for example, to share thing descriptions,
               announce services or provide information. Sensor and actuator
               nodes can leave and erase messages for other nodes to read and
               see.
             </t>
             <t>
-              A bulletin board resource is a collection of published items. Its
+              A notice board resource is a collection of published items. Its
               representation consists primarily of links to the item resources
               using the <xref target="RFC6573">"item" link relation type</xref>.
               To reduce the number of round-trips, it can also embed (complete
               or partial) representations of those item resources. Forms
               contained in the representation enable interactions with the
-              bulletin board.
+              notice board.
             </t>
             <t>
-              For a start, a bulletin board has only a depth of one level; i.e.,
-              all published items are organized directly under the bulletin
+              For a start, a notice board has only a depth of one level; i.e.,
+              all published items are organized directly under the notice
               board resource. This could be extended to multiple levels in a
               future revision of this draft.
             </t>
             <t>
-              Bulletin board representations are formatted in the <xref
+              Notice board representations are formatted in the <xref
               target="I-D.hartke-t2trg-coral">"application/coral" media
               type</xref>.
             </t>
             <t hangText="Item">
               <vspace blankLines="1"/>
-              A bulletin board item is a member of the collection.
+              A notice board item is a member of the collection.
             </t>
             <t>
               Item representations can in principle be formatted in any media
-              type; a bulletin board deployment MAY restrict the media types it
+              type; a notice board deployment MAY restrict the media types it
               accepts for publication, though.
             </t>
             <t>
-              The representations of items MAY link back to a bulletin board
+              The representations of items MAY link back to a notice board
               resource using the <xref target="RFC6573">"collection" link
               relation type</xref>.
             </t>
@@ -274,9 +274,9 @@ Bulletin /   \
 
         <t>
           The interaction model consists of eight possible interactions with a
-          bulletin board: discovering and reading the bulletin board, and
+          notice board: discovering and reading the notice board, and
           creating, reading, observing, updating, deleting and finding published
-          items in the bulletin board.
+          items in the notice board.
         </t>
 
         <t>
@@ -284,58 +284,58 @@ Bulletin /   \
             <t hangText="Discovery">
               <vspace blankLines="1"/>
               For a start, nodes are assumed to be pre-configured out-of-band
-              with a link to a bulletin board.
+              with a link to a notice board.
             </t>
-            <t hangText="Read Bulletin Board">
+            <t hangText="Read Notice Board">
               <vspace blankLines="1"/>
-              A node can retrieve a representation of the bulletin board by
-              following the discovered link. The representation of the bulletin
+              A node can retrieve a representation of the notice board by
+              following the discovered link. The representation of the notice
               board includes links to and/or literals with representations of
-              the items in the bulletin board. The representation MAY also
+              the items in the notice board. The representation MAY also
               include forms for creating, updating, deleting and finding items.
             </t>
             <t hangText="Create Item">
               <vspace blankLines="1"/>
-              The representation of a bulletin board MAY contain a form with the
+              The representation of a notice board MAY contain a form with the
               "create-item" form relation type. Submitting this form with a
               representation in one of the accepted content formats creates a
-              new item in the bulletin board.
+              new item in the notice board.
             </t>
             <t hangText="Read Item">
               <vspace blankLines="1"/>
               A node can retrieve a representation of an item by following one
               of the links with the "item" link relation type in the
-              representation of the bulletin board.
+              representation of the notice board.
             </t>
             <t hangText="Observe Item">
               <vspace blankLines="1"/>
               A node can observe an item by following one of the links with the
-              "item" link relation type in the representation of the bulletin
+              "item" link relation type in the representation of the notice
               board and observing the resource as specified in <xref
               target="RFC7641"/>.
             </t>
             <t hangText="Update Item">
               <vspace blankLines="1"/>
-              For each item in a bulletin board, the representation of the
-              bulletin board MAY indicate that the item is updatable. If an item
+              For each item in a notice board, the representation of the
+              notice board MAY indicate that the item is updatable. If an item
               is updatable, the link to the item includes the CoRAL Updatable
               Option, which defines a form with the "update" form relation type.
-              Submitting this form updates the item in the bulletin board to the
+              Submitting this form updates the item in the notice board to the
               submitted representation.
             </t>
             <t hangText="Delete Item">
               <vspace blankLines="1"/>
-              For each item in a bulletin board, the representation of the
-              bulletin board MAY indicate that the item is deletable. If an item
+              For each item in a notice board, the representation of the
+              notice board MAY indicate that the item is deletable. If an item
               is deletable, the link to the item includes the CoRAL Deletable
               Option, which defines a form with the "delete" form relation type.
-              Submitting this form deletes the item from the bulletin board.
+              Submitting this form deletes the item from the notice board.
             </t>
             <t hangText="Find Items">
               <vspace blankLines="1"/>
               A form with the "search" form relation type can be used to find
               items. Submitting this form with a media type and a media
-              type-specific filter query returns a subset of the bulletin board
+              type-specific filter query returns a subset of the notice board
               that matches the filter. (The details of this are TBD.)
             </t>
           </list>
@@ -348,7 +348,7 @@ Bulletin /   \
         <t>
           <list style="hanging">
             <t hangText="Application name:">
-              <vspace/>Thing-to-Thing Bulletin Board 1.0
+              <vspace/>Thing-to-Thing Notice Board 1.0
             </t>
             <t hangText="URI schemes:">
               <vspace/><xref target="RFC7252">coap</xref>
@@ -479,15 +479,15 @@ Bulletin /   \
     <section title="Related Work">
 
       <t>
-        The bulletin board is an instance of the well-known REST collection
+        The notice board is an instance of the well-known REST collection
         pattern. As such, it might be used in places where a more specific
         instance of the collection pattern is currently used, such as the
-        bulletin board of <xref target="I-D.hartke-core-lighting">CoRE
+        notice board of <xref target="I-D.hartke-core-lighting">CoRE
         Lighting</xref>, the <xref target="I-D.ietf-core-coap-pubsub">CoAP
         Publish-Subscribe Broker</xref>, or the <xref
         target="I-D.ietf-core-resource-directory">CoRE Resource
         Directory</xref>. This section shows how these might be implemented
-        using a bulletin board (without trying to replicate all features in full
+        using a notice board (without trying to replicate all features in full
         detail).
       </t>
 
@@ -502,10 +502,10 @@ Bulletin /   \
           thing.
         </t>
 
-<figure anchor="fig-td" title="A Bulletin Board Storing Thing Descriptions"><artwork align="center"><![CDATA[
+<figure anchor="fig-td" title="A Notice Board Storing Thing Descriptions"><artwork align="center"><![CDATA[
 +----------------------------------+
 |   ___                            |
-|  /   \ Bulletin Board            |
+|  /   \ Notice Board              |
 |  \___/         ___               |
 |    |__________/   \ Thing        |    +------------------------+
 |    |   item   \___/ Description  |    |   ___                  |
@@ -522,7 +522,7 @@ Bulletin /   \
 ]]></artwork></figure>
 
         <t>
-          <xref target="fig-td"/> shows a bulletin board with two thing
+          <xref target="fig-td"/> shows a notice board with two thing
           descriptions matching the example in Section 5.2.1 of <xref
           target="I-D.hartke-core-lighting"/>. The first thing description
           describes a light bulb and has a link with the "config" link relation
@@ -535,11 +535,11 @@ Bulletin /   \
         <t>
           Thing descriptions are represented in the
           "application/thing-description+json" media type (content format 65200
-          in the example). A bulletin board representation thus could look as
+          in the example). A notice board representation thus could look as
           shown in <xref target="fig-bbexample"/>.
         </t>
 
-<figure anchor="fig-bbexample" title="A Bulletin Board Representation With Two Thing Descriptions"><artwork align="center"><![CDATA[
+<figure anchor="fig-bbexample" title="A Notice Board Representation With Two Thing Descriptions"><artwork align="center"><![CDATA[
  ______________________________
 |                              |
 |  Form                        |
@@ -590,18 +590,18 @@ Bulletin /   \
 ]]></artwork></figure>
 
         <t>
-          A broker might be implemented as a bulletin board by creating the
-          topics as resources on the bulletin board server and linking to these
-          from the bulletin board resource with the "item" link relation type
-          (<xref target="fig-pubsub"/>). Hypermedia controls in the bulletin
+          A broker might be implemented as a notice board by creating the
+          topics as resources on the notice board server and linking to these
+          from the notice board resource with the "item" link relation type
+          (<xref target="fig-pubsub"/>). Hypermedia controls in the notice
           board representation enable publishers to create, update and delete
           topics, and subscribers to read/observe these topics.
         </t>
 
-<figure anchor="fig-pubsub" title="A Bulletin Board Acting as a Publish-Subscribe Broker"><artwork align="center"><![CDATA[
+<figure anchor="fig-pubsub" title="A Notice Board Acting as a Publish-Subscribe Broker"><artwork align="center"><![CDATA[
 +------------------------------+
 |   ___                        |
-|  /   \ Bulletin Board        |
+|  /   \ Notice Board          |
 |  \___/         ___           |
 |    |__________/   \ Topic A  |
 |    |   item   \___/          |
@@ -615,14 +615,14 @@ Bulletin /   \
 +------------------------------+
 ]]></artwork></figure>
 
-        <texttable anchor="mapping-pubsub" title="Mapping of Pub/Sub Interactions to Bulletin Board">
+        <texttable anchor="mapping-pubsub" title="Mapping of Pub/Sub Interactions to Notice Board">
           <ttcol>Interaction</ttcol>
           <ttcol>Mapped to</ttcol>
 
           <c>DISCOVER</c>
           <c>Discovery /</c>
           <c></c>
-          <c>Read Bulletin Board / </c>
+          <c>Read Notice Board / </c>
           <c></c>
           <c>Find Items</c>
 
@@ -658,10 +658,10 @@ Bulletin /   \
           that provide the type of and hints about the linked resources.
         </t>
 
-<figure anchor="fig-rd" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
+<figure anchor="fig-rd" title="A Notice Board Storing Links"><artwork align="center"><![CDATA[
 +----------------------------------+
 |   ___                            |
-|  /   \ Bulletin Board            |
+|  /   \ Notice Board              |
 |  \___/         ___               |
 |    |__________/   \ Link Format  |    +------------------------+
 |    |    item  \___/ Resource     |    |   ___                  |
@@ -678,12 +678,12 @@ Bulletin /   \
 ]]></artwork></figure>
 
         <t>
-          A bulletin board might store these resource descriptions such that
-          each resource description becomes one item in the bulletin board and
+          A notice board might store these resource descriptions such that
+          each resource description becomes one item in the notice board and
           each item links to the respective resource (<xref target="fig-rd"/>).
         </t>
 
-        <texttable anchor="mapping-rd" title="Mapping of Resource Directory Interactions to Bulletin Board">
+        <texttable anchor="mapping-rd" title="Mapping of Resource Directory Interactions to Notice Board">
           <ttcol>Interaction</ttcol>
           <ttcol>Mapped to</ttcol>
 
@@ -726,10 +726,10 @@ Bulletin /   \
           other devices can access the representations while it is sleeping.
         </t>
 
-<figure anchor="fig-mirror" title="A Bulletin Board Acting as a Mirror Server"><artwork align="center"><![CDATA[
+<figure anchor="fig-mirror" title="A Notice Board Acting as a Mirror Server"><artwork align="center"><![CDATA[
 +----------------------------------+
 |   ___                            |
-|  /   \ Bulletin Board            |
+|  /   \ Notice Board              |
 |  \___/          ___              |
 |    |___________/   \ Mirrored    |
 |    |    item   \___/ Resource A  |
@@ -743,7 +743,7 @@ Bulletin /   \
 +----------------------------------+
 ]]></artwork></figure>
 
-        <texttable anchor="mapping-mirror" title="Mapping of Mirror Server Interactions to Bulletin Board">
+        <texttable anchor="mapping-mirror" title="Mapping of Mirror Server Interactions to Notice Board">
           <ttcol>Interaction</ttcol>
           <ttcol>Mapped to</ttcol>
 
