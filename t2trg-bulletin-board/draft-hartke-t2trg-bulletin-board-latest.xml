@@ -476,21 +476,26 @@ Bulletin /   \
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Proof-of-Concept" anchor="proof-of-concept">
+    <section title="Related Work">
 
       <t>
-        There are a number of specifications (CoRE Lighting, CoAP
-        Publish-Subscribe Broker, CoRE Resource Directory and CoRE Mirror
-        Server) that implement variations of the collection pattern. This
-        section shows how they might be implemented using a bulletin board
-        (without trying to replicate them in full detail).
+        The bulletin board is an instance of the well-known REST collection
+        pattern. As such, it might be used in places where a more specific
+        instance of the collection pattern is currently used, such as the
+        bulletin board of <xref target="I-D.hartke-core-lighting">CoRE
+        Lighting</xref>, the <xref target="I-D.ietf-core-coap-pubsub">CoAP
+        Publish-Subscribe Broker</xref>, or the <xref
+        target="I-D.ietf-core-resource-directory">CoRE Resource
+        Directory</xref>. This section shows how these might be implemented
+        using a bulletin board (without trying to replicate all features in full
+        detail).
       </t>
 
       <section title="CoRE Lighting">
 
         <t>
           <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> uses a
-          JSON-based bulletin board to discover "things" such as light bulbs and
+          JSON-based "bulletin board" to discover things such as light bulbs and
           light switches. Things are described by a thing description that
           contains both human-readable information and machine-understandable
           hypermedia controls which indicate the possible interactions with the
@@ -517,14 +522,14 @@ Bulletin /   \
 ]]></artwork></figure>
 
         <t>
-          Matching the example in Section 5.2.1 of <xref
-          target="I-D.hartke-core-lighting"/>, <xref target="fig-td"/> shows a
-          bulletin board with two thing descriptions. The first thing
-          description describes a light bulb and has a link with the "config"
-          link relation type pointing to the configuration of the light bulb.
-          The second thing description describes a light remote control (LRC)
-          and has a link with the "about" link relation type pointing to the
-          observable state of the LRC.
+          <xref target="fig-td"/> shows a bulletin board with two thing
+          descriptions matching the example in Section 5.2.1 of <xref
+          target="I-D.hartke-core-lighting"/>. The first thing description
+          describes a light bulb and has a link with the "config" link relation
+          type pointing to the configuration of the light bulb. The second thing
+          description describes a light remote control (LRC) and has a link with
+          the "about" link relation type pointing to the observable state of the
+          LRC.
         </t>
 
         <t>
@@ -650,7 +655,7 @@ Bulletin /   \
           servers, allowing lookups to be performed for those resources. The
           descriptions are encoded as links in <xref target="RFC6690">CoRE Link
           Format</xref> that are annotated with a variety of link attributes
-          providing the type of and hints about the linked resources.
+          that provide the type of and hints about the linked resources.
         </t>
 
 <figure anchor="fig-rd" title="A Bulletin Board Storing Links"><artwork align="center"><![CDATA[
