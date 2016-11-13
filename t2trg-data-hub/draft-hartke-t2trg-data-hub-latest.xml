@@ -92,7 +92,7 @@
       </t>
 
       <t>
-        This document presents a "data hub" application, a RESTful Web
+        This document presents a simple "data hub" application, a RESTful Web
         application suitable for constrained environments that generalizes the
         concept of a central entity for publishing information. A data hub
         enables the publication of data in any representations format and
