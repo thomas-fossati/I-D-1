@@ -76,7 +76,7 @@
         <xref target="I-D.ietf-core-resource-directory">CoRE Resource
         Directory</xref> stores descriptions of resources held on other servers,
         which enables things to easily discover these resources. Similarly, a
-        <xref target="WOT">W3C Web-of-Things Thing Description repository</xref>
+        <xref target="WOT">W3C Web-of-Things Thing Description Repository</xref>
         stores the semantic metadata of things as well as functional
         descriptions of their interfaces, making this information available to
         Web dashboards, commissioning tools and other things.
@@ -88,7 +88,7 @@
         resource and thing descriptions. Resource directory and thing
         description repository are not always the best fit for this kind of
         data, and defining a new specialized application for each use case is
-        not reasonable in the long term.
+        not practical in the long term.
       </t>
 
       <t>
@@ -112,12 +112,12 @@
         Features:
         <list style="symbols">
           <t>
-            General Purpose
+            General
             <vspace blankLines="1"/>
             The generalization to any media type provides two advantages. The
             first is media type agility: applications using the notice board
-            won't be stuck forever with the same media types. The second is
-            that, as mentioned above, it may be useful to publish also other
+            won't be stuck forever with the same media types. The second is,
+            as mentioned above, that it may be useful to publish also other
             information than resource and thing descriptions, such as default
             configurations for new devices, sleep schedules, firmware updates,
             or certificate revocation lists.
@@ -149,10 +149,10 @@
             The key differentiator of the notice board compared to
             publish-subscribe broker and resource directory lies in the
             evolvability: the ability to respond effectively to change (such as
-            the introduction of new features) without negatively impacting
+            the addition of new features) without negatively impacting both
             existing and new clients.
             <vspace blankLines="1"/>
-            The definition of the application interface purely in terms of
+            The definition of the application interfaces purely in terms of
             standardized URI templates makes it very difficult to gradually
             evolve them; there are no designated versioning or capability
             negotiation mechanisms.
