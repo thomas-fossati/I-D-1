@@ -36,7 +36,7 @@
 * <b>Data Hub</b> <br>
   <i>draft-hartke-t2trg-data-hub</i> <br>
   A Thing-to-Thing Data Hub is a RESTful, hypermedia-driven Web
-  application that can be used in Thing-to-Thing communication to publish
+  application that can be used in Thing-to-Thing communication to share
   information such as thing descriptions, configurations, resource descriptions
   or sleep schedules at a central location. <br>
   [text](https://tools.ietf.org/id/draft-hartke-t2trg-data-hub.txt) |
