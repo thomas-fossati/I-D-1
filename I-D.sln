@@ -42,6 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-data-hub", "t2trg-dat
 	ProjectSection(SolutionItems) = preProject
 		t2trg-data-hub\draft-hartke-t2trg-bulletin-board-00.xml = t2trg-data-hub\draft-hartke-t2trg-bulletin-board-00.xml
 		t2trg-data-hub\draft-hartke-t2trg-bulletin-board-01.xml = t2trg-data-hub\draft-hartke-t2trg-bulletin-board-01.xml
+		t2trg-data-hub\draft-hartke-t2trg-data-hub-00.xml = t2trg-data-hub\draft-hartke-t2trg-data-hub-00.xml
 		t2trg-data-hub\draft-hartke-t2trg-data-hub-latest.xml = t2trg-data-hub\draft-hartke-t2trg-data-hub-latest.xml
 	EndProjectSection
 EndProject
