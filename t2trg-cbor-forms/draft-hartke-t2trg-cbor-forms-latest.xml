@@ -222,7 +222,7 @@
 
         <t>
           This document registers a content format for the
-          "application/form-data+cbor" media type in the "CoAP Content-Formats"
+          "application/form-data+cbor" media type in the CoAP Content-Formats
           registry.
           <list style="symbols">
             <t>

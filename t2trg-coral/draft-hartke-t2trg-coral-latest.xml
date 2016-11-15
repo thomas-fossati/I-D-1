@@ -880,7 +880,7 @@
 
         <t>
           This document registers the media type "application/coral" in the
-          "Media Types" registry.
+          Media Types registry.
           <list style="hanging">
             <t hangText="Type name:">
               <vspace/>application
@@ -944,8 +944,8 @@
       <section title="Structured Syntax Suffix">
 
         <t>
-          This document registers the suffix "+coral" in the "Structured Syntax
-          Suffix" registry.
+          This document registers the suffix "+coral" in the Structured Syntax
+          Suffix registry.
           <list style="hanging">
             <t hangText="Name:">
               <vspace/>Constrained RESTful Application Language (CoRAL)
@@ -986,7 +986,7 @@
 
         <t>
           This document registers a content format for the "application/coral"
-          media type in the "CoAP Content-Formats" registry.
+          media type in the CoAP Content-Formats registry.
           <list style="symbols">
             <t>
               Media Type: application/coral<vspace/>
