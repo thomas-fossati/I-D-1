@@ -24,7 +24,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="2"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-data-hub-00" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-data-hub-01" ipr="trust200902">
 
   <front>
 
@@ -54,7 +54,7 @@
         A Thing-to-Thing Data Hub is a RESTful, hypermedia-driven Web
         application that can be used in Thing-to-Thing communication
         to<vspace/>share information such as thing descriptions, configurations,
-        resource descriptions or sleep schedules at a central location.
+        resource descriptions or firmware updates at a central location.
       </t>
 
     </abstract>
@@ -86,7 +86,7 @@
         As more and more thing-to-thing applications are implemented, it becomes
         increasingly important to be able to share also other data than resource
         and thing descriptions, such as the sleep schedules of devices, default
-        configurations for new devices, firmware update notices, or certificate
+        configurations for new devices, firmware updates, or certificate
         revocation lists. Resource directory and thing description repository
         are not always the best fit for this kind of data and defining a new
         specialized application for each use case is not practical in the long
@@ -159,6 +159,13 @@
             backwards-compatible way simply by updating the data hub
             representation to expose matching links and forms.
           </t>
+          <!--
+          <t>
+            Customizable
+            <vspace blankLines="1"/>
+            ...
+          </t>
+          -->
         </list>
       </t>
 
@@ -221,18 +228,17 @@ Data /   \
           <list style="hanging">
             <t hangText="Data Hub">
               <vspace blankLines="1"/>
-              A data hub is a Web application intended for sharing information.
-              Things can leave and erase data items for other things to read and
-              see.
-            </t>
-            <t>
               A data hub resource is a collection of shared data items. Its
               representation primarily consists of links to the data item
               resources using the <xref target="RFC6573">"item" link relation
               type</xref>. To reduce the number of round-trips, it MAY also
               embed (complete or partial) representations of those item
-              resources. Forms contained in the representation enable
-              interactions with the hub and items.
+              resources. Forms contained in the data hub representation enable
+              interactions with the hub and items, as described in the following
+              section. Additional links and forms not described here MAY be
+              present (for example, a link with the "alternate" link relation
+              type that references an alternate representation of the data hub
+              resource).
             </t>
             <t>
               For a start, a data hub has only a depth of one level; i.e., all
@@ -298,14 +304,14 @@ Data /   \
             <t hangText="Read Item">
               <vspace blankLines="1"/>
               A node can retrieve a representation of an item by following one
-              of the links with the "item" link relation type in the
-              representation of the data hub.
+              of the links with the "item" link relation type in the data hub
+              representation.
             </t>
             <t hangText="Observe Item">
               <vspace blankLines="1"/>
               A node can observe an item by following one of the links with the
-              "item" link relation type in the representation of the data
-              hub and observing the target resource as specified in <xref
+              "item" link relation type in the data hub representation and
+              observing the target resource as specified in <xref
               target="RFC7641"/>.
             </t>
             <t hangText="Update Item">
@@ -327,13 +333,11 @@ Data /   \
             </t>
             <t hangText="Find Items">
               <vspace blankLines="1"/>
-              A form with the "search" form relation type can be used to find
-              items. Submitting this form with a media type and a media
+              The representation of a data hub MAY contain a form with the
+              "search" form relation type, which can be used to find items in
+              the data hub. Submitting this form with a media type and a media
               type-specific filter query returns a subset of the data hub that
-              matches the filter.
-            </t>
-            <t>
-              (The details of this are TODO.)
+              matches the filter. (The details of this are TODO.)
             </t>
           </list>
         </t>
