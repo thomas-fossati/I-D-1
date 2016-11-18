@@ -278,21 +278,21 @@
 
       <t>
         Applications can use negative numbers to indicate application-specific
-        link relation types and form relation types, which do
-        not need to be IANA-registered. The mappings from numbers to textual
-        names need to be provided by the respective media type definition (i.e.,
-        by a media type with the "+coral" suffix or a media type embedding
-        CoRAL; the "application/coral" media type itself does not define any
-        application-specific values).
+        link relation types and form relation types, which do not need to be
+        IANA-registered. The mappings from numbers to textual names need to be
+        provided by the respective media type definition (i.e., by a media type
+        with the "+coral" suffix or a media type embedding CoRAL; the
+        "application/coral" media type does not define any application-specific
+        values).
       </t>
 
       <t>
         CoRAL defines a number of options that can be included in elements.
         Options are used to encode the relation type, the target resource URI
-        and target attributes. They are serialized as a sequence of unboxed
-        pairs where each pair consists of a CoRAL option number and an option
-        value. The pairs in a CoRAL element MUST be sorted such that the option
-        numbers appear in ascending order.
+        and target attributes. Options are serialized in CBOR as a sequence of
+        unboxed pairs where each pair consists of a CoRAL option number and an
+        option value. The pairs in a CoRAL element MUST be sorted such that the
+        option numbers appear in ascending order.
       </t>
 
       <t>
