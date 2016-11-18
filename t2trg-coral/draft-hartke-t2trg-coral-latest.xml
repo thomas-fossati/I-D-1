@@ -363,8 +363,8 @@
 
         <c>1</c>   <c>x</c>  <c>Relation</c>        <c>int</c>     <c></c>       <c>(none)</c>
         <c>2</c>   <c></c>   <c>Method</c>          <c>uint</c>    <c></c>       <c>2 (POST)</c>
-        <c>3</c>   <c>x</c>  <c>Accept</c>          <c>int</c>     <c></c>       <c>(none)</c>
-        <c>4</c>   <c>x</c>  <c>Format</c>          <c>int</c>     <c></c>       <c>(none)</c>
+        <c>3</c>   <c>x</c>  <c>Accept</c>          <c>uint</c>    <c></c>       <c>(none)</c>
+        <c>4</c>   <c>x</c>  <c>Format</c>          <c>uint</c>    <c></c>       <c>(none)</c>
         <c>5</c>   <c></c>   <c>Href.Scheme</c>     <c>text</c>    <c>1-255</c>  <c>(none)</c>
         <c>6</c>   <c></c>   <c>Href.Host.Name</c>  <c>text</c>    <c>1-255</c>  <c>(none)</c>
         <c>7</c>   <c></c>   <c>Href.Host.IPv4</c>  <c>bytes</c>   <c>4</c>      <c>(none)</c>
