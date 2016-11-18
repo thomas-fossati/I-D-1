@@ -46,6 +46,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-data-hub", "t2trg-dat
 		t2trg-data-hub\draft-hartke-t2trg-data-hub-latest.xml = t2trg-data-hub\draft-hartke-t2trg-data-hub-latest.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core-e2e-security-reqs", "core-e2e-security-reqs", "{629040E5-8077-442C-B0EC-E3E8612A502C}"
+	ProjectSection(SolutionItems) = preProject
+		core-e2e-security-reqs\README.md = core-e2e-security-reqs\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
