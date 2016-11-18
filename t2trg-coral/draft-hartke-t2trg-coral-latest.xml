@@ -1288,7 +1288,7 @@
        3,                     / relative-path                       /
        [  1, 1,               /  relation  = create-item            /
           2, 2,               /  method    = POST                   /
-          3, -65535,          /  accept    = example\form           /
+          3, 65535,           /  accept    = example\form           /
          10, "items" ],       /  href.path = "items"                /
        h'6e616d652c206167652c / "name, age, homepage"               /
          20686f6d6570616765' ] ]
