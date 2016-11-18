@@ -278,7 +278,7 @@
 
       <t>
         Applications can use negative numbers to indicate application-specific
-        link relation types, form relation types and content formats, which do
+        link relation types and form relation types, which do
         not need to be IANA-registered. The mappings from numbers to textual
         names need to be provided by the respective media type definition (i.e.,
         by a media type with the "+coral" suffix or a media type embedding
@@ -321,8 +321,8 @@
                      relative-path: 3)
 
    relation      = int
-   format        = int
-   accept        = int
+   format        = uint
+   accept        = uint
    options       = [*(option-number, option-value)]
    option-number = uint
    option-value  = uint / int / text / bytes
@@ -421,16 +421,8 @@
         <t>
           The Accept Option indicates the acceptable content formats for the
           representation included in a form submission.
-        </t>
-
-        <t>
-          The option value of an Accept Option is either one of the content
-          format IDs registered in the CoAP Content-Formats registry (&gt;= 0)
-          or one of the application-specific content format IDs defined by the
-          media type (&lt; 0).
-        </t>
-
-        <t>
+          The option value of an Accept Option is one of the content format IDs
+          registered in the CoAP Content-Formats registry.
           If a form does not include an Accept Option, the service accepts any
           content format.
         </t>
@@ -470,10 +462,8 @@
         </t>
 
         <t>
-          The option value of a Format Option is either one of the content
-          format IDs registered in the CoAP Content-Formats registry (&gt;= 0)
-          or one of the application-specific content format IDs defined by the
-          media type (&lt; 0).
+          The option value of a Format Option is one of the content format IDs
+          registered in the CoAP Content-Formats registry.
         </t>
 
       </section>

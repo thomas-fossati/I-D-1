@@ -17,8 +17,8 @@ href-type     = &(append-relation: 0,
                   relative-path: 3)
 
 relation      = int
-format        = int
-accept        = int
+format        = uint
+accept        = uint
 options       = [*(option-number, option-value)]
 option-number = uint
 option-value  = uint / int / text / bytes
