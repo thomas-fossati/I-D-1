@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="us-ascii"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
+  <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
+  <!ENTITY RFC6573 SYSTEM "reference.RFC.6573.xml">
+  <!ENTITY RFC6903 SYSTEM "reference.RFC.6903.xml">
+  <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
+  <!ENTITY RFC7159 SYSTEM "reference.RFC.7159.xml">
+  <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY I-D.hartke-core-apps SYSTEM "reference.I-D.hartke-core-apps.xml">
+  <!ENTITY I-D.ietf-core-observe SYSTEM "reference.I-D.ietf-core-observe.xml">
+  <!ENTITY I-D.ietf-core-resource-directory SYSTEM "reference.I-D.ietf-core-resource-directory.xml">
+  <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
+  <!ENTITY SELF "[RFCXXXX]">
+  <!ENTITY VERSION "1.0">
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+
+<?rfc compact="yes"?>
+<?rfc rfcedstyle="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc strict="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="2"?>
+
+<rfc category="exp" docName="draft-hartke-core-lighting-00" ipr="trust200902">
+
+  <front>
+
+    <title>CoRE Lighting</title>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>D-28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
+      </address>
+    </author>
+
+    <date />
+
+    <area>Applications</area>
+
+    <workgroup>Thing-to-Thing Research Group</workgroup>
+
+    <abstract>
+
+      <t>
+        CoRE Lighting is an application-level protocol for discovering,
+        configuring and controlling smart objects (or "things") in a
+        simple lighting scenario.
+        The protocol is based on CoAP
+        transfer of representations that are formatted according to
+        media types defined in this document.
+      </t>
+
+    </abstract>
+
+    <note title="Note to Readers">
+
+      <t>
+        This Internet-Draft is discussed on the Thing-to-Thing
+        Research Group (T2TRG) mailing list &lt;t2trg@irtf.org&gt;.
+      </t>
+
+    </note>
+
+  </front>
+
+  <middle>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Foreword" anchor="foreword">
+
+      <t>
+        Hypermedia helps greatly with change (i.e., evolving clients
+        and servers) in the Web. Can it also work for the Internet of
+        Things (IoT)?
+        The Thing-to-Thing Research Group (T2TRG) wants to answer this
+        question by implementing and evolving an example IoT
+        application.
+      </t>
+
+      <t>
+        This document presents a <xref target="I-D.hartke-core-apps"
+        >CoRE Application</xref>, media types, and link and form
+        relation types for a simple lighting scenario.
+      </t>
+
+      <t>
+        The purpose of this document is not to attempt to set a
+        solution in stone. Rather, it aims to present a starting
+        point for discussion and experimentation within the T2TRG.
+      </t>
+
+      <t>
+        The idea is that people can add further appliances, media
+        types, and interactions in an uncoordinated fashion
+        ("permissionless innovation"), thus evolving, twisting and
+        growing the application just like a real application might
+        evolve over a longer period of time.
+      </t>
+
+      <t>
+        For a first plugfest, this document makes the following
+        simplifying assumptions:
+        <list style="symbols">
+          <t>
+            There are exactly two types of "things": light bulbs and
+            light remote controls (LRCs).
+          </t>
+          <t>
+            Bulbs and LRCs support on/off, brightness level,
+            and color control (hue/saturation, color coordinates, and
+            color temperature).
+          </t>
+          <t>
+            LRCs and light bulbs are connected on a one-to-one basis.
+          </t>
+          <t>
+            Things are 'always on', i.e., it is expected that things
+            do not disconnect from the network to save energy.
+          </t>
+          <t>
+            <xref target="RFC7252">CoAP</xref> is used as transport
+            protocol.
+          </t>
+          <t>
+            <xref target="RFC7159">JSON</xref> is used as serialization
+            format. More efficient formats (such as
+            <xref target="RFC7049">CBOR</xref>) will be incorporated
+            at a later stage.
+          </t>
+          <t>
+            Group communication will be considered at a later stage.
+          </t>
+          <t>
+            Mobile things will be considered at a later stage.
+          </t>
+          <t>
+            Security will be considered at a later stage.
+          </t>
+        </list>
+        It is further expected that parts of the application (such as
+        the machine-readable description of Things) will converge with
+        the work of the <xref target="WOT-IG">W3C Web of Things (WoT)
+        Interest Group</xref>.
+      </t>
+
+      <t>
+        <vspace blankLines="100"/>
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Introduction" anchor="introduction">
+
+      <t>
+        CoRE Lighting is an application-level protocol for discovering,
+        configuring and controlling smart objects (or "things") in a
+        simple lighting scenario.
+        The protocol is based on <xref target="RFC7252">CoAP</xref>
+        transfer of representations that are formatted according to
+        media types defined in this document.
+      </t>
+
+      <section title="Terminology">
+
+        <t>
+          This document uses the following terms:
+          <list style="hanging">
+            <t hangText="Thing:">
+              In the context of the Internet of Things, a "thing" is
+              an Internet-connected, physical device that is placed at
+              the boundary between the physical world and the virtual
+              world.
+            </t>
+            <t hangText="Actuator:">
+              An Actuator is a Thing that enables the virtual world to
+              produce an effect on the physical environment. Examples
+              are "heating things" that produce a heating effect on the
+              physical environment, or "light bulb things" that produce
+              an illumination effect on the physical environment.
+            </t>
+            <t hangText="Sensor:">
+              A Sensor is a Thing that quantifies its physical
+              environment and exposes the data to the virtual world.
+              Examples are "temperature things" that measure the
+              temperature of the physical environment, or "light switch
+              things" that expose the state of a light switch to the
+              virtual world.
+            </t>
+            <t hangText="LRC:">
+              A Light Remote Control (LRC) is a Thing that can turn
+              a light bulb on/off, and adjust colors and brightness
+              levels.
+            </t>
+            <t hangText="CoRE:">
+              Constrained RESTful Environments (CoRE) is a vision for
+              the Internet of Things where Actuators and Sensors
+              communicate with each other in REST style.
+            </t>
+            <t hangText="REST:">
+              Representational State Transfer (REST) is an
+              architectural style for building scalable web
+              applications. The key concept is the hypermedia-driven
+              transfer of resource state representations between
+              clients and servers.
+            </t>
+            <t hangText="Resource:">
+              A resource is anything that can be identified by a URI.
+            </t>
+            <t hangText="Representation:">
+              A representation is a sequence of bytes that captures
+              the current or intended state of a resource.
+            </t>
+            <t hangText="Media Type:">
+              A media type is a string that labels a representation
+              so that it is known how the representation should be
+              interpreted, and how it is encoded.
+            </t>
+            <t hangText="Hypermedia Control:">
+              A hypermedia control is a construct embedded in a
+              representation that affords a potential next or future
+              request from the client to a server. Hypermedia controls
+              range from simple links to complex forms.
+            </t>
+            <t hangText="Link:">
+              A link provides a means for navigating from one resource
+              to another. It consists of a context (the link origin),
+              a link relation type, the target of the link, and
+              optional hints about the link target.
+            </t>
+            <t hangText="Form:">
+              A form provides a means for changing resource state. It
+              consists of a context (the subject of the state change),
+              a form relation type, and instructions for creating a
+              request that triggers the state change.
+            </t>
+            <t hangText="Link Relation Type:">
+              A link relation type identifies the semantics of a link.
+            </t>
+            <t hangText="Form Relation Type:">
+              A form relation type identifies the semantics of a form.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
+          and "OPTIONAL" in this document are to be interpreted as
+          described in <xref target="RFC2119"/>.
+        </t>
+
+        <t>
+          <vspace blankLines="100"/>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Overview">
+
+      <t>
+        CoRE Lighting follows a
+        Description-Discovery-Configuration-Operation pattern.
+      </t>
+
+      <section title="Description">
+
+        <t>
+          Things have a Thing Description: a representation of the
+          Thing that describes its attributes and capabilities.
+          Attributes include basic human-readable information like
+          name, purpose, location, and owner. Capabilities include the
+          capability of the Thing to interact with the physical
+          environment or to be configured to interact with other
+          Things. Capabilities are exposed as hypermedia controls.
+        </t>
+
+        <figure>
+          <artwork align="center">
+<![CDATA[       ______
+ __   |     |\
+/  \__|     |_\
+\__/  | what  |
+      | who   |
+      | where |
+      |_______|]]>
+          </artwork>
+        </figure>
+
+        <t>
+          Since Thing Descriptions are representations, they can be
+          transferred to and stored on other devices, for example,
+          a directory that lists all Things in an area or a spider
+          that builds an index of Things.
+        </t>
+
+        <t>
+          Thing Descriptions are formatted according to
+          the 'application/thing-description+json' Media Type
+          (<xref target="description"/>).
+        </t>
+
+      </section>
+
+      <section title="Discovery">
+
+        <t>
+          For a start, the discovery of Actuators and Sensors is
+          enabled by a simple bulletin board-style service: Things are
+          pre-configured out-of-band with a single entry-point URI to
+          a bulletin board. The bulletin board provides hypermedia
+          controls to publish the presence of a new Thing and to
+          discover other Things.
+        </t>
+
+        <figure>
+          <artwork align="center">
+<![CDATA[                              ____________
+                             |            |
+   __                        | * thing 1  |
+  /  \      ---------->      | * thing 2  |
+  \__/      <----------      | * thing 3  |
+                             | * ...      |
+                             |____________|
+                           
+ Thing                       Bulletin Board
+(Client)                        (Server)]]>
+          </artwork>
+        </figure>
+
+        <t>
+          While the bulletin board is primarily intended to list
+          Things along with their respective Thing Description, it
+          can in principle be used to publish representations in any
+          Media Type. The bulletin board itself is formatted according
+          to the 'application/bulletin-board+json' Media Type
+          (<xref target="bulletin"/>).
+        </t>
+
+        <t>
+          The bulletin board is conceptually very similar to
+          <xref target="I-D.ietf-core-resource-directory">Simple
+          Directory Discovery</xref>. The difference is that a
+          Thing publishes a Thing Description with links rather
+          than links with link attributes.
+        </t>
+
+      </section>
+
+      <section title="Configuration">
+
+        <t>
+          Once Things have been discovered and their attributes and
+          capabilities are known, pairs of light bulbs and Light Remote
+          Controls (LRCs) can be associated with each other. This is
+          accomplished by using a configurator device (e.g., a mobile
+          phone) that configures the light bulb to take the client
+          role and <xref target="I-D.ietf-core-observe">observe</xref>
+          a specific resource at the LRC, which takes the server role.
+        </t>
+
+        <figure>
+          <artwork align="center">
+<![CDATA[ _________                           _...._   
+| _______ |                        .'      '. 
+||       ||                       /          \
+||       ||                       |          |
+||       ||      ---------->       \   ~~   / 
+||       ||      <----------        `\ || /`  
+||       ||                          |_||_|   
+||_______||                          {____}   
+|    o    |                          {____}   
+|_________|                            ()     
+                               
+Configurator                       Light Bulb
+  (Client)                          (Server)]]>
+          </artwork>
+        </figure>
+
+        <t>
+          The configuration of a light bulb is represented in the
+          'application/lighting-config+json' Media Type
+          (<xref target="configuration"/>).
+        </t>
+
+      </section>
+
+      <section title="Operation">
+
+        <t>
+          Once the Things have been configured, the light bulb observes
+          the specified resource at the LRC and produces an
+          illumination effect on the physical environment according to
+          the observed LRC state.
+        </t>
+
+        <t>
+          The LRC state is represented in the
+          'application/lighting+json' Media Type
+          (<xref target="lighting"/>).
+        </t>
+
+        <figure>
+          <artwork align="center">
+<![CDATA[   _...._                           ___________
+ .'      '.                        |  o  |  o  |
+/          \                       | /|\ |     |
+|          |                       |_____|_____|
+ \   ~~   /       ---------->      |     |     |
+  `\ || /`        <----------      |  +  |  -  |
+   |_||_|                          |_____|_____|
+   {____}                          |     |     |
+   {____}                          |  <  |  >  |
+     ()                            |_____|_____|
+                                  
+ Light Bulb                        Remote Control
+  (Client)                            (Server)]]>
+          </artwork>
+        </figure>
+
+        <t>
+          <vspace blankLines="100"/>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Links and Forms in JSON" anchor="hyper-json">
+
+      <t>
+        The representation formats defined in this document are based
+        on <xref target="RFC7159">JSON</xref>. JSON does not support
+        hypermedia controls such as links and forms. However,
+        representation formats that derive from JSON can define
+        objects to represent a link or a form, thus extending JSON
+        to a hypermedia format.
+      </t>
+
+      <t>
+        The "hypermediafied" JSON used in this document is inspired
+        by the <xref target="I-D.kelly-json-hal">JSON Hypertext
+        Application Language (HAL)</xref>. In comparison, HAL does
+        not support forms and provides some features that are omitted
+        here for simplicity, such as templated links and CURIEs.
+      </t>
+
+      <t>
+        This section specifies the JSON objects that are common to
+        all representation formats defined in this document. In
+        particular, all of the formats are "hypermediafied" JSON
+        documents: <xref target="RFC7159">JSON text</xref> that
+        serializes a Resource Object.
+      </t>
+
+      <section title="Resource Objects" anchor="resource-objects">
+
+        <t>
+          A Resource Object is a JSON object that represents a
+          resource. It has four reserved members:
+          <list style="hanging">
+            <t hangText="&quot;_base&quot;: string">
+              <vspace/>
+              Specifies a base URI for relative references.
+            </t>
+            <t hangText="&quot;_links&quot;: object">
+              <vspace/>
+              Contains links that reference other resources that are
+              related to the resource. It is an object whose names are
+              link relation types (as defined by
+              <xref target="RFC5988"/>) and values are either a Link
+              Object or an array of Link Objects
+              (<xref target="link-objects"/>).
+            </t>
+            <t hangText="&quot;_forms&quot;: object">
+              <vspace/>
+              Contains forms that describe actions that can be
+              performed on the resource. It is an object whose
+              names are form relation types (as defined by
+              <xref target="I-D.hartke-core-apps"/>) and values are
+              either a Form Object or an array of Form Objects
+              (<xref target="form-objects"/>).
+            </t>
+            <t hangText="&quot;_embedded&quot;: object">
+              <vspace/>
+              Contains embedded resources. It is an object whose
+              names are link relation types (as defined by
+              <xref target="RFC5988"/>) and values are
+              either a Resource Object or an array of Resource Objects
+              (<xref target="resource-objects"/>).
+            </t>
+          </list>
+          All other name/value pairs represent the current or
+          intended state of the resource.
+        </t>
+
+      </section>
+
+      <section title="Link Objects" anchor="link-objects">
+
+        <t>
+          A Link Object is a JSON object that represents a link from
+          the containing resource to a target resource. It has the
+          following members:
+          <list style="hanging">
+            <t hangText="&quot;href&quot;: string">
+              <vspace/>
+              Conveys the link target URI as a
+              <xref target="RFC3986">URI-Reference</xref>. If the
+              URI-Reference is relative, parsers MUST resolve it as
+              per <xref target="RFC3986"/>, Section 5.
+            </t>
+            <t hangText="&quot;type&quot;: string">
+              <vspace/>
+              Provides a hint indicating what the media type of the
+              result of dereferencing the link should be.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Form Objects" anchor="form-objects">
+
+        <t>
+          A Form Object is a JSON object that represents a form which
+          can be used to perform an action on the containing
+          resource. The action is performed by issuing a request
+          according to the following members:
+          <list style="hanging">
+            <t hangText="&quot;href&quot;: string">
+              <vspace/>
+              Conveys the form target URI as a
+              <xref target="RFC3986">URI-Reference</xref>. If the
+              URI-Reference is relative, parsers MUST resolve it as
+              per <xref target="RFC3986"/>, Section 5.
+            </t>
+            <t hangText="&quot;method&quot;: string">
+              <vspace/>
+              Specifies the method to use for form submission
+              ("POST", "PUT", "PATCH" or "DELETE").
+            </t>
+            <t hangText="&quot;accept&quot;: string">
+              <vspace/>
+              Specifies the media type acceptable for the
+              representation to be enclosed in the request message
+              payload as part of form submission.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          <vspace blankLines="100"/>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Application Description" anchor="application">
+
+      <t>
+        <list style="hanging">
+          <t hangText="Application name:">
+            <vspace/>CoRE Lighting &VERSION;
+          </t>
+          <t hangText="URI schemes:">
+            <vspace/>coap  <xref target="RFC7252"/>
+          </t>
+          <t hangText="Media types:">
+            <vspace/>application/thing-description+json (<xref target="description"/>)
+            <vspace/>application/bulletin-board+json (<xref target="bulletin"/>)
+            <vspace/>application/lighting-config+json (<xref target="configuration"/>)
+            <vspace/>application/lighting+json (<xref target="lighting"/>)
+          </t>
+          <t hangText="Link relations:">
+            <vspace/>about <xref target="RFC6903"/>
+            <vspace/>config (<xref target="config-link"/>)
+            <vspace/>item <xref target="RFC6573"/>
+          </t>
+          <t hangText="Form relations:">
+            <vspace/>create-item <xref target="I-D.hartke-core-apps"/>
+            <vspace/>update <xref target="I-D.hartke-core-apps"/>
+          </t>
+          <t hangText="Well-known locations:">
+            <vspace/>None.
+          </t>
+          <t hangText="Interoperability considerations:">
+            <vspace/>See <xref target="interoperability"/>.
+          </t>
+          <t hangText="Security considerations:">
+            <vspace/>See <xref target="security"/>.
+          </t>
+          <t hangText="Contact:">
+            <vspace/>See "Author's Address" section.
+          </t>
+          <t hangText="Author/Change controller:">
+            <vspace/>IESG
+          </t>
+        </list>
+      </t>
+
+      <t>
+        <vspace blankLines="100"/>
+      </t>
+
+      <section title="The 'application/thing-description+json' Media Type" anchor="description">
+
+        <t>
+          A representation in the 'application/thing-description+json'
+          Media Type serializes a Thing Description Object. A Thing
+          Description Object is a Resource Object that conveys the
+          attributes and capabilities of a Thing. It has the following
+          members:
+          <list style="hanging">
+            <t hangText="&quot;name&quot;: string">
+              <vspace/>The name of the Thing.
+            </t>
+            <t hangText="&quot;purpose&quot;: string">
+              <vspace/>The purpose of the Thing.
+            </t>
+            <t hangText="&quot;location&quot;: string">
+              <vspace/>The physical location of the Thing.
+            </t>
+          </list>
+          All three members are intended to be human-readable and have
+          no meaning from a Thing's point of view.
+        </t>
+
+        <section title="Examples">
+
+          <t>
+            Example Thing Description of a light bulb:
+          </t>
+
+          <figure>
+            <artwork>
+<![CDATA[  {
+    "_links": {
+      "config": {
+        "href": "/config",
+        "type": "application/lighting-config+json"
+      }
+    },
+    "name": "Light 2",
+    "purpose": "Illuminates the couch.",
+    "location": "Living Room"
+  }]]>
+            </artwork>
+          </figure>
+
+          <t>
+            This light bulb has the name "Light 2" and is described to
+            illuminate the couch in the living room. The description
+            links to an associated "config" resource that provides the
+            current configuration of the light bulb in the
+            'application/lighting-config+json' Media Type.
+          </t>
+
+          <t>
+            Example Thing Description of a Light Remote Control (LRC):
+          </t>
+
+          <figure>
+            <artwork>
+<![CDATA[  {
+    "_links": {
+      "about": {
+        "href": "/state",
+        "type": "application/lighting+json"
+      }]]>
+            </artwork>
+          </figure>
+          <figure>
+            <artwork>
+<![CDATA[    },
+    "name": "LRC 1",
+    "purpose": "Controls Light 2.",
+    "location": "Living Room"
+  }]]>
+            </artwork>
+          </figure>
+
+          <t>
+            This LRC has the name "LRC 1" and is described to control
+            the light bulb "Light 2" in the living room. The
+            description links to a resource that the Thing Description
+            is about, namely a resource that provides the current state
+            of the LRC.
+          </t>
+
+          <t>
+            [TODO: Is there a better link relation type for this link?]
+          </t>
+
+        </section>
+
+      </section>
+
+      <section title="The 'application/bulletin-board+json' Media Type" anchor="bulletin">
+
+        <t>
+          A representation in the 'application/bulletin-board+json'
+          Media Type serializes a Bulletin Board Object. A Bulletin
+          Board Object is a Resource Object that is a collection of
+          embedded Thing Description Objects. It has no further
+          members.
+        </t>
+
+        <section title="Example">
+
+          <t>
+            Example bulletin board with two embedded Thing
+            Descriptions:
+          </t>
+
+          <figure>
+            <artwork>
+<![CDATA[  {
+    "_forms": {
+      "create-item": {
+        "href": "/bulletins",
+        "method": "POST",
+        "accept": "application/thing-description+json"
+      }
+    },
+    "_embedded": {
+      "item": [
+        {
+          "_base": "coap://light-bulb.example/",
+          "_links": {
+            "config": {
+              "href": "/config",
+              "type": "application/lighting-config+json"
+            }
+          },
+          "name": "Light 2",
+          "purpose": "Illuminates the couch.",
+          "location": "Living Room"
+        }, {
+          "_base": "coap://remote-control.example/",
+          "_links": {]]>
+            </artwork>
+          </figure>
+          <figure>
+            <artwork>
+<![CDATA[
+
+            "about": {
+              "href": "/state",
+              "type": "application/lighting+json"
+            }
+          },
+          "name": "LRC 1",
+          "purpose": "Controls Light 2.",
+          "location": "Living Room"
+        }
+      ]
+    }
+  }]]>
+            </artwork>
+          </figure>
+
+          <t>
+            This bulletin board provides a "create-item" form which
+            can be used to publish new Thing Descriptions. It also has
+            two embedded Thing Descriptions, to which it links using
+            the "item" link relation type. Both Thing Descriptions
+            link back to the respective Thing.
+          </t>
+
+        </section>
+
+      </section>
+
+      <section title="The 'application/lighting-config+json' Media Type" anchor="configuration">
+
+        <t>
+          A representation in the 'application/lighting-config+json'
+          media type serializes a Lighting Configuration Object. A
+          Lighting Configuration Object is a Resource Object that
+          represents the current or intended configuration of a light
+          bulb. It has the following members:
+          <list style="hanging">
+            <t hangText="&quot;src&quot;: object/null">
+              <vspace/>A Link Object (<xref target="link-objects"/>)
+              linking to the resource to observe. Dereferencing
+              the target URI  SHOULD result in a representation
+              in the 'application/lighting+json' Media Type
+              (<xref target="lighting"/>).
+            </t>
+          </list>
+        </t>
+
+        <t>
+          [TODO: Should the supported media type(s) be included in
+          the Thing Description?]
+        </t>
+
+        <section title="Example">
+
+          <t>
+            Example configuration of a light bulb:
+          </t>
+
+          <figure>
+            <artwork>
+<![CDATA[  {
+    "_forms": {
+      "update": {
+        "href": "",
+        "method": "PUT",
+        "accept": "application/lighting-config+json"
+      }
+    },
+    "src": {
+      "href": "coap://remote-control.example/state"
+    }]]>
+            </artwork>
+          </figure>
+
+          <figure>
+            <artwork>
+<![CDATA[  }]]>
+            </artwork>
+          </figure>
+
+          <t>
+            This configuration indicates that the light bulb should
+            observe the resource
+            &lt;coap://remote-control.example/state&gt;.
+            The representation also includes a form that can be used to
+            update the configuration. To update the configuration, the
+            form instructs the client to make a PUT request with a
+            'application/lighting-config+json' representation to the
+            relative URI "" (i.e., the empty string which resolves to
+            the base URI as per <xref target="RFC3986"/>, Section 5).
+          </t>
+
+        </section>
+
+      </section>
+
+      <section title="The 'application/lighting+json' Media Type" anchor="lighting">
+
+        <t>
+          A representation in the 'application/lighting+json' media
+          type serializes a Lighting Object. A Lighting Object is a
+          Resource Object that represents the current or intended
+          state of a light bulb. It has the following members:
+          <list style="hanging">
+            <t hangText="&quot;on&quot;: true/false">
+              <vspace/>true if the light is on; otherwise, false.
+            </t>
+            <t hangText="&quot;brightness&quot;: number">
+              <vspace/>The brightness, expressed as a value between
+              0.0 (minimum brightness) and 1.0 (maximum brightness).
+              Note that a value of 0.0 does not mean that the light
+              is off.
+            </t>
+            <t hangText="&quot;hue&quot;: number">
+              <vspace/>The hue, expressed as a
+              value between 0 and 360.
+            </t>
+            <t hangText="&quot;saturation&quot;: number">
+              <vspace/>The saturation, expressed
+              as a value between 0.0 (least saturated) and 1.0 (most
+              saturated).
+            </t>
+            <t hangText="&quot;x&quot;: number">
+              <vspace/>The X coordinate of a color in CIE color
+              space, expressed as a value between
+              0.0 and 1.0.
+            </t>
+            <t hangText="&quot;y&quot;: number">
+              <vspace/>The Y coordinate of a color in CIE color
+              space, expressed as a value between
+              0.0 and 1.0.
+            </t>
+            <t hangText="&quot;colorTemperature&quot;: number">
+              <vspace/>The color temperature in
+              mired.
+            </t>
+            <t hangText="&quot;colorMode&quot;: string">
+              <vspace/>The color mode. Possible values are:
+              <list style="hanging">
+                <t hangText="&quot;hs&quot; &nbsp;-">
+                  "hue" and "saturation" are used to set the color.
+                </t>
+                <t hangText="&quot;xy&quot; &nbsp;-">
+                  "x" and "y" are used to set the color.
+                </t>
+                <t hangText="&quot;ct&quot; &nbsp;-">
+                  "colorTemperature" is used to set the color.
+                </t>
+              </list>
+            </t>
+          </list>
+          The "colorMode" member determines the color mode used. For
+          example, when the color mode is set to "ct", the light bulb
+          reflects the color specified by "colorTemperature" member,
+          and the other members ("hue", "saturation", "x", and "y")
+          are ignored.
+        </t>
+
+        <t>
+          If a light bulb receives a value that is outside of the
+          achievable range, the light bulb SHOULD choose the closest
+          value it can produce.
+        </t>
+
+        <section title="Example">
+
+          <t>
+            Example representation:
+          </t>
+
+          <figure>
+            <artwork>
+<![CDATA[  {
+    "on": true,
+    "brightness": 0.5,
+    "hue": 210,
+    "saturation": 0.9,
+    "x": 0.4448,
+    "y": 0.4066,
+    "colorTemperature": 343,
+    "colorMode": "ct"
+  }]]>
+            </artwork>
+          </figure>
+
+        </section>
+
+      </section>
+
+      <section title="The 'config' Link Relation Type" anchor="config-link">
+
+        <t>
+          The "config" link relation can be used to refer to a
+          resource describing the configuration of the link's context.
+        </t>
+
+        <t>
+          For example, if the context resource is a Thing, the
+          "config" link can be used to reference the URI of the
+          Thing's configuration:
+        </t>
+
+        <figure>
+          <artwork>
+<![CDATA[  {
+    "_links": {
+      "config": { "href": "/config" }
+    }
+  }]]>
+          </artwork>
+        </figure>
+
+        <t>
+          <vspace blankLines="100"/>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Interoperability Considerations" anchor="interoperability">
+
+      <t>
+        [TODO.]
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Security Considerations" anchor="security">
+
+      <t>
+        [TODO.]
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="IANA Considerations">
+
+      <t>
+        [TODO: The media types defined in <xref target="application"/>
+        need to be registered.]
+      </t>
+
+      <section title="Link Relation Types">
+
+        <t>
+          <list style="symbols">
+            <t>
+              Relation Name: config<vspace/>
+              Description: Refers to a resource that can be used to
+              configure the link's context.<vspace/>
+              Reference: &SELF;
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="CoAP Content Formats">
+
+        <t>
+          <list style="symbols">
+            <t>
+              Media Type: application/thing-description+json<vspace/>
+              Encoding: -<vspace/>
+              ID: 65200<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Media Type: application/bulletin-board+json<vspace/>
+              Encoding: -<vspace/>
+              ID: 65201<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Media Type: application/lighting-config+json<vspace/>
+              Encoding: -<vspace/>
+              ID: 65202<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Media Type: application/lighting+json<vspace/>
+              Encoding: -<vspace/>
+              ID: 65203<vspace/>
+              Reference: &SELF;
+            </t>
+          </list>
+          <list style="hanging">
+            <t hangText="Note:">
+              The IDs are from the 'Experimental Use' range
+              for the purpose of interoperability testing. They are
+              not for operational use.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+    </section>
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC2119;
+      &RFC3986;
+      &RFC5988;
+      &RFC6573;
+      &RFC6903;
+      &RFC7159;
+      &RFC7252;
+
+      &I-D.hartke-core-apps;
+      &I-D.ietf-core-observe;
+
+    </references>
+
+    <references title="Informative References">
+
+      &RFC7049;
+
+      &I-D.ietf-core-resource-directory;
+      &I-D.kelly-json-hal;
+
+      <reference anchor="WOT-IG" target="http://www.w3.org/2014/12/wot-ig-charter.html">
+        <front>
+          <title>Web of Things Interest Group Charter</title>
+          <author>
+            <organization>W3C</organization>
+          </author>
+          <date day="21" month="January" year="2015" />
+        </front>
+      </reference>
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Acknowledgements" numbered="no">
+
+      <t>
+        Thanks to
+        Carsten Bormann,
+        Stefanie Gerdes,
+        Michael Koster,
+        Matthias Kovatsch,
+        and Peter van der Stok
+        for helpful comments and discussions that have shaped the
+        document.
+      </t>
+
+    </section>
+
+</back>
+
+</rfc>
