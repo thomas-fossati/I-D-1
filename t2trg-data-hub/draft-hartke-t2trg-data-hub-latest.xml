@@ -192,7 +192,7 @@
     <section title="Data Model">
 
       <t>
-        The data model consists of four parts. The central part is the
+        The data model consists of four components. The central component is the
         <spanx>data hub</spanx>, which has a number of shared
         <spanx>items</spanx> (<xref target="fig-data-hub"/>). The data hub can
         be queried with a <spanx>search query</spanx>, which yields a
@@ -220,16 +220,21 @@ Data /   \
         <list style="hanging">
           <t hangText="Data Hub">
             <vspace blankLines="1"/>
-            A data hub resource is a collection of shared data items. Its
-            representation primarily consists of links to the data item
-            resources using the <xref target="RFC6573">"item" link relation
-            type</xref>. To reduce the number of round-trips, it MAY also embed
-            (complete or partial) representations of those item resources. Forms
-            contained in the data hub representation enable interactions with
-            the hub and items, as described in the following section. Additional
-            links and forms not described here MAY be present (for example, a
-            link with the "alternate" link relation type that references an
-            alternate representation of the data hub resource).
+            A data hub resource is a collection of shared items.
+          </t>
+          <t>
+            Data hub representations are formatted in the <xref
+            target="I-D.hartke-t2trg-coral">"application/coral" media
+            type</xref>. A representation primarily consists of links to the
+            item resources using the <xref target="RFC6573">"item" link relation
+            type</xref>. To reduce the number of round-trips, it MAY embed
+            (complete or partial) representations of item resources. Forms
+            contained in the representation enable interactions with the hub and
+            items, as described in the following section. Additional links and
+            forms not described here MAY be present. For example, a data hub
+            representation could contain a link with the "alternate" link
+            relation type that references an alternate representation of the
+            data hub resource.
           </t>
           <t>
             For a start, a data hub has only a depth of one level; i.e., all
@@ -237,14 +242,9 @@ Data /   \
             hub resource. This could be extended to multiple levels in a future
             revision of this draft.
           </t>
-          <t>
-            Data hub representations are formatted in the <xref
-            target="I-D.hartke-t2trg-coral">"application/coral" media
-            type</xref>.
-          </t>
-          <t hangText="Item">
+          <t hangText="Data Item">
             <vspace blankLines="1"/>
-            A data hub item is a member of the collection.
+            A data item is a member of the collection.
           </t>
           <t>
             Item representations can in principle be formatted in any media
@@ -265,7 +265,7 @@ Data /   \
             target="I-D.hartke-t2trg-coral">"application/coral" media
             type</xref>.
           </t>
-          <t hangText="Search Results">
+          <t hangText="Search Result">
             <vspace blankLines="1"/>
             TODO.
           </t>
