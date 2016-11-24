@@ -191,21 +191,14 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Data Hubs">
+    <section title="Data Model">
 
       <t>
-        This section defines the data model and the interaction model of data
-        hubs.
+        The data model consists of four parts. The central part is the data
+        hub, which has a number of shared items (<xref
+        target="fig-data-hub"/>). A data hub can be queried with a search
+        query, which yields a search result.
       </t>
-
-      <section title="Data Model">
-
-        <t>
-          The data model consists of four parts. The central part is the data
-          hub, which has a number of shared items (<xref
-          target="fig-data-hub"/>). A data hub can be queried with a search
-          query, which yields a search result.
-        </t>
 
 <figure anchor="fig-data-hub" title="A Data Hub with a Number of Shared Items"><artwork align="center"><![CDATA[
       ___
@@ -224,188 +217,186 @@ Data /   \
            item   \___/
 ]]></artwork></figure>
 
-        <t>
-          <list style="hanging">
-            <t hangText="Data Hub">
-              <vspace blankLines="1"/>
-              A data hub resource is a collection of shared data items. Its
-              representation primarily consists of links to the data item
-              resources using the <xref target="RFC6573">"item" link relation
-              type</xref>. To reduce the number of round-trips, it MAY also
-              embed (complete or partial) representations of those item
-              resources. Forms contained in the data hub representation enable
-              interactions with the hub and items, as described in the following
-              section. Additional links and forms not described here MAY be
-              present (for example, a link with the "alternate" link relation
-              type that references an alternate representation of the data hub
-              resource).
-            </t>
-            <t>
-              For a start, a data hub has only a depth of one level; i.e., all
-              data item resources are organized directly under the top-level
-              data hub resource. This could be extended to multiple levels in a
-              future revision of this draft.
-            </t>
-            <t>
-              Data hub representations are formatted in the <xref
-              target="I-D.hartke-t2trg-coral">"application/coral" media
-              type</xref>.
-            </t>
-            <t hangText="Item">
-              <vspace blankLines="1"/>
-              A data hub item is a member of the collection.
-            </t>
-            <t>
-              Item representations can in principle be formatted in any media
-              type; a data hub deployment MAY restrict the media types it
-              accepts for publication, though.
-            </t>
-            <t>
-              The representations of items MAY link back to a data hub
-              resource using the <xref target="RFC6573">"collection" link
-              relation type</xref>.
-            </t>
-            <t hangText="Search Query">
-              TODO.
-            </t>
-            <t>
-              Search query representations are formatted in the <xref
-              target="I-D.hartke-t2trg-coral">"application/coral-query" media
-              type</xref>.
-            </t>
-            <t hangText="Search Results">
-              TODO.
-            </t>
-            <t>
-              Search result representations are formatted in the <xref
-              target="I-D.hartke-t2trg-coral">"application/coral" media
-              type</xref>.
-            </t>
-          </list>
-        </t>
+      <t>
+        <list style="hanging">
+          <t hangText="Data Hub">
+            <vspace blankLines="1"/>
+            A data hub resource is a collection of shared data items. Its
+            representation primarily consists of links to the data item
+            resources using the <xref target="RFC6573">"item" link relation
+            type</xref>. To reduce the number of round-trips, it MAY also
+            embed (complete or partial) representations of those item
+            resources. Forms contained in the data hub representation enable
+            interactions with the hub and items, as described in the following
+            section. Additional links and forms not described here MAY be
+            present (for example, a link with the "alternate" link relation
+            type that references an alternate representation of the data hub
+            resource).
+          </t>
+          <t>
+            For a start, a data hub has only a depth of one level; i.e., all
+            data item resources are organized directly under the top-level
+            data hub resource. This could be extended to multiple levels in a
+            future revision of this draft.
+          </t>
+          <t>
+            Data hub representations are formatted in the <xref
+            target="I-D.hartke-t2trg-coral">"application/coral" media
+            type</xref>.
+          </t>
+          <t hangText="Item">
+            <vspace blankLines="1"/>
+            A data hub item is a member of the collection.
+          </t>
+          <t>
+            Item representations can in principle be formatted in any media
+            type; a data hub deployment MAY restrict the media types it
+            accepts for publication, though.
+          </t>
+          <t>
+            The representations of items MAY link back to a data hub
+            resource using the <xref target="RFC6573">"collection" link
+            relation type</xref>.
+          </t>
+          <t hangText="Search Query">
+            TODO.
+          </t>
+          <t>
+            Search query representations are formatted in the <xref
+            target="I-D.hartke-t2trg-coral">"application/coral-query" media
+            type</xref>.
+          </t>
+          <t hangText="Search Results">
+            TODO.
+          </t>
+          <t>
+            Search result representations are formatted in the <xref
+            target="I-D.hartke-t2trg-coral">"application/coral" media
+            type</xref>.
+          </t>
+        </list>
+      </t>
 
-      </section>
+    </section>
 
-      <section title="Interaction Model">
+    <section title="Interaction Model">
 
-        <t>
-          The interaction model consists of eight possible interactions with a
-          data hub: discovering and reading the data hub, and creating, reading,
-          observing, updating, deleting and finding shared items in the data
-          hub.
-        </t>
+      <t>
+        The interaction model consists of eight possible interactions with a
+        data hub: discovering and reading the data hub, and creating, reading,
+        observing, updating, deleting and finding shared items in the data
+        hub.
+      </t>
 
-        <t>
-          <list style="hanging">
-            <t hangText="Discovery">
-              <vspace blankLines="1"/>
-              For a start, nodes are assumed to be pre-configured out-of-band
-              with a link to a data hub.
-            </t>
-            <t hangText="Read Data Hub">
-              <vspace blankLines="1"/>
-              A node can retrieve a representation of the data hub by
-              following the discovered link. The representation of the data
-              hub includes links to (and/or literals with representations of)
-              the items in the data hub. The data hub representation MAY also
-              include forms for creating, updating, deleting and finding items.
-            </t>
-            <t hangText="Create Item">
-              <vspace blankLines="1"/>
-              The representation of a data hub MAY contain a form with the
-              "create-item" form relation type. Submitting this form with a
-              representation in one of the accepted content formats creates a
-              new item in the data hub.
-            </t>
-            <t hangText="Read Item">
-              <vspace blankLines="1"/>
-              A node can retrieve a representation of an item by following one
-              of the links with the "item" link relation type in the data hub
-              representation.
-            </t>
-            <t hangText="Observe Item">
-              <vspace blankLines="1"/>
-              A node can observe an item by following one of the links with the
-              "item" link relation type in the data hub representation and
-              observing the target resource as specified in <xref
-              target="RFC7641"/>.
-            </t>
-            <t hangText="Update Item">
-              <vspace blankLines="1"/>
-              For each item in a data hub, the representation of the
-              data hub MAY indicate that the item is updatable. If an item
-              is updatable, the link to the item includes the CoRAL Updatable
-              Option, which defines a form with the "update" form relation type.
-              Submitting this form updates the item in the data hub to the
-              submitted representation.
-            </t>
-            <t hangText="Delete Item">
-              <vspace blankLines="1"/>
-              For each item in a data hub, the representation of the
-              data hub MAY indicate that the item is deletable. If an item
-              is deletable, the link to the item includes the CoRAL Deletable
-              Option, which defines a form with the "delete" form relation type.
-              Submitting this form deletes the item from the data hub.
-            </t>
-            <t hangText="Find Items">
-              <vspace blankLines="1"/>
-              The representation of a data hub MAY contain a form with the
-              "search" form relation type, which can be used to find items in
-              the data hub. Submitting this form with a media type and a media
-              type-specific filter query returns a subset of the data hub that
-              matches the filter. (The details of this are TODO.)
-            </t>
-          </list>
-        </t>
+      <t>
+        <list style="hanging">
+          <t hangText="Discovery">
+            <vspace blankLines="1"/>
+            For a start, nodes are assumed to be pre-configured out-of-band
+            with a link to a data hub.
+          </t>
+          <t hangText="Read Data Hub">
+            <vspace blankLines="1"/>
+            A node can retrieve a representation of the data hub by
+            following the discovered link. The representation of the data
+            hub includes links to (and/or literals with representations of)
+            the items in the data hub. The data hub representation MAY also
+            include forms for creating, updating, deleting and finding items.
+          </t>
+          <t hangText="Create Item">
+            <vspace blankLines="1"/>
+            The representation of a data hub MAY contain a form with the
+            "create-item" form relation type. Submitting this form with a
+            representation in one of the accepted content formats creates a
+            new item in the data hub.
+          </t>
+          <t hangText="Read Item">
+            <vspace blankLines="1"/>
+            A node can retrieve a representation of an item by following one
+            of the links with the "item" link relation type in the data hub
+            representation.
+          </t>
+          <t hangText="Observe Item">
+            <vspace blankLines="1"/>
+            A node can observe an item by following one of the links with the
+            "item" link relation type in the data hub representation and
+            observing the target resource as specified in <xref
+            target="RFC7641"/>.
+          </t>
+          <t hangText="Update Item">
+            <vspace blankLines="1"/>
+            For each item in a data hub, the representation of the
+            data hub MAY indicate that the item is updatable. If an item
+            is updatable, the link to the item includes the CoRAL Updatable
+            Option, which defines a form with the "update" form relation type.
+            Submitting this form updates the item in the data hub to the
+            submitted representation.
+          </t>
+          <t hangText="Delete Item">
+            <vspace blankLines="1"/>
+            For each item in a data hub, the representation of the
+            data hub MAY indicate that the item is deletable. If an item
+            is deletable, the link to the item includes the CoRAL Deletable
+            Option, which defines a form with the "delete" form relation type.
+            Submitting this form deletes the item from the data hub.
+          </t>
+          <t hangText="Find Items">
+            <vspace blankLines="1"/>
+            The representation of a data hub MAY contain a form with the
+            "search" form relation type, which can be used to find items in
+            the data hub. Submitting this form with a media type and a media
+            type-specific filter query returns a subset of the data hub that
+            matches the filter. (The details of this are TODO.)
+          </t>
+        </list>
+      </t>
 
-      </section>
+    </section>
 
-      <section title="Application Description">
+    <section title="Application Description">
 
-        <t>
-          <list style="hanging">
-            <t hangText="Application name:">
-              <vspace/>Thing-to-Thing Data Hub 1.0
-            </t>
-            <t hangText="URI schemes:">
-              <vspace/><xref target="RFC7252">coap</xref>
-            </t>
-            <t hangText="Media types:">
-              <vspace/><xref target="I-D.hartke-t2trg-coral">application/coral</xref>
-              <!-- TODO: query -->
-            </t>
-            <t hangText="Link relation types:">
-              <vspace/><xref target="RFC6573">collection</xref>
-              <vspace/><xref target="RFC6573">item</xref>
-            </t>
-            <t hangText="Form relation types:">
-              <vspace/><xref target="I-D.hartke-core-apps">create-item</xref>
-              <vspace/><xref target="I-D.hartke-core-apps">update</xref>
-              <vspace/><xref target="I-D.hartke-core-apps">delete</xref>
-              <vspace/><xref target="I-D.hartke-core-apps">search</xref>
-            </t>
-            <t hangText="Form field names:">
-              <vspace/>None.
-            </t>
-            <t hangText="Well-known locations:">
-              <vspace/>None.
-            </t>
-            <t hangText="Interoperability considerations:">
-              <vspace/>See <xref target="interoperability"/>.
-            </t>
-            <t hangText="Security considerations:">
-              <vspace/>See <xref target="security"/>.
-            </t>
-            <t hangText="Contact:">
-              <vspace/>See "Author's Address" section.
-            </t>
-            <t hangText="Author/Change controller:">
-              <vspace/>IESG
-            </t>
-          </list>
-        </t>
-
-      </section>
+      <t>
+        <list style="hanging">
+          <t hangText="Application name:">
+            <vspace/>Thing-to-Thing Data Hub 1.0
+          </t>
+          <t hangText="URI schemes:">
+            <vspace/><xref target="RFC7252">coap</xref>
+          </t>
+          <t hangText="Media types:">
+            <vspace/><xref target="I-D.hartke-t2trg-coral">application/coral</xref>
+            <!-- TODO: query -->
+          </t>
+          <t hangText="Link relation types:">
+            <vspace/><xref target="RFC6573">collection</xref>
+            <vspace/><xref target="RFC6573">item</xref>
+          </t>
+          <t hangText="Form relation types:">
+            <vspace/><xref target="I-D.hartke-core-apps">create-item</xref>
+            <vspace/><xref target="I-D.hartke-core-apps">update</xref>
+            <vspace/><xref target="I-D.hartke-core-apps">delete</xref>
+            <vspace/><xref target="I-D.hartke-core-apps">search</xref>
+          </t>
+          <t hangText="Form field names:">
+            <vspace/>None.
+          </t>
+          <t hangText="Well-known locations:">
+            <vspace/>None.
+          </t>
+          <t hangText="Interoperability considerations:">
+            <vspace/>See <xref target="interoperability"/>.
+          </t>
+          <t hangText="Security considerations:">
+            <vspace/>See <xref target="security"/>.
+          </t>
+          <t hangText="Contact:">
+            <vspace/>See "Author's Address" section.
+          </t>
+          <t hangText="Author/Change controller:">
+            <vspace/>IESG
+          </t>
+        </list>
+      </t>
 
     </section>
 
