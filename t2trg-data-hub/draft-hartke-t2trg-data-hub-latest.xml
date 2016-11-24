@@ -125,12 +125,10 @@
             Searchable
             <vspace blankLines="1"/>
             Submitting a search query allows clients to retrieve a subset of
-            items from a data hub. Without this feature, a client would have to
-            download and sort through the whole set of shared items. It is more
-            efficient to filter the set at the data hub server. To make this
-            work with any media type, a search request needs to specify both the
-            media type of the desired items and a media type-specific search
-            query.
+            items from a data hub based on item metadata. Without this, a client
+            would have to download and sort through the whole set of shared
+            items. It is much more efficient to filter the set at the data hub
+            server.
           </t>
           <t>
             Observable
@@ -344,9 +342,8 @@ Data /   \
             <vspace blankLines="1"/>
             The representation of a data hub MAY contain a form with the
             "search" form relation type, which can be used to find items in the
-            data hub. Submitting this form with a media type and a media
-            type-specific filter query returns a subset of the data hub that
-            matches the filter. (The details of this are TODO.)
+            data hub. Submitting this form with a filter query returns a subset
+            of the data hub that matches the filter.
           </t>
         </list>
       </t>
