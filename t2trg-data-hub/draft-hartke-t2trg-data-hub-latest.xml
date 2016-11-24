@@ -263,7 +263,7 @@ Data /   \
           </t>
           <t>
             Search query representations are formatted in the <xref
-            target="I-D.hartke-t2trg-coral">"application/coral-query" media
+            target="I-D.hartke-t2trg-coral">"application/coral" media
             type</xref>.
           </t>
           <t hangText="Search Results">
@@ -363,7 +363,6 @@ Data /   \
           </t>
           <t hangText="Media types:">
             <vspace/><xref target="I-D.hartke-t2trg-coral">application/coral</xref>
-            <vspace/><xref target="I-D.hartke-t2trg-coral">application/coral-query</xref>
           </t>
           <t hangText="Link relation types:">
             <vspace/><xref target="RFC6573">collection</xref>
