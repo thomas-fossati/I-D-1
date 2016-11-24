@@ -362,7 +362,7 @@ Data /   \
           </t>
           <t hangText="Media types:">
             <vspace/><xref target="I-D.hartke-t2trg-coral">application/coral</xref>
-            <!-- TODO: query -->
+            <vspace/><xref target="I-D.hartke-t2trg-coral">application/coral-query</xref>
           </t>
           <t hangText="Link relation types:">
             <vspace/><xref target="RFC6573">collection</xref>
