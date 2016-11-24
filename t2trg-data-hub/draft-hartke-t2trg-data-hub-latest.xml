@@ -194,10 +194,11 @@
     <section title="Data Model">
 
       <t>
-        The data model consists of four parts. The central part is the data hub,
-        which has a number of shared items (<xref target="fig-data-hub"/>). A
-        data hub can be queried with a search query, which yields a search
-        result.
+        The data model consists of four parts. The central part is the
+        <spanx>data hub</spanx>, which has a number of shared
+        <spanx>items</spanx> (<xref target="fig-data-hub"/>). The data hub can
+        be queried with a <spanx>search query</spanx>, which yields a
+        <spanx>search result</spanx>.
       </t>
 
 <figure anchor="fig-data-hub" title="A Data Hub with a Number of Shared Items"><artwork align="center"><![CDATA[
