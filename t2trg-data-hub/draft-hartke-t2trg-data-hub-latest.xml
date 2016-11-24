@@ -159,13 +159,11 @@
             backwards-compatible way simply by updating the data hub
             representation to expose matching links and forms.
           </t>
-          <!--
           <t>
             Customizable
             <vspace blankLines="1"/>
-            ...
+            TODO.
           </t>
-          -->
         </list>
       </t>
 
@@ -203,8 +201,10 @@
       <section title="Data Model">
 
         <t>
-          The data model consists of two elements: the data hub and a
-          number of shared items (<xref target="fig-data-hub"/>).
+          The data model consists of four parts. The central part is the data
+          hub, which has a number of shared items (<xref
+          target="fig-data-hub"/>). A data hub can be queried with a search
+          query, which yields a search result.
         </t>
 
 <figure anchor="fig-data-hub" title="A Data Hub with a Number of Shared Items"><artwork align="center"><![CDATA[
@@ -264,6 +264,22 @@ Data /   \
               The representations of items MAY link back to a data hub
               resource using the <xref target="RFC6573">"collection" link
               relation type</xref>.
+            </t>
+            <t hangText="Search Query">
+              TODO.
+            </t>
+            <t>
+              Search query representations are formatted in the <xref
+              target="I-D.hartke-t2trg-coral">"application/coral-query" media
+              type</xref>.
+            </t>
+            <t hangText="Search Results">
+              TODO.
+            </t>
+            <t>
+              Search result representations are formatted in the <xref
+              target="I-D.hartke-t2trg-coral">"application/coral" media
+              type</xref>.
             </t>
           </list>
         </t>
