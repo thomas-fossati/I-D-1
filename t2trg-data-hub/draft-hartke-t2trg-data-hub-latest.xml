@@ -291,12 +291,12 @@ Data /   \
         <list style="hanging">
           <t hangText="Discovery">
             <vspace blankLines="1"/>
-            For a start, nodes are assumed to be pre-configured out-of-band with
-            a link to a data hub.
+            For a start, clients are assumed to be pre-configured out-of-band
+            with a link to a data hub.
           </t>
           <t hangText="Read Data Hub">
             <vspace blankLines="1"/>
-            A node can retrieve a representation of the data hub by following
+            A client can retrieve a representation of the data hub by following
             the discovered link. The representation of the data hub includes
             links to (and/or literals with representations of) the items in the
             data hub. The data hub representation MAY also include forms for
@@ -311,13 +311,13 @@ Data /   \
           </t>
           <t hangText="Read Item">
             <vspace blankLines="1"/>
-            A node can retrieve a representation of an item by following one of
-            the links with the "item" link relation type in the data hub
+            A client can retrieve a representation of an item by following one
+            of the links with the "item" link relation type in the data hub
             representation.
           </t>
           <t hangText="Observe Item">
             <vspace blankLines="1"/>
-            A node can observe an item by following one of the links with the
+            A client can observe an item by following one of the links with the
             "item" link relation type in the data hub representation and
             observing the target resource as specified in <xref
             target="RFC7641"/>.
