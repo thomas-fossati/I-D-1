@@ -161,12 +161,16 @@
         the target of a form is the same resource as the context, but this is
         not required. The semantics of a form are identified by a form relation
         type, which again in CoRAL can be IANA-registered or
-        application-specific. The submission of a form typically requires the
+        application-specific.
+      </t>
+
+      <t>
+        The submission of a form typically requires the
         agent to construct a payload that is included with the request. For this
         purpose, a form indicates the acceptable content formats for the payload
         and can optionally embed a detailed description of the expected data,
-        for example, in the form of a list of form fields. (The syntax for such
-        a description is outside this document's scope.)
+        for example, as a list of form fields. The syntax for such
+        a description is outside this document's scope.
       </t>
 
       <t>
@@ -203,9 +207,9 @@
           </t>
           <t>
             The agent constructs a new request with the request URI. If the
-            agent follows a link, the request method is GET; if the agent
+            agent follows a link, the request method is GET. If the agent
             submits a form, the request method is indicated by an option. The
-            agent should set request parameters according to the link/form
+            agent SHOULD set request parameters according to the link/form
             attributes (e.g., set the CoAP Accept option when the content format
             of the target resource is indicated). In the case of a form, the
             agent also needs to construct a request payload that matches the
@@ -214,13 +218,13 @@
           <t>
             Finally, the agent sends the request and retrieves the response. The
             agent processes the enclosed representation, updates the browsing
-            context to the new resource, and again can decide what to do next.
+            context to the new resource, and can decide again what to do next.
           </t>
         </list>
       </t>
 
       <t>
-        An agent can furthermore navigate a browsing context by traversing the
+        An agent can additionally navigate a browsing context by traversing the
         browsing context's session history. The session history consists of a
         flat list of session history entries, which consist of a URI and may
         have other information associated with them. Session history entries are
@@ -239,16 +243,16 @@
     <section title="Format" anchor="format">
 
       <t>
-        CoRAL can be used as a standalone representation format or be embedded
+        CoRAL can be used as a standalone representation format or embedded
         in representations in other formats. As a standalone format, CoRAL
-        representations have the media type "application/coral". When CoRAL is
+        representations have the media type 'application/coral'. When CoRAL is
         embedded, it is typically embedded in CBOR-based representation formats,
         but other representation formats can embed CoRAL as well. The CoRAL
         format is in all cases the same.
       </t>
 
       <t>
-        The top-level structure of CoRAL is called a CoRAL document. A CoRAL
+        The top-level structure of CoRAL is a CoRAL document. A CoRAL
         document consists of a sequence of links, forms, literals and bases,
         which are collectively called elements. All elements consist of a number
         indicating the element type, a "href type" that indicates how
@@ -267,7 +271,7 @@
 
       <t>
         In the Web, link relation types are identified by strings, such as
-        "stylesheet", "terms-of-service" or "item". In order to minimize the
+        'stylesheet', 'terms-of-service' or 'item'. In order to minimize the
         overhead of using these relation types in constrained environments,
         <xref target="I-D.hartke-core-apps"/> extends the IANA Link Relation
         Types registry with a numeric identifier for each type. CoRAL uses these
@@ -280,12 +284,12 @@
         Applications MAY use negative numbers to indicate application-specific
         link relation types and form relation types, which do not need to be
         IANA-registered. The mapping from numbers to textual names needs to be
-        provided by a CoRAL profile, which is indicated by the "profile"
-        parameter of the "application/coral" media type (see <xref
-        target="profiles"/>). The "application/coral" media type without a
-        "profile" parameter does not define any application-specific values. A
+        provided by a CoRAL profile, which is indicated by the optional
+        'profile' parameter of the 'application/coral' media type (see <xref
+        target="profiles"/>). The 'application/coral' media type without a
+        'profile' parameter does not define any application-specific values. A
         representation format embedding CoRAL documents MAY define
-        application-specific values as well.
+        application-specific values for the CoRAL documents as well.
       </t>
 
       <t>
@@ -436,7 +440,7 @@
         <t>
           The Deletable Option, when present in a link, defines a form that can
           be used to delete the link target. The form relation type of that form
-          is "delete", the context and target of the form are identical to the
+          is 'delete', the context and target of the form are identical to the
           target of the link, the submission method is DELETE and no
           representation must be submitted.
         </t>
@@ -595,7 +599,7 @@
         <t>
           The Updatable Option, when present in a link, defines a form that can
           be used to update the link target. The form relation type of that form
-          is "update", the context and target of the form are identical to the
+          is 'update', the context and target of the form are identical to the
           target of the link, the submission method is PUT and the content
           format of the submitted representation must be one of the formats
           indicated by the Format Option in the link.
@@ -633,7 +637,8 @@
           element applies to all subsequent elements in a document until the
           next base element is encountered. The URI reference in a base element
           itself is resolved relative to the base URI of next lower precedence
-          (which is usually the "URI used to retrieve the entity").
+          (which is usually the "URI used to retrieve the entity" but may be
+          the "Base URI of the encapsulating entity").
         </t>
 
       </section>
@@ -884,7 +889,7 @@
       <section anchor="media-type" title="Media Type">
 
         <t>
-          This document registers the media type "application/coral" in the
+          This document registers the media type 'application/coral' in the
           Media Types registry.
           <list style="hanging">
             <t hangText="Type name:">
@@ -953,7 +958,7 @@
       <section anchor="coap-content-format" title="CoAP Content-Format">
 
         <t>
-          This document registers a content format for the "application/coral"
+          This document registers a content format for the 'application/coral'
           media type in the CoAP Content-Formats registry.
           <list style="symbols">
             <t>
@@ -1191,16 +1196,16 @@
           </t>
 
           <t>
-            By default, CoRAL representations have the "application/coral" media
+            By default, CoRAL representations have the 'application/coral' media
             type where the local namespace is empty. However, it is possible to
-            define a CoRAl profile, which is indicated by the "profile"
-            parameter of the "application/coral" media type. A profile can fill
+            define a CoRAl profile, which is indicated by the 'profile'
+            parameter of the 'application/coral' media type. A profile can fill
             the local namespace with application-specific link relation types.
           </t>
 
           <t>
-            For example, a media type "application/coral;
-            profile=http://example.com/shop" could define the following
+            For example, a media type 'application/coral;
+            profile="http://example.com/shop"' could define the following
             set of local link relation types:
           </t>
 
@@ -1214,8 +1219,8 @@
           </texttable>
 
           <t>
-            Similarly, a media type "application/coral;
-            profile=http://xmlns.com/foaf/0.1" could define the following
+            Similarly, a media type 'application/coral;
+            profile="http://xmlns.com/foaf/0.1"' could define the following
             mapping from link relation type IDs to the <xref target="FOAF">FOAF
             RDF model</xref>:
           </t>
@@ -1297,7 +1302,7 @@
             one of the formats indicated by the Format Option in the link. For
             example, given the following CoRAL representation, an agent can
             change the recipient by making a PUT request to &lt;./to&gt; with
-            the new value in "text/plain" format:
+            the new value in 'text/plain' format:
           </t>
 
 <figure><artwork type="cbor"><![CDATA[
