@@ -6,6 +6,7 @@
   <!ENTITY RFC5226 SYSTEM "reference.RFC.5226.xml">
   <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
   <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
+  <!ENTITY RFC6906 SYSTEM "reference.RFC.6906.xml">
   <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
@@ -238,13 +239,12 @@
     <section title="Format" anchor="format">
 
       <t>
-        CoRAL can be used as a standalone representation format or embedded in
-        representations in other formats. As a standalone format, CoRAL
-        representations have the media type "application/coral" or a media type
-        derived from CoRAL with the structured syntax suffix "+coral". When
-        CoRAL is embedded, it is typically embedded in CBOR-based representation
-        formats, but other representation formats can embed CoRAL as well. The
-        CoRAL format is in all cases the same.
+        CoRAL can be used as a standalone representation format or be embedded
+        in representations in other formats. As a standalone format, CoRAL
+        representations have the media type "application/coral". When CoRAL is
+        embedded, it is typically embedded in CBOR-based representation formats,
+        but other representation formats can embed CoRAL as well. The CoRAL
+        format is in all cases the same.
       </t>
 
       <t>
@@ -277,13 +277,15 @@
       </t>
 
       <t>
-        Applications can use negative numbers to indicate application-specific
+        Applications MAY use negative numbers to indicate application-specific
         link relation types and form relation types, which do not need to be
-        IANA-registered. The mappings from numbers to textual names need to be
-        provided by the respective media type definition (i.e., by a media type
-        with the "+coral" suffix or a media type embedding CoRAL; the
-        "application/coral" media type does not define any application-specific
-        values).
+        IANA-registered. The mapping from numbers to textual names needs to be
+        provided by a CoRAL profile, which is indicated by the "profile"
+        parameter of the "application/coral" media type (see <xref
+        target="profiles"/>). The "application/coral" media type without a
+        "profile" parameter does not define any application-specific values. A
+        representation format embedding CoRAL documents MAY define
+        application-specific values as well.
       </t>
 
       <t>
@@ -731,6 +733,19 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
+    <section title="Profiles" anchor="profiles">
+
+      <t>
+        TODO.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
     <section title="Security Considerations" anchor="security">
 
       <t>
@@ -882,7 +897,11 @@
               <vspace/>N/A
             </t>
             <t hangText="Optional parameters:">
-              <vspace/>N/A
+              <list style="hanging">
+                <t hangText="profile">
+                  <vspace/>See <xref target="profiles"/> of &SELF;.
+                </t>
+              </list>
             </t>
             <t hangText="Encoding considerations:">
               <vspace/>CoRAL is a binary encoding.
@@ -931,47 +950,6 @@
 
       </section>
 
-      <section title="Structured Syntax Suffix">
-
-        <t>
-          This document registers the suffix "+coral" in the Structured Syntax
-          Suffix registry.
-          <list style="hanging">
-            <t hangText="Name:">
-              <vspace/>Constrained RESTful Application Language (CoRAL)
-            </t>
-            <t hangText="+suffix:">
-              <vspace/>+coral
-            </t>
-            <t hangText="References:">
-              <vspace/>&SELF;
-            </t>
-            <t hangText="Encoding considerations:">
-              <vspace/>CoRAL is a binary format.
-            </t>
-            <t hangText="Interoperability considerations:">
-              <vspace/>There are no known interoperability issues.
-            </t>
-            <t hangText="Fragment identifier considerations:">
-              <vspace/>The syntax and semantics of fragment identifiers
-              specified for +coral are as specified for "application/coral".
-              (At publication of this document, there is no fragment
-              identification syntax defined for "application/coral".)
-            </t>
-            <t hangText="Security considerations:">
-              <vspace/>See <xref target="security"/> of &SELF;.
-            </t>
-            <t hangText="Contact:">
-              <vspace/>See "Author's Address" section of &SELF;.
-            </t>
-            <t hangText="Author/Change controller:">
-              <vspace/>IESG
-            </t>
-          </list>
-        </t>
-
-      </section>
-
       <section anchor="coap-content-format" title="CoAP Content-Format">
 
         <t>
@@ -1011,6 +989,7 @@
       &RFC3986;
       &RFC5226;
       &RFC5988;
+      &RFC6906;
       &RFC7049;
       &RFC7252;
 
@@ -1214,14 +1193,15 @@
           <t>
             By default, CoRAL representations have the "application/coral" media
             type where the local namespace is empty. However, it is possible to
-            create new media types based on CoRAL and to register these with the
-            "+coral" suffix. In this case, the media type specification can fill
+            define a CoRAl profile, which is indicated by the "profile"
+            parameter of the "application/coral" media type. A profile can fill
             the local namespace with application-specific link relation types.
           </t>
 
           <t>
-            For example, a media type "application/example.shop+coral" could
-            define the following set of local link relation types:
+            For example, a media type "application/coral;
+            profile=http://example.com/shop" could define the following
+            set of local link relation types:
           </t>
 
           <texttable>
@@ -1234,9 +1214,10 @@
           </texttable>
 
           <t>
-            Similarly, a media type "application/example.foaf+coral" could
-            define the following mapping from link relation type IDs to the
-            <xref target="FOAF">FOAF RDF model</xref>:
+            Similarly, a media type "application/coral;
+            profile=http://xmlns.com/foaf/0.1" could define the following
+            mapping from link relation type IDs to the <xref target="FOAF">FOAF
+            RDF model</xref>:
           </t>
 
           <texttable>
