@@ -856,11 +856,11 @@
 
     <section title="IANA Considerations">
 
-      <section anchor="media-type" title="Media Type">
+      <section title="Media Type">
 
         <t>
           This document registers the media type 'application/coral' in the
-          Media Types registry.
+          Media Types Registry.
           <list style="hanging">
             <t hangText="Type name:">
               <vspace/>application
@@ -925,17 +925,23 @@
 
       </section>
 
-      <section anchor="coap-content-format" title="CoAP Content-Format">
+      <section title="Content Format">
 
         <t>
           This document registers a content format for the 'application/coral'
-          media type in the CoAP Content-Formats registry.
-          <list style="symbols">
-            <t>
-              Media Type: application/coral<vspace/>
-              Encoding: -<vspace/>
-              ID: 70<vspace/>
-              Reference: &SELF;
+          media type in the CoAP Content-Formats Registry.
+          <list style="hanging">
+            <t hangText="Media type:">
+              <vspace/>application/coral
+            </t>
+            <t hangText="Content coding:">
+              <vspace/>identity
+            </t>
+            <t hangText="ID:">
+              <vspace/>70
+            </t>
+            <t hangText="Reference:">
+              <vspace/>&SELF;
             </t>
           </list>
         </t>
