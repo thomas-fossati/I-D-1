@@ -19,6 +19,7 @@
   <!ENTITY W3C.REC-rdf11-concepts-20140225 SYSTEM "reference.W3C.REC-rdf11-concepts-20140225.xml">
   <!ENTITY W3C.REC-turtle-20140225 SYSTEM "reference.W3C.REC-turtle-20140225.xml">
   <!ENTITY W3C.REC-webarch-20041215 SYSTEM "reference.W3C.REC-webarch-20041215.xml">
+  <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "reference.W3C.REC-xml-names-20091208.xml">
   <!ENTITY SELF "[RFCXXXX]">
 ]>
 
@@ -741,7 +742,96 @@
     <section title="Profiles" anchor="profiles">
 
       <t>
-        TODO.
+        Profiles provide an easy way to extend CoRAL with application-specific
+        link relation types and form relation types.
+      </t>
+
+      <t>
+        Application-specific link relation types and form relation types are
+        encoded in CoRAL as negative numbers. The meaning of these numbers is
+        defined by the profile, which maps them to extension link and form
+        relation types. (An extension relation type is a <xref
+        target="RFC3986">URI</xref> that uniquely identifies the relation type;
+        see Section 4.2 of <xref target="RFC5988"/>.)
+      </t>
+
+      <t>
+        For example, a CoRAL profile for online shops could define the following
+        set of application-specific link relation types:
+      </t>
+
+      <texttable anchor="profile-1" title="Example profile for online shops">
+        <ttcol>ID</ttcol>
+        <ttcol>Link Relation Type</ttcol>
+
+        <c>-80</c> <c>http://example.com/rels/order</c>
+        <c>-81</c> <c>http://example.com/rels/basket</c>
+        <c>-82</c> <c>http://example.com/rels/customer</c>
+      </texttable>
+
+      <t>
+        A good source for existing extension link relation types are <xref
+        target="W3C.REC-rdf11-concepts-20140225">RDF predicates</xref>. An RDF
+        statement says that some relationship, indicated by a predicate, holds
+        between two resources. Link relation types and RDF predicates can
+        therefore be used interchangeably in many cases.
+      </t>
+
+      <t>
+        For example, a CoRAL profile could define the following mapping from
+        link relation type numbers to the <xref target="FOAF">FOAF
+        vocabulary</xref>:
+      </t>
+
+      <texttable anchor="profile-2" title="Example profile for the FOAF vocabulary">
+        <ttcol>ID</ttcol>
+        <ttcol>RDF Predicate</ttcol>
+
+        <c>-100</c> <c>http://xmlns.com/foaf/0.1/name</c>
+        <c>-101</c> <c>http://xmlns.com/foaf/0.1/age</c>
+        <c>-102</c> <c>http://xmlns.com/foaf/0.1/homepage</c>
+      </texttable>
+
+      <t>
+        CoRAL profiles are identified by a <xref target="RFC3986">URI</xref> and
+        are indicated by the 'profile' parameter of the 'application/coral'
+        media type, following the recommendations of <xref target="RFC6906"/>,
+        Section 3.1. For example, the FOAF profile above could use the media
+        type 'application/coral; profile="http://xmlns.com/foaf/0.1/"'.
+      </t>
+
+      <t>
+        The profile URI serves only as an identifier, similar to an <xref
+        target="W3C.REC-xml-names-20091208">XML namespace URI</xref>. That is,
+        the profile URI does not necessarily have to identify a dereferencable
+        resource (or even use a dereferencable URI scheme). It is possible,
+        though, to use a dereferencable URI and serve a representation that
+        provides information about the profile in a human- or machine-readable
+        way. (The format of such a representation is outside the scope of this
+        document.)
+      </t>
+
+      <t>
+        For simplicity, a CoRAL document can use only at most one profile at the
+        same time. The 'profile' parameter of the 'application/coral' media type
+        contains a single profile URI, not a whitespace-separated list of
+        profile URIs as recommended by <xref target="RFC6906"/>.
+      </t>
+
+      <t>
+        Profile URIs do not have to be registered in principle. The use of DNS
+        names in them allows decentralized creation of new profile identifiers
+        without the risk of collisions. However, in CoAP the media type of a
+        representation is indicated by a small numeric identifier called the
+        content format, not by a string. A content format has no internal
+        structure and indicates a media type including specific values for its
+        parameters. For example, content format 0 indicates the media type
+        'text/plain; charset=UTF-8'. A media type 'text/plain;
+        charset=ISO-8859-1' (not registered at the time of writing) would
+        require a separate content format. Thus, each CoRAL profiles needs to
+        register a new content format in the "CoAP Content-Formats" registry for
+        use with CoAP, specifying the 'application/coral' media type and the
+        profile URI as the value of the 'profile' parameter.
       </t>
 
     </section>
@@ -1013,6 +1103,7 @@
       &W3C.REC-rdf11-concepts-20140225;
       &W3C.REC-turtle-20140225;
       &W3C.REC-webarch-20041215;
+      &W3C.REC-xml-names-20091208;
 
       <reference anchor="FOAF" target="http://xmlns.com/foaf/spec/20140114.html">
         <front>
