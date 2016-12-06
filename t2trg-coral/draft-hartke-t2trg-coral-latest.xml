@@ -753,9 +753,6 @@
         relation types. (An extension relation type is a <xref
         target="RFC3986">URI</xref> that uniquely identifies the relation type;
         see Section 4.2 of <xref target="RFC5988"/>.)
-      </t>
-
-      <t>
         For example, a CoRAL profile for online shops could define the following
         set of application-specific link relation types:
       </t>
@@ -775,9 +772,6 @@
         statement says that some relationship, indicated by a predicate, holds
         between two resources. Link relation types and RDF predicates can
         therefore be used interchangeably in many cases.
-      </t>
-
-      <t>
         For example, a CoRAL profile could define the following mapping from
         link relation type numbers to the <xref target="FOAF">FOAF
         vocabulary</xref>:
@@ -827,11 +821,11 @@
         structure and indicates a media type including specific values for its
         parameters. For example, content format 0 indicates the media type
         'text/plain; charset=UTF-8'. A media type 'text/plain;
-        charset=ISO-8859-1' (not registered at the time of writing) would
-        require a separate content format. Thus, each CoRAL profiles needs to
-        register a new content format in the "CoAP Content-Formats" registry for
-        use with CoAP, specifying the 'application/coral' media type and the
-        profile URI as the value of the 'profile' parameter.
+        charset=ISO-8859-1' would require a separate content format. Thus, for
+        use with CoAP, each CoRAL profiles needs to register a new content
+        format in the "CoAP Content-Formats" registry, specifying the
+        'application/coral' media type and the profile URI as the value of the
+        'profile' parameter.
       </t>
 
     </section>
