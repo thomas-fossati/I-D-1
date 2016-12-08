@@ -117,7 +117,7 @@
         their application programming interfaces (APIs). One of the fundamental
         principles is that <xref target="RESTAPI">"REST APIs must be
         hypertext-driven"</xref>. This principle is often ignored by application
-        designers who instead specify their APIs in terms of fixed URIs through
+        designers, who instead specify their APIs in terms of fixed URIs through
         some out-of-band mechanism, e.g., in an API documentation. Although this
         approach may appear easy for clients to use, the fixed resource names
         and data formats lead to a tight coupling between client and server
@@ -130,11 +130,11 @@
       <t>
         REST is intended for long-lived network-based applications that span
         multiple organizations <xref target="RESTAPI"/>. Principled REST APIs
-        require some design effort, as application designers do not only have to
-        take current requirements into consideration, but also have to
+        require some design effort, since application designers do not only have
+        to take current requirements into consideration, but also have to
         anticipate changes that may be required in the future -- years or even
         decades after the application has been deployed for the first time. The
-        reward is long-term stability and evolvability, both of which are
+        reward is long-term stability and evolvability, both of which are very
         desirable features in the Internet of Things.
       </t>
 
