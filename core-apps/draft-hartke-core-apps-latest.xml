@@ -490,8 +490,8 @@
         <t>
           Applications that don't wish to register a link relation type can use
           an extension link relation type, which is a URI that uniquely
-          identifies the link relation type (similar to a URI used as an XML
-          namespace name). For example, an application can use the string
+          identifies the link relation type.
+          For example, an application can use the string
           "http://example.com/foo" as link relation type without having to
           register it. Using a URI to identify an extension link relation type,
           rather than a simple string, reduces the probability of different link
