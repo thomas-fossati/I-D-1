@@ -367,6 +367,9 @@ Data /   \
             <vspace/><xref target="RFC6573">collection</xref>
             <vspace/><xref target="RFC6573">item</xref>
           </t>
+          <t hangText="Template variable names:">
+            <vspace/>None.
+          </t>
           <t hangText="Form relation types:">
             <vspace/><xref target="I-D.hartke-core-apps">create-item</xref>
             <vspace/><xref target="I-D.hartke-core-apps">update</xref>
