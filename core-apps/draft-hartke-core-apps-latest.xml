@@ -660,10 +660,6 @@
           </list>
         </t>
 
-        <t>
-          <vspace blankLines="10"/>
-        </t>
-
       </section>
 
     </section>
@@ -673,9 +669,39 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Template">
+    <section title="Application Description Template">
 
       <t>
+        As applications are implemented and deployed, it becomes important to
+        describe them in some structured way. This section provides a simple
+        template for CoRE Application Descriptions. A uniform structure allows
+        implementers to easily determine the components making up the interface
+        of an application.
+      </t>
+
+      <t>
+        The template lists all components of applications that both client and
+        server implementation of the application need to understand in order to
+        successfully interoperate. Crucially, items not listed in the template
+        are not part of the contract between clients and servers -- they are
+        implementation details. This includes in particular the URIs of
+        resources (see <xref target="uri-design"/>).
+      </t>
+
+      <t>
+        CoRE Application Descriptions are intended to be published in
+        human-readable format by application designers and by operators of
+        deployed application instances. Application designers should publish an
+        application description as a general specification of all application
+        instances, so that implementers can create interoperable clients and
+        servers. Operators of application instances should publish an
+        application description as part of the API documentation of the service,
+        which should also include instructions how the service can be located
+        and which communication protocols and security modes are used.
+      </t>
+
+      <t>
+        The fields of the template are as follows:
         <list style="hanging">
           <t hangText="Application name:">
             <vspace/>Name of the application. The name is not used to negotiate
@@ -753,7 +779,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="URI Design Considerations">
+    <section title="URI Design Considerations" anchor="uri-design">
 
       <t>
         <xref target="RFC3986">URIs</xref> are a cornerstone of RESTful
