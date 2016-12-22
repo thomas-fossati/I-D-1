@@ -374,9 +374,9 @@
 
           <t>
             As described in <xref target="RFC5988">RFC 5988</xref>, a link is a
-            typed connection between two resources. A link is the primary means
-            for a client to navigate from one resource to another. It is
-            comprised of:
+            typed connection between two resources. Additionally, a link is the
+            primary means for a client to navigate from one resource to another.
+            It is comprised of:
             <list style="symbols">
               <t>
                 a link context (usually the current resource),
@@ -386,7 +386,7 @@
                 (see <xref target="link-relations"/>),
               </t>
               <t>
-                a link target, and
+                a link target, identified by a URI, and
               </t>
               <t>
                 optionally, target attributes that further describe the link or
@@ -451,7 +451,7 @@
                 (see <xref target="form-relations"/>),
               </t>
               <t>
-                a form target,
+                a form target, identified by a URI,
               </t>
               <t>
                 a submission method (PUT, POST, PATCH, FETCH, or DELETE),
@@ -470,6 +470,8 @@
             target}, which has {target attributes}". For example, to "update"
             the resource &lt;http://example.com/config&gt;, a client could be
             required to make a PUT request to &lt;http://example.com/config&gt;.
+            In many cases, the target of a form is the same resource as the
+            context, but this is not required.
           </t>
 
           <t>
@@ -656,6 +658,10 @@
               &lt;http://www.iana.org/assignments/well-known-uris&gt;.
             </t>
           </list>
+        </t>
+
+        <t>
+          <vspace blankLines="10"/>
         </t>
 
       </section>
