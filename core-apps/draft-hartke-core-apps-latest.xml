@@ -18,6 +18,9 @@
   <!ENTITY RFC7320 SYSTEM "reference.RFC.7320.xml">
   <!ENTITY RFC7540 SYSTEM "reference.RFC.7540.xml">
   <!ENTITY RFC7595 SYSTEM "reference.RFC.7595.xml">
+  <!ENTITY W3C.REC-xml11-20060816 SYSTEM "reference.W3C.REC-xml11-20060816.xml">
+  <!ENTITY W3C.REC-xml-20081126 SYSTEM "reference.W3C.REC-xml-20081126.xml">
+  <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "reference.W3C.REC-xml-names-20091208.xml">
   <!ENTITY SELF "[RFCXXXX]">
 ]>
 
@@ -253,6 +256,21 @@
         </t>
 
         <t>
+          <list style="hanging">
+            <t hangText="Note:">
+              The terms media type and representation format are often used
+              interchangeably. In this document, the term "media type" refers
+              specifically to a string of characters such as "application/xml"
+              that is used to label representations; the term "representation
+              format" refers to the definition of the syntax and semantics of
+              representations, such as <xref target="W3C.REC-xml-20081126">XML
+              1.0</xref> or <xref target="W3C.REC-xml11-20060816">XML
+              1.1</xref>.
+            </t>
+          </list>
+        </t>
+
+        <t>
           Media types consist of a top-level type and a subtype, structured into
           trees <xref target="RFC6838"/>. Optionally, media types can have
           parameters. For example, the media type "text/plain; charset=utf-8" is
@@ -266,7 +284,7 @@
           <xref target="RFC6838">RFC 6838</xref>), a "profile" parameter (see
           Section 3.1 of <xref target="RFC6906">RFC 6906</xref>), subtype
           information embedded in the representations themselves (e.g., "xmlns"
-          declarations in XML documents <xref target="XMLNS"/>), or a similar
+          declarations in XML documents <xref target="W3C.REC-xml-names-20091208"/>), or a similar
           annotation. Annotations directly in the media type are generally
           preferable since embedded subtype information can typically not be
           negotiated in content negotiation.
@@ -1004,19 +1022,11 @@
 
       &RFC7228; <!--Bormann-->
 
-      <reference anchor="XMLNS" target="http://www.w3.org/TR/2009/REC-xml-names-20091208">
-        <front>
-          <title>Namespaces in XML 1.0 (Third Edition)</title>
-          <author initials="T." surname="Bray" fullname="Tim Bray" />
-          <author initials="D." surname="Hollander" fullname="Dave Hollander" />
-          <author initials="A." surname="Layman" fullname="Andrew Layman" />
-          <author initials="R." surname="Tobin" fullname="Richard Tobin" />
-          <author initials="H." surname="Thompson" fullname="Henry Thompson" />
-          <date month="December" day="8" year="2009" />
-        </front>
-        <seriesInfo name="World Wide Web Consortium Recommendation" value="REC-xml-names-20091208" />
-        <format type="HTML" target="http://www.w3.org/TR/2009/REC-xml-names-20091208" />
-      </reference>
+      &W3C.REC-xml-names-20091208; <!--Bray-->
+
+      &W3C.REC-xml-20081126; <!--Bray-->
+
+      &W3C.REC-xml11-20060816; <!--Bray-->
 
       &RFC7230; <!--Fielding-->
 
