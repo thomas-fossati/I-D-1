@@ -678,9 +678,9 @@
       <t>
         <list style="hanging">
           <t hangText="Application name:">
-            <vspace/>The name of the application. The name is not used to
-            negotiate capabilities; it is purely informational. A name may
-            include a version number or refer to a living standard that is
+            <vspace/>Name of the application. The name is not used to negotiate
+            capabilities; it is purely informational. A name may include a
+            version number or, for example, refer to a living standard that is
             continuously updated.
           </t>
           <t hangText="URI schemes:">
@@ -702,10 +702,10 @@
             required or optional.
           </t>
           <t hangText="Template variable names:">
-            <vspace/>Variable names that identify the semantics of variables in
-            templated links, grouped by the link relation types they are used
-            with. Whether a template variable is required or optional is
-            indicated in-band inside the templated link.
+            <vspace/>For each link relation type, variable names that identify
+            the semantics of variables in templated links with that link
+            relation type. Whether a template variable is required or optional
+            is indicated in-band inside the templated link.
           </t>
           <t hangText="Form relation types:">
             <vspace/>Form relation types that identify the semantics of forms
@@ -715,8 +715,8 @@
             optional.
           </t>
           <t hangText="Form field names:">
-            <vspace/>Form field names that identify the semantics of form fields
-            in forms, grouped by the form relation types they are used with.
+            <vspace/>For each form relation type, form field names that identify
+            the semantics of form fields in forms with that form relation types.
             Whether a form field is required or optional is indicated in-band
             inside the form.
           </t>
