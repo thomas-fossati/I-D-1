@@ -413,7 +413,7 @@
                 than replacing it.
                 <vspace blankLines="1"/>
                 The most well known example for an embedding link is the HTML
-                &lt;img&gt; element. When a web browser processes this element,
+                &lt;img&gt; element. When a Web browser processes this element,
                 it automatically dereferences the "src" and renders the
                 resulting image in place of the &lt;img&gt; element.
               </t>
@@ -482,8 +482,8 @@
             <list style="hanging">
               <t hangText="Note:">
                 A form with a submission method of GET is, strictly speaking, a
-                templated link as it provides a way to construct a URI and does
-                not submit a representation to the server.
+                templated link, since it provides a way to construct a URI and
+                does not submit a representation to the server.
                </t>
             </list>
           </t>
@@ -544,9 +544,9 @@
         <t>
           A templated link enables clients to construct the target URI of a
           link, for example, when the link refers to a space of resources rather
-          than a single resource. In most prominent mechanisms for this are the
-          HTML &lt;form&gt; element with a submission method of GET and URI
-          Templates <xref target="RFC6570"/>.
+          than a single resource. In most prominent mechanisms for this are
+          <xref target="RFC6570">URI Templates</xref> and the HTML &lt;form&gt;
+          element with a submission method of GET.
         </t>
 
         <t>
@@ -634,8 +634,8 @@
 
         <t>
           Some applications may require the discovery of information about a
-          host (known as "site-wide metadata" in <xref target="RFC5785">RFC
-          5785</xref>). For example, <xref target="RFC6415">RFC 6415</xref>
+          host, known as "site-wide metadata" in <xref target="RFC5785">RFC
+          5785</xref>. For example, <xref target="RFC6415">RFC 6415</xref>
           defines a metadata document format for describing a host; similarly,
           <xref target="RFC6690">RFC 6690</xref> defines a link format for the
           discovery of resources hosted by a server.
