@@ -139,7 +139,7 @@
           If a client requests to be added to the list of observers of a
           resource <xref target="RFC7641"/> for which a representation is not
           available yet, the server MAY use send one or more 2.06 (Imminent)
-          notifications. The resulting sequence of possible notifications is
+          notifications. The possible resulting sequence of notifications is
           shown in <xref target="figure-1"/>.
         </t>
 
@@ -148,11 +148,11 @@
       __________       __________       __________
      |          |     |          |     |          |
 ---->|   2.06   |---->|  2.05 /  |---->|  4.xx /  |
- \   | Imminent |     |   2.03   |     |   5.xx   |
-  \  |__________|     |__________|     |__________|
-   \    ^   \ \          ^    \           ^
-    \    \__/  \          \___/          /
-     \__________\_______________________/
+     | Imminent |     |   2.03   |     |   5.xx   |
+     |__________|     |__________|     |__________|
+        ^   \ \          ^    \           ^
+         \__/  \          \___/          /
+                \_______________________/
 ]]></artwork>
         </figure>
 
