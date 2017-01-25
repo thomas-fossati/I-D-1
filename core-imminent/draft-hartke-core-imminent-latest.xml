@@ -53,7 +53,7 @@
     <abstract>
 
       <t>
-        ...
+        TODO.
       </t>
 
     </abstract>
@@ -71,7 +71,7 @@
 
       <t>
         The Constrained Application Protocol (CoAP) <xref target="RFC7252"/>...
-        <vspace blankLines="15"/>
+        <vspace blankLines="4"/>
       </t>
 
       <section title="Terminology">
@@ -97,50 +97,61 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="2.06 (Imminent) Responses">
+    <section title="2.06 Imminent">
 
       <t>
-        A 2.06 (Imminent) response in reply to a GET request indicates that a
-        representation of the target resource is not available yet. The Max-Age
-        Option indicates after what time a client should retry its GET request.
-        The client MAY observe the resource (<xref target="observing"/>) to be
-        notified when the representation becomes available.
+        A 2.06 (Imminent) response in reply to a GET request indicates that the
+        target resource exists but no representation of the resource is
+        available yet. The Max-Age Option indicates after what time a client
+        should retry its GET request to retrieve the representation. The client
+        MAY observe the resource (see <xref target="observing"/>) to be notified
+        when the representation becomes available.
       </t>
 
       <t>
         A 2.06 (Imminent) response in reply to a POST request indicates that the
         result of processing the request is not available yet, for example,
         because the server needs longer to process the request than a client is
-        typically willing to wait for a response. The server MUST specify a
-        location where the result will become available using the Location-*
-        options. To receive the result, the client MAY poll or observe (<xref
-        target="observing"/>) the resource at the specified location using a GET
-        request. The Max-Age Option indicates how long the client should wait
-        before making the GET request.
-      </t>
-
-      <t>
-        A 2.06 (Imminent) response is cacheable, but not validatable. In reply
-        to a GET request, it invalidates any cached response for the target
-        resource of the request. In reply to a POST request, it invalidates any
-        cached response for the resource specified by the Location-* options.
+        typically willing to wait for a response. The server MAY specify a
+        location using the Location-* options where the result will become
+        available. If the server does not specify a location, the result will
+        become available at the target resource. To receive the result, the
+        client MAY poll or observe the resource at the specified location with a
+        GET request. The Max-Age Option indicates how long the client should
+        wait before making the GET request.
       </t>
 
       <t>
         A 2.06 (Imminent) response MAY contain a payload that represents the
         progress of processing the original POST request or any other status
-        information. The content format of this representation is specified
-        using the Content-Format Option.
+        information. The content format of this representation is specified by
+        the Content-Format Option.
+      </t>
+
+      <t>
+        A 2.06 (Imminent) response is cacheable, but not validatable. If it
+        contains Location-* options, it invalidates any cached response for the
+        resource at the specified location; otherwise, it invalidates any cached
+        response for the target resource of the request.
+      </t>
+
+      <t>
+        As a consequence of being cacheable, a 2.06 (Imminent) response in reply
+        to a POST request makes the POST method temporarily idempotent: until
+        Max-Age expires, any POST request with the same cache-key -- be it from
+        the same client or any another client -- yields the same 2.06 (Imminent)
+        response. (This is the same behavior as for 4.xx and 5.xx error
+        responses in reply to POST requests.)
       </t>
 
       <section title="Observing Resources" anchor="observing">
 
         <t>
-          If a client requests to be added to the list of observers of a
-          resource <xref target="RFC7641"/> for which a representation is not
-          available yet, the server MAY send one or more 2.06 (Imminent)
-          notifications. The possible resulting sequence of notifications is
-          shown in <xref target="figure-1"/>.
+          When a client registers to observe <xref target="RFC7641"/> a resource
+          for which no representation is available yet, the server MAY send one
+          or more 2.06 (Imminent) notifications before sending the first 2.05
+          (Content) or 2.03 (Valid) notification. The possible resulting
+          sequence of notifications is shown in <xref target="figure-1"/>.
         </t>
 
         <figure anchor="figure-1" title="Sequence of Notifications">
@@ -155,6 +166,14 @@
                 \_______________________/
 ]]></artwork>
         </figure>
+
+        <t>
+          Unless the server is not willing to add the client to the list of
+          observers, each 2.06 (Imminent) notification includes an Observe
+          Option with a sequence number as specified in <xref
+          target="RFC7641"/>. Otherwise, the registration request falls back to
+          a normal GET request.
+        </t>
 
       </section>
 
