@@ -742,7 +742,7 @@
           </t>
           <t hangText="Form field names:">
             <vspace/>For each form relation type, form field names that identify
-            the semantics of form fields in forms with that form relation types.
+            the semantics of form fields in forms with that form relation type.
             Whether a form field is required or optional is indicated in-band
             inside the form.
           </t>
