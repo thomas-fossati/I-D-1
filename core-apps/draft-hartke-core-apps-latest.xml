@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="us-ascii"?>
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-  <!ENTITY RFC1945 SYSTEM "reference.RFC.1945.xml">
   <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
   <!ENTITY RFC5785 SYSTEM "reference.RFC.5785.xml">
   <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
@@ -66,7 +65,7 @@
         reusable components such as Internet media types and link relation
         types. This document proposes CoRE Application Descriptions, a
         convention for application designers to describe the programmable
-        interface of their Web application in a structured way so that other
+        interfaces of their applications in a structured way so that other
         parties can easily develop interoperable clients and servers or reuse
         the components in their own applications.
       </t>
@@ -136,7 +135,7 @@
       <t>
         REST is intended for long-lived network-based applications that span
         multiple organizations <xref target="RESTAPI"/>. Principled REST APIs
-        require some design effort since application designers do not only have
+        require some design effort, since application designers do not only have
         to take current requirements into consideration, but also have to
         anticipate changes that may be required in the future -- years or even
         decades after the application has been deployed for the first time. The
@@ -173,11 +172,11 @@
       <t>
         A CoRE Application Description is a named set of reusable components. It
         describes a contract between a server hosting an instance of the
-        described application and clients that wish to interface with the
-        application.
-        </t>
+        described application and clients that wish to interface with that
+        instance.
+      </t>
 
-        <t>
+      <t>
         A CoRE Application Description is comprised of:
         <list style="symbols">
           <t>URI schemes that identify communication protocols,</t>
@@ -203,23 +202,23 @@
         </t>
 
         <t>
-          The use of a particular protocol is guided by <xref target="RFC7595">
-          URI schemes</xref>. URI schemes specify the syntax and semantics of
-          <xref target="RFC3986">URI references</xref> found in links (<xref
-          target="links"/>) and forms (<xref target="forms"/>).
+          The use of a particular protocol by a client is guided by <xref
+          target="RFC7595">URI schemes</xref>. URI schemes specify the syntax
+          and semantics of <xref target="RFC3986">URI references</xref> that the
+          server includes in links (<xref target="links"/>) and forms (<xref
+          target="forms"/>).
         </t>
 
         <t>
           A URI scheme refers to a family of protocols, typically distinguished
           by a version number. For example, the "http" URI scheme refers to the
-          three members of the HTTP family of protocols: <xref
-          target="RFC1945">HTTP/1.0</xref>, <xref
-          target="RFC7230">HTTP/1.1</xref>, and <xref
-          target="RFC7540">HTTP/2</xref>. The specific HTTP version used is
-          negotiated between a client and a server in-band using the version
-          indicator in the HTTP request-line or the TLS <xref
-          target="RFC7301">Application-Layer Protocol Negotiation (ALPN)
-          extension</xref>.
+          two members of the HTTP family of protocols: <xref
+          target="RFC7230">HTTP/1.1</xref> and <xref
+          target="RFC7540">HTTP/2</xref> (as well as some predecessors). The
+          specific HTTP version used is negotiated between a client and a server
+          in-band using the version indicator in the HTTP request-line or the
+          TLS <xref target="RFC7301">Application-Layer Protocol Negotiation
+          (ALPN) extension</xref>.
         </t>
 
         <t>
@@ -240,8 +239,8 @@
           is the concept of Internet media types <xref target="RFC6838"/>. Media
           types are used to label representations so that it is known how the
           representation should be interpreted and how it is encoded. The
-          essence of a CoRE Application Description should be one or more media
-          types.
+          centerpiece of a CoRE Application Description should be one or more
+          media types.
         </t>
 
         <t>
@@ -279,31 +278,34 @@
         </t>
 
         <t>
-          Media types can be further refined by structured type name suffixes
-          (e.g., "+xml" appended to the base subtype name; see Section 4.2.8 of
-          <xref target="RFC6838">RFC 6838</xref>), a "profile" parameter (see
-          Section 3.1 of <xref target="RFC6906">RFC 6906</xref>), subtype
-          information embedded in the representations themselves (e.g., "xmlns"
-          declarations in XML documents <xref target="W3C.REC-xml-names-20091208"/>), or a similar
-          annotation. Annotations directly in the media type are generally
-          preferable since embedded subtype information can typically not be
-          negotiated in content negotiation.
+          Media types can be further refined by <list style="symbols"><t>
+          structured type name suffixes (e.g., "+xml" appended to the base
+          subtype name; see Section 4.2.8 of <xref target="RFC6838">RFC
+          6838</xref>),</t><t>a "profile" parameter (see Section 3.1 of <xref
+          target="RFC6906">RFC 6906</xref>),</t><t>subtype information embedded
+          in the representations themselves (e.g., "xmlns" declarations in XML
+          documents <xref target="W3C.REC-xml-names-20091208"/>),</t></list> or
+          a similar annotation. An annotation directly in the media type is
+          generally preferable, since subtype information embedded in
+          representations can typically not be negotiated during content
+          negotiation (e.g., using the CoAP Accept option).
         </t>
 
         <t>
           In CoAP, media types are combined with <xref target="RFC7231">content
           coding information</xref> to indicate the "content format" <xref
-          target="RFC7252"/> of a representation. Content formats are assigned a
-          numeric identifier that can be used instead of the (typically much
-          longer) textual name of the media type in representation formats with
-          space constraints. However, the flat number space loses the structural
-          information that the textual names have.
+          target="RFC7252"/> of a representation. Each content format is
+          assigned a numeric identifier that can be used instead of the
+          (typically much longer) textual name of the media type in
+          representation formats with space constraints. The flat number space
+          loses the structural information that the textual names have, however.
         </t>
 
         <t>
-          A media type must be determined from in-band information (e.g., from
-          the CoAP Content-Format option). Clients must not assume a structure
-          from the application context or other out-of-band information.
+          The media type of a representation must be determined from in-band
+          information (e.g., from the CoAP Content-Format option). Clients must
+          not assume a structure from the application context or other
+          out-of-band information.
         </t>
 
         <t>
@@ -355,7 +357,7 @@
 
           <t>
             Representation formats enable hypermedia-driven applications when
-            they support the expression of hypermedia controls, that is, links
+            they support the expression of hypermedia controls, i.e., links
             (<xref target="links"/>) and forms (<xref target="forms"/>).
           </t>
 
@@ -376,10 +378,13 @@
             As described in <xref target="RFC5988">RFC 5988</xref>, a link is a
             typed connection between two resources. Additionally, a link is the
             primary means for a client to navigate from one resource to another.
-            It is comprised of:
+          </t>
+
+          <t>
+            A link is comprised of:
             <list style="symbols">
               <t>
-                a link context (usually the current resource),
+                a link context (usually the "current" resource),
               </t>
               <t>
                 a link relation type that identifies the semantics of the link
@@ -390,9 +395,12 @@
               </t>
               <t>
                 optionally, target attributes that further describe the link or
-                its target.
+                the link target.
               </t>
             </list>
+          </t>
+
+          <t>
             A link can be viewed as a statement of the form "{link context} has
             a {link relation type} resource at {link target}, which has {target
             attributes}" <xref target="RFC5988"/>. For example, the resource
@@ -418,15 +426,14 @@
                 resulting image in place of the &lt;img&gt; element.
               </t>
               <t>
-                A templated link is a link where the client constructs the
-                target resource URI from provided in-band instructions. The
-                specific rules for such instructions are described by the
-                representation format. <xref target="RFC6570">URI
-                Templates</xref> provide a generic way to construct URIs through
-                variable expansion.
+                A templated link is a link where the client constructs the link
+                target URI from provided in-band instructions. The specific
+                rules for such instructions are described by the representation
+                format. <xref target="RFC6570">URI Templates</xref> provide a
+                generic way to construct URIs through variable expansion.
                 <vspace blankLines="1"/>
                 Templated links allow a client to construct resource URIs
-                without being coupled to the resource structure at the server --
+                without being coupled to the resource structure at the server,
                 provided that the client learns the template from a
                 representation sent by the server and does not have the template
                 hard-coded.
@@ -440,11 +447,13 @@
 
           <t>
             A form is the primary means for a client to submit information to a
-            server, typically in order to change resource state. It is comprised
-            of:
+            server, typically in order to change resource state.
+          </t>
+
+          <t>A form is comprised of:
             <list style="symbols">
               <t>
-                a form context (usually the current resource),
+                a form context (usually the "current" resource),
               </t>
               <t>
                 a form relation type that identifies the semantics of the form
@@ -462,7 +471,7 @@
               </t>
               <t>
                 optionally, target attributes that further describe the form or
-                its target.
+                the form target.
               </t>
             </list>
             A form can be viewed as an instruction of the form "To {form
@@ -470,8 +479,8 @@
             target}, which has {target attributes}". For example, to "update"
             the resource &lt;http://example.com/config&gt;, a client could be
             required to make a PUT request to &lt;http://example.com/config&gt;.
-            In many cases, the target of a form is the same resource as the
-            context, but this is not required.
+            (In many cases, the target of a form is the same resource as the
+            context, but this is not required.)
           </t>
 
           <t>
@@ -546,7 +555,7 @@
         <t>
           A templated link enables clients to construct the target URI of a
           link, for example, when the link refers to a space of resources rather
-          than a single resource. In most prominent mechanisms for this are
+          than a single resource. The most prominent mechanisms for this are
           <xref target="RFC6570">URI Templates</xref> and the HTML &lt;form&gt;
           element with a submission method of GET.
         </t>
@@ -554,12 +563,16 @@
         <t>
           To enable an automated client to construct an URI reference from a URI
           Template, the name of the variable in the template can be used to
-          identify the semantics of the variable. For example, when filtering a
-          collection of temperature readings, a variable named "threshold"
-          could indicate the variable for setting a threshold of the readings to
-          return. Template variable names are scoped to link relation types,
-          i.e., two variables with the same name can have different semantics if
-          they appear in links with different link relation types.
+          identify the semantics of the variable. For example, when retrieving
+          the representation of a collection of temperature readings, a variable
+          named "threshold" could indicate the variable for setting a threshold
+          of the readings to retrieve.
+        </t>
+
+        <t>
+          Template variable names are scoped to link relation types, i.e., two
+          variables with the same name can have different semantics if they
+          appear in links with different link relation types.
         </t>
 
       </section>
@@ -614,9 +627,13 @@
           be used to identify the semantics of the form field. For example, when
           controlling a smart light bulb, the field name "brightness" could
           indicate the field for setting the desired brightness of the light
-          bulb. Field names are scoped to form relation types, i.e., two form
-          fields with the same name can have different semantics if they appear
-          in forms with different form relation types.
+          bulb.
+        </t>
+
+        <t>
+          Field names are scoped to form relation types, i.e., two form fields
+          with the same name can have different semantics if they appear in
+          forms with different form relation types.
         </t>
 
         <t>
@@ -675,29 +692,29 @@
         As applications are implemented and deployed, it becomes important to
         describe them in some structured way. This section provides a simple
         template for CoRE Application Descriptions. A uniform structure allows
-        implementers to easily determine the components making up the interface
-        of an application.
+        implementers to easily determine the components that make up the
+        interface of an application.
       </t>
 
       <t>
-        The template lists all components of applications that both client and
-        server implementation of the application need to understand in order to
-        successfully interoperate. Crucially, items not listed in the template
-        are not part of the contract between clients and servers -- they are
-        implementation details. This includes in particular the URIs of
+        The template below lists all components of applications that both the
+        client and the server implementation of the application need to
+        understand in order to interoperate. Crucially, items not listed in the
+        template are not part of the contract between clients and servers --
+        they are implementation details. This includes in particular the URIs of
         resources (see <xref target="uri-design"/>).
       </t>
 
       <t>
         CoRE Application Descriptions are intended to be published in
-        human-readable format by application designers and by operators of
-        deployed application instances. Application designers should publish an
+        human-readable format by designers of applications and by operators of
+        deployed application instances. Application designers may publish an
         application description as a general specification of all application
         instances, so that implementers can create interoperable clients and
-        servers. Operators of application instances should publish an
-        application description as part of the API documentation of the service,
-        which should also include instructions how the service can be located
-        and which communication protocols and security modes are used.
+        servers. Operators of application instances may publish an application
+        description as part of the API documentation of the service, which
+        should also include instructions how the service can be located and
+        which communication protocols and security modes are used.
       </t>
 
       <t>
@@ -707,13 +724,13 @@
             <vspace/>Name of the application. The name is not used to negotiate
             capabilities; it is purely informational. A name may include a
             version number or, for example, refer to a living standard that is
-            continuously updated.
+            updated continuously.
           </t>
           <t hangText="URI schemes:">
             <vspace/>URI schemes identifying the communication protocols that
             need to be understood by clients and servers. This information is
-            mostly relevant for deployments of the application rather than for
-            the abstract specification of the application.
+            mostly relevant for deploymed instances of the application rather
+            than for the general specification of the application.
           </t>
           <t hangText="Media types:">
             <vspace/>Internet media types that identify the representation
@@ -735,10 +752,10 @@
           </t>
           <t hangText="Form relation types:">
             <vspace/>Form relation types that identify the semantics of forms
-            and the submission method(s) used with each form relation type. An
-            application description may comprise IANA-registered form relation
-            types and extension form relation types. Both may be required or
-            optional.
+            and, for each form relation type, the submission method(s) to be
+            used. An application description may comprise IANA-registered form
+            relation types and extension form relation types. Both may be
+            required or optional.
           </t>
           <t hangText="Form field names:">
             <vspace/>For each form relation type, form field names that identify
@@ -748,8 +765,8 @@
           </t>
           <t hangText="Well-known locations:">
             <vspace/>Well-known locations in the resource identifier space of
-            servers that clients can use to discover information given the name
-            or IP address of a server.
+            servers that clients can use to discover information given the DNS
+            name or IP address of a server.
           </t>
           <t hangText="Interoperability considerations:">
             <vspace/>Any issues regarding the interoperable use of the
@@ -851,7 +868,7 @@
             different extensions, e.g., for "contacts.xml" or "contacts.json".
             But different URIs imply different resources. RESTful URIs should
             identify a single resource. Different representations of the
-            resource can be negotiated using, e.g., the CoAP Accept option.
+            resource can be negotiated (e.g., using the CoAP Accept option).
           </t>
         </list>
       </t>
@@ -1049,8 +1066,6 @@
           <date year="1998" />
         </front>
       </reference>
-
-      &RFC1945; <!--Berners-Lee-->
 
       &RFC7228; <!--Bormann-->
 
