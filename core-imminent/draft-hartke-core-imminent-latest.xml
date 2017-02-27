@@ -156,12 +156,12 @@
       <t>
         A 2.06 (Imminent) response in reply to a POST request indicates that the
         result of processing the request is not available yet, for example,
-        because the server needs longer to process the request than a client is
+        because the server needs more time to process the request than a client is
         typically willing to wait for a response. The server MAY specify a
         location using the Location-* options where the result will become
         available. If the server does not specify a location, the result will
-        become available at the target resource. To receive the result, the
-        client MAY poll or observe the resource at the specified location with a
+        become available at the target resource of the POST request. To receive the result, the
+        client MAY poll or observe the resource at the specified location using a
         GET request. The Max-Age Option indicates how long the client should
         wait before making the GET request.
       </t>
@@ -184,7 +184,7 @@
         As a consequence of being cacheable, a 2.06 (Imminent) response in reply
         to a POST request makes the POST method temporarily idempotent: until
         Max-Age expires, any POST request with the same cache-key -- be it from
-        the same client or any another client -- yields the same 2.06 (Imminent)
+        the same client or any another client -- can yield the same 2.06 (Imminent)
         response. (This is the same behavior as for 4.xx and 5.xx error
         responses in reply to POST requests.)
       </t>
@@ -214,7 +214,7 @@
 
         <t>
           Unless the server is not willing to add the client to the list of
-          observers, each 2.06 (Imminent) notification includes an Observe
+          observers, each 2.06 (Imminent) notification MUST include an Observe
           Option with a sequence number as specified in <xref
           target="RFC7641"/>. Otherwise, the registration request falls back to
           a normal GET request.
