@@ -21,7 +21,9 @@
 
   <front>
 
-    <title abbrev="The 'Imminent' Response Code for CoAP">The 'Imminent' Response Code for the Constrained Application Protocol (CoAP)</title>
+    <title abbrev="The 'Imminent' Response Code for CoAP">
+      The 'Imminent' Response Code for the Constrained Application Protocol (CoAP)
+    </title>
 
     <author initials="P." surname="van der Stok" fullname="Peter van der Stok">
       <organization>consultant</organization>
@@ -156,14 +158,14 @@
       <t>
         A 2.06 (Imminent) response in reply to a POST request indicates that the
         result of processing the request is not available yet, for example,
-        because the server needs more time to process the request than a client is
-        typically willing to wait for a response. The server MAY specify a
+        because the server needs more time to process the request than a client
+        is typically willing to wait for a response. The server MAY specify a
         location using the Location-* options where the result will become
         available. If the server does not specify a location, the result will
-        become available at the target resource of the POST request. To receive the result, the
-        client MAY poll or observe the resource at the specified location using a
-        GET request. The Max-Age Option indicates how long the client should
-        wait before making the GET request.
+        become available at the target resource of the POST request. To receive
+        the result, the client MAY poll or observe the resource at the specified
+        location using a GET request. The Max-Age Option indicates how long the
+        client should wait before making the GET request.
       </t>
 
       <t>
@@ -184,9 +186,9 @@
         As a consequence of being cacheable, a 2.06 (Imminent) response in reply
         to a POST request makes the POST method temporarily idempotent: until
         Max-Age expires, any POST request with the same cache-key -- be it from
-        the same client or any another client -- can yield the same 2.06 (Imminent)
-        response. (This is the same behavior as for 4.xx and 5.xx error
-        responses in reply to POST requests.)
+        the same client or any another client -- can yield the same 2.06
+        (Imminent) response. (This is the same behavior as for 4.xx and 5.xx
+        error responses in reply to POST requests.)
       </t>
 
       <section title="Observing Resources" anchor="observing">
@@ -231,20 +233,29 @@
 
     <section title="Security Considerations">
 
-      <t>This section analyses the possible threats related to 2.06 (Imminent) responses. It is meant to inform protocol and application
-developers about the security limitations of the response code as
-described in this document.</t>
+      <t>
+        This section analyses the possible threats related to 2.06 (Imminent)
+        responses. It is meant to inform protocol and application developers
+        about the security limitations of the response code as described in this
+        document.
+      </t>
 
-<t>A 2.06 (Imminent) response is subject to the same general security
-considerations as all CoAP responses as described in Section 11 of <xref target="RFC7252"/>.
-Specifically, the security considerations for the response code are closest to
-those of the Observe Option as stated in Section 7 of <xref target="RFC7641"/>, because the server stores additional state over an extended period.</t>
+      <t>
+        A 2.06 (Imminent) response is subject to the same general security
+        considerations as all CoAP responses as described in Section 11 of <xref
+        target="RFC7252"/>. Specifically, the security considerations for the
+        response code are closest to those of the Observe Option as stated in
+        Section 7 of <xref target="RFC7641"/>, because the server stores
+        additional state over an extended period.
+      </t>
 
-<t>2.06 (Imminent) responses are secured
-following the recommendations for the existing CoAP response codes as
-specified in Section 9 of <xref target="RFC7252"/>.  When additional security
-techniques are standardized for CoAP (e.g., based on object security), these
-are then also available for securing the responses.</t>
+      <t>
+        2.06 (Imminent) responses are secured following the recommendations for
+        the existing CoAP response codes as specified in Section 9 of <xref
+        target="RFC7252"/>. When additional security techniques are standardized
+        for CoAP (e.g., based on object security), these are then also available
+        for securing the responses.
+      </t>
 
     </section>
 
