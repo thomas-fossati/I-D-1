@@ -231,20 +231,20 @@
 
     <section title="Security Considerations">
 
-      <t>This section analyses the possible threats to the CoAP "imminent" response code extension. It is meant to inform protocol and application
-developers about the security limitations of the "imminent" response code as
+      <t>This section analyses the possible threats related to 2.06 (Imminent) responses. It is meant to inform protocol and application
+developers about the security limitations of the response code as
 described in this document.</t>
 
-<t>The "imminent" is subject to the same general security
-considerations as all CoAP methods as described in Section 11 of <xref target="RFC7252"/>.
-Specifically, the security considerations for "imminent" are closest to
-those of the observe option ast stated in section 7 of <xref target="RFC7641"/>, because the server stores additional state over an extended period.</t>
+<t>A 2.06 (Imminent) response is subject to the same general security
+considerations as all CoAP responses as described in Section 11 of <xref target="RFC7252"/>.
+Specifically, the security considerations for the response code are closest to
+those of the Observe Option as stated in Section 7 of <xref target="RFC7641"/>, because the server stores additional state over an extended period.</t>
 
-<t>The payloads defined in the present specification are secured
-following the CoAP recommendations for the existing methods as
-specified in section 9 of <xref target="RFC7252"/>.  When additional security
-techniques are standardized for CoAP (e.g., Object Security), these
-are then also available for securing this additional response code.</t>
+<t>2.06 (Imminent) responses are secured
+following the recommendations for the existing CoAP response codes as
+specified in Section 9 of <xref target="RFC7252"/>.  When additional security
+techniques are standardized for CoAP (e.g., based on object security), these
+are then also available for securing the responses.</t>
 
     </section>
 
