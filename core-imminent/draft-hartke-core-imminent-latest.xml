@@ -4,6 +4,7 @@
   <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
+  <!ENTITY I-D.vanderstok-ace-coap-est SYSTEM "reference.I-D.vanderstok-ace-coap-est.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -53,7 +54,7 @@
     <abstract>
 
       <t>
-        TODO.
+        This document specifies the behavior of a CoAP server when the response to a request is not immediately available. A CoAP response code 2.06 is returned and a location may be returned where the result becomes available. CoAP response code 2.06 has the same purpose as http status code 202.
       </t>
 
     </abstract>
@@ -70,9 +71,16 @@
     <section title="Introduction">
 
       <t>
-        The Constrained Application Protocol (CoAP) <xref target="RFC7252"/>...
-        <vspace blankLines="4"/>
-      </t>
+        The Constrained Application Protocol (CoAP) <xref target="RFC7252"/> has no response code for a delayed return of request results. The need for such a response code is exemplified by requests which need a manual intervention to authorize their processing, or which need a long sequence of remote actions. The response code 2.06 is proposed. An example is provided by the "possibly long" authorization request specified in EST-coaps <xref target="I-D.vanderstok-ace-coap-est"/>.
+</t><t>
+This response code has the same purpose as http status code 202:
+</t><t>
+"The request has been accepted for processing, but the processing has not been completed. The request might or might not be eventually acted upon, and may be disallowed when processing occurs."
+</t><t>
+The response code 2.06 is not meant for overload cases which are better handled by for example response code 5.03.
+</t><t>
+The result of the a delayed request may be a simple response code or may involve the return of a payload. The server returns a location where the result can be found once the request processing is concluded.
+</t>
 
       <section title="Terminology">
 
@@ -123,13 +131,13 @@
 
       <t>
         A 2.06 (Imminent) response MAY contain a payload that represents the
-        progress of processing the original POST request or any other status
+        progress of processing the original request or any other status
         information. The content format of this representation is specified by
         the Content-Format Option.
       </t>
 
       <t>
-        A 2.06 (Imminent) response is cacheable, but not validatable. If it
+        A 2.06 (Imminent) response is cacheable, but cannot be validated. If it
         contains Location-* options, it invalidates any cached response for the
         resource at the specified location; otherwise, it invalidates any cached
         response for the target resource of the request.
@@ -186,7 +194,20 @@
 
     <section title="Security Considerations">
 
-      <t>TODO.</t>
+      <t>This section analyses the possible threats to the CoAP "imminent" response code extension. It is meant to inform protocol and application
+developers about the security limitations of the "imminent" response code as
+described in this document.</t>
+
+<t>The "imminent" is subject to the same general security
+considerations as all CoAP methods as described in Section 11 of <xref target="RFC7252"/>.
+Specifically, the security considerations for "imminent" are closest to
+those of the observe option ast stated in section 7 of <xref target="RFC7641"/>, because the server stores additional state over an extended period.</t>
+
+<t>The payloads defined in the present specification are secured
+following the CoAP recommendations for the existing methods as
+specified in section 9 of <xref target="RFC7252"/>.  When additional security
+techniques are standardized for CoAP (e.g., Object Security), these
+are then also available for securing this additional response code.</t>
 
     </section>
 
@@ -231,10 +252,10 @@
 
     </references>
 
-    <!--
     <references title="Informative References">
+     &I-D.vanderstok-ace-coap-est;
     </references>
-    -->
+
 
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
