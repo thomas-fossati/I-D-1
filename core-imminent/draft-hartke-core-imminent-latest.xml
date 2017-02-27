@@ -2,6 +2,7 @@
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC7231 SYSTEM "reference.RFC.7231.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
   <!ENTITY I-D.vanderstok-ace-coap-est SYSTEM "reference.I-D.vanderstok-ace-coap-est.xml">
@@ -54,7 +55,12 @@
     <abstract>
 
       <t>
-        This document specifies the behavior of a CoAP server when the response to a request is not immediately available. A CoAP response code 2.06 is returned and a location may be returned where the result becomes available. CoAP response code 2.06 has the same purpose as http status code 202.
+        This document proposes a new CoAP response code, 2.06 Imminent. A CoAP
+        server can use this response code to signal that it has accepted the
+        request but has not yet started processing it or that processing the
+        request will take longer than a client is typically willing to wait for
+        a response. A 2.06 response can include status information and indicate
+        a location where the result will become available.
       </t>
 
     </abstract>
@@ -71,16 +77,47 @@
     <section title="Introduction">
 
       <t>
-        The Constrained Application Protocol (CoAP) <xref target="RFC7252"/> has no response code for a delayed return of request results. The need for such a response code is exemplified by requests which need a manual intervention to authorize their processing, or which need a long sequence of remote actions. The response code 2.06 is proposed. An example is provided by the "possibly long" authorization request specified in EST-coaps <xref target="I-D.vanderstok-ace-coap-est"/>.
-</t><t>
-This response code has the same purpose as http status code 202:
-</t><t>
-"The request has been accepted for processing, but the processing has not been completed. The request might or might not be eventually acted upon, and may be disallowed when processing occurs."
-</t><t>
-The response code 2.06 is not meant for overload cases which are better handled by for example response code 5.03.
-</t><t>
-The result of the a delayed request may be a simple response code or may involve the return of a payload. The server returns a location where the result can be found once the request processing is concluded.
-</t>
+        The Constrained Application Protocol (CoAP) <xref target="RFC7252"/> is
+        a request/response protocol not unlike HTTP. CoAP defines no upper bound
+        for the time between a request and the resulting response. E.g., in CoAP
+        over UDP, a server is expected to return an empty Acknowledgement to the
+        client if it cannot provide a response right away, but there is no limit
+        on when the server should return the Separate Response.
+      </t>
+
+      <t>
+        In particular in the case of requests with long processing times, a CoAP
+        client faces the problem that it cannot easily determine how long it
+        should wait for the response and whether the CoAP server is even still
+        processing the request. Long processing times occur, for example, when
+        requests need manual intervention to authorize their processing, or when
+        they perform a long sequence of remote actions. An example is provided
+        by the "possibly long" authorization request specified in <xref
+        target="I-D.vanderstok-ace-coap-est">EST-coaps</xref>.
+      </t>
+
+      <t>
+        This document proposes a new CoAP response code, 2.06 Imminent. The
+        semantics of this response code are modelled after the <xref
+        target="RFC7231">HTTP</xref> 202 (Accepted) status code:
+        <list>
+          <t>
+            The 202 (Accepted) status code indicates that the request has been
+            accepted for processing, but the processing has not been completed.
+            The request might or might not eventually be acted upon, as it might
+            be disallowed when processing actually takes place. [...] The
+            representation sent with this response ought to describe the
+            request's current status and point to (or embed) a status monitor
+            that can provide the user with an estimate of when the request will
+            be fulfilled.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        The 2.06 (Imminent) response code is not meant for overload cases, which
+        are better handled by the 5.03 (Service Unavailable) response code.
+      </t>
 
       <section title="Terminology">
 
@@ -253,7 +290,10 @@ are then also available for securing this additional response code.</t>
     </references>
 
     <references title="Informative References">
-     &I-D.vanderstok-ace-coap-est;
+
+      &RFC7231;
+      &I-D.vanderstok-ace-coap-est;
+
     </references>
 
 
