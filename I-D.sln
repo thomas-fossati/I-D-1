@@ -50,12 +50,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "t2trg-data-hub", "t2trg-dat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core-e2e-security-reqs", "core-e2e-security-reqs", "{629040E5-8077-442C-B0EC-E3E8612A502C}"
 	ProjectSection(SolutionItems) = preProject
-		core-e2e-security-reqs\README.md = core-e2e-security-reqs\README.md
+		core-e2e-security-reqs\draft-hartke-core-e2e-security-reqs-00.xml = core-e2e-security-reqs\draft-hartke-core-e2e-security-reqs-00.xml
+		core-e2e-security-reqs\draft-hartke-core-e2e-security-reqs-01.xml = core-e2e-security-reqs\draft-hartke-core-e2e-security-reqs-01.xml
+		core-e2e-security-reqs\draft-hartke-core-e2e-security-reqs-02.xml = core-e2e-security-reqs\draft-hartke-core-e2e-security-reqs-02.xml
+		core-e2e-security-reqs\draft-hartke-core-e2e-security-reqs-latest.xml = core-e2e-security-reqs\draft-hartke-core-e2e-security-reqs-latest.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core-lighting", "core-lighting", "{CEE1C19F-0942-4A0C-8FEC-8B313496B74F}"
 	ProjectSection(SolutionItems) = preProject
 		core-lighting\draft-hartke-core-lighting-00.xml = core-lighting\draft-hartke-core-lighting-00.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core-pending", "core-pending", "{D2598C4A-DCD8-4D79-A4E0-49B39DBAAEBA}"
+	ProjectSection(SolutionItems) = preProject
+		core-pending\draft-hartke-core-pending-00.xml = core-pending\draft-hartke-core-pending-00.xml
+		core-pending\draft-hartke-core-pending-latest.xml = core-pending\draft-hartke-core-pending-latest.xml
 	EndProjectSection
 EndProject
 Global
