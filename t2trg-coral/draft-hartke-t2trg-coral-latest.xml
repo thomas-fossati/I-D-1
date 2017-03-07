@@ -170,8 +170,8 @@
         agent to construct a payload that is included with the request. For this
         purpose, a form indicates the acceptable content formats for the payload
         and can optionally embed a detailed description of the expected data,
-        for example, as a list of form fields. The syntax for such
-        a description is outside this document's scope.
+        for example, as a list of form fields. (The syntax for such
+        a description is outside this document's scope.)
       </t>
 
       <t>
@@ -297,7 +297,7 @@
         CoRAL defines a number of options that can be included in elements.
         Options are used to encode the relation type, the target resource URI
         and target attributes. Options are serialized in CBOR as a sequence of
-        unboxed pairs where each pair consists of a CoRAL option number and an
+        unwrapped pairs where each pair consists of a CoRAL option number and an
         option value. The pairs in a CoRAL element MUST be sorted such that the
         option numbers appear in ascending order.
       </t>
@@ -420,7 +420,7 @@
 
       <t>
         The semantics of the individual options are specified in the following
-        subsections.
+        sections.
       </t>
 
       <section title="Accept">
@@ -573,14 +573,14 @@
           In a link or literal, the option value of a Relation Option is either
           one of the link relation type IDs registered in the Link Relation
           Types registry (&gt;= 0) or one of the application-specific link
-          relation type IDs defined by the media type (&lt; 0).
+          relation type IDs defined by the CoRAL profile (&lt; 0).
         </t>
 
         <t>
           In a form, the option value of Relation Option is either one of the
           form relation type IDs registered in the Form Relation Types registry
           (&gt;= 0) or one of the application-specific form relation type IDs
-          defined by the media type (&lt; 0).
+          defined by the CoRAL profile (&lt; 0).
         </t>
 
       </section>
@@ -638,7 +638,7 @@
           element applies to all subsequent elements in a document until the
           next base element is encountered. The URI reference in a base element
           itself is resolved relative to the base URI of next lower precedence
-          (which is usually the "URI used to retrieve the entity" but may be
+          (which is usually the "URI used to retrieve the entity" but can be
           the "Base URI of the encapsulating entity").
         </t>
 
@@ -813,15 +813,15 @@
       </t>
 
       <t>
-        Profile URIs do not have to be registered in principle. The use of DNS
+        Profile URIs do not have to be registered. The use of DNS
         names in them allows decentralized creation of new profile identifiers
         without the risk of collisions. However, in CoAP the media type of a
-        representation is indicated by a small numeric identifier called the
-        content format, not by a string. A content format has no internal
+        representation is indicated by a small numeric identifier, called the
+        content format, not by a string of characters. A content format has no internal
         structure and indicates a media type including specific values for its
         parameters. For example, content format 0 indicates the media type
-        'text/plain; charset=UTF-8'. A media type 'text/plain;
-        charset=ISO-8859-1' would require a separate content format. Thus, for
+        'text/plain; charset=utf-8'. A media type 'text/plain;
+        charset=iso-8859-1' would require a separate content format. Therefore, for
         use with CoAP, each CoRAL profiles needs to register a new content
         format in the "CoAP Content-Formats" registry, specifying the
         'application/coral' media type and the profile URI as the value of the
@@ -932,7 +932,7 @@
               <vspace/>identity
             </t>
             <t hangText="ID:">
-              <vspace/>70
+              <vspace/>TBD
             </t>
             <t hangText="Reference:">
               <vspace/>&SELF;
@@ -1163,7 +1163,7 @@
             or the "local" namespace. The global namespace is indicated by a
             non-negative number and is made up of the link relation types
             registered with IANA. The local namespace is indicated by a negative
-            number and is defined by the media type of the CoRAL representation.
+            number and is defined by the CoRAL profile of the representation.
           </t>
 
           <t>
