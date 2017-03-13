@@ -1156,57 +1156,6 @@
 
         </section>
 
-        <section title="Namespaces">
-
-          <t>
-            The link relation type in a serialized link may be from the "global"
-            or the "local" namespace. The global namespace is indicated by a
-            non-negative number and is made up of the link relation types
-            registered with IANA. The local namespace is indicated by a negative
-            number and is defined by the CoRAL profile of the representation.
-          </t>
-
-          <t>
-            By default, CoRAL representations have the 'application/coral' media
-            type where the local namespace is empty. However, it is possible to
-            define a CoRAl profile, which is indicated by the 'profile'
-            parameter of the 'application/coral' media type. A profile can fill
-            the local namespace with application-specific link relation types.
-          </t>
-
-          <t>
-            For example, a media type 'application/coral;
-            profile="http://example.com/shop"' could define the following
-            set of local link relation types:
-          </t>
-
-          <texttable>
-            <ttcol>ID</ttcol>
-            <ttcol>Meaning</ttcol>
-
-            <c>-80</c>  <c>http://example.com/rels/order</c>
-            <c>-81</c>  <c>http://example.com/rels/basket</c>
-            <c>-82</c>  <c>http://example.com/rels/customer</c>
-          </texttable>
-
-          <t>
-            Similarly, a media type 'application/coral;
-            profile="http://xmlns.com/foaf/0.1"' could define the following
-            mapping from link relation type IDs to the <xref target="FOAF">FOAF
-            RDF model</xref>:
-          </t>
-
-          <texttable>
-            <ttcol>ID</ttcol>
-            <ttcol>Meaning</ttcol>
-
-            <c>-100</c>  <c>http://xmlns.com/foaf/0.1/name</c>
-            <c>-101</c>  <c>http://xmlns.com/foaf/0.1/age</c>
-            <c>-102</c>  <c>http://xmlns.com/foaf/0.1/homepage</c>
-          </texttable>
-
-        </section>
-
         <section title="Forms">
 
           <t>
