@@ -3,7 +3,6 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
   <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
-  <!ENTITY RFC5226 SYSTEM "reference.RFC.5226.xml">
   <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
   <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
   <!ENTITY RFC6906 SYSTEM "reference.RFC.6906.xml">
@@ -219,7 +218,7 @@
           <t>
             Finally, the agent sends the request and retrieves the response. The
             agent processes the enclosed representation, updates the browsing
-            context to the new resource, and can decide again what to do next.
+            context to the new resource, and again can decide what to do next.
           </t>
         </list>
       </t>
@@ -253,7 +252,7 @@
       </t>
 
       <t>
-        The top-level structure of CoRAL is a CoRAL document. A CoRAL
+        The top-level structure of CoRAL is called a CoRAL document. A CoRAL
         document consists of a sequence of links, forms, literals and bases,
         which are collectively called elements. All elements consist of a number
         indicating the element type, a "href type" that indicates how
@@ -962,7 +961,6 @@
 
       &RFC2119;
       &RFC3986;
-      &RFC5226;
       &RFC5988;
       &RFC6906;
       &RFC7049;
@@ -1348,7 +1346,8 @@
 
         <t>
           <xref target="table-link-comparison"/> shows a comparison of sizes of
-          the example encoded in CoRAL and a number of Link Format variants.
+          the example encoded in CoRAL and a number of Link Format variants
+          <xref target="I-D.ietf-core-links-json"/>.
         </t>
 
         <texttable align="center" anchor="table-link-comparison" title="Size Comparison">
@@ -1366,7 +1365,7 @@
       <section title="CoRE Interfaces">
 
         <t>
-          The example in this section is based on an example on page 10 of <xref
+          The example in this section is based on an example in figure 1 of <xref
           target="I-D.ietf-core-interfaces"/>:
         </t>
 
