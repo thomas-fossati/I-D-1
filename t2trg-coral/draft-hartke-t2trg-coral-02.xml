@@ -1,0 +1,1461 @@
+<?xml version="1.0" encoding="us-ascii"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
+  <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
+  <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
+  <!ENTITY RFC6906 SYSTEM "reference.RFC.6906.xml">
+  <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
+  <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
+  <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY I-D.greevenbosch-appsawg-cbor-cddl SYSTEM "reference.I-D.greevenbosch-appsawg-cbor-cddl.xml">
+  <!ENTITY I-D.hartke-core-apps SYSTEM "reference.I-D.hartke-core-apps.xml">
+  <!ENTITY I-D.hartke-core-lighting SYSTEM "reference.I-D.hartke-core-lighting.xml">
+  <!ENTITY I-D.ietf-core-interfaces SYSTEM "reference.I-D.ietf-core-interfaces.xml">
+  <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
+  <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
+  <!ENTITY W3C.REC-rdf11-concepts-20140225 SYSTEM "reference.W3C.REC-rdf11-concepts-20140225.xml">
+  <!ENTITY W3C.REC-turtle-20140225 SYSTEM "reference.W3C.REC-turtle-20140225.xml">
+  <!ENTITY W3C.REC-webarch-20041215 SYSTEM "reference.W3C.REC-webarch-20041215.xml">
+  <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "reference.W3C.REC-xml-names-20091208.xml">
+  <!ENTITY SELF "[RFCXXXX]">
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+
+<?rfc compact="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="2"?>
+
+<rfc category="exp" docName="draft-hartke-t2trg-coral-02" ipr="trust200902">
+
+  <front>
+
+    <title abbrev="CoRAL">The Constrained RESTful Application Language (CoRAL)</title>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>D-28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
+      </address>
+    </author>
+
+    <date />
+
+    <workgroup>Thing-to-Thing Research Group</workgroup>
+
+    <abstract>
+
+      <t>
+        The Constrained RESTful Application Language (CoRAL) is a compact,
+        binary representation format for building RESTful, hypermedia-driven
+        applications that run in constrained environments.
+      </t>
+
+    </abstract>
+
+  </front>
+
+  <middle>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Introduction">
+
+      <t>
+        Constrained RESTful Environments (CoRE) realize the <xref
+        target="W3C.REC-webarch-20041215">Web architecture</xref> in a suitable
+        form for <xref target="RFC7228">constrained nodes and networks</xref>.
+      </t>
+
+      <t>
+        In the Web, hypertext documents contain links and forms that allow a
+        user to navigate between resources and submit information to a server
+        for processing. By annotating these elements with machine-readable <xref
+        target="RFC5988">link relation types</xref> and form relation types, it
+        is possible to extend this interaction model to machine-to-machine
+        communication.
+      </t>
+
+      <t>
+        This document describes the Constrained RESTful Application Language
+        (CoRAL), a compact serialization format for Web links and forms that is
+        based on <xref target="RFC7049">Concise Binary Object Representation
+        (CBOR)</xref> and that aligns closely with the <xref
+        target="RFC7252">Constrained Application Protocol (CoAP)</xref>.
+      </t>
+
+      <section title="Terminology">
+
+        <t>
+          Readers are expected to be familiar with the terms and concepts
+          described in <xref target="RFC5988"/> and <xref
+          target="I-D.hartke-core-apps"/>.
+        </t>
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+          "OPTIONAL" in this document are to be interpreted as described in
+          <xref target="RFC2119"/>.
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Model">
+
+      <t>
+        CoRAL is designed for building hypermedia-driven Web applications in
+        which software agents navigate between resources by following links and
+        interact with resources by submitting forms.
+      </t>
+
+      <t>
+        Each agent maintains a "browsing context", an environment in which
+        resource representations are processed. (In the traditional Web, the
+        browsing context corresponds to a tab or window in a Web browser.) A
+        browsing context has a session history, which lists the resources that
+        the browsing context has visited, is visiting, or will visit. At any
+        time, one resource in a browsing context is designated the "current"
+        resource. Following a link or submitting a form causes the browsing
+        context to navigate to a new resource.
+      </t>
+
+      <t>
+        A link indicates a relationship between two resources, the link context
+        and the link target, and affords the navigation between these. The
+        semantics of the relationship are identified by a link relation type,
+        which in CoRAL can be IANA-registered or application-specific. To
+        minimize round-trips, a link in CoRAL can optionally embed a (complete
+        or partial) representation of the link target. Furthermore, a link
+        target can be an anonymous resource in CoRAL; in this case, the link
+        turns into a "literal" which consists only of a link relation type and a
+        representation.
+      </t>
+
+      <t>
+        A form similarly indicates a relationship between two resources, the
+        form context and the form target, and affords the interaction with the
+        context through the submission of the form to the target. In many cases,
+        the target of a form is the same resource as the context, but this is
+        not required. The semantics of a form are identified by a form relation
+        type, which again in CoRAL can be IANA-registered or
+        application-specific.
+      </t>
+
+      <t>
+        The submission of a form typically requires the
+        agent to construct a payload that is included with the request. For this
+        purpose, a form indicates the acceptable content formats for the payload
+        and can optionally embed a detailed description of the expected data,
+        for example, as a list of form fields. (The syntax for such
+        a description is outside this document's scope.)
+      </t>
+
+      <t>
+        The CoRAL interaction model is as follows:
+        <list style="numbers">
+          <t>
+            The first step for an agent is to decide what to do next, i.e.,
+            which type of link to follow or form to submit, based on the link
+            relation types and form relation types it understands.
+          </t>
+          <t>
+            The agent finds the link(s) or form(s) with the given relation type
+            in the current resource. This may yield one or more candidates from
+            which the agent must select the most appropriate one. The set of
+            candidates may be empty if the transition is not allowed, for
+            example, when the agent is unauthorized. The format of links and
+            forms in CoRAL is specified in <xref target="format"/>.
+          </t>
+          <t>
+            The agent selects one of the candidates based on the metadata
+            associated with the link or form. Metadata can include the content
+            format of the target resource representation, the URI scheme, the
+            request method and other attributes that describe the target.
+            Metadata is encoded in CoRAL as CoAP-style options, which are
+            specified in <xref target="options"/>.
+          </t>
+          <t>
+            The agent resolves the URI reference in the link or form to its
+            absolute form in order to obtain the "request URI". CoRAL encodes
+            URI references like CoAP as a sequence of options, which
+            significantly simplifies the implementation of URI processors
+            compared to full RFC 3986 support. The process of reference
+            resolution is specified in <xref target="resolution"/>.
+          </t>
+          <t>
+            The agent constructs a new request with the request URI. If the
+            agent follows a link, the request method is GET. If the agent
+            submits a form, the request method is indicated by an option. The
+            agent SHOULD set request parameters according to the link/form
+            attributes (e.g., set the CoAP Accept option when the content format
+            of the target resource is indicated). In the case of a form, the
+            agent also needs to construct a request payload that matches the
+            specifications of the form.
+          </t>
+          <t>
+            Finally, the agent sends the request and retrieves the response. The
+            agent processes the enclosed representation, updates the browsing
+            context to the new resource, and again can decide what to do next.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        An agent can additionally navigate a browsing context by traversing the
+        browsing context's session history. The session history consists of a
+        flat list of session history entries, which consist of a URI and may
+        have other information associated with them. Session history entries are
+        added to the session history as the agent navigates from resource to
+        resource. An agent can traverse the session history by updating the
+        browsing context to the resource for that entry.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Format" anchor="format">
+
+      <t>
+        CoRAL can be used as a standalone representation format or embedded
+        in representations in other formats. As a standalone format, CoRAL
+        representations have the media type 'application/coral'. When CoRAL is
+        embedded, it is typically embedded in CBOR-based representation formats,
+        but other representation formats can embed CoRAL as well. The CoRAL
+        format is in all cases the same.
+      </t>
+
+      <t>
+        The top-level structure of CoRAL is called a CoRAL document. A CoRAL
+        document consists of a sequence of links, forms, literals and bases,
+        which are collectively called elements. All elements consist of a number
+        indicating the element type, a "href type" that indicates how
+        CoRAL-encoded URI references are to be interpreted in reference
+        resolution, a sequence of zero or more options and, optionally, a body.
+      </t>
+
+      <t>
+        Link, form and literal elements come in two flavors: a "fat" format that
+        includes all the items listed above, and a "tiny" format. The tiny
+        formats provide a concise way to express elements that match certain
+        patterns, which are specified below. Base elements are always in the
+        "fat" format. They encode a base URI for reference resolution and apply
+        to all subsequent elements until the next base element is encountered.
+      </t>
+
+      <t>
+        In the Web, link relation types are identified by strings, such as
+        'stylesheet', 'terms-of-service' or 'item'. In order to minimize the
+        overhead of using these relation types in constrained environments,
+        <xref target="I-D.hartke-core-apps"/> extends the IANA Link Relation
+        Types registry with a numeric identifier for each type. CoRAL uses these
+        numeric identifiers instead of the textual names. The same optimization
+        is applied to form relation types, CoAP content formats and CoAP request
+        methods.
+      </t>
+
+      <t>
+        Applications MAY use negative numbers to indicate application-specific
+        link relation types and form relation types, which do not need to be
+        IANA-registered. The mapping from numbers to textual names needs to be
+        provided by a CoRAL profile, which is indicated by the optional
+        'profile' parameter of the 'application/coral' media type (see <xref
+        target="profiles"/>). The 'application/coral' media type without a
+        'profile' parameter does not define any application-specific values. A
+        representation format embedding CoRAL documents MAY define
+        application-specific values for the CoRAL documents as well.
+      </t>
+
+      <t>
+        CoRAL defines a number of options that can be included in elements.
+        Options are used to encode the relation type, the target resource URI
+        and target attributes. Options are serialized in CBOR as a sequence of
+        unwrapped pairs where each pair consists of a CoRAL option number and an
+        option value. The pairs in a CoRAL element MUST be sorted such that the
+        option numbers appear in ascending order.
+      </t>
+
+      <t>
+        Using the notation of <xref
+        target="I-D.greevenbosch-appsawg-cbor-cddl"/>, the CoRAL data format can
+        be expressed as follows:
+      </t>
+
+<figure><artwork type="cddl"><![CDATA[
+   document      = [*element]
+   element       = tiny-link / tiny-literal / tiny-form
+                 / fat-link  / fat-literal  / fat-form
+                 / base
+
+   tiny-link     = [1, href-type, relation]
+   tiny-literal  = [2, href-type, relation, format, body]
+   tiny-form     = [3, href-type, relation, accept]
+   base          = [4, href-type, options]
+   fat-link      = [5, href-type, options, ?body]
+   fat-literal   = [6, href-type, options, body]
+   fat-form      = [7, href-type, options, ?body]
+
+   href-type     = &(append-relation: 0,
+                     absolute-path: 1,
+                     append-path: 2,
+                     relative-path: 3)
+
+   relation      = int
+   format        = uint
+   accept        = uint
+   options       = [*(option-number, option-value)]
+   option-number = uint
+   option-value  = uint / int / text / bytes
+   body          = bytes
+]]></artwork></figure>
+
+      <t>
+        The tiny formats expand as follows:
+      </t>
+
+<figure><artwork align="center"><![CDATA[
+[1, H, R]         ->   [5, H, [1, R]]
+[2, H, R, F, B]   ->   [6, H, [1, R, 4, F], B]
+[3, H, R, A]      ->   [7, H, [1, R, 3, A]]
+]]></artwork></figure>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Options" anchor="options">
+
+      <t>
+        <xref target="table-options"/> summarizes the CoRAL options defined in
+        this document.
+      </t>
+
+      <texttable title="Options" anchor="table-options">
+        <ttcol align="right">No.</ttcol>
+        <ttcol>R</ttcol>
+        <ttcol>Name</ttcol>
+        <ttcol>Format</ttcol>
+        <ttcol>Length</ttcol>
+        <ttcol>Default</ttcol>
+
+        <c>1</c>   <c>x</c>  <c>Relation</c>        <c>int</c>     <c></c>       <c>(none)</c>
+        <c>2</c>   <c></c>   <c>Method</c>          <c>uint</c>    <c></c>       <c>2 (POST)</c>
+        <c>3</c>   <c>x</c>  <c>Accept</c>          <c>uint</c>    <c></c>       <c>(none)</c>
+        <c>4</c>   <c>x</c>  <c>Format</c>          <c>uint</c>    <c></c>       <c>(none)</c>
+        <c>5</c>   <c></c>   <c>Href.Scheme</c>     <c>text</c>    <c>1-255</c>  <c>(none)</c>
+        <c>6</c>   <c></c>   <c>Href.Host.Name</c>  <c>text</c>    <c>1-255</c>  <c>(none)</c>
+        <c>7</c>   <c></c>   <c>Href.Host.IPv4</c>  <c>bytes</c>   <c>4</c>      <c>(none)</c>
+        <c>8</c>   <c></c>   <c>Href.Host.IPv6</c>  <c>bytes</c>   <c>16</c>     <c>(none)</c>
+        <c>9</c>   <c></c>   <c>Href.Port</c>       <c>uint</c>    <c></c>       <c>(see below)</c>
+        <c>10</c>  <c>x</c>  <c>Href.Path</c>       <c>text</c>    <c>0-255</c>  <c>(none)</c>
+        <c>11</c>  <c>x</c>  <c>Href.Query</c>      <c>text</c>    <c>0-255</c>  <c>(none)</c>
+        <c>12</c>  <c></c>   <c>Href.Fragment</c>   <c>text</c>    <c>0-255</c>  <c>(none)</c>
+        <c>13</c>  <c></c>   <c>Title</c>           <c>text</c>    <c>0-255</c>  <c>(none)</c>
+        <c>14</c>  <c></c>   <c>Updatable</c>       <c>bool</c>    <c></c>       <c>false</c>
+        <c>15</c>  <c></c>   <c>Deletable</c>       <c>bool</c>    <c></c>       <c>false</c>
+      </texttable>
+
+      <t>
+        The option properties are defined as follows:
+        <list style="hanging">
+          <t hangText="Number:">
+            An option is identified by an option number.
+          </t>
+          <t hangText="Repeatable (R):">
+            An option that is repeatable MAY be included one or more times in an
+            element. An option that is not repeatable MUST NOT be included more
+            than once. If an agent encounters an option with more occurrences
+            than the option is defined for, each extra occurrence MUST be
+            ignored.
+          </t>
+          <t hangText="Format:">
+            Option values are defined to have a certain format, which is the
+            CBOR encoding of the specified type.
+          </t>
+          <t hangText="Length:">
+            Option values with types "text" and "bytes" are defined to have a
+            specific length, often in the form of an upper and lower bound. The
+            length of an option value MUST NOT be outside the defined range. If
+            an agent encounters an option with a length outside the defined
+            range, that option MUST be ignored.
+          </t>
+          <t hangText="Default Value:">
+            Options can be defined to have a default value. If the value of an
+            option is intended to be this default value, the option SHOULD NOT
+            be included in the element. If the option is not present, the
+            default value MUST be assumed.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        The semantics of the individual options are specified in the following
+        sections.
+      </t>
+
+      <section title="Accept">
+
+        <t>
+          The Accept Option indicates the acceptable content formats for the
+          representation included in a form submission.
+          The option value of an Accept Option is one of the content format IDs
+          registered in the CoAP Content-Formats registry.
+          If a form does not include an Accept Option, the service accepts any
+          content format.
+        </t>
+
+      </section>
+
+      <section title="Deletable">
+
+        <t>
+          The Deletable Option, when present in a link, defines a form that can
+          be used to delete the link target. The form relation type of that form
+          is 'delete', the context and target of the form are identical to the
+          target of the link, the submission method is DELETE and no
+          representation must be submitted.
+        </t>
+
+      </section>
+
+      <section title="Format">
+
+        <t>
+          The Format Option, when present in a link or a form, provides a hint
+          indicating what the content format of the payload of the CoAP response
+          should be when following the link or submitting the form. Note that
+          this is only a hint; it does not override the Content-Format Option
+          included in the CoAP response. If the Format Option occurs more than
+          once, an agent SHOULD set the Accept Option in the CoAP request
+          message to request a particular content format.
+        </t>
+
+        <t>
+          The Format Option is REQUIRED if a link embeds a representation in the
+          link body. The Format Option is also REQUIRED in a literal. In both
+          cases, the first occurrence of the option indicates the content format
+          of the embedded representation; any additional occurrences indicate
+          available alternative content formats.
+        </t>
+
+        <t>
+          The option value of a Format Option is one of the content format IDs
+          registered in the CoAP Content-Formats registry.
+        </t>
+
+      </section>
+
+      <section title="Href.*">
+
+        <t>
+          The Href.Scheme, Href.Host.Name, Href.Host.IPv4, Href.IPv6, Href.Port,
+          Href.Path, Href.Query and Href.Fragment Options are used to specify
+          the target resource URI of a link or form. They hold the following
+          values:
+          <list style="symbols">
+            <t>
+              the Href.Scheme Option specifies the URI scheme name,
+            </t>
+            <t>
+              the Href.Host.Name Option specifies the host as a registered name,
+            </t>
+            <t>
+              the Href.Host.IPv4 Option specifies the host as a 32-bit IPv4
+              address,
+            </t>
+            <t>
+              the Href.Host.IPv6 Option specifies the host as a 128-bit IPv6
+              address,
+            </t>
+            <t>
+              the Href.Port Option specifies the port number,
+            </t>
+            <t>
+              each Href.Path Option specifies one segment of the path,
+            </t>
+            <t>
+              each Href.Query Option specifies one argument of the query, and
+            </t>
+            <t>
+              the Href.Fragment Option specifies the fragment identifier.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          The Href.Host.Name, Href.Host.IPv4 and Href.Host.IPv6 options are
+          mutually exclusive.
+        </t>
+
+        <t>
+          The default value of the Href.Port Option is the default port for the
+          URI scheme.
+        </t>
+
+        <t>
+          <xref target="table-href"/> lists the permitted Href.* options by Href
+          Type. A 'yes' indicates that an option of this type MAY be present; a
+          'no' indicates that an option of this type MUST NOT be present. The
+          resolution of a sequence of Href.* options against a base URI is
+          specified in <xref target="resolution"/>.
+        </t>
+
+        <texttable title="Permitted Href.* Options by Href Type" anchor="table-href">
+          <ttcol align="left"></ttcol>
+          <ttcol align="center">absolute- path</ttcol>
+          <ttcol align="center">relative- path</ttcol>
+          <ttcol align="center">append- path</ttcol>
+          <ttcol align="center">append- relation</ttcol>
+
+          <c>Href.Scheme</c>    <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Host.Name</c> <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Host.IPv4</c> <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Host.IPv6</c> <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Port</c>      <c>yes</c> <c>no</c>  <c>no</c>  <c>no</c>
+          <c>Href.Path</c>      <c>yes</c> <c>yes</c> <c>yes</c> <c>no</c>
+          <c>Href.Query</c>     <c>yes</c> <c>yes</c> <c>yes</c> <c>no</c>
+          <c>Href.Fragment</c>  <c>yes</c> <c>yes</c> <c>yes</c> <c>no</c>
+        </texttable>
+
+      </section>
+
+      <section title="Method">
+
+        <t>
+          The Method Option, when present in a form, indicates the CoAP method
+          to use for form submission. The option value is one of the CoAP method
+          codes registered in the CoAP Method Codes registry. The option value
+          defaults to the POST method when the Method Option is not present in a
+          form.
+        </t>
+
+      </section>
+
+      <section title="Relation">
+
+        <t>
+          The Relation Option indicates the link relation type of a link or
+          literal and the form relation type of a form. At least one Relation
+          Option is REQUIRED in each link, literal and form element.
+        </t>
+
+        <t>
+          In a link or literal, the option value of a Relation Option is either
+          one of the link relation type IDs registered in the Link Relation
+          Types registry (&gt;= 0) or one of the application-specific link
+          relation type IDs defined by the CoRAL profile (&lt; 0).
+        </t>
+
+        <t>
+          In a form, the option value of Relation Option is either one of the
+          form relation type IDs registered in the Form Relation Types registry
+          (&gt;= 0) or one of the application-specific form relation type IDs
+          defined by the CoRAL profile (&lt; 0).
+        </t>
+
+      </section>
+
+      <section title="Title">
+
+        <t>
+          The Title Option, when present, is used to label the target of a link
+          such that it can be used as a human-readable identifier (e.g., a menu
+          entry).
+        </t>
+
+      </section>
+
+      <section title="Updatable">
+
+        <t>
+          The Updatable Option, when present in a link, defines a form that can
+          be used to update the link target. The form relation type of that form
+          is 'update', the context and target of the form are identical to the
+          target of the link, the submission method is PUT and the content
+          format of the submitted representation must be one of the formats
+          indicated by the Format Option in the link.
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Reference Resolution" anchor="resolution">
+
+      <t>
+        This section defines the process of resolving a URI reference within a
+        link or form to an absolute URI suitable for inclusion in a CoAP
+        request.
+      </t>
+
+      <section title="Establish a Base URI">
+
+        <t>
+          URI references can be relative and thus are only usable when a base
+          URI is known. This means that a base URI must be established before
+          the use of all URI references that might be relative.
+        </t>
+
+        <t>
+          The base URI of a reference in a link or form is established as
+          specified in Section 5.1 of <xref target="RFC3986"/>. CoRAL supports a
+          "Base URI Embedded in Content" in the form of base elements. A base
+          element applies to all subsequent elements in a document until the
+          next base element is encountered. The URI reference in a base element
+          itself is resolved relative to the base URI of next lower precedence
+          (which is usually the "URI used to retrieve the entity" but can be
+          the "Base URI of the encapsulating entity").
+        </t>
+
+      </section>
+
+      <section title="Transform References">
+
+        <t>
+          The following pseudocode describes an algorithm for transforming a URI
+          reference R into its target URI T using the base URI B, the href type
+          H, and the link or form relation type S. The URI reference and base
+          URI are assumed to be pre-parsed into a sequence of Href.* options;
+          the result is returned as a sequence of Href.* options as well.
+        </t>
+
+<figure><artwork><![CDATA[
+   if (R starts with Href.Scheme) then
+      T = R
+   elif (R starts with Href.Host.*) then
+      T = [ (k, v) | (k, v) <- B, k == Href.Scheme ] ++
+          [ (k, v) | (k, v) <- R, k >  Href.Scheme ]
+   elif (R starts with Href.Port) then
+      T = [ (k, v) | (k, v) <- B, k <  Href.Port ] ++
+          [ (k, v) | (k, v) <- R, k >= Href.Port ]
+   elif (H is append-relation) then
+      T = [ (k, v) | (k, v) <- B, k <= Href.Path ] ++
+          [ (Href.Path, (hex S)) ]
+   elif (H is append-path) then
+      T = [ (k, v) | (k, v) <- B, k <= Href.Path ] ++
+          [ (k, v) | (k, v) <- R, k >= Href.Path ]
+   elif (H is relative-path) then
+      T = [ (k, v) | (k, v) <- B, k <  Href.Path ] ++
+    (init [ (k, v) | (k, v) <- B, k == Href.Path ]) ++
+          [ (k, v) | (k, v) <- R, k >= Href.Path ]
+   elif (H is absolute-path) then
+      T = [ (k, v) | (k, v) <- B, k <  Href.Path ] ++
+          [ (k, v) | (k, v) <- R, k >= Href.Path ]
+   endif
+]]></artwork></figure>
+
+        <t>
+          The "init" function returns all the elements of the input list except
+          the last one. For example, (init [1, 2, 3]) returns [1, 2] and (init
+          []) returns [].
+        </t>
+
+        <t>
+          The "hex" function returns a hexadecimal representation of the input
+          number. For example, (hex -421) returns "-1A5" and (hex 0) returns
+          "0".
+        </t>
+
+      </section>
+
+      <section title="Remove Dot Segments">
+
+        <t>
+          After transforming a the URI reference into its target URI, the
+          special path segments "." and ".." need to be removed. Although there
+          are many ways to accomplish this removal process, we describe a simple
+          method using two string buffers.
+          <list style="numbers">
+            <t>
+              The input buffer is initialized with the sequence of path segments
+              and the output buffer is initialized to the empty sequence.
+            </t>
+            <t>
+              While the input buffer is not empty, loop as follows:
+              <list style="symbols">
+                <t>
+                  If the input buffer begins with a "." path segment, then
+                  remove this segment from the input buffer; otherwise,
+                </t>
+                <t>
+                  if the input buffer begins with a ".." path segment, then
+                  remove this segment from the input buffer and and remove the
+                  last segment (if any) from the output buffer; otherwise,
+                </t>
+                <t>
+                  move the first path segment in the input buffer to the end of
+                  the output buffer.
+                </t>
+              </list>
+            </t>
+            <t>
+              Finally, the sequence of path segments in the target URI is
+              replaced by the sequence of path segments in the output buffer.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Profiles" anchor="profiles">
+
+      <t>
+        Profiles provide an easy way to extend CoRAL with application-specific
+        link relation types and form relation types.
+      </t>
+
+      <t>
+        Application-specific link relation types and form relation types are
+        encoded in CoRAL as negative numbers. The meaning of these numbers is
+        defined by the profile, which maps them to extension link and form
+        relation types. (An extension relation type is a <xref
+        target="RFC3986">URI</xref> that uniquely identifies the relation type;
+        see Section 4.2 of <xref target="RFC5988"/>.)
+        For example, a CoRAL profile for online shops could define the following
+        set of application-specific link relation types:
+      </t>
+
+      <texttable anchor="profile-1" title="Example profile for online shops">
+        <ttcol>ID</ttcol>
+        <ttcol>Link Relation Type</ttcol>
+
+        <c>-80</c> <c>http://example.com/rels/order</c>
+        <c>-81</c> <c>http://example.com/rels/basket</c>
+        <c>-82</c> <c>http://example.com/rels/customer</c>
+      </texttable>
+
+      <t>
+        A good source for existing extension link relation types are <xref
+        target="W3C.REC-rdf11-concepts-20140225">RDF predicates</xref>. An RDF
+        statement says that some relationship, indicated by a predicate, holds
+        between two resources. Link relation types and RDF predicates can
+        therefore be used interchangeably in many cases.
+        For example, a CoRAL profile could define the following mapping from
+        link relation type numbers to the <xref target="FOAF">FOAF
+        vocabulary</xref>:
+      </t>
+
+      <texttable anchor="profile-2" title="Example profile for the FOAF vocabulary">
+        <ttcol>ID</ttcol>
+        <ttcol>RDF Predicate</ttcol>
+
+        <c>-100</c> <c>http://xmlns.com/foaf/0.1/name</c>
+        <c>-101</c> <c>http://xmlns.com/foaf/0.1/age</c>
+        <c>-102</c> <c>http://xmlns.com/foaf/0.1/homepage</c>
+      </texttable>
+
+      <t>
+        CoRAL profiles are identified by a <xref target="RFC3986">URI</xref> and
+        are indicated by the 'profile' parameter of the 'application/coral'
+        media type, following the recommendations of <xref target="RFC6906"/>,
+        Section 3.1. For example, the FOAF profile above could use the media
+        type 'application/coral; profile="http://xmlns.com/foaf/0.1/"'.
+      </t>
+
+      <t>
+        The profile URI serves only as an identifier, similar to an <xref
+        target="W3C.REC-xml-names-20091208">XML namespace URI</xref>. That is,
+        the profile URI does not necessarily have to identify a dereferencable
+        resource (or even use a dereferencable URI scheme). It is possible,
+        though, to use a dereferencable URI and serve a representation that
+        provides information about the profile in a human- or machine-readable
+        way. (The format of such a representation is outside the scope of this
+        document.)
+      </t>
+
+      <t>
+        For simplicity, a CoRAL document can use only at most one profile at the
+        same time. The 'profile' parameter of the 'application/coral' media type
+        contains a single profile URI, not a whitespace-separated list of
+        profile URIs as recommended by <xref target="RFC6906"/>.
+      </t>
+
+      <t>
+        Profile URIs do not have to be registered. The use of DNS
+        names in them allows decentralized creation of new profile identifiers
+        without the risk of collisions. However, in CoAP the media type of a
+        representation is indicated by a small numeric identifier, called the
+        content format, not by a string of characters. A content format has no internal
+        structure and indicates a media type including specific values for its
+        parameters. For example, content format 0 indicates the media type
+        'text/plain; charset=utf-8'. A media type 'text/plain;
+        charset=iso-8859-1' would require a separate content format. Therefore, for
+        use with CoAP, each CoRAL profiles needs to register a new content
+        format in the "CoAP Content-Formats" registry, specifying the
+        'application/coral' media type and the profile URI as the value of the
+        'profile' parameter.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Security Considerations" anchor="security">
+
+      <t>
+        TODO.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="IANA Considerations">
+
+      <section title="Media Type">
+
+        <t>
+          This document registers the media type 'application/coral' in the
+          Media Types Registry.
+          <list style="hanging">
+            <t hangText="Type name:">
+              <vspace/>application
+            </t>
+            <t hangText="Subtype name:">
+              <vspace/>coral
+            </t>
+            <t hangText="Required parameters:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Optional parameters:">
+              <list style="hanging">
+                <t hangText="profile">
+                  <vspace/>See <xref target="profiles"/> of &SELF;.
+                </t>
+              </list>
+            </t>
+            <t hangText="Encoding considerations:">
+              <vspace/>CoRAL is a binary encoding.
+            </t>
+            <t hangText="Security considerations:">
+              <vspace/>See <xref target="security"/> of &SELF;.
+            </t>
+            <t hangText="Interoperability considerations:">
+              <vspace/>There are no known interoperability issues.
+            </t>
+            <t hangText="Published specification:">
+              <vspace/>&SELF;
+            </t>
+            <t hangText="Applications that use this media type:">
+              <vspace/>Hypermedia-driven Web applications that run on
+              constrained nodes and networks.
+            </t>
+            <t hangText="Fragment identifier considerations:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Additional information:">
+              <list style="hanging">
+                <t hangText="Deprecated alias names for this type:">N/A</t>
+                <t hangText="Magic number(s):">N/A</t>
+                <t hangText="File extension(s):">.coral</t>
+                <t hangText="Macintosh file type code(s):">N/A</t>
+              </list>
+            </t>
+            <t hangText="Person &amp; email address to contact for further information:">
+              <vspace/>See "Author's Address" section of &SELF;.
+            </t>
+            <t hangText="Intended usage:">
+              <vspace/>COMMON
+            </t>
+            <t hangText="Restrictions on usage:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Author:">
+              <vspace/>See "Author's Address" section of &SELF;.
+            </t>
+            <t hangText="Change controller:">
+              <vspace/>IESG
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Content Format">
+
+        <t>
+          This document registers a content format for the 'application/coral'
+          media type in the CoAP Content-Formats Registry.
+          <list style="hanging">
+            <t hangText="Media type:">
+              <vspace/>application/coral
+            </t>
+            <t hangText="Content coding:">
+              <vspace/>identity
+            </t>
+            <t hangText="ID:">
+              <vspace/>TBD
+            </t>
+            <t hangText="Reference:">
+              <vspace/>&SELF;
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC2119;
+      &RFC3986;
+      &RFC5988;
+      &RFC6906;
+      &RFC7049;
+      &RFC7252;
+
+    </references>
+
+    <references title="Informative References">
+
+      &RFC6690;
+      &RFC7228;
+      &I-D.greevenbosch-appsawg-cbor-cddl;
+      &I-D.hartke-core-apps;
+      &I-D.hartke-core-lighting;
+      &I-D.ietf-core-interfaces;
+      &I-D.ietf-core-links-json;
+      &I-D.kelly-json-hal;
+      &W3C.REC-rdf11-concepts-20140225;
+      &W3C.REC-turtle-20140225;
+      &W3C.REC-webarch-20041215;
+      &W3C.REC-xml-names-20091208;
+
+      <reference anchor="FOAF" target="http://xmlns.com/foaf/spec/20140114.html">
+        <front>
+          <title>FOAF Vocabulary Specification 0.99</title>
+          <author initials="D." surname="Brickley" fullname="Dan Brickley"/>
+          <author initials="L." surname="Miller" fullname="Libby Miller"/>
+          <date month="January" day="14" year="2014"/>
+        </front>
+      </reference>
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Examples">
+
+      <section title="Overview">
+
+        <section title="Links">
+
+          <t>
+            At its core, CoRAL is just yet another serialization format for Web
+            links. For example, the following Web link (in RFC 5988 syntax):
+          </t>
+
+<figure><artwork><![CDATA[
+   <coap://example.com/info/tos>;rel=terms-of-service;type=text/plain
+]]></artwork></figure>
+
+          <t>
+            can be serialized in CoRAL as the following CBOR data item (in CBOR
+            extended diagnostic format; text enclosed in forward slashes are
+            comments):
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       1,                     / absolute-path                       /
+       [  1, 70,              /  relation       = terms-of-service  /
+          4, 0,               /  format         = text\plain        /
+          5, "coap",          /  href.scheme    = "coap"            /
+          6, "example.com",   /  href.host.name = "example.com"     /
+         10, "info",          /  href.path      = "info"            /
+         10, "tos" ] ] ]      /  href.path      = "tos"             /
+]]></artwork></figure>
+
+          <t>
+            Multiple links are serialized as items of the top-level array:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 26,              /  relation  = first                  /
+          4, 0,               /  format    = text\plain             /
+         10, "page1" ] ],     /  href.path = "page1"                /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 55,              /  relation  = previous               /
+          4, 0,               /  format    = text\plain             /
+         10, "page6" ] ],     /  href.path = "page6"                /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 41,              /  relation  = next                   /
+          4, 0,               /  format    = text\plain             /
+         10, "page8" ] ],     /  href.path = "page8"                /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 34,              /  relation  = last                   /
+          4, 0,               /  format    = text\plain             /
+         10, "page42" ] ] ]   /  href.path = "page42"               /
+]]></artwork></figure>
+
+          <t>
+            The Format Option, when present, is a hint indicating what the CoAP
+            content format of the result of dereferencing the link should be. If
+            more than one format is available, the Format Option can be
+            repeated:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 33,              /  relation  = item                   /
+          4, 47,              /  format    = application\exi        /
+          4, 50,              /  format    = application\json       /
+          4, 60,              /  format    = application\cbor       /
+         10, "item1" ] ] ]    /  href.path = "item1"                /
+]]></artwork></figure>
+
+        </section>
+
+        <section title="Embedding">
+
+          <t>
+            If a representation links to many resources, it may be inefficient
+            to retrieve a representation of each link target individually. For
+            this reason, CoRAL supports the embedding of a representation of the
+            link target in the link itself:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, 33,              /  relation  = item                   /
+          4, 50,              /  format    = application\json       /
+         10, "item1" ],       /  href.path = "item1"                /
+       h'7b20227461736b223a20
+         2252657475726e207468
+         6520626f6f6b7320746f
+         20746865206c69627261
+         7279222c202261737369
+         676e6565223a2022416c
+         69636522207d' ] ]
+]]></artwork></figure>
+
+          <t>
+            where the byte string in this example encodes the following JSON
+            object:
+          </t>
+
+<figure><artwork><![CDATA[
+   {
+     "task":     "Return the books to the library",
+     "assignee": "Alice"
+   }
+]]></artwork></figure>
+
+          <t>
+            By embedding representations, it is possible to use CoRAL as a (very
+            basic) substitute for <xref
+            target="W3C.REC-rdf11-concepts-20140225">RDF</xref>. For example,
+            the RDF graph (in <xref
+            target="W3C.REC-turtle-20140225">Turtle</xref> syntax):
+          </t>
+
+<figure><artwork><![CDATA[
+   @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+   <> foaf:name     "John Doe" ;
+      foaf:age      32 ;
+      foaf:homepage <coap://www.doe.example/> .
+]]></artwork></figure>
+
+          <t>
+            can be serialized in CoRAL as follows:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 2,                     / tiny-literal                        /
+       2,                     / append-path                         /
+       -100,                  /  relation       = name              /
+       0,                     /  format         = text\plain        /
+       h'4a6f686e20446f65' ], / "John Doe"                          /
+     [ 2,                     / tiny-literal                        /
+       2,                     / append-path                         /
+       -101,                  /  relation       = age               /
+       7,                     /  format         = uint8             /
+       h'20' ],               / 32                                  /
+     [ 5,                     / fat-link                            /
+       1,                     / absolute-path                       /
+       [ 1, -102,             /  relation       = homepage          /
+         5, "coap",           /  href.scheme    = "coap"            /
+         6, "www.doe.example" /  href.host.name = "www.doe.example" /
+   ] ] ]
+]]></artwork></figure>
+
+        </section>
+
+        <section title="Forms">
+
+          <t>
+            In addition to Web links, CoRAL supports forms. An agent can use a
+            form to perform an operation on the form context, such as updating a
+            resource or creating a new item in a collection.
+          </t>
+
+          <t>
+            Similar to link relation types, the semantics of a form are
+            indicated by the form relation type. The Href.* Options encode the
+            URI of the form target to which the agent should submit the form. A
+            form additionally encodes the submission method (POST, PUT, PATCH,
+            DELETE) and the description of a representation that the service
+            expects as part of form submission:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 7,                     / fat-form                            /
+       3,                     / relative-path                       /
+       [  1, 1,               /  relation  = create-item            /
+          2, 2,               /  method    = POST                   /
+          3, 60,              /  accept    = application\cbor       /
+         10, "items" ] ] ]    /  href.path = "items"                /
+]]></artwork></figure>
+
+          <t>
+            The Accept Option specifies the content format of the expected
+            representation. A content format can use the body of a form to
+            describe the expected representation in more detail, for example, by
+            specifying a set of form fields that the agent needs to fill out:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 7,                     / fat-form                            /
+       3,                     / relative-path                       /
+       [  1, 1,               /  relation  = create-item            /
+          2, 2,               /  method    = POST                   /
+          3, 65535,           /  accept    = example\form           /
+         10, "items" ],       /  href.path = "items"                /
+       h'6e616d652c206167652c / "name, age, homepage"               /
+         20686f6d6570616765' ] ]
+]]></artwork></figure>
+
+        </section>
+
+        <section title="Editing">
+
+          <t>
+            The target resource of a link may be editable. In this case, the
+            representation of such a resource typically contains one or more
+            forms that allow an agent to edit the resource. However, it may be
+            inefficient to include these forms every time a representation of
+            the link target is retrieved and more efficient to include them in
+            representations that link to that resource. CoRAL supports this with
+            two options.
+          </t>
+
+          <t>
+            Setting the Updatable Option in a link to true defines a form that
+            can be used to update the target resource. The context and target of
+            that form are both the target of the link, the submission method is
+            PUT and the content format of the submitted representation must be
+            one of the formats indicated by the Format Option in the link. For
+            example, given the following CoRAL representation, an agent can
+            change the recipient by making a PUT request to &lt;./to&gt; with
+            the new value in 'text/plain' format:
+          </t>
+
+<figure><artwork type="cbor"><![CDATA[
+   [ [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, -120,            /  relation  = sender                 /
+          4, 0,               /  format    = text\plain             /
+         10, "from",          /  href.path = "from"                 /
+         14, true ],          /  updatable = true                   /
+       h'4a756c696574' ],     / "Juliet"                            /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, -121,            /  relation  = recipient              /
+          4, 0,               /  format    = text\plain             /
+         10, "to",            /  href.path = "to"                   /
+         14, true ],          /  updatable = true                   /
+       h'526f6d656f' ],       / "Romeo"                             /
+     [ 5,                     / fat-link                            /
+       3,                     / relative-path                       /
+       [  1, -122,            /  relation  = message                /
+          4, 0,               /  format    = text\plain             /
+         10, "message",       /  href.path = "message"              /
+         14, true ],          /  updatable = true                   /
+       h'4172742074686f75206e / "Art thou not Romeo,                /
+         6f7420526f6d656f2c20 /  and a Montague?"                   /
+         616e642061204d6f6e74
+         616775653f' ] ]
+]]></artwork></figure>
+
+          <t>
+            Setting the Deletable Flag in a link to true likewise defines a form
+            that can be used to delete the target resource.
+          </t>
+
+        </section>
+
+      </section>
+
+      <section title="CoRE Lighting">
+
+        <t>
+          <xref target="I-D.hartke-core-lighting">CoRE Lighting</xref> defines a
+          benchmark scenario for the exploration of hypermedia-oriented design
+          in constrained, RESTful environments. The bulletin board example in
+          Section 5.2.1 of <xref target="I-D.hartke-core-lighting"/> can be
+          encoded in CoRAL as follows:
+        </t>
+
+<figure><artwork type="cbor"><![CDATA[
+  [[7, 3, [1, 1, 3, 65200, 10, "bulletins"]],
+   [5, 1, [1, 33, 4, 65200, 6, "light-bulb.example"], <<1>>],
+   [5, 1, [1, 33, 4, 65200, 6, "remote-control.example"], <<2>>]]
+]]></artwork></figure>
+
+        <t>
+          where &lt;&lt;1&gt;&gt; is a byte string that encodes the following
+          CoRAL structure:
+        </t>
+
+<figure><artwork type="cbor"><![CDATA[
+  [[5, 3, [1, -100, 4, 65202, 10, "config"]],
+   [2, 3, -101, 0, "Light 2"],
+   [2, 3, -102, 0, "Illuminates the couch."],
+   [2, 3, -103, 0, "Living Room"]]
+]]></artwork></figure>
+
+        <t>
+          and &lt;&lt;2&gt;&gt; is a byte string that encodes the following
+          CoRAL structure:
+        </t>
+
+<figure><artwork type="cbor"><![CDATA[
+  [[5, 3, [1, 1, 4, 65203, 10, "state"]],
+   [2, 3, -101, 0, "LRC 1"],
+   [2, 3, -102, 0, "Controls Light 2."],
+   [2, 3, -103, 0, "Living Room"]]
+]]></artwork></figure>
+
+        <t>
+          <xref target="table-lighting-comparison"/> shows a comparison of sizes
+          of the example encoded in CoRAL and JSON.
+        </t>
+
+        <texttable align="center" anchor="table-lighting-comparison" title="Size Comparison">
+          <ttcol>Format</ttcol>
+          <ttcol>Size</ttcol>
+
+          <c>JSON</c>                   <c>515 bytes</c>
+          <c>CoRAL</c>                  <c>245 bytes</c>
+        </texttable>
+
+      </section>
+
+      <section title="CoRE Link Format">
+
+        <t>
+          The example in this section is based on an example on page 14 of <xref
+          target="RFC6690"/>:
+        </t>
+
+<figure><artwork><![CDATA[
+   </sensors>;ct=40;title="Sensor Index",
+   </sensors/temp>;rt="temperature-c";if="sensor",
+   </sensors/light>;rt="light-lux";if="sensor",
+   <http://www.example.com/sensors/t123>;anchor="/sensors/temp"
+   ;rel="describedby",
+   </t>;anchor="/sensors/temp";rel="alternate"
+]]></artwork></figure>
+
+        <t>
+          The example can be encoded in CoRAL as follows:
+        </t>
+
+<figure><artwork type="cbor"><![CDATA[
+  [[4, 1, [10, "sensors"]],
+   [5, 2, [4, 40, 13, "Sensor Index"]],
+   [5, 2, [10, "temp", 16, "temperature-c", 17, "sensor"]],
+   [5, 2, [10, "light", 16, "light-lux", 17, "sensor"]],
+   [5, 1, [1, 18, 5, "http", 6, "www.example.com",
+           10, "sensors", 10, "t123", 18, "/sensors/temp"]],
+   [5, 1, [1, 2, 10, "t", 18, "/sensors/temp"]]]
+]]></artwork></figure>
+
+        <t>
+          <xref target="table-link-comparison"/> shows a comparison of sizes of
+          the example encoded in CoRAL and a number of Link Format variants
+          <xref target="I-D.ietf-core-links-json"/>.
+        </t>
+
+        <texttable align="center" anchor="table-link-comparison" title="Size Comparison">
+          <ttcol>Format</ttcol>
+          <ttcol>Size</ttcol>
+
+          <c>Link Format</c>            <c>251 bytes</c>
+          <c>Link Format (JSON)</c>     <c>320 bytes</c>
+          <c>Link Format (CBOR)</c>     <c>203 bytes</c>
+          <c>CoRAL</c>                  <c>181 bytes</c>
+        </texttable>
+
+      </section>
+
+      <section title="CoRE Interfaces">
+
+        <t>
+          The example in this section is based on an example in figure 1 of <xref
+          target="I-D.ietf-core-interfaces"/>:
+        </t>
+
+<figure><artwork><![CDATA[
+   </s/>;rt="simple.sen";if="core.b",
+   </s/lt>;rt="simple.sen.lt";if="core.s",
+   </s/tmp>;rt="simple.sen.tmp";if="core.s";obs,
+   </s/hum>;rt="simple.sen.hum";if="core.s",
+   </a/>;rt="simple.act";if="core.b",
+   </a/1/led>;rt="simple.act.led";if="core.a",
+   </a/2/led>;rt="simple.act.led";if="core.a",
+   </d/>;rt="simple.dev";if="core.ll",
+   </l/>;if="core.lb"
+]]></artwork></figure>
+
+        <t>
+          The example can be encoded in CoRAL as follows:
+        </t>
+
+<figure><artwork type="cbor"><![CDATA[
+  [[5, 1, [10, "d", 10, "", 16, "simple.dev", 17, "core.ll"]],
+   [5, 1, [10, "l", 10, "", 17, "core.lb"]],
+   [4, 1, [17, "core.b"]],
+   [5, 2, [10, "s", 10, "", 16, "simple.sen"]],
+   [5, 2, [10, "a", 10, "", 16, "simple.act"]],
+   [4, 1, [10, "s", 17, "core.s"]],
+   [5, 2, [10, "lt", 16, "simple.sen.lt"]],
+   [5, 2, [10, "tmp", 16, "simple.sen.tmp", 19, true]],
+   [5, 2, [10, "hum", 16, "simple.sen.hum"]],
+   [4, 1, [10, "a", 16, "simple.act.led", 17, "core.a"]],
+   [5, 2, [10, "1", 10, "led"]],
+   [5, 2, [10, "2", 10, "led"]]]
+]]></artwork></figure>
+
+        <t>
+          <xref target="table-interfaces-comparison"/> shows a comparison of
+          sizes of the example encoded in CoRAL and a number of Link Format
+          variants.
+        </t>
+
+        <texttable align="center" anchor="table-interfaces-comparison" title="Size Comparison">
+          <ttcol>Format</ttcol>
+          <ttcol>Size</ttcol>
+
+          <c>Link Format</c>            <c>332 bytes</c>
+          <c>Link Format (JSON)</c>     <c>456 bytes</c>
+          <c>Link Format (CBOR)</c>     <c>264 bytes</c>
+          <c>CoRAL</c>                  <c>248 bytes</c>
+        </texttable>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Acknowledgements" numbered="no">
+
+      <t>
+        This specification is heavily inspired by the <xref
+        target="I-D.kelly-json-hal">JSON Hypertext Application Language
+        (HAL)</xref>; the author of and contributors to that specification are
+        acknowledged for their great work.
+      </t>
+
+      <t>
+        Yassin Nasir Hassan suggested placing the hypermedia controls for
+        modifying a link target in the link context rather than in the
+        representation of the link target.
+      </t>
+
+      <t>
+        Thanks to
+        Carsten Bormann,
+        Jaime Jimenez and
+        Matthias Kovatsch
+        for helpful comments and discussions that have shaped the
+        document.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </back>
+
+</rfc>
