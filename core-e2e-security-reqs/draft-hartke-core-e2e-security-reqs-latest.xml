@@ -92,8 +92,7 @@
 
       <t>
         This document analyses threats to CoAP message exchanges traversing
-        proxies and derives the security requirements for mitigating those
-        threats.
+        proxies and derives security requirements for mitigating those threats.
       </t>
 
     </abstract>
@@ -151,9 +150,9 @@
         target="I-D.ietf-cose-msg">CBOR Object Signing and Encryption
         (COSE)</xref> instead of or in addition to the security mechanisms at
         the network layer or transport layer. Such a mechanism can provide
-        "end-to-end security" at the application layer (<xref
-        target="fig-endtoend"/>) in contrast to the "hop-by-hop security" that
-        DTLS provides (<xref target="fig-hopbyhop"/>).
+        "end-to-end security" at the CoAP layer (<xref target="fig-endtoend"/>)
+        in contrast to the "hop-by-hop security" that DTLS provides at the CoAP
+        layer (<xref target="fig-hopbyhop"/>).
       </t>
 
 <figure anchor="fig-endtoend" title="End-to-End Security"><artwork align="left"><![CDATA[
@@ -273,8 +272,12 @@
           The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
           "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
           "OPTIONAL" in this document are to be interpreted as described in
-          <xref target="RFC2119"/>. The key word "NOT REQUIRED" is interpreted
-          as synonymous with the key word "OPTIONAL".
+          <xref target="RFC2119"/>.
+        </t>
+        
+        <t>
+          The key word "NOT REQUIRED" is interpreted as synonymous with the key
+          word "OPTIONAL".
         </t>
 
         <t>
@@ -424,7 +427,7 @@
           <t>
             Note that "cache poisoning" -- the case of caching injected
             incorrect responses -- is covered from the point of view of the
-            client: it may result in the client receiving a spoofed message, or
+            client: it may result in the client receiving a spoofed message or
             being flooded, or affect other nodes such that the client times out
             too early.
           </t>
@@ -441,7 +444,7 @@
               The definition of an "authentic response" depends on the desired
               proxy functionality and protection level (see <xref
               target="proxy-solutions"/>), but usually means that the client can
-              obtain proof for some or all of the following things:
+              obtain proof for some or all of the following items:
               <list style="symbols">
                 <t>that the requested action was executed by the origin server;</t>
                 <t>that the data originates from the origin server and has not been altered on the way;</t>
@@ -449,7 +452,7 @@
                 <t>that the data is fresh (when the data is cacheable);</t>
                 <t>that the data is in sequence (when observing a resource).</t>
               </list>
-              The proof can, for example, include a message authentication code
+              The proof can, for example, involve a message authentication code
               that the proxy obtains from the origin server and includes in the
               response or an additional challenge-response roundtrip.
             </t>
@@ -478,8 +481,8 @@
             <t>
               This threat is REQUIRED to be mitigated by the security solution.
               Delay attacks are important to mitigate in certain applications,
-              e.g., when using CoAP with actuators. A problem statement and
-              candidate solution can be found in <xref
+              e.g., when using CoAP with actuators. A detailed problem statement
+              and candidate solution can be found in <xref
               target="I-D.mattsson-core-coap-actuators"/>.
             </t>
 
@@ -602,7 +605,7 @@
                 <vspace/>Reasons include:
                 <list style="symbols">
                   <t>
-                    The proxy does not need to send a request.
+                    The proxy does not need to send a request right now.
                   </t>
                   <t>
                     (Threat 3:) The proxy withholds a request.
@@ -631,8 +634,8 @@
                 from the server.
               </t>
               <t>
-                (Threat 6:) The proxy measures the frequency and distribution of
-                responses from the server.
+                (Threat 6:) The proxy measures the size, frequency or
+                distribution of responses from the server.
               </t>
             </list>
           </t>
@@ -642,21 +645,20 @@
             <t>
               With one exception (see below), this threat is REQUIRED to be
               mitigated by the security solution: the server MUST verify that
-              the request is an <spanx>authentic request</spanx> before
-              processing it.
+              the request is an "authentic request" before processing it.
             </t>
 
             <t>
               The definition of an "authentic request" depends on the desired
               proxy functionality and protection level (<xref
               target="proxy-solutions"/>), but usually means that the server can
-              obtain proof for some or all of the following things:
+              obtain proof for some or all of the following items:
               <list style="symbols">
                 <t>that the proxy acts on behalf of a client;</t>
                 <t>that the data originates from the client and has not been altered on the way;</t>
                 <t>that the request has not been received previously.</t>
               </list>
-              The proof can, for example, include a message authentication code
+              The proof can, for example, involve a message authentication code
               that the proxy obtains from the client and includes in the request
               or a challenge-response roundtrip.
             </t>
@@ -764,9 +766,9 @@
           For both cases, this section presents an overview of the functionality
           and processing rules of the proxy and analyses the required
           authenticity and confidentiality properties of requests and responses.
-          Due to space constraints, the analysis is limited to the CoAP header
-          fields, the payload and the request and response options shown in
-          <xref target="table-1"/>.
+          Due to space constraints, the analysis is limited to the CoAP header,
+          the request and response options shown in <xref target="table-1"/>,
+          and the payload.
         </t>
 
         <texttable anchor="table-1" title="Analysed CoAP Options">
@@ -794,8 +796,8 @@
         <section title="Forwarding" anchor="forwarding" >
 
           <t>
-            In this case we study forwarding functionality of a CoAP forward
-            proxy, and assume that caching is disabled. This is applicable to
+            In this case we study the functionality of a CoAP forward
+            proxy and assume that caching is disabled. This is applicable to
             many security critical use cases where a response needs to be
             securely linked to a unique request from a client and cannot be
             re-used with another request.
@@ -978,7 +980,7 @@ Client          Proxy          Server
             <t>
               A request is considered authentic by the server (<xref
               target="spoofing-server"/>) if the server can obtain proof for all
-              of the following things:
+              of the following items:
               <list style="format A1.%d" counter="A1_count">
                 <t>
                   that the proxy acts on behalf of a client;
@@ -1009,7 +1011,7 @@ Client          Proxy          Server
             <t>
               A response is considered authentic by the client (<xref
               target="spoofing-client"/>) if the client can obtain proof for all
-              of the following things:
+              of the following items:
               <list style="format A1.%d" counter="A1_count">
                 <t>
                   that the following parts of the response originate from the
@@ -1222,9 +1224,8 @@ Client A           |               |
               <list style="format PR2.%d">
                 <t>
                   If the proxy receives a request where the cache key matches
-                  that of a cached fresh response, then the proxy discards the
-                  request and replies with that response, else it makes a
-                  translated request.
+                  that of a cached fresh response, then the proxy with that
+                  response; otherwise, it makes a request towards the server.
                 </t>
                 <t>
                   The proxy caches and forwards cacheable responses. If there is
@@ -1247,7 +1248,7 @@ Client A           |               |
                 <t>
                   If the request contains an Accept option and if there is a
                   fresh response that matches the cache key for the
-                  corresponding request except for the Accept option, and if the
+                  corresponding request except for the Accept option and if the
                   Content-Format of the response matches that of the Accept
                   option, then the proxy forwards the cached response to the
                   requesting client.
@@ -1264,7 +1265,7 @@ Client A           |               |
             <t>
               A request is considered authentic by the server (<xref
               target="spoofing-server"/>) if the server can obtain proof for all
-              of the following things:
+              of the following items:
               <list style="format A2.%d" counter="A2_count">
                 <t>
                   that the following parts of the request originate from the
@@ -1285,7 +1286,7 @@ Client A           |               |
             <t>
               A response is considered authentic by the client (<xref
               target="spoofing-client"/>) if the client can obtain proof for all
-              of the following things:
+              of the following items:
               <list style="format A2.%d" counter="A2_count">
                 <t>
                   that the following parts of the response originate from the
@@ -1364,7 +1365,8 @@ Client A           |               |
           </t>
           <t>
             The broker receives a request for a publication to a topic from a
-            publisher and forwards the request to the subscribers of the topic.
+            publisher and forwards the publication to the subscribers of the
+            topic.
           </t>
         </list>
       </t>
@@ -1502,7 +1504,7 @@ Client A           |               |
               The definition of an "authentic publication" depends on the
               setting (<xref target="pubsub-solutions"/>), but usually means
               that the subscriber can obtain proof for some or all of the
-              following things:
+              following items:
               <list style="symbols">
                 <t>that the data matches the specifications of the request (such as the topic);</t>
                 <t>that the data originates from a publisher that is authorized to publish to the topic;</t>
@@ -1765,7 +1767,7 @@ Subscriber A         |               |
 
             <t>
               A publication is considered authentic by the subscriber if the
-              subscriber can obtain proof for all all of the following things:
+              subscriber can obtain proof for all all of the following items:
               <list style="format A3.%d" counter="A3_count">
                 <t>
                   that the payload is associated to the topic;
