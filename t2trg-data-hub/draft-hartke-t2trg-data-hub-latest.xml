@@ -148,14 +148,14 @@
             directory and publish-subscribe broker lies in the evolvability --
             the ability to respond effectively to change (such as the addition
             of new features) without negatively impacting both existing and new
-            clients. The definition of the application interfaces purely in
+            clients. The definition of application interfaces purely in
             terms of standardized URI templates makes it very difficult to
             gradually evolve them; there are no versioning or capability
             negotiation mechanisms. The data hub facilitates fine-grained
             evolvability by driving all interactions by machine-understandable
             hypertext. Features can be added, changed or removed in a safe,
             backwards-compatible way simply by updating the data hub
-            representation to expose matching links and forms.
+            representation to expose appropriate links and forms.
           </t>
           <t>
             Customizable
