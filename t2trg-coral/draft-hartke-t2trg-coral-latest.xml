@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="us-ascii"?>
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
+  <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
+  <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
+  <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
+  <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
+  <!ENTITY I-D.nottingham-rfc5988bis SYSTEM "reference.I-D.nottingham-rfc5988bis.xml">
+  <!ENTITY W3C.REC-rdf11-concepts-20140225 SYSTEM "reference.W3C.REC-rdf11-concepts-20140225.xml">
+  <!ENTITY W3C.REC-turtle-20140225 SYSTEM "reference.W3C.REC-turtle-20140225.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -41,6 +51,10 @@
     <abstract>
 
       <t>
+        The Constrained RESTful Application Language (CoRAL) defines a model and
+        two serialization formats for describing navigatable connections between
+        resources on the Web ("links") and possible operations on such resources
+        ("forms"), as well as simple resource metadata.
       </t>
 
     </abstract>
@@ -55,6 +69,64 @@
     <!-- **************************************************************** -->
 
     <section title="Introduction">
+
+      <t>
+        The Constrained RESTful Application Language (CoRAL) defines a model and
+        two serialization formats for describing navigatable connections between
+        resources on the Web ("links") and possible operations on such resources
+        ("forms"), as well as simple resource metadata. The model is a superset
+        of the Web linking model described in <xref
+        target="I-D.nottingham-rfc5988bis">RFC 5988</xref> and is intended for
+        automated software agents that navigate a Web application based on a
+        standardized vocabulary of link and form relation types.
+      </t>
+
+      <t>
+        The primary serialization format is a compact, binary representation of
+        links and forms for <xref target="RFC7228">environments with severe
+        constraints on power, memory, and processing resources</xref>. The
+        format is based on <xref target="RFC7049">Concise Binary Object
+        Representation (CBOR)</xref> and shares many similarities with the
+        message format of the <xref target="RFC7252">Constrained Application
+        Protocol (CoAP)</xref>. For example, it uses numeric identifiers instead
+        of character strings for link relation types and pre-parses URIs
+        efficiently into (what CoAP considers to be) their components, which
+        greatly simplifies URI processing. Serializations of links are often
+        more compact than equivalent serializations in <xref
+        target="RFC6690">CoRE Link Format</xref>, including <xref
+        target="I-D.ietf-core-links-json">its CBOR variant</xref>, or the
+        related <xref target="I-D.kelly-json-hal">Hypertext Application
+        Language</xref>. Additionally, the format supports forms, which cannot
+        be expressed in those other formats.
+      </t>
+
+      <t>
+        The second serialization format is a light, textual representation of
+        links and forms that is easy to read and write by humans. The format is
+        used for examples throughout the document and is stylistically similar
+        to <xref target="W3C.REC-turtle-20140225">Turtle</xref>, although it is
+        not a syntax for <xref
+        target="W3C.REC-rdf11-concepts-20140225">RDF</xref>.
+      </t>
+
+      <section title="Terminology">
+
+        <t>
+          Readers of this document are expected to be familiar with the terms
+          and concepts described in <xref target="I-D.nottingham-rfc5988bis">RFC
+          5988</xref>. Additional concepts are introduced in <xref
+          target="overview"/>.
+        </t>
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+          "OPTIONAL" in this document are to be interpreted as described in
+          <xref target="RFC2119">RFC 2119</xref>.
+        </t>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
@@ -62,7 +134,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Overview">
+    <section title="Overview" anchor="overview">
     </section>
 
     <!-- **************************************************************** -->
@@ -95,15 +167,28 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <!--
     <references title="Normative References">
-    </references>
-    -->
 
-    <!--
-    <references title="Informative References">
+      &RFC2119;
+      &RFC7049;
+
+      &I-D.nottingham-rfc5988bis;
+
     </references>
-    -->
+
+    <references title="Informative References">
+
+      &RFC6690;
+      &RFC7228;
+      &RFC7252;
+
+      &I-D.ietf-core-links-json;
+      &I-D.kelly-json-hal;
+
+      &W3C.REC-rdf11-concepts-20140225;
+      &W3C.REC-turtle-20140225;
+
+    </references>
 
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
@@ -111,6 +196,13 @@
     <!-- **************************************************************** -->
 
     <section title="Acknowledgements" numbered="no">
+
+      <t>
+        CoRAL is heavily inspired by the <xref target="I-D.kelly-json-hal">JSON
+        Hypertext Application Language</xref>; the author of and contributors to
+        that specification are greatly acknowledged.
+      </t>
+
     </section>
 
     <!-- **************************************************************** -->
