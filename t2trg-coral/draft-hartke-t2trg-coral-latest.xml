@@ -16,7 +16,9 @@
 
   <front>
 
-    <title abbrev="CoRAL">The Constrained RESTful Application Language (CoRAL)</title>
+    <title abbrev="Constrained RESTful Application Language">
+      The Constrained RESTful Application Language (CoRAL)
+    </title>
 
     <author initials="K." surname="Hartke" fullname="Klaus Hartke">
       <organization>Universitaet Bremen TZI</organization>
