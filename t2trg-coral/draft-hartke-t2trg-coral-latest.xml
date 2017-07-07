@@ -2,6 +2,9 @@
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC3987 SYSTEM "reference.RFC.3987.xml">
+  <!ENTITY RFC4648 SYSTEM "reference.RFC.4648.xml">
+  <!ENTITY RFC5234 SYSTEM "reference.RFC.5234.xml">
   <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
   <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
@@ -142,6 +145,338 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
+    <section title="Textual Format">
+
+      <t>
+        This section defines the syntax of the CoRAL textual format using two
+        grammars: The lexical grammar defines how Unicode code points are
+        combined to form line terminators, white space, comments, and tokens.
+        The syntactic grammar defines how the tokens are combined to form CoRAL
+        documents. Both grammars are presented in <xref
+        target="RFC5234">Augmented Backus-Naur Form (ABNF)</xref>.
+      </t>
+
+      <t>
+        CoRAL documents are Unicode strings in a Unicode encoding form <xref
+        target="UNICODE"/>. The media type for CoRAL documents is "text/coral".
+        The "charset" parameter is not used, because the charset information is
+        transported inside the document in the form of an optional byte order
+        mark (BOM). The use of the UTF-8 encoding scheme, without a BOM, is
+        RECOMMENDED.
+      </t>
+
+      <section title="Lexical Structure">
+
+        <t>
+           The lexical structure of a CoRAL document is made up of four basic
+           elements: line terminators, white space, comments, and tokens. Of
+           these, only tokens are significant in the syntactic grammar. There
+           are three kinds of tokens: identifiers, literals, and punctuators.
+        </t>
+
+        <t>
+          When several lexical grammar rules match a sequence of code points in
+          a document, the longest match takes priority.
+        </t>
+
+        <section title="Line Terminators">
+
+          <t>
+            Line terminators divide text into lines. A line terminator is any
+            Unicode character with Line_Break class BK, CR, LF, or NL. However,
+            any CR character that immediately precedes a LF character is
+            ignored. (This affects only lines numbering.)
+          </t>
+
+        </section>
+
+        <section title="White Space">
+
+          <t>
+            White space is a sequence of one or more white space characters. A
+            white space character is any Unicode character with the White_Space
+            property.
+          </t>
+
+        </section>
+
+        <section title="Comments">
+
+          <t>
+            Comments are sequences of characters that are ignored when parsing
+            text into tokens. Single-line comments begin with the characters
+            "//" and extend to the end of the line. Delimited comments begin
+            with the characters "/*" and end with the characters "*/". Delimited
+            comments can occupy a portion of a line, a single line, or multiple
+            lines.
+          </t>
+
+          <t>
+            Comments do not nest. The character sequences "/*" and "*/" have no
+            special meaning within a single-line comment, and the character
+            sequences "//" and "/*" have no special meaning within a delimited
+            comment.
+          </t>
+
+        </section>
+
+        <section title="Identifiers">
+
+          <t>
+            Identifier tokens are user-defined symbolic names. The rules for
+            identifiers correspond exactly to those recommended by the <xref
+            target="UNICODE-UAX31">Unicode Standard Annex #31</xref>.
+          </t>
+
+          <t>
+            An identifier consists of one Unicode character in the ID_Start
+            class followed by zero or more Unicode characters in the ID_Continue
+            class.
+            <list>
+              <t>identifier = START *CONTINUE</t>
+              <t>START = &lt;Any character in the ID_Start class&gt;</t>
+              <t>CONTINUE = &lt;Any character in the ID_Continue class&gt;</t>
+            </list>
+          </t>
+
+          <t>
+            All identifiers are converted into Unicode Normalization Form C, as
+            defined by the <xref target="UNICODE-UAX15">Unicode Standard Annex
+            15</xref>. Comparison of identifiers is based on NFC and is
+            case-sensitive.
+          </t>
+
+        </section>
+
+        <section title="Literals">
+
+          <t>
+            A literal is a representation of a value. There are seven kinds of
+            literals: Boolean, integer, floating-point, byte string, text
+            string, IRI, and null.
+          </t>
+
+          <section title="Boolean Literals">
+
+            <t>
+              The literals true and false denote a Boolean value.
+              <list>
+                <t>boolean = %x74.72.75.65 / %x66.61.6C.73.65</t>
+              </list>
+            </t>
+
+          </section>
+
+          <section title="Integer Literals">
+
+            <t>
+              Integer literals denote integer values of unspecified precision.
+              By default, integer literals are expressed in decimal, but can
+              also be specified in an alternate base using a prefix. Binary
+              literals begin with "0b", octal literals begin with "0o", and
+              hexadecimal literals begin with "0x".
+            </t>
+
+            <t>
+              Decimal literals contain the digits "0" through "9". Binary
+              literals contain "0" and "1", octal literals contain "0" through
+              "7", and hexadecimal literals contain "0" through "9" as well as
+              "A" through "F" in upper- or lowercase.
+            </t>
+
+            <t>
+              Negative integers literals are expressed by prepending a minus
+              sign ("-").
+              <list>
+                <t>integer = [%x2D] (decimal / binary / octal / hexadecimal)</t>
+                <t>decimal = 1*DIGIT</t>
+                <t>binary = %x30 (%x42 / %x62) 1*BINDIG</t>
+                <t>octal = %x30 (%x4F / %x6F) 1*OCTDIG</t>
+                <t>hexadecimal = %x30 (%x58 / %x78) 1*HEXDIG</t>
+                <t>DIGIT = %x30-39</t>
+                <t>BINDIG = %x30-31</t>
+                <t>OCTDIG = %x30-37</t>
+                <t>HEXDIG = %x30-39 / %x41-46 / %x61-66</t>
+              </list>
+            </t>
+
+          </section>
+
+          <section title="Floating-point Literals">
+
+            <t>
+              Floating-point literals denote floating-point values of
+              unspecified precision.
+            </t>
+
+            <t>
+              Floating-point literals consist of a sequence of decimal digits
+              followed by either a fraction, a exponent, or both. The fraction
+              consists of a decimal point (".") followed by a sequence of
+              decimal digits. The exponent consists of an upper- or lowercase
+              "e" followed by an optional sign and a sequence of decimal digits
+              that indicate what power of 10 the value preceding the "e" is
+              multiplied by.
+            </t>
+
+            <t>
+              Negative floating-point literals are expressed by prepending a
+              minus sign ("-").
+              <list>
+                <t>floating-point = [%x2D] 1*DIGIT [fraction] [exponent]</t>
+                <t>fraction = "." 1*DIGIT</t>
+                <t>exponent = (%x45 / %x65) [%x2B / %x2D] 1*DIGIT</t>
+              </list>
+            </t>
+
+            <t>
+              Floating-point literals can additionally denote the special
+              "Not-a-Number" (NaN) value, positive infinity, and negative
+              infinity. The NaN value is produced by the token "NaN". The two
+              infinite values are produced by the tokens "+Infinity" (or simply
+              "Infinity") and "-Infinity".
+              <list>
+                <t>floating-point =/ %x4E.61.4E</t>
+                <t>floating-point =/ [%x2B] %x49.6E.66.69.6E.69.74.79</t>
+                <t>floating-point =/ %x2D.49.6E.66.69.6E.69.74.79</t>
+              </list>
+            </t>
+
+          </section>
+
+          <section title="Byte String Literals">
+
+            <t>
+              A byte string literal consists of zero or more bytes encoded with
+              <xref target="RFC4648">Base16, Base32, or Base64</xref>. Byte
+              string literals in Base16 begin with "h" or "b16", byte string
+              literals in Base32 begin with "b32", and byte string literals in
+              Base64 begin with "b64". The encoded bytes are enclosed in single
+              quotes.
+              <list>
+                <t>bytes = base16 / base32 / base64</t>
+                <t>base16 = (%x68 / %x62.31.36) SQUOTE &lt;Base16 encoded data&gt; SQUOTE</t>
+                <t>base32 = %x62.33.32 SQUOTE &lt;Base32 encoded data&gt; SQUOTE</t>
+                <t>base64 = %x62.36.34 SQUOTE &lt;Base64 encoded data&gt; SQUOTE</t>
+                <t>SQUOTE = %x27</t>
+              </list>
+            </t>
+
+          </section>
+
+          <section title="Text String Literals">
+
+            <t>
+              A text string literal consists of zero or more Unicode characters
+              enclosed in double quotes. It can include both simple escape
+              sequences (such as \t for the tab character), and hexadecimal and
+              Unicode escape sequences.
+              <list>
+                <t>text = DQUOTE *(char / %x5C escape) DQUOTE</t>
+                <t>char = &lt;Any character except %x22, %x5C, and line terminators&gt;</t>
+                <t>escape = simple-escape / hexadecimal-escape / unicode-escape</t>
+                <t>simple-escape = %x30 / %x62 / %x74 / %x6E / %x76</t>
+                <t>simple-escape =/ %x66 / %x72 / %x22 / %x27 / %x5C</t>
+                <t>hexadecimal-escape = (%x58 / %x78) 2HEXDIG</t>
+                <t>unicode-escape = %x55 4HEXDIG / %x75 8HEXDIG</t>
+                <t>DQUOTE = %x22</t>
+              </list>
+            </t>
+
+            <t>
+              An escape sequence denotes a single Unicode code point. For
+              hexadecimal and Unicode escape sequences, the code point is formed
+              by the hexadecimal number following the "\X", "\x", "\U", or "\u"
+              prefix. Simple escape sequences indicate the following characters:
+            </t>
+
+            <texttable>
+              <ttcol>Escape Sequence</ttcol>
+              <ttcol>Character Name</ttcol>
+              <ttcol>Code Point</ttcol>
+
+              <c>\0</c>
+              <c>Null</c>
+              <c>%x00</c>
+              <c>\b</c>
+              <c>Backspace</c>
+              <c>%x08</c>
+              <c>\t</c>
+              <c>Character Tabulation</c>
+              <c>%x09</c>
+              <c>\n</c>
+              <c>Line Feed</c>
+              <c>%x0A</c>
+              <c>\v</c>
+              <c>Line Tabulation</c>
+              <c>%x0B</c>
+              <c>\f</c>
+              <c>Form Feed</c>
+              <c>%x0C</c>
+              <c>\r</c>
+              <c>Carriage Return</c>
+              <c>%x0D</c>
+              <c>\"</c>
+              <c>Quotation Mark</c>
+              <c>%x22</c>
+              <c>\'</c>
+              <c>Apostrophe</c>
+              <c>%x27</c>
+              <c>\\</c>
+              <c>Reverse Solidus</c>
+              <c>%x5C</c>
+            </texttable>
+
+          </section>
+
+          <section title="IRI Literals">
+
+            <t>
+              An IRI literal consists of an <xref
+              target="RFC3987">Internationalized Resource Identifier
+              (IRI)</xref> reference enclosed in angle brackets ("&lt;" and
+              "&gt;").
+              <list>
+                <t>iri = "&lt;" IRI-reference "&gt;"</t>
+                <t>IRI-reference = &lt;Defined in RFC 3987&gt;</t>
+              </list>
+            </t>
+
+          </section>
+
+          <section title="Null Literal">
+
+            <t>
+              The literal null denotes the intentional absence of any value.
+              <list>
+                <t>null = %x6E.75.6C.6C / %x3F</t>
+              </list>
+            </t>
+
+          </section>
+
+        </section>
+
+        <section title="Punctuators">
+
+          <t>
+            Punctuator tokens are used for grouping and separating.
+            <list>
+              <t>punctuator = "#" | "," | ":" | "{" | "}" | "[" | "]" | "="</t>
+            </list>
+          </t>
+          
+        </section>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
     <section title="Security Considerations" anchor="security">
     </section>
 
@@ -170,9 +505,47 @@
     <references title="Normative References">
 
       &RFC2119;
+      &RFC3987;
+      &RFC4648;
+      &RFC5234;
       &RFC7049;
 
       &I-D.nottingham-rfc5988bis;
+
+      <reference anchor="UNICODE" target="http://www.unicode.org/versions/latest/">
+        <front>
+          <title>The Unicode Standard</title>
+          <author>
+            <organization>The Unicode Consortium</organization>
+          </author>
+          <date />
+        </front>
+        <annotation>
+          Note that this reference is to the latest version of Unicode, rather
+          than to a specific release. It is not expected that future changes in
+          the Unicode specification will have any impact on CoRAL.
+        </annotation>
+      </reference>
+
+      <reference anchor="UNICODE-UAX15" target="http://unicode.org/reports/tr15/">
+        <front>
+          <title>Unicode Standard Annex #15: Unicode Normalization Forms</title>
+          <author>
+            <organization>The Unicode Consortium</organization>
+          </author>
+          <date />
+        </front>
+      </reference>
+
+      <reference anchor="UNICODE-UAX31" target="http://unicode.org/reports/tr31/">
+        <front>
+          <title>Unicode Standard Annex #31: Unicode Identifier and Pattern Syntax</title>
+          <author>
+            <organization>The Unicode Consortium</organization>
+          </author>
+          <date />
+        </front>
+      </reference>
 
     </references>
 
