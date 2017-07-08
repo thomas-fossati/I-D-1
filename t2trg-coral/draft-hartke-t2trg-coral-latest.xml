@@ -80,7 +80,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Introduction">
+    <section title="Introduction" anchor="introduction">
 
       <t>
         The Constrained RESTful Application Language (CoRAL) defines an
@@ -165,7 +165,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Textual Format">
+    <section title="Textual Format" anchor="textual">
 
       <t>
         This section defines the syntax of the CoRAL textual format using two
