@@ -62,9 +62,9 @@
 
       <t>
         The Constrained RESTful Application Language (CoRAL) defines a model and
-        two serialization formats for describing navigatable connections between
+        two serialization formats for describing typed connections between
         resources on the Web ("links") and possible operations on such resources
-        ("forms"), as well as simple resource metadata.
+        ("forms") as well as simple resource metadata.
       </t>
 
     </abstract>
