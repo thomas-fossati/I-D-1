@@ -10,6 +10,7 @@
   <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
   <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
+  <!ENTITY RFC7230 SYSTEM "reference.RFC.7230.xml">
   <!ENTITY RFC7231 SYSTEM "reference.RFC.7231.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
@@ -570,11 +571,14 @@
 
       &RFC6690;
       &RFC7228;
+      &RFC7230;
+      &RFC7231;
       &RFC7252;
 
       &I-D.ietf-core-links-json;
       &I-D.kelly-json-hal;
 
+      &W3C.REC-html51-20161101;
       &W3C.REC-rdf11-concepts-20140225;
       &W3C.REC-turtle-20140225;
 
