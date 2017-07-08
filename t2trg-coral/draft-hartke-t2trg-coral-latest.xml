@@ -159,7 +159,7 @@
 
       <t>
         This section defines the syntax of the CoRAL textual format using two
-        grammars: The lexical grammar defines how Unicode code points are
+        grammars: The lexical grammar defines how Unicode characters are
         combined to form line terminators, white space, comments, and tokens.
         The syntactic grammar defines how the tokens are combined to form CoRAL
         documents. Both grammars are presented in <xref
@@ -167,7 +167,7 @@
       </t>
 
       <t>
-        CoRAL documents are Unicode strings in a Unicode encoding form <xref
+        A CoRAL document is a Unicode string in a Unicode encoding form <xref
         target="UNICODE"/>. The media type for CoRAL documents is "text/coral".
         The "charset" parameter is not used, because the charset information is
         transported inside the document in the form of an optional byte order
@@ -185,7 +185,7 @@
         </t>
 
         <t>
-          When several lexical grammar rules match a sequence of code points in
+          When several lexical grammar rules match a sequence of characters in
           a document, the longest match takes priority.
         </t>
 
@@ -195,7 +195,7 @@
             Line terminators divide text into lines. A line terminator is any
             Unicode character with Line_Break class BK, CR, LF, or NL. However,
             any CR character that immediately precedes a LF character is
-            ignored. (This affects only lines numbering.)
+            ignored. (This affects only the numbering of lines.)
           </t>
 
         </section>
@@ -239,8 +239,8 @@
           </t>
 
           <t>
-            An identifier consists of one Unicode character in the ID_Start
-            class followed by zero or more Unicode characters in the ID_Continue
+            An identifier consists of a Unicode character in the ID_Start class
+            followed by zero or more Unicode characters in the ID_Continue
             class.
             <list>
               <t>identifier = START *CONTINUE</t>
@@ -250,10 +250,10 @@
           </t>
 
           <t>
-            All identifiers are converted into Unicode Normalization Form C, as
-            defined by the <xref target="UNICODE-UAX15">Unicode Standard Annex
-            15</xref>. Comparison of identifiers is based on NFC and is
-            case-sensitive.
+            All identifiers are converted into Unicode normalization form C
+            (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
+            Standard Annex 15</xref>. Comparison of identifiers is based on NFC
+            and is case-sensitive.
           </t>
 
         </section>
@@ -295,8 +295,7 @@
             </t>
 
             <t>
-              Negative integers literals are expressed by prepending a minus
-              sign ("-").
+              Negative integers are expressed by prepending a minus sign ("-").
               <list>
                 <t>integer = [%x2D] (decimal / binary / octal / hexadecimal)</t>
                 <t>decimal = 1*DIGIT</t>
@@ -321,17 +320,17 @@
 
             <t>
               Floating-point literals consist of a sequence of decimal digits
-              followed by either a fraction, a exponent, or both. The fraction
+              followed by either a fraction, an exponent, or both. The fraction
               consists of a decimal point (".") followed by a sequence of
               decimal digits. The exponent consists of an upper- or lowercase
               "e" followed by an optional sign and a sequence of decimal digits
-              that indicate what power of 10 the value preceding the "e" is
-              multiplied by.
+              that indicate a power of 10 by which the value preceding the "e"
+              is multiplied.
             </t>
 
             <t>
-              Negative floating-point literals are expressed by prepending a
-              minus sign ("-").
+              Negative floating-point values are expressed by prepending a minus
+              sign ("-").
               <list>
                 <t>floating-point = [%x2D] 1*DIGIT [fraction] [exponent]</t>
                 <t>fraction = "." 1*DIGIT</t>
@@ -357,7 +356,7 @@
           <section title="Byte String Literals">
 
             <t>
-              A byte string literal consists of zero or more bytes encoded with
+              A byte string literal consists of zero or more bytes encoded in
               <xref target="RFC4648">Base16, Base32, or Base64</xref>. Byte
               string literals in Base16 begin with "h" or "b16", byte string
               literals in Base32 begin with "b32", and byte string literals in
@@ -378,8 +377,8 @@
 
             <t>
               A text string literal consists of zero or more Unicode characters
-              enclosed in double quotes. It can include both simple escape
-              sequences (such as \t for the tab character), and hexadecimal and
+              enclosed in double quotes. It can include simple escape sequences
+              (such as \t for the tab character) as well as and hexadecimal and
               Unicode escape sequences.
               <list>
                 <t>text = DQUOTE *(char / %x5C escape) DQUOTE</t>
@@ -397,7 +396,8 @@
               An escape sequence denotes a single Unicode code point. For
               hexadecimal and Unicode escape sequences, the code point is formed
               by the hexadecimal number following the "\X", "\x", "\U", or "\u"
-              prefix. Simple escape sequences indicate the following characters:
+              prefix. Simple escape sequences indicate the following code
+              points:
             </t>
 
             <texttable>
@@ -443,9 +443,8 @@
 
             <t>
               An IRI literal consists of an <xref
-              target="RFC3987">Internationalized Resource Identifier
-              (IRI)</xref> reference enclosed in angle brackets ("&lt;" and
-              "&gt;").
+              target="RFC3987">Internationalized Resource Identifier (IRI)
+              reference</xref> enclosed in angle brackets ("&lt;" and "&gt;").
               <list>
                 <t>iri = "&lt;" IRI-reference "&gt;"</t>
                 <t>IRI-reference = &lt;Defined in RFC 3987&gt;</t>
