@@ -269,7 +269,7 @@
           <section title="Boolean Literals">
 
             <t>
-              The literals true and false denote a Boolean value.
+              The literals "true" and "false" denote a Boolean value.
               <list>
                 <t>boolean = %x74.72.75.65 / %x66.61.6C.73.65</t>
               </list>
@@ -333,7 +333,7 @@
               sign ("-").
               <list>
                 <t>floating-point = [%x2D] 1*DIGIT [fraction] [exponent]</t>
-                <t>fraction = "." 1*DIGIT</t>
+                <t>fraction = %x2E 1*DIGIT</t>
                 <t>exponent = (%x45 / %x65) [%x2B / %x2D] 1*DIGIT</t>
               </list>
             </t>
@@ -446,7 +446,7 @@
               target="RFC3987">Internationalized Resource Identifier (IRI)
               reference</xref> enclosed in angle brackets ("&lt;" and "&gt;").
               <list>
-                <t>iri = "&lt;" IRI-reference "&gt;"</t>
+                <t>iri = %x3C IRI-reference %x3E</t>
                 <t>IRI-reference = &lt;Defined in RFC 3987&gt;</t>
               </list>
             </t>
@@ -456,7 +456,8 @@
           <section title="Null Literal">
 
             <t>
-              The literal null denotes the intentional absence of any value.
+              The literals "null" and "?" denote the intentional absence of any
+              value.
               <list>
                 <t>null = %x6E.75.6C.6C / %x3F</t>
               </list>
