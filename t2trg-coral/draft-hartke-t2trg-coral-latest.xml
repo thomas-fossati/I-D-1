@@ -74,42 +74,52 @@
     <section title="Introduction">
 
       <t>
-        The Constrained RESTful Application Language (CoRAL) defines a model and
-        two serialization formats for describing navigatable connections between
-        resources on the Web ("links") and possible operations on such resources
-        ("forms"), as well as simple resource metadata. The model is a superset
-        of the Web linking model described in <xref
-        target="I-D.nottingham-rfc5988bis">RFC 5988</xref> and is intended for
-        automated software agents that navigate a Web application based on a
-        standardized vocabulary of link and form relation types.
+        The Constrained RESTful Application Language (CoRAL) defines an
+        information and interaction model plus two specialized serialization
+        formats for creating machine-navigatable Web applications.
       </t>
 
       <t>
-        The primary serialization format is a compact, binary representation of
-        links and forms for <xref target="RFC7228">environments with severe
-        constraints on power, memory, and processing resources</xref>. The
-        format is based on <xref target="RFC7049">Concise Binary Object
-        Representation (CBOR)</xref> and shares many similarities with the
-        message format of the <xref target="RFC7252">Constrained Application
-        Protocol (CoAP)</xref>. For example, it uses numeric identifiers instead
-        of character strings for link relation types and pre-parses URIs
-        efficiently into (what CoAP considers to be) their components, which
-        greatly simplifies URI processing. Serializations of links are often
-        more compact than equivalent serializations in <xref
+        The model is a superset of the Web linking model described in <xref
+        target="I-D.nottingham-rfc5988bis">RFC 5988</xref>. The information
+        model consists of the description of typed connections between resources
+        on the Web ("links") and of possible operations on such resources
+        ("forms"). Additionally, resources themselves can be described with
+        simple statements in a similar vein as the <xref
+        target="W3C.REC-rdf11-concepts-20140225">Resource Description Framework
+        (RDF)</xref>. Unlike RDF, CoRAL comes with an interaction model. The
+        interaction model defines how an automated software agent can navigate
+        from resource to resource by following links and perform operations on
+        resources by submitting forms, based on a standardized vocabulary of
+        link and form relation types.
+      </t>
+
+      <t>
+        The primary serialization format of CoRAL is a compact, binary
+        representation of links and forms based on <xref
+        target="RFC7049">Concise Binary Object Representation (CBOR)</xref>. It
+        shares many similarities with the message format of the <xref
+        target="RFC7252">Constrained Application Protocol (CoAP)</xref> and is
+        intended for <xref target="RFC7228">environments with constraints on
+        power, memory, and processing resources</xref>. The format uses compact
+        numeric identifiers instead of character strings for relation types and
+        pre-parses URIs efficiently into (what CoAP considers to be) their
+        components, which greatly simplifies URI processing. Serializations of
+        links are often more compact than equivalent serializations in <xref
         target="RFC6690">CoRE Link Format</xref>, including <xref
-        target="I-D.ietf-core-links-json">its CBOR variant</xref>, or the
-        related <xref target="I-D.kelly-json-hal">Hypertext Application
-        Language</xref>. Additionally, the format supports forms, which cannot
-        be expressed in those other formats.
+        target="I-D.ietf-core-links-json">its CBOR variant</xref>, or in the
+        inspiring <xref target="I-D.kelly-json-hal">Hypertext Application
+        Language (HAL)</xref>. Additionally, the format supports the
+        serialization of forms, which those other formats do not support.
       </t>
 
       <t>
         The second serialization format is a light, textual representation of
-        links and forms that is easy to read and write by humans. The format is
-        used for examples throughout the document and is stylistically similar
-        to <xref target="W3C.REC-turtle-20140225">Turtle</xref>, although it is
-        not a syntax for <xref
-        target="W3C.REC-rdf11-concepts-20140225">RDF</xref>.
+        links and forms that is intended to be easy to read and write by humans.
+        The format is used for examples throughout the document and is
+        stylistically similar to <xref
+        target="W3C.REC-turtle-20140225">Turtle</xref>, although it is not a
+        syntax for RDF.
       </t>
 
       <section title="Terminology">
