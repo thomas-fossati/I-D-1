@@ -270,7 +270,7 @@
           </t>
 
           <t>
-            All identifiers are converted into Unicode normalization form C
+            All identifiers MUST be converted into Unicode normalization form C
             (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
             Standard Annex 15</xref>. Comparison of identifiers is based on NFC
             and is case-sensitive.
