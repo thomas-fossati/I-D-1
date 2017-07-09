@@ -187,12 +187,12 @@
       </t>
 
       <t>
-        A CoRAL document is a Unicode string in a Unicode encoding form <xref
-        target="UNICODE"/>. The media type for CoRAL documents is "text/coral".
-        The "charset" parameter is not used, because the charset information is
-        transported inside the document in the form of an optional byte order
-        mark (BOM). The use of the UTF-8 encoding scheme, without a BOM, is
-        RECOMMENDED.
+        A CoRAL document in the textual format is a Unicode string in a Unicode
+        encoding form <xref target="UNICODE"/>. The media type for CoRAL
+        documents is "text/coral". The "charset" parameter is not used, because
+        the charset information is transported inside the document in the form
+        of an optional byte order mark (BOM). The use of the UTF-8 encoding
+        scheme, without a BOM, is RECOMMENDED.
       </t>
 
       <section title="Lexical Structure">
