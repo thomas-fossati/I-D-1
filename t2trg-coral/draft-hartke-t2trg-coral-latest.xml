@@ -201,7 +201,8 @@
            The lexical structure of a CoRAL document is made up of four basic
            elements: line terminators, white space, comments, and tokens. Of
            these, only tokens are significant in the syntactic grammar. There
-           are three kinds of tokens: identifiers, literals, and punctuators.
+           are four kinds of tokens: IRI references, literals, identifiers, and
+           punctuators.
         </t>
 
         <t>
@@ -250,30 +251,19 @@
 
         </section>
 
-        <section title="Identifiers">
+        <section title="IRI References">
 
           <t>
-            Identifier tokens are user-defined symbolic names. The rules for
-            identifiers correspond exactly to those recommended by the <xref
-            target="UNICODE-UAX31">Unicode Standard Annex #31</xref>.
-          </t>
-
-          <t>
-            An identifier consists of a Unicode character in the ID_Start class
-            followed by zero or more Unicode characters in the ID_Continue
-            class.
+            An IRI reference is a Unicode string that conforms to the syntax
+            defined in <xref target="RFC3987">RFC 3987</xref>. An IRI reference
+            can be absolute or relative, and can contain a fragment identifier.
+            Relative IRI references must be resolved against a base IRI to their
+            absolute form. IRI references are enclosed in angle brackets ("&lt;"
+            and "&gt;").
             <list>
-              <t>identifier = START *CONTINUE</t>
-              <t>START = &lt;Any character in the ID_Start class&gt;</t>
-              <t>CONTINUE = &lt;Any character in the ID_Continue class&gt;</t>
+              <t>iri = %x3C IRI-reference %x3E</t>
+              <t>IRI-reference = &lt;Defined in RFC 3987&gt;</t>
             </list>
-          </t>
-
-          <t>
-            All identifiers MUST be converted into Unicode normalization form C
-            (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
-            Standard Annex 15</xref>. Comparison of identifiers is based on NFC
-            and is case-sensitive.
           </t>
 
         </section>
@@ -281,15 +271,16 @@
         <section title="Literals">
 
           <t>
-            A literal is a representation of a value. There are seven kinds of
-            literals: Boolean, integer, floating-point, byte string, text
-            string, IRI, and null.
+            A literal is a textual representation of a value. There are six
+            kinds of literals: Boolean, integer, floating-point, byte string,
+            text string, and null.
           </t>
 
           <section title="Boolean Literals">
 
             <t>
-              The literals "true" and "false" denote a Boolean value.
+              The literals "true" and "false" denote the Boolean values true and
+              false, respectively.
               <list>
                 <t>boolean = %x74.72.75.65 / %x66.61.6C.73.65</t>
               </list>
@@ -420,7 +411,7 @@
               points:
             </t>
 
-            <texttable>
+            <texttable title="Simple Escape Sequences" anchor="escape">
               <ttcol>Escape Sequence</ttcol>
               <ttcol>Character Name</ttcol>
               <ttcol>Code Point</ttcol>
@@ -459,20 +450,6 @@
 
           </section>
 
-          <section title="IRI Literals">
-
-            <t>
-              An IRI literal consists of an <xref
-              target="RFC3987">Internationalized Resource Identifier (IRI)
-              reference</xref> enclosed in angle brackets ("&lt;" and "&gt;").
-              <list>
-                <t>iri = %x3C IRI-reference %x3E</t>
-                <t>IRI-reference = &lt;Defined in RFC 3987&gt;</t>
-              </list>
-            </t>
-
-          </section>
-
           <section title="Null Literal">
 
             <t>
@@ -487,6 +464,31 @@
 
         </section>
 
+        <section title="Identifiers">
+
+          <t>
+            Identifier tokens are user-defined symbolic names. The rules for
+            identifiers correspond exactly to those recommended by the <xref
+            target="UNICODE-UAX31">Unicode Standard Annex #31</xref>: An
+            identifier consists of a Unicode character in the ID_Start class
+            followed by zero or more Unicode characters in the ID_Continue
+            class.
+            <list>
+              <t>identifier = START *CONTINUE</t>
+              <t>START = &lt;Any character in the ID_Start class&gt;</t>
+              <t>CONTINUE = &lt;Any character in the ID_Continue class&gt;</t>
+            </list>
+          </t>
+
+          <t>
+            All identifiers MUST be converted into Unicode normalization form C
+            (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
+            Standard Annex 15</xref>. Comparison of identifiers is based on NFC
+            and is case-sensitive.
+          </t>
+
+        </section>
+
         <section title="Punctuators">
 
           <t>
@@ -495,7 +497,7 @@
               <t>punctuator = "#" | "," | ":" | "{" | "}" | "[" | "]" | "="</t>
             </list>
           </t>
-          
+
         </section>
 
       </section>
