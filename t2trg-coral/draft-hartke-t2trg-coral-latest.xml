@@ -3,6 +3,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
   <!ENTITY RFC3629 SYSTEM "reference.RFC.3629.xml">
+  <!ENTITY RFC3629 SYSTEM "reference.RFC.3629.xml">
   <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
   <!ENTITY RFC3987 SYSTEM "reference.RFC.3987.xml">
   <!ENTITY RFC4648 SYSTEM "reference.RFC.4648.xml">
@@ -87,13 +88,13 @@
         the description of typed connections between resources on the Web
         ("links") and possible operations on such resources ("forms") as well as
         simple resource metadata. This document defines the CoRAL data and
-        interaction model and two specialized serialization formats.
+        interaction model as well as two specialized serialization formats.
       </t>
 
       <t>
         CoRAL is intended for driving automated software agents that navigate a
         Web application based on a standardized vocabulary of link and form
-        relation types. CoRAL can be used with both the <xref
+        relation types. CoRAL can be used both with the <xref
         target="RFC7230">Hypertext Transfer Protocol (HTTP)</xref> and the <xref
         target="RFC7252">Constrained Application Protocol (CoAP)</xref>.
       </t>
@@ -107,10 +108,11 @@
         resources and the type of those operations. Additionally, the model can
         describe simple resource metadata in a style similar to the <xref
         target="W3C.REC-rdf11-concepts-20140225">Resource Description Framework
-        (RDF)</xref>. Unlike RDF, CoRAL is not only about resource descriptions
-        but also defines an interaction model. The interaction model specifies
-        how an automated software agent can navigate between resources by
-        following links and perform operations on resources by submitting forms.
+        (RDF)</xref>. Unlike RDF, CoRAL does not only describe the relationships
+        between resources but also defines an interaction model. The interaction
+        model specifies how an automated software agent can navigate between
+        resources by following links and perform operations on resources by
+        submitting forms.
       </t>
 
       <t>
@@ -126,10 +128,10 @@
         URI processing. As a result, link serializations are often more compact
         than equivalent serializations in <xref target="RFC6690">CoRE Link
         Format</xref>, including <xref target="I-D.ietf-core-links-json">its
-        CBOR variant</xref>, or in the <xref target="I-D.kelly-json-hal">JSON
+        CBOR variant</xref>, or the <xref target="I-D.kelly-json-hal">JSON
         Hypertext Application Language (HAL)</xref> that inspired CoRAL.
         Additionally, the format supports the serialization of forms, which
-        these other formats do not support.
+        those other formats do not support.
       </t>
 
       <t>
@@ -181,11 +183,11 @@
         The Constrained RESTful Application Language (CoRAL) is designed for
         building <xref target="W3C.REC-webarch-20041215">Web-based
         applications</xref> in which automated software agents navigate between
-        resources by following hyperlinks and perform operations on resources by
+        resources by following links and perform operations on resources by
         submitting forms.
       </t>
 
-      <section title="Browsing Contexts">
+      <section title="Browsing Context">
 
         <t>
           Borrowing from <xref target="W3C.REC-html51-20161101">HTML 5</xref>,
@@ -203,6 +205,10 @@
           representation.
         </t>
 
+      </section>
+
+      <section title="Session History">
+
         <t>
           A session history consists of a flat list of session history entries.
           Each <spanx>session history entry</spanx> consists of an <xref
@@ -210,6 +216,12 @@
           and a resource representation, and may in addition have other
           information associated with it. New entries are added to the session
           history as the agent navigates from resource to resource.
+        </t>
+
+        <t>
+          At any point, one of the entries in the session history is the
+          <spanx>current entry</spanx>. This is the entry representing the
+          active document of the browsing context. 
         </t>
 
       </section>
@@ -264,9 +276,9 @@
           resource; this is called <spanx>dereferencing the IRI</spanx> or
           <spanx>following the link</spanx>. Not all IRIs are dereferencable,
           however. A dereferencable IRI may need to be converted to a URI (see
-          RFC 3987, Section 3.1) for protocols (such as HTTP) that do not
-          support dereferencing IRIs. Literals can be used to directly identify
-          values, such as strings and numbers.
+          RFC 3987, Section 3.1) for protocols (such as HTTP and CoAP) that do
+          not support IRIs. Literals can be used to directly identify values,
+          such as strings and numbers.
         </t>
 
         <t>
@@ -284,7 +296,7 @@
           context and target. However, the CoRAL data model constrains the
           description of a web of resources to a tree structure; links between
           linked resources can only be described by nesting links. This is what
-          makes CoRAL "constrained".
+          makes CoRAL "constrained" compared to RFC 5988 and RDF.
         </t>
 
       </section>
@@ -317,10 +329,10 @@
           performed. To perform the operation, an agent must construct a request
           with the specified request method and submission IRI. The set of
           possible request methods is defined by the protocol identified by the
-          scheme of the submission IRI. In most cases, the submission IRI will
-          refer to the form context, but it may refer to another resource. The
-          IRI may need to be converted to a URI (see RFC 3987, Section 3.1) for
-          protocols (such as HTTP) that do not support IRIs. Constructing and
+          scheme of the submission IRI. The submission IRI will refer to the
+          form context in most cases, but it may refer to a different resource.
+          The submission IRI may need to be converted to a URI (see RFC 3987,
+          Section 3.1) for protocols that do not support IRIs. Constructing and
           sending the request is called _submitting the form_.
         </t>
 
@@ -359,22 +371,23 @@
       </t>
 
       <t>
-        A CoRAL document in the textual format is a Unicode string in a Unicode
+        A document in the textual format is a Unicode string in a Unicode
         encoding form <xref target="UNICODE"/>. The media type for such
-        documents is "text/coral". The "charset" parameter is not used, because
-        the charset information is transported inside the document in the form
-        of an optional byte order mark (BOM). The use of the UTF-8 encoding
-        scheme, without a BOM, is RECOMMENDED.
+        documents is "text/coral". The "charset" parameter is not used; charset
+        information is transported inside the document in the form of an
+        optional Byte Order Mark (BOM). The use of the <xref
+        target="RFC3629">UTF-8 encoding scheme</xref>, without a BOM, is
+        RECOMMENDED.
       </t>
 
       <section title="Lexical Structure">
 
         <t>
-          The lexical structure of a CoRAL document in the textual format is
-          made up of four basic elements: line terminators, white space,
-          comments, and tokens. Of these, only tokens are significant in the
-          syntactic grammar. There are four kinds of tokens: IRI references,
-          literals, identifiers, and punctuators.
+          The lexical structure of a document in the textual format is made up
+          of four basic elements: line terminators, white space, comments, and
+          tokens. Of these, only tokens are significant in the syntactic
+          grammar. There are four kinds of tokens: IRI references, literals,
+          identifiers, and punctuators.
         </t>
 
         <t>
@@ -428,7 +441,7 @@
           <t>
             An IRI reference is a Unicode string that conforms to the syntax
             defined in <xref target="RFC3987">RFC 3987</xref>. An IRI reference
-            can be absolute or relative, and can contain a fragment identifier.
+            can be absolute or relative and may contain a fragment identifier.
             Relative IRI references must be resolved against a base IRI to their
             absolute form. IRI references are enclosed in angle brackets ("&lt;"
             and "&gt;").
@@ -539,12 +552,11 @@
           <section title="Byte String Literals">
 
             <t>
-              A byte string literal consists of zero or more bytes encoded in
-              <xref target="RFC4648">Base16, Base32, or Base64</xref>. Byte
-              string literals in Base16 begin with "h" or "b16", byte string
-              literals in Base32 begin with "b32", and byte string literals in
-              Base64 begin with "b64". The encoded bytes are enclosed in single
-              quotes.
+              A byte string literal consists of a prefix and zero or more bytes
+              encoded in <xref target="RFC4648">Base16, Base32, or Base64</xref>
+              and enclosed in single quotes. Byte string literals in Base16
+              begin with "h" or "b16", byte string literals in Base32 begin with
+              "b32", and byte string literals in Base64 begin with "b64".
               <list>
                 <t>bytes = base16 / base32 / base64</t>
                 <t>base16 = (%x68 / %x62.31.36) SQUOTE &lt;Base16 encoded data&gt; SQUOTE</t>
@@ -561,8 +573,8 @@
             <t>
               A text string literal consists of zero or more Unicode characters
               enclosed in double quotes. It can include simple escape sequences
-              (such as \t for the tab character) as well as and hexadecimal and
-              Unicode escape sequences.
+              (such as \t for the tab character) and hexadecimal and Unicode
+              escape sequences.
               <list>
                 <t>text = DQUOTE *(char / %x5C escape) DQUOTE</t>
                 <t>char = &lt;Any character except %x22, %x5C, and line terminators&gt;</t>
@@ -653,7 +665,7 @@
           </t>
 
           <t>
-            All identifiers are converted into Unicode Normalization Form C
+            All identifiers must be converted into Unicode Normalization Form C
             (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
             Standard Annex 15</xref>. Comparison of identifiers is based on NFC
             and is case-sensitive.
@@ -666,7 +678,7 @@
           <t>
             Punctuator tokens are used for grouping and separating.
             <list>
-              <t>punctuator = "#" | "," | ":" | "{" | "}" | "[" | "]" | "="</t>
+              <t>punctuator = "#" | ":" | "[" | "]" | "{" | "}" | "=" | "->"</t>
             </list>
           </t>
 
@@ -709,6 +721,7 @@
     <references title="Normative References">
 
       &RFC2119;
+      &RFC3629;
       &RFC3987;
       &RFC4648;
       &RFC5234;
