@@ -319,10 +319,10 @@
           with the specified request method and submission IRI. The set of
           possible request methods is defined by the protocol identified by the
           scheme of the submission IRI. In most cases, the submission IRI will
-          refer to the form context, but it MAY refer to a different resource.
-          The IRI may need to be converted to a URI (see RFC 3987, Section 3.1)
-          for protocols (such as HTTP) that do not support IRIs. Constructing
-          and sending the request is called _submitting the form_.
+          refer to the form context, but it MAY refer to another resource. The
+          IRI may need to be converted to a URI (see RFC 3987, Section 3.1) for
+          protocols (such as HTTP) that do not support IRIs. Constructing and
+          sending the request is called _submitting the form_.
         </t>
 
         <t>
