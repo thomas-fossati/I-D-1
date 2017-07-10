@@ -354,14 +354,14 @@
         This section defines the syntax of the CoRAL textual format using two
         grammars: The lexical grammar defines how Unicode characters are
         combined to form line terminators, white space, comments, and tokens.
-        The syntactic grammar defines how the tokens are combined to form CoRAL
+        The syntactic grammar defines how the tokens are combined to form
         documents. Both grammars are presented in <xref
         target="RFC5234">Augmented Backus-Naur Form (ABNF)</xref>.
       </t>
 
       <t>
         A CoRAL document in the textual format is a Unicode string in a Unicode
-        encoding form <xref target="UNICODE"/>. The media type for CoRAL
+        encoding form <xref target="UNICODE"/>. The media type for such
         documents is "text/coral". The "charset" parameter is not used, because
         the charset information is transported inside the document in the form
         of an optional byte order mark (BOM). The use of the UTF-8 encoding
@@ -371,16 +371,16 @@
       <section title="Lexical Structure">
 
         <t>
-           The lexical structure of a CoRAL document is made up of four basic
-           elements: line terminators, white space, comments, and tokens. Of
-           these, only tokens are significant in the syntactic grammar. There
-           are four kinds of tokens: IRI references, literals, identifiers, and
-           punctuators.
+          The lexical structure of a CoRAL document in the textual format is
+          made up of four basic elements: line terminators, white space,
+          comments, and tokens. Of these, only tokens are significant in the
+          syntactic grammar. There are four kinds of tokens: IRI references,
+          literals, identifiers, and punctuators.
         </t>
 
         <t>
-          When several lexical grammar rules match a sequence of characters in
-          a document, the longest match takes priority.
+          When several lexical grammar rules match a sequence of characters in a
+          document, the longest match takes priority.
         </t>
 
         <section title="Line Terminators">
