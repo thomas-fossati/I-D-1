@@ -207,7 +207,7 @@
           A session history consists of a flat list of session history entries.
           Each <spanx>session history entry</spanx> consists of an <xref
           target="RFC3987">Internationalized Resource Identifier (IRI)</xref>
-          and a resource representation, and MAY in addition have other
+          and a resource representation, and may in addition have other
           information associated with it. New entries are added to the session
           history as the agent navigates from resource to resource.
         </t>
@@ -226,7 +226,7 @@
         <t>
           A CoRAL document consists of a list of zero or more links and forms,
           which are collectively called <spanx>elements</spanx>. Serialization
-          formats MAY define additional types of elements for efficiency or
+          formats may define additional types of elements for efficiency or
           convenience, such as a base IRI for relative IRI references.
         </t>
 
@@ -238,8 +238,8 @@
           A <spanx>link</spanx> describes a relationship between two resources
           on the Web. It consists of a <spanx>link context</spanx>, a
           <spanx>link relation type</spanx>, and a <spanx>link target</spanx>. A
-          link MAY additionally have a nested list of zero or more links and
-          forms, which takes the place of link target attributes.
+          link may additionally have a nested list of zero or more links and
+          forms, which take the place of link target attributes.
         </t>
 
         <t>
@@ -255,7 +255,6 @@
           "stylesheet", "icon" or "item". In order to minimize the overhead in
           constrained environments, link relation types in CoRAL are unsigned
           integers.
-          <!--A number of link relation types are defined in Appendix X.-->
         </t>
 
         <t>
@@ -296,7 +295,7 @@
           A <spanx>form</spanx> provides instructions for performing an
           operation on a Web resource. It consists of a <spanx>form
           context</spanx>, a <spanx>form relation type</spanx>, a <spanx>request
-          method</spanx>, and a <spanx>submission IRI</spanx>. A form MAY
+          method</spanx>, and a <spanx>submission IRI</spanx>. A form may
           additionally be accompanied by <spanx>form data</spanx>.
         </t>
 
@@ -315,18 +314,18 @@
 
         <t>
           The form context is the resource on which the operation is ultimately
-          performed. To perform the operation, an agent MUST construct a request
+          performed. To perform the operation, an agent must construct a request
           with the specified request method and submission IRI. The set of
           possible request methods is defined by the protocol identified by the
           scheme of the submission IRI. In most cases, the submission IRI will
-          refer to the form context, but it MAY refer to another resource. The
+          refer to the form context, but it may refer to another resource. The
           IRI may need to be converted to a URI (see RFC 3987, Section 3.1) for
           protocols (such as HTTP) that do not support IRIs. Constructing and
           sending the request is called _submitting the form_.
         </t>
 
         <t>
-          If a form is accompanied by form data, the agent MUST construct and
+          If a form is accompanied by form data, the agent must construct and
           include a request payload that matches the specifications of the form
           data.
         </t>
@@ -654,7 +653,7 @@
           </t>
 
           <t>
-            All identifiers MUST be converted into Unicode normalization form C
+            All identifiers are converted into Unicode Normalization Form C
             (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
             Standard Annex 15</xref>. Comparison of identifiers is based on NFC
             and is case-sensitive.
