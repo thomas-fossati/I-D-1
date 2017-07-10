@@ -686,6 +686,156 @@
 
       </section>
 
+      <section title="Syntactic Structure">
+
+        <t>
+          The syntactic structure of a document in the textual format is made up
+          of three kinds of elements: links and forms, as defined by the CoRAL
+          data model, and directives. Directives provide a way to make documents
+          easier to read and write by defining a base IRI for relative IRI
+          references and introducing human-readable names for link and form
+          relation types.
+        </t>
+
+        <t>
+          Elements are processed in the order they appear in the document.
+          Document processors maintain an <spanx>environment</spanx> while
+          iterating a list of elements. The environment consists of a
+          <spanx>current context IRI</spanx>, a <spanx>current base IRI</spanx>,
+          and a mapping between identifiers and unsigned integers. The current
+          context IRI and current base IRI are both initially set to the
+          document's retrieval context. The mapping of identifiers is initially
+          empty.
+        </t>
+
+        <section title="Documents">
+
+          <t>
+            The body of a document in the textual format consists of zero or
+            more links, forms, and directives.
+            <list>
+              <t>body = *(link / form / directive)</t>
+            </list>
+          </t>
+
+        </section>
+
+        <section title="Links">
+
+          <t>
+            A link consists of the link relation type, followed by the link
+            target, optionally followed by a link body enclosed in curly
+            brackets ("{" and "}").
+            <list>
+              <t>link = relation target ["{" body "}"]</t>
+            </list>
+          </t>
+
+          <t>
+            ...
+            <list>
+              <t>relation = ...</t>
+            </list>
+          </t>
+
+          <t>
+            The link target is denoted by a IRI reference or represented by a
+            value literal. A relative IRI reference must be resolved against the
+            current base IRI. If the link target is null, the link target is an
+            unspecified resource.
+            <list>
+              <t>target = iri / literal / null</t>
+              <t>literal = boolean / integer / floating-point / bytes / text</t>
+            </list>
+          </t>
+
+          <t>
+            The list of elements in the link body (if any) is processed in a
+            fresh environment. The current context IRI and current base IRI in
+            this environment are both initially set to the link target of the
+            enclosing link. The mapping of identifiers is initially set to a
+            copy of the mapping of identifiers in the current environment.
+          </t>
+
+        </section>
+
+        <section title="Forms">
+
+          <t>
+            A form consists of a form relation type, followed by a "->" token, a
+            method identifier, and a submission IRI, optionally followed by some
+            form data enclosed in square brackets ("[" and "]").
+            <list>
+              <t>form = relation "->" method iri ["[" form-data "]"]</t>
+            </list>
+          </t>
+
+          <t>
+            The method identifier refers to one of the request methods defined
+            by the protocol that is identified by the scheme of the submission
+            IRI. For <xref target="RFC7231">HTTP</xref>, the set of possible
+            identifiers is maintained in the HTTP Method Registry. For <xref
+            target="RFC7252">CoAP</xref>, the set of possible identifiers is
+            maintained in the CoAP Method Codes Registry. Method identifiers are
+            constrained to the range of US-ASCII characters and are
+            case-insensitive.
+            <list>
+              <t>method = identifier</t>
+            </list>
+          </t>
+
+          <t>
+            The submission IRI is a relative or absolute IRI reference. A
+            relative IRI reference must be resolved against the current base
+            IRI.
+          </t>
+
+          <t>
+            ...
+            <list>
+              <t>form-data = ...</t>
+            </list>
+          </t>
+
+        </section>
+
+        <section title="Directives">
+
+          <t>
+            Directives provide the ability to manipulate the environment when
+            processing a list of elements. All directives start with a hash
+            ("#") followed by a directive identifier. Directive identifiers are
+            constrained to the range of US-ASCII characters and are
+            case-insensitive.
+          </t>
+
+          <t>
+            The following directives are available: "#base", ...
+            <list>
+              <t>directive = base-directive</t>
+            </list>
+          </t>
+
+          <section title="Base IRI Directives">
+
+            <t>
+              A base IRI directive consists of a hash ("#"), followed by the
+              identifier "base" in upper- or lowercase, followed by an IRI
+              reference.
+              <list>
+                <t>base-directive = "#" "base" iri</t>
+              </list>
+              The directive is processed by resolving the IRI reference against
+              the current context IRI and assigning the result to the current
+              base IRI.
+            </t>
+
+          </section>
+
+        </section>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
