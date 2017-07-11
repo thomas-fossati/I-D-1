@@ -386,8 +386,8 @@
           The lexical structure of a document in the textual format is made up
           of four basic elements: line terminators, white space, comments, and
           tokens. Of these, only tokens are significant in the syntactic
-          grammar. There are four kinds of tokens: IRI references, literals,
-          identifiers, and punctuators.
+          grammar. There are four kinds of tokens: identifiers, IRI references,
+          literals, and punctuators.
         </t>
 
         <t>
@@ -432,6 +432,31 @@
             special meaning within a single-line comment, and the character
             sequences "//" and "/*" have no special meaning within a delimited
             comment.
+          </t>
+
+        </section>
+
+        <section title="Identifiers">
+
+          <t>
+            Identifier tokens are user-defined symbolic names. The rules for
+            identifiers correspond exactly to those recommended by the <xref
+            target="UNICODE-UAX31">Unicode Standard Annex #31</xref>: An
+            identifier consists of a Unicode character in the ID_Start class
+            followed by zero or more Unicode characters in the ID_Continue
+            class.
+            <list>
+              <t>identifier = START *CONTINUE</t>
+              <t>START = &lt;Any character in the ID_Start class&gt;</t>
+              <t>CONTINUE = &lt;Any character in the ID_Continue class&gt;</t>
+            </list>
+          </t>
+
+          <t>
+            All identifiers must be converted into Unicode Normalization Form C
+            (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
+            Standard Annex 15</xref>. Comparison of identifiers is based on NFC
+            and is case-sensitive.
           </t>
 
         </section>
@@ -648,31 +673,6 @@
 
         </section>
 
-        <section title="Identifiers">
-
-          <t>
-            Identifier tokens are user-defined symbolic names. The rules for
-            identifiers correspond exactly to those recommended by the <xref
-            target="UNICODE-UAX31">Unicode Standard Annex #31</xref>: An
-            identifier consists of a Unicode character in the ID_Start class
-            followed by zero or more Unicode characters in the ID_Continue
-            class.
-            <list>
-              <t>identifier = START *CONTINUE</t>
-              <t>START = &lt;Any character in the ID_Start class&gt;</t>
-              <t>CONTINUE = &lt;Any character in the ID_Continue class&gt;</t>
-            </list>
-          </t>
-
-          <t>
-            All identifiers must be converted into Unicode Normalization Form C
-            (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
-            Standard Annex 15</xref>. Comparison of identifiers is based on NFC
-            and is case-sensitive.
-          </t>
-
-        </section>
-
         <section title="Punctuators">
 
           <t>
@@ -720,7 +720,7 @@
 
         </section>
 
-        <section title="Links">
+        <section title="Links" anchor="textual-links">
 
           <t>
             A link consists of the link relation type, followed by the link
@@ -764,10 +764,15 @@
           <t>
             A form consists of the form relation type, followed by a "->" token,
             a method identifier, and the submission IRI, optionally followed by
-            some form data enclosed in square brackets ("[" and "]").
+            form data enclosed in square brackets ("[" and "]").
             <list>
               <t>form = relation "->" method iri ["[" form-data "]"]</t>
             </list>
+          </t>
+
+          <t>
+            The form relation type follows the same rules as link relation
+            types; see <xref target="textual-links"/>.
           </t>
 
           <t>
