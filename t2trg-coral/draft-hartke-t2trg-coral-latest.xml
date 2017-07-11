@@ -220,7 +220,7 @@
         <t>
           At any point, one of the entries in the session history is the
           <spanx>current entry</spanx>. This is the entry representing the
-          active document of the browsing context. 
+          active document of the browsing context.
         </t>
 
       </section>
