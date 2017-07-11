@@ -761,9 +761,9 @@
         <section title="Forms">
 
           <t>
-            A form consists of a form relation type, followed by a "->" token, a
-            method identifier, and a submission IRI, optionally followed by some
-            form data enclosed in square brackets ("[" and "]").
+            A form consists of the form relation type, followed by a "->" token,
+            a method identifier, and the submission IRI, optionally followed by
+            some form data enclosed in square brackets ("[" and "]").
             <list>
               <t>form = relation "->" method iri ["[" form-data "]"]</t>
             </list>
