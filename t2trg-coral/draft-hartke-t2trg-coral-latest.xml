@@ -3,7 +3,6 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
   <!ENTITY RFC3629 SYSTEM "reference.RFC.3629.xml">
-  <!ENTITY RFC3629 SYSTEM "reference.RFC.3629.xml">
   <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
   <!ENTITY RFC3987 SYSTEM "reference.RFC.3987.xml">
   <!ENTITY RFC4648 SYSTEM "reference.RFC.4648.xml">
