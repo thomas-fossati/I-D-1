@@ -7,7 +7,9 @@
   <!ENTITY RFC3987 SYSTEM "reference.RFC.3987.xml">
   <!ENTITY RFC4648 SYSTEM "reference.RFC.4648.xml">
   <!ENTITY RFC5234 SYSTEM "reference.RFC.5234.xml">
+  <!ENTITY RFC6657 SYSTEM "reference.RFC.6657.xml">
   <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
+  <!ENTITY RFC6838 SYSTEM "reference.RFC.6838.xml">
   <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7230 SYSTEM "reference.RFC.7230.xml">
@@ -24,6 +26,7 @@
   <!ENTITY W3C.REC-webarch-20041215 SYSTEM "reference.W3C.REC-webarch-20041215.xml">
   <!ENTITY W3C.REC-xml-20081126 SYSTEM "reference.W3C.REC-xml-20081126.xml">
   <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "reference.W3C.REC-xml-names-20091208.xml">
+  <!ENTITY SELF "[I-D.hartke-t2trg-coral]">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -857,6 +860,75 @@
     <!-- **************************************************************** -->
 
     <section title="IANA Considerations">
+
+      <section title="Media Type &quot;text/coral&quot;">
+
+        <t>
+          This document registers the media type &quot;text/coral&quot;
+          according to the procedures of <xref target="RFC6838">BCP 13</xref>
+          and guidelines in <xref target="RFC6657">RFC 6657</xref>.
+          <list style="hanging">
+            <t hangText="Type name:">
+              <vspace/>text
+            </t>
+            <t hangText="Subtype name:">
+              <vspace/>coral
+            </t>
+            <t hangText="Required parameters:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Optional parameters:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Encoding considerations:">
+              <vspace/>See <xref target="textual"/> of &SELF;.
+            </t>
+            <t hangText="Security considerations:">
+              <vspace/>See <xref target="security"/> of &SELF;.
+            </t>
+            <t hangText="Interoperability considerations:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Published specification:">
+              <vspace/>&SELF;
+            </t>
+            <t hangText="Applications that use this media type:">
+              <vspace/>See <xref target="introduction"/> of &SELF;.
+            </t>
+            <t hangText="Fragment identifier considerations:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Additional information:">
+              <list style="hanging">
+                <t hangText="Deprecated alias names for this type:">N/A</t>
+                <t hangText="Magic number(s):">N/A</t>
+                <t hangText="File extension(s):">.coral</t>
+                <t hangText="Macintosh file type code(s):">TEXT</t>
+              </list>
+            </t>
+            <t hangText="Person &amp; email address to contact for further information:">
+              <vspace/>See the Author's Address section of &SELF;.
+            </t>
+            <t hangText="Intended usage:">
+              <vspace/>COMMON
+            </t>
+            <t hangText="Restrictions on usage:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Author:">
+              <vspace/>See the Author's Address section of &SELF;.
+            </t>
+            <t hangText="Change controller:">
+              <vspace/>IESG
+            </t>
+            <t hangText="Provisional registration?">
+              <vspace/>No
+            </t>
+          </list>
+        </t>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
@@ -880,6 +952,8 @@
       &RFC3987;
       &RFC4648;
       &RFC5234;
+      &RFC6657;
+      &RFC6838;
       &RFC7049;
       &RFC8174;
 
