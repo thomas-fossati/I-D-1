@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="us-ascii"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC3864 SYSTEM "reference.RFC.3864.xml">
+  <!ENTITY RFC5234 SYSTEM "reference.RFC.5234.xml">
+  <!ENTITY RFC7230 SYSTEM "reference.RFC.7230.xml">
+  <!ENTITY RFC7231 SYSTEM "reference.RFC.7231.xml">
+  <!ENTITY RFC7234 SYSTEM "reference.RFC.7234.xml">
+  <!ENTITY RFC7540 SYSTEM "reference.RFC.7540.xml">
+  <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+
+<?rfc compact="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="2"?>
+
+<rfc category="std" docName="draft-hartke-http-observe-00" ipr="trust200902">
+
+  <front>
+
+    <title abbrev="Observing Resources over HTTP/2">
+      Observing Resources over the Hypertext Transfer Protocol Version 2 (HTTP/2)
+    </title>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>D-28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
+      </address>
+    </author>
+
+    <date />
+
+    <workgroup>Network Working Group</workgroup>
+
+    <abstract>
+
+      <t>
+        The state of a resource on a HTTP/2 server can change over time. This
+        document specifies a simple protocol extension for HTTP/2 that enables
+        HTTP/2 clients to "observe" a resource, i.e., to retrieve a
+        representation of the resource and keep this representation updated by
+        the server over a period of time.
+      </t>
+
+    </abstract>
+
+  </front>
+
+  <middle>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Introduction">
+
+      <t>See Section 1 of <xref target="RFC7641"/>.</t>
+
+      <section title="Terminology and Notation">
+
+        <t>
+          Readers are expected to be familiar with the terms and concepts
+          described in <xref target="RFC7540"/> and <xref target="RFC7641"/>.
+        </t>
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+          "OPTIONAL" in this document are to be interpreted as described in
+          <xref target="RFC2119"/>.
+        </t>
+
+        <t>
+          This specification uses the Augmented Backus-Naur Form (ABNF) notation
+          of <xref target="RFC5234"/>.
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Observing Resources">
+
+      <t>
+        Observing resources over <xref target="RFC7230">HTTP/2</xref> is very
+        similar to <xref target="RFC7641">observing resources in CoAP</xref>.
+        Therefore, instead of presenting a new protocol, this section describes
+        only the major changes from <xref target="RFC7641"/>. Where no
+        differences are explicitly called out, the protocol is the same as in
+        <xref target="RFC7641"/>.
+      </t>
+
+      <section title="The &quot;Observe&quot; Header Field" anchor="header">
+
+        <t>
+          This document defines the "Observe" header field.
+        </t>
+
+        <t>
+          The "Observe" header field in a <xref target="RFC7231">GET
+          request</xref> indicates the interest of the client to receive
+          notifications about resource state changes to the target resource
+          after the initial transfer of the current selected representation.
+        </t>
+
+        <t>
+          The "Observe" header field in a response with a <xref
+          target="RFC7231">2xx (Successful)</xref> status code identifies the
+          message as a notification.
+        </t>
+
+        <t>
+          In either case, the field-value of the "Observe" header field consists
+          of the string "yes", i.e., the header fields alters the semantics of a
+          message by its presence, not its field-value.
+          <list>
+            <t>Observe = "yes"</t>
+          </list>
+          The Observe field-value is case-insensitive.
+        </t>
+
+        <t>
+          The "Observe" header field is hop-by-hop; it's only intended for the
+          immediate recipient. If a recipient does not support the header field,
+          the message is processed as if the header wasn't present.
+        </t>
+
+      </section>
+
+      <section title="Requests">
+
+        <t>
+          A client registers its interest in a resource by issuing a GET request
+          that includes an "Observe" header field.
+        </t>
+
+      </section>
+
+      <section title="Notifications">
+
+        <t>
+          Notifications are additional responses sent by the server in reply to
+          the GET request. Each notification is sent in the same stream, which
+          is kept open as long as necessary.
+        </t>
+
+      </section>
+
+      <section title="Caching">
+
+        <t>
+          As notifications are just additional responses sent by the server in
+          reply to a GET request, they are subject to caching as defined in
+          <xref target="RFC7641"/> and <xref target="RFC7234"/>.
+        </t>
+
+      </section>
+
+      <section title="Intermediaries">
+
+        <t>
+          Intermediaries that support the header field have the opportunity to
+          aggregate requests from multiple clients when making outbound requests
+          if the requests have the same cache key.
+        </t>
+
+      </section>
+
+      <section title="Cancellation">
+
+        <t>
+          The observation of a resource can be cancelled by closing the stream.
+          (There is no need for the convoluted way of cancelling requests by
+          sending another request as specified in <xref target="RFC7641"/>.)
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Security Considerations">
+
+      <t>
+        See Section 10 of <xref target="RFC7540"/> and Section 7 of <xref
+        target="RFC7641"/>.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="IANA Considerations">
+
+      <section title="Observe Header Field Registration">
+
+        <t>
+          This section registers the "Observe" header field in the "Permanent
+          Message Header Field Names" registry <xref target="RFC3864"/>.
+          <list style="hanging">
+            <t hangText="Header field name:">
+              Observe
+            </t>
+            <t hangText="Applicable protocol:">
+              http
+            </t>
+            <t hangText="Status:">
+              standard
+            </t>
+            <t hangText="Author/Change controller:">
+              IETF
+            </t>
+            <t hangText="Specification document(s):">
+              <xref target="header"/> of this document
+            </t>
+            <t hangText="Related information:">
+              This header field is only used by HTTP/2 clients and servers that
+              support resource observation.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+    </section>
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC2119;
+      &RFC3864;
+      &RFC7230;
+      &RFC7231;
+      &RFC7234;
+      &RFC7540;
+      &RFC7641;
+      &RFC5234;
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </back>
+
+</rfc>
