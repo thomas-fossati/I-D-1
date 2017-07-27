@@ -822,9 +822,9 @@
           </t>
 
           <t>
-            The following directives are available: "#base", ...
+            The following directives are available: "#base" and "#using".
             <list>
-              <t>directive = base-directive</t>
+              <t>directive = base-directive / using-directive</t>
             </list>
           </t>
 
@@ -840,6 +840,22 @@
               The directive is processed by resolving the IRI reference against
               the current context IRI and assigning the result to the current
               base IRI.
+            </t>
+
+          </section>
+
+          <section title="Using Directives">
+
+            <t>
+              A using directive consists of a hash ("#"), followed by the
+              identifier "using" in upper- or lowercase, followed by an
+              identifier, an equals sign ("="), and an IRI.
+              <list>
+                <t>using-directive = "#" "using" identifier "=" iri</t>
+              </list>
+              The directive is processed by adding the identifier and IRI to the
+              mapping from identifiers to IRIs in the current environment. It is
+              an error if the identifier is already present.
             </t>
 
           </section>
