@@ -581,9 +581,10 @@
             <t>
               A byte string literal consists of a prefix and zero or more bytes
               encoded in <xref target="RFC4648">Base16, Base32, or Base64</xref>
-              and enclosed in single quotes. Byte string literals in Base16
-              begin with "h" or "b16", byte string literals in Base32 begin with
-              "b32", and byte string literals in Base64 begin with "b64".
+              and enclosed in single quotes. Byte string literals encoded in
+              Base16 begin with "h" or "b16", byte string literals encoded in
+              Base32 begin with "b32", and byte string literals encoded in
+              Base64 begin with "b64".
               <list>
                 <t>bytes = base16 / base32 / base64</t>
                 <t>base16 = (%x68 / %x62.31.36) SQUOTE &lt;Base16 encoded data&gt; SQUOTE</t>
@@ -600,8 +601,8 @@
             <t>
               A text string literal consists of zero or more Unicode characters
               enclosed in double quotes. It can include simple escape sequences
-              (such as \t for the tab character) and hexadecimal and Unicode
-              escape sequences.
+              (such as \t for the tab character) as well as hexadecimal and
+              Unicode escape sequences.
               <list>
                 <t>text = DQUOTE *(char / %x5C escape) DQUOTE</t>
                 <t>char = &lt;Any character except %x22, %x5C, and line terminators&gt;</t>
@@ -695,8 +696,8 @@
           of three kinds of elements: links and forms, as defined by the CoRAL
           data model, and directives. Directives provide a way to make documents
           easier to read and write by defining a base IRI for relative IRI
-          references and introducing human-readable names for link and form
-          relation types.
+          references and introducing shorthands for link and form relation
+          types.
         </t>
 
         <t>
@@ -765,7 +766,7 @@
 
           <t>
             A form consists of the form relation type, followed by a "->" token,
-            a method identifier, and the submission IRI, optionally followed by
+            a method identifier, and a submission IRI, optionally followed by
             form data enclosed in square brackets ("[" and "]").
             <list>
               <t>form = relation "->" method iri ["[" form-data "]"]</t>
@@ -780,12 +781,12 @@
           <t>
             The method identifier refers to one of the request methods defined
             by the protocol that is identified by the scheme of the submission
-            IRI. For <xref target="RFC7231">HTTP</xref>, the set of possible
-            identifiers is maintained in the HTTP Method Registry. For <xref
+            IRI. Method identifiers are constrained to the range of US-ASCII
+            characters and are case-insensitive. For <xref
+            target="RFC7231">HTTP</xref>, the set of possible identifiers is
+            maintained in the HTTP Method Registry. For <xref
             target="RFC7252">CoAP</xref>, the set of possible identifiers is
-            maintained in the CoAP Method Codes Registry. Method identifiers are
-            constrained to the range of US-ASCII characters and are
-            case-insensitive.
+            maintained in the CoAP Method Codes Registry.
             <list>
               <t>method = identifier</t>
             </list>
@@ -797,12 +798,16 @@
             IRI.
           </t>
 
-          <t>
-            ...
-            <list>
-              <t>form-data = ...</t>
-            </list>
-          </t>
+          <section title="Form Data">
+
+            <t>
+              ...
+              <list>
+                <t>form-data = ...</t>
+              </list>
+            </t>
+
+          </section>
 
         </section>
 
