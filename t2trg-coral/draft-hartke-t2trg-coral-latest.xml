@@ -705,10 +705,9 @@
           Document processors maintain an <spanx>environment</spanx> while
           iterating a list of elements. The environment consists of a
           <spanx>current context IRI</spanx>, a <spanx>current base IRI</spanx>,
-          and a mapping between identifiers and unsigned integers. The current
-          context IRI and current base IRI are both initially set to the
-          document's retrieval context. The mapping of identifiers is initially
-          empty.
+          and a mapping from identifiers to IRIs. The current context IRI and
+          current base IRI are both initially set to the document's retrieval
+          context. The mapping from identifiers to IRIs is initially empty.
         </t>
 
         <section title="Documents">
@@ -743,9 +742,10 @@
 
           <t>
             The link target is denoted by a IRI reference or represented by a
-            value literal. A relative IRI reference must be resolved against the
-            current base IRI. If the link target is null, the link target is an
-            unspecified resource.
+            value literal. The IRI reference may be relative or absolute. A
+            relative IRI reference must be resolved against the current base
+            IRI. If the link target is null, the link target is an unspecified
+            resource.
             <list>
               <t>target = iri / literal / null</t>
               <t>literal = boolean / integer / floating-point / bytes / text</t>
@@ -756,8 +756,9 @@
             The list of elements in the link body (if any) is processed in a
             fresh environment. The current context IRI and current base IRI in
             this environment are both initially set to the link target of the
-            enclosing link. The mapping of identifiers is initially set to a
-            copy of the mapping of identifiers in the current environment.
+            enclosing link. The mapping from identifiers to IRIs is initially
+            set to a copy of the mapping from identifiers to IRIs in the current
+            environment.
           </t>
 
         </section>
@@ -766,8 +767,8 @@
 
           <t>
             A form consists of the form relation type, followed by a "->" token,
-            a method identifier, and a submission IRI, optionally followed by
-            form data enclosed in square brackets ("[" and "]").
+            a method identifier, and a submission IRI reference, optionally
+            followed by form data enclosed in square brackets ("[" and "]").
             <list>
               <t>form = relation "->" method iri ["[" form-data "]"]</t>
             </list>
@@ -793,9 +794,8 @@
           </t>
 
           <t>
-            The submission IRI is a relative or absolute IRI reference. A
-            relative IRI reference must be resolved against the current base
-            IRI.
+            The submission IRI reference may be relative or absolute. A relative
+            IRI reference must be resolved against the current base IRI.
           </t>
 
           <section title="Form Data">
