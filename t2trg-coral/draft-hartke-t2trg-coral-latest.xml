@@ -67,10 +67,11 @@
     <abstract>
 
       <t>
-        The Constrained RESTful Application Language (CoRAL) defines a model and
-        two serialization formats for describing typed connections between
-        resources on the Web ("links") and possible operations on such resources
-        ("forms") as well as simple resource metadata.
+        The Constrained RESTful Application Language (CoRAL) defines a data
+        model and interaction model as well as two specialized serialization
+        formats for the description of typed connections between resources on
+        the Web ("links") and possible operations on such resources ("forms") as
+        well as simple resource metadata.
       </t>
 
     </abstract>
@@ -91,50 +92,53 @@
         the description of typed connections between resources on the Web
         ("links") and possible operations on such resources ("forms") as well as
         simple resource metadata. This document defines the CoRAL data and
-        interaction model as well as two specialized serialization formats.
+        interaction model as well as two specialized CoRAL serialization
+        formats.
       </t>
 
       <t>
         CoRAL is intended for driving automated software agents that navigate a
         Web application based on a standardized vocabulary of link and form
-        relation types. CoRAL can be used both with the <xref
-        target="RFC7230">Hypertext Transfer Protocol (HTTP)</xref> and the <xref
-        target="RFC7252">Constrained Application Protocol (CoAP)</xref>.
+        relation types. It is designed to be used in conjunction with a Web
+        transfer protocol such as the <xref target="RFC7230">Hypertext Transfer
+        Protocol (HTTP)</xref> or the <xref target="RFC7252">Constrained
+        Application Protocol (CoAP)</xref>.
       </t>
 
       <t>
         The CoRAL data and interaction model is a superset of the Web linking
         model described in <xref target="I-D.nottingham-rfc5988bis">RFC
-        5988</xref>. The data model consists of links, which describe the
-        relationships between pairs of resources and the type of those
+        5988</xref>. The data model consists of two parts: links, which describe
+        relationships between pair of resources and the types of those
         relationships, and forms, which describe possible operations on
-        resources and the type of those operations. Additionally, the model can
+        resources and the types of those operation. Additionally, the model can
         describe simple resource metadata in a style similar to the <xref
         target="W3C.REC-rdf11-concepts-20140225">Resource Description Framework
-        (RDF)</xref>. Unlike RDF, CoRAL does not only describe the relationships
-        between resources but also defines an interaction model. The interaction
-        model specifies how an automated software agent can navigate between
-        resources by following links and perform operations on resources by
-        submitting forms.
+        (RDF)</xref>. However, unlike RDF, the focus of CoRAL is on the
+        interaction with resources, not on the relationships between them. The
+        interaction model derives from <xref
+        target="W3C.REC-html51-20161101">HTML 5</xref> and specifies how an
+        automated software agent can navigate between resources by following
+        links and perform operations on resources by submitting forms.
       </t>
 
       <t>
         The primary CoRAL serialization format is a compact, binary encoding of
-        links and forms based on the <xref target="RFC7049">Concise Binary
-        Object Representation (CBOR)</xref>. It shares many similarities with
-        the message format of the <xref target="RFC7252">Constrained Application
-        Protocol (CoAP)</xref> and is intended for <xref
+        links and forms in <xref target="RFC7049">Concise Binary Object
+        Representation (CBOR)</xref>. It is intended for <xref
         target="RFC7228">environments with constraints on power, memory, and
-        processing resources</xref>. The format uses numeric identifiers instead
+        processing resources</xref> and shares many similarities with the
+        message format of the <xref target="RFC7252">Constrained Application
+        Protocol (CoAP)</xref>. For example, it uses numeric identifiers instead
         of strings for link and form relation types and pre-parses URIs into
         (what CoAP considers to be) their components, which greatly simplifies
         URI processing. As a result, link serializations are often more compact
         than equivalent serializations in <xref target="RFC6690">CoRE Link
         Format</xref>, including <xref target="I-D.ietf-core-links-json">its
-        CBOR variant</xref>, or the <xref target="I-D.kelly-json-hal">JSON
-        Hypertext Application Language (HAL)</xref> that inspired CoRAL.
-        Additionally, the format supports the serialization of forms, which
-        those other formats do not support.
+        CBOR variant</xref>, and the <xref target="I-D.kelly-json-hal">JSON
+        Hypertext Application Language (HAL)</xref>, which inspired CoRAL.
+        Additionally, the format supports the serialization of forms, which the
+        other formats do not support.
       </t>
 
       <t>
@@ -202,29 +206,20 @@
 
         <t>
           A browsing context has a <spanx>session history</spanx>, which lists
-          the resource representations that the browsing context has processed,
-          is processing, or will process. At any time, one representation in
-          each browsing context is designated the <spanx>active</spanx>
-          representation.
+          the resource representations that the agent has processed, is
+          processing, or will process. An agent may limit the number of elements
+          in the session history depending on the application and use case. At
+          any time, one representation in each browsing context is designated
+          the <spanx>active</spanx> representation.
         </t>
-
-      </section>
-
-      <section title="Session History">
 
         <t>
           A session history consists of a flat list of session history entries.
-          Each <spanx>session history entry</spanx> consists of an <xref
-          target="RFC3987">Internationalized Resource Identifier (IRI)</xref>
-          and a resource representation, and may in addition have other
+          Each <spanx>session history entry</spanx> consists of a resource
+          representation and an <xref target="RFC3987">Internationalized
+          Resource Identifier (IRI)</xref>. It may additionally have other
           information associated with it. New entries are added to the session
           history as the agent navigates from resource to resource.
-        </t>
-
-        <t>
-          At any point, one of the entries in the session history is the
-          <spanx>current entry</spanx>. This is the entry representing the
-          active document of the browsing context.
         </t>
 
       </section>
@@ -251,10 +246,11 @@
 
         <t>
           A <spanx>link</spanx> describes a relationship between two resources
-          on the Web. It consists of a <spanx>link context</spanx>, a
-          <spanx>link relation type</spanx>, and a <spanx>link target</spanx>. A
-          link may additionally have a nested list of zero or more links and
-          forms, which take the place of link target attributes.
+          on the Web. Following the Web linking model described in RFC 5988, it
+          consists of a <spanx>link context</spanx>, a <spanx>link relation
+          type</spanx>, and a <spanx>link target</spanx>. In CoRAL, a link may
+          additionally have a nested list of zero or more links and forms, which
+          take the place of link target attributes.
         </t>
 
         <t>
@@ -266,22 +262,25 @@
 
         <t>
           The link relation type identifies the semantics of a link. In HTML 5
-          and RFC 5988, link relation types are strings of characters, such as
-          "stylesheet", "icon" or "item". In order to minimize the overhead in
-          constrained environments, link relation types in CoRAL are unsigned
-          integers.
+          and RFC 5988, link relation types are typically denoted by registered
+          names, such as "stylesheet" or "icon". In CoRAL, link relation types
+          are denoted by IRIs and unsigned integers. IRIs allow the definition
+          of new unique relation types across the Web in an uncoordinated way.
+          Unsigned integers minimize the overhead of link relation types in
+          constrained environments, but require the registration of assigned
+          values in a registry.
         </t>
 
         <t>
           The link context and link target are both resources. Borrowing from
-          RDF, resources can be denoted either by an IRI or a literal. Agents
-          can use an IRI to navigate their browsing context to the referenced
-          resource; this is called <spanx>dereferencing the IRI</spanx> or
-          <spanx>following the link</spanx>. Not all IRIs are dereferencable,
-          however. A dereferencable IRI may need to be converted to a URI (see
-          RFC 3987, Section 3.1) for protocols (such as HTTP and CoAP) that do
-          not support IRIs. Literals can be used to directly identify values,
-          such as strings and numbers.
+          RDF, resources in CoRAL can be denoted either by an IRI or a literal.
+          Agents can use an IRI to navigate their browsing context to the
+          referenced resource; this is called <spanx>dereferencing the
+          IRI</spanx> or <spanx>following the link</spanx>. Not all IRIs are
+          dereferencable, however. A dereferencable IRI may need to be converted
+          to a URI (see RFC 3987, Section 3.1) for protocols that do not support
+          IRIs. Literals can be used to directly identify values, such as
+          strings, Boolean values, and numbers.
         </t>
 
         <t>
@@ -293,13 +292,12 @@
         </t>
 
         <t>
-          This specification does not place restrictions on the cardinality of
-          links; there can be multiple links to and from a particular target,
-          and multiple links of the same or different types between a given
-          context and target. However, the CoRAL data model constrains the
-          description of a web of resources to a tree structure; links between
-          linked resources can only be described by nesting links. This is what
-          makes CoRAL "constrained" compared to RFC 5988 and RDF.
+          There are no restrictions on the cardinality of links; there can be
+          multiple links to and from a particular target, and multiple links of
+          the same or different types between a given link context and target.
+          However, the CoRAL data model constrains the description of a web of
+          resources to trees; links between linked resources can only be
+          described by nesting links.
         </t>
 
       </section>
@@ -324,17 +322,18 @@
 
         <t>
           The form relation type identifies the semantics of the operation. Form
-          relation types in CoRAL are unsigned integers.
+          relation types in CoRAL are, like link relation types, denoted by IRIs
+          and unsigned integers.
         </t>
 
         <t>
-          The form context is the resource on which the operation is ultimately
+          The form context is the resource on which an operation is ultimately
           performed. To perform the operation, an agent must construct a request
           with the specified request method and submission IRI. The set of
           possible request methods is defined by the protocol identified by the
-          scheme of the submission IRI. The submission IRI will refer to the
-          form context in most cases, but it may refer to a different resource.
-          The submission IRI may need to be converted to a URI (see RFC 3987,
+          scheme of the submission IRI. The submission IRI typically refers to
+          the form context , but may refer to a different resource. The
+          submission IRI may need to be converted to a URI (see RFC 3987,
           Section 3.1) for protocols that do not support IRIs. Constructing and
           sending the request is called _submitting the form_.
         </t>
@@ -349,7 +348,7 @@
           A form can occur as a top-level element in a document or as a nested
           element within a link. When a form occurs as a top-level element in a
           document, the form context is the document's retrieval context. When a
-          form occurs within a link, the form context is the link target of the
+          form occurs within a link, the form context is the target of the
           enclosing link.
         </t>
 
