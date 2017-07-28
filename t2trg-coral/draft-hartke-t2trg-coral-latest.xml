@@ -352,6 +352,36 @@
 
       </section>
 
+      <section title="Form Data">
+
+        <t>
+          Form data provides instructions for agents to construct a request
+          payload. It consists of a list of zero or more <spanx>form
+          fields</spanx>. Each form field consists of a <spanx>key</spanx> and a
+          <spanx>value</spanx>.
+        </t>
+
+        <t>
+          Form fields can either directly identify data items that can be sent
+          to the server for processing, or reference an external resource (such
+          as a schema) that describes the data. Additionally, they can be used
+          to specify acceptable serialization formats for the data and provide
+          other processing instructions.
+        </t>
+
+        <t>
+          The key in a form field identifies the semantics of the field. Keys
+          are, like link and form relation types, denoted by IRIs and unsigned
+          integers.
+        </t>
+
+        <t>
+          The value in a form field can be an IRI, a Boolean value, an integer,
+          a floating-point value, a byte string, or a text string.
+        </t>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
@@ -799,9 +829,29 @@
           <section title="Form Data">
 
             <t>
-              ...
+              Form data consists of zero or more space-separated key-value
+              pairs.
               <list>
-                <t>form-data = ...</t>
+                <t>form-data = *(key value)</t>
+              </list>
+            </t>
+
+            <t>
+              The key follows the same rules as link and form relation types;
+              see <xref target="textual-links"/>.
+              <list>
+                <t>key = iri / identifier ":" identifier</t>
+              </list>
+            </t>
+
+            <t>
+              The value can be an IRI reference, a Boolean literal, an integer
+              literal, a floating-point literal, a byte string literal, or a
+              text string literal. The IRI reference may be relative or
+              absolute. A relative IRI reference must be resolved against the
+              current base IRI.
+              <list>
+                <t>value = iri / boolean / integer / floating-point / bytes / text</t>
               </list>
             </t>
 
