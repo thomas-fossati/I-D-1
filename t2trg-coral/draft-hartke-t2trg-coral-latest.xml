@@ -741,7 +741,7 @@
           </t>
 
           <t>
-            The link target is denoted by a IRI reference or represented by a
+            The link target is denoted by an IRI reference or represented by a
             value literal. The IRI reference may be relative or absolute. A
             relative IRI reference must be resolved against the current base
             IRI. If the link target is null, the link target is an unspecified
