@@ -16,7 +16,7 @@
   <!ENTITY RFC7231 SYSTEM "reference.RFC.7231.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY RFC8174 SYSTEM "reference.RFC.8174.xml">
-  <!ENTITY I-D.greevenbosch-appsawg-cbor-cddl SYSTEM "reference.I-D.greevenbosch-appsawg-cbor-cddl.xml">
+  <!ENTITY I-D.ietf-cbor-cddl SYSTEM "reference.I-D.ietf-cbor-cddl.xml">
   <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
   <!ENTITY I-D.kelly-json-hal SYSTEM "reference.I-D.kelly-json-hal.xml">
   <!ENTITY I-D.nottingham-rfc5988bis SYSTEM "reference.I-D.nottingham-rfc5988bis.xml">
@@ -977,7 +977,7 @@
       &RFC7049;
       &RFC8174;
 
-      &I-D.greevenbosch-appsawg-cbor-cddl;
+      &I-D.ietf-cbor-cddl;
       &I-D.nottingham-rfc5988bis;
 
       <reference anchor="UNICODE" target="http://www.unicode.org/versions/latest/">
