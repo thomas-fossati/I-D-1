@@ -279,8 +279,9 @@
           IRI</spanx> or <spanx>following the link</spanx>. Not all IRIs are
           dereferencable, however. A dereferencable IRI may need to be converted
           to a URI (see RFC 3987, Section 3.1) for protocols that do not support
-          IRIs. Literals can be used to directly identify values, such as
-          strings, Boolean values, and numbers.
+          IRIs. Literals can be used to directly specify values. Possible values
+          are Boolean values, integers, floating-point values, byte strings, and
+          text strings.
         </t>
 
         <t>
@@ -305,11 +306,11 @@
       <section title="Forms">
 
         <t>
-          A <spanx>form</spanx> provides instructions for performing an
-          operation on a Web resource. It consists of a <spanx>form
+          A <spanx>form</spanx> provides instructions to an agent for performing
+          an operation on a Web resource. It consists of a <spanx>form
           context</spanx>, a <spanx>form relation type</spanx>, a <spanx>request
-          method</spanx>, and a <spanx>submission IRI</spanx>. A form may
-          additionally be accompanied by <spanx>form data</spanx>.
+          method</spanx>, and a <spanx>submission IRI</spanx>. Additionally, a
+          form may be accompanied by <spanx>form data</spanx>.
         </t>
 
         <t>
@@ -919,12 +920,10 @@
               <vspace/>N/A
             </t>
             <t hangText="Additional information:">
-              <list style="hanging">
-                <t hangText="Deprecated alias names for this type:">N/A</t>
-                <t hangText="Magic number(s):">N/A</t>
-                <t hangText="File extension(s):">.coral</t>
-                <t hangText="Macintosh file type code(s):">TEXT</t>
-              </list>
+              <vspace/>Deprecated alias names for this type: N/A
+              <vspace/>Magic number(s): N/A
+              <vspace/>File extension(s): .coral
+              <vspace/>Macintosh file type code(s): TEXT
             </t>
             <t hangText="Person &amp; email address to contact for further information:">
               <vspace/>See the Author's Address section of &SELF;.
@@ -991,7 +990,7 @@
         <annotation>
           Note that this reference is to the latest version of Unicode, rather
           than to a specific release. It is not expected that future changes in
-          the Unicode specification will have any impact on CoRAL.
+          the Unicode specification will have any impact on this document.
         </annotation>
       </reference>
 
