@@ -332,7 +332,7 @@
           with the specified request method and submission IRI. The set of
           possible request methods is defined by the protocol identified by the
           scheme of the submission IRI. The submission IRI typically refers to
-          the form context , but may refer to a different resource. The
+          the form context, but may refer to a different resource. The
           submission IRI may need to be converted to a URI (see RFC 3987,
           Section 3.1) for protocols that do not support IRIs. Constructing and
           sending the request is called _submitting the form_.
