@@ -506,9 +506,7 @@
             An IRI reference is a Unicode string that conforms to the syntax
             defined in <xref target="RFC3987">RFC 3987</xref>. An IRI reference
             can be absolute or relative and may contain a fragment identifier.
-            Relative IRI references must be resolved against a base IRI to their
-            absolute form. IRI references are enclosed in angle brackets ("&lt;"
-            and "&gt;").
+            IRI references are enclosed in angle brackets ("&lt;" and "&gt;").
             <list>
               <t>iri = %x3C IRI-reference %x3E</t>
               <t>IRI-reference = &lt;Defined in RFC 3987&gt;</t>
@@ -779,10 +777,9 @@
 
           <t>
             The link target is denoted by an IRI reference or represented by a
-            value literal. The IRI reference may be relative or absolute. A
-            relative IRI reference must be resolved against the current base
-            IRI. If the link target is null, the link target is an unspecified
-            resource.
+            value literal. The IRI reference may be relative or absolute and is
+            resolved against the current base IRI. If the link target is null,
+            the link target is an unspecified resource.
             <list>
               <t>target = iri / literal / null</t>
               <t>literal = boolean / integer / floating-point / bytes / text</t>
@@ -812,8 +809,8 @@
           </t>
 
           <t>
-            The form relation type follows the same rules as link relation
-            types; see <xref target="textual-links"/>.
+            The form relation type is denoted in the same way as a link relation
+            type; see <xref target="textual-links"/>.
           </t>
 
           <t>
@@ -821,18 +818,18 @@
             by the protocol that is identified by the scheme of the submission
             IRI. Method identifiers are constrained to the range of US-ASCII
             characters and are case-insensitive. For <xref
-            target="RFC7231">HTTP</xref>, the set of possible identifiers is
-            maintained in the HTTP Method Registry. For <xref
-            target="RFC7252">CoAP</xref>, the set of possible identifiers is
-            maintained in the CoAP Method Codes Registry.
+            target="RFC7231">HTTP</xref>, the set of possible identifiers can be
+            found in the HTTP Method Registry. For <xref
+            target="RFC7252">CoAP</xref>, the set of possible identifiers can be
+            foundin the CoAP Method Codes Registry.
             <list>
               <t>method = identifier</t>
             </list>
           </t>
 
           <t>
-            The submission IRI reference may be relative or absolute. A relative
-            IRI reference must be resolved against the current base IRI.
+            The submission IRI reference may be relative or absolute and is
+            resolved against the current base IRI.
           </t>
 
           <section title="Form Data">
@@ -846,8 +843,8 @@
             </t>
 
             <t>
-              The key follows the same rules as link and form relation types;
-              see <xref target="textual-links"/>.
+              The key is denoted in the same way as a link relation type; see
+              <xref target="textual-links"/>.
               <list>
                 <t>key = iri / identifier ":" identifier</t>
               </list>
@@ -856,9 +853,8 @@
             <t>
               The value can be an IRI reference, a Boolean literal, an integer
               literal, a floating-point literal, a byte string literal, or a
-              text string literal. The IRI reference may be relative or
-              absolute. A relative IRI reference must be resolved against the
-              current base IRI.
+              text string literal. The IRI reference may be relative or absolute
+              and is resolved against the current base IRI.
               <list>
                 <t>value = iri / boolean / integer / floating-point / bytes / text</t>
               </list>
