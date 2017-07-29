@@ -769,9 +769,28 @@
           </t>
 
           <t>
-            ...
+            The link relation type is denoted either by an absolute IRI
+            reference, a simple name, a qualified name, or an unsigned integer.
+            An IRI reference must be resolved to an IRI. It doesn't matter what
+            it is resolved against, since it is always an absolute reference.
             <list>
-              <t>relation = ...</t>
+              <t>relation = iri / simple-name / qualified-name / integer</t>
+            </list>
+            A simple name consists of an identifier. It is resolved to an IRI by
+            looking up the empty string in the mapping from identifiers to IRIs
+            and concatenating the looked up IRI with the specified identifier.
+            It is an error if the empty string is not present in the mapping.
+            <list>
+              <t>simple-name = identifier</t>
+            </list>
+            A qualified name consists of two identifiers separated by a colon
+            (":"). It is resolved to an IRI by looking up the identifier on the
+            left hand side in the mapping from identifiers to IRIs and
+            concatenating the looked up IRI with the identifier on the right
+            hand side. It is an error if the identifier on the left hand side is
+            not present in the mapping.
+            <list>
+              <t>qualified-name = identifier ":" identifier</t>
             </list>
           </t>
 
@@ -846,7 +865,7 @@
               The key is denoted in the same way as a link relation type; see
               <xref target="textual-links"/>.
               <list>
-                <t>key = iri / identifier ":" identifier</t>
+                <t>key = iri / simple-name / qualified-name / integer</t>
               </list>
             </t>
 
@@ -901,14 +920,19 @@
 
             <t>
               A using directive consists of a hash ("#"), followed by the
-              identifier "using" in upper- or lowercase, followed by an
-              identifier, an equals sign ("="), and an IRI.
+              identifier "using" in upper- or lowercase, optionally followed by
+              an identifier and an equals sign ("="), followed by an absolute
+              IRI reference. If the optional identifier is not specified, it is
+              assumed to be the empty string.
               <list>
-                <t>using-directive = "#" "using" identifier "=" iri</t>
+                <t>using-directive = "#" "using" [identifier "="] iri</t>
               </list>
-              The directive is processed by adding the identifier and IRI to the
-              mapping from identifiers to IRIs in the current environment. It is
-              an error if the identifier is already present.
+              The directive is processed by resolving the IRI reference to an
+              IRI and adding the specified identifier and resolved IRI to the
+              mapping from identifiers to IRIs. It doesn't matter what the IRI
+              reference is resolved against, since it is always an absolute
+              reference. It is an error if the identifier is already present in
+              the mapping.
             </t>
 
           </section>
