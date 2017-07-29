@@ -7,8 +7,8 @@
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
   <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
+  <!ENTITY RFC8152 SYSTEM "reference.RFC.8152.xml">
   <!ENTITY I-D.ietf-core-coap-pubsub SYSTEM "reference.I-D.ietf-core-coap-pubsub.xml">
-  <!ENTITY I-D.ietf-cose-msg SYSTEM "reference.I-D.ietf-cose-msg.xml">
   <!ENTITY I-D.mattsson-core-coap-actuators SYSTEM "reference.I-D.mattsson-core-coap-actuators.xml">
 ]>
 
@@ -147,7 +147,7 @@
       <t>
         One way to mitigate this threat is to secure CoAP communication at the
         application layer using an object-based security mechanism such as <xref
-        target="I-D.ietf-cose-msg">CBOR Object Signing and Encryption
+        target="RFC8152">CBOR Object Signing and Encryption
         (COSE)</xref> instead of or in addition to the security mechanisms at
         the network layer or transport layer. Such a mechanism can provide
         "end-to-end security" at the CoAP layer (<xref target="fig-endtoend"/>)
@@ -1861,9 +1861,9 @@ Subscriber A         |               |
 
       &RFC7228;
 
-      &I-D.ietf-core-coap-pubsub;
+      &RFC8152;
 
-      &I-D.ietf-cose-msg;
+      &I-D.ietf-core-coap-pubsub;
 
       &I-D.mattsson-core-coap-actuators;
 
