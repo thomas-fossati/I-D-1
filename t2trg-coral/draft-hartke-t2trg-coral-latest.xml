@@ -107,18 +107,18 @@
       <t>
         The CoRAL data and interaction model is a superset of the Web linking
         model described in <xref target="I-D.nottingham-rfc5988bis">RFC
-        5988</xref>. The data model consists of two parts: links, which describe
-        relationships between pair of resources and the types of those
+        5988</xref>. The data model consists of two elements: links, which
+        describe relationships between pair of resources and the types of those
         relationships, and forms, which describe possible operations on
         resources and the types of those operation. Additionally, the model can
         describe simple resource metadata in a style similar to the <xref
         target="W3C.REC-rdf11-concepts-20140225">Resource Description Framework
-        (RDF)</xref>. However, unlike RDF, the focus of CoRAL is on the
-        interaction with resources, not on the relationships between them. The
-        interaction model derives from <xref
-        target="W3C.REC-html51-20161101">HTML 5</xref> and specifies how an
-        automated software agent can navigate between resources by following
-        links and perform operations on resources by submitting forms.
+        (RDF)</xref>. Unlike RDF, the focus of CoRAL is on the interaction with
+        resources, not on the relationships between them. The interaction model
+        derives from the model of <xref target="W3C.REC-html51-20161101">HTML
+        5</xref> and specifies how an automated software agent can navigate
+        between resources by following links and perform operations on resources
+        by submitting forms.
       </t>
 
       <t>
@@ -135,7 +135,7 @@
         than equivalent serializations in <xref target="RFC6690">CoRE Link
         Format</xref>, including <xref target="I-D.ietf-core-links-json">its
         CBOR variant</xref>. Additionally, the format supports the serialization
-        of forms, which the CoRE Link Format does not support.
+        of forms, which CoRE Link Format does not.
       </t>
 
       <t>
@@ -195,28 +195,28 @@
 
         <t>
           Borrowing from <xref target="W3C.REC-html51-20161101">HTML 5</xref>,
-          each agent maintains a <spanx>browsing context</spanx>, an environment
-          in which the representations of resources on the Web are processed.
-          (In HTML 5, the browsing context typically corresponds to a tab or
-          window in a Web browser.)
+          each such agent maintains a <spanx>browsing context</spanx>, an
+          environment in which the representations of resources on the Web are
+          processed. (In HTML 5, the browsing context typically corresponds to a
+          tab or window in a Web browser.)
         </t>
 
         <t>
           A browsing context has a <spanx>session history</spanx>, which lists
           the resource representations that the agent has processed, is
-          processing, or will process. An agent may limit the number of elements
-          in the session history depending on the application and use case. At
-          any time, one representation in each browsing context is designated
-          the <spanx>active</spanx> representation.
+          processing, or will process. At any time, one representation in each
+          browsing context is designated the <spanx>active</spanx>
+          representation.
         </t>
 
         <t>
           A session history consists of a flat list of session history entries.
           Each <spanx>session history entry</spanx> consists of a resource
-          representation and an <xref target="RFC3987">Internationalized
-          Resource Identifier (IRI)</xref>. It may additionally have other
-          information associated with it. New entries are added to the session
-          history as the agent navigates from resource to resource.
+          representation and the <xref target="RFC3987">Internationalized
+          Resource Identifier (IRI)</xref> that was used to retrieve the
+          representation. An entry may additionally have other information
+          associated with it. New entries are added to the session history as
+          the agent navigates from resource to resource.
         </t>
 
       </section>
@@ -243,11 +243,10 @@
 
         <t>
           A <spanx>link</spanx> describes a relationship between two resources
-          on the Web. Following the Web linking model described in RFC 5988, it
-          consists of a <spanx>link context</spanx>, a <spanx>link relation
-          type</spanx>, and a <spanx>link target</spanx>. In CoRAL, a link may
-          additionally have a nested list of zero or more links and forms, which
-          take the place of link target attributes.
+          on the Web. It consists of a <spanx>link context</spanx>, a
+          <spanx>link relation type</spanx>, and a <spanx>link target</spanx>. A
+          link may additionally have a nested list of zero or more links and
+          forms, which take the place of link target attributes.
         </t>
 
         <t>
@@ -261,32 +260,33 @@
           The link relation type identifies the semantics of a link. In HTML 5
           and RFC 5988, link relation types are typically denoted by registered
           names, such as "stylesheet" or "icon". In CoRAL, link relation types
-          are denoted by IRIs and unsigned integers. IRIs allow the definition
-          of new unique relation types across the Web in an uncoordinated way.
-          Unsigned integers minimize the overhead of link relation types in
-          constrained environments, but require the registration of assigned
-          values in a registry.
+          can be denoted by IRIs and unsigned integers. The use of IRIs allows
+          the creation of new, unique relation types in a decentralized way, but
+          increases the size of representations. The use of unsigned integers
+          minimizes the overhead of link relation types in constrained
+          environments, but requires the registration of assigned values in a
+          registry.
         </t>
 
         <t>
           The link context and link target are both resources. Borrowing from
           RDF, resources in CoRAL can be denoted either by an IRI or a literal.
-          Agents can use an IRI to navigate their browsing context to the
+          Agents can use an IRI to navigate their browsing context to a
           referenced resource; this is called <spanx>dereferencing the
           IRI</spanx> or <spanx>following the link</spanx>. Not all IRIs are
           dereferencable, however. A dereferencable IRI may need to be converted
           to a URI (see RFC 3987, Section 3.1) for protocols that do not support
-          IRIs. Literals can be used to directly specify values. Possible values
-          are Boolean values, integers, floating-point values, byte strings, and
-          text strings.
+          IRIs. Literals can be used to directly specify values. The supported
+          types are Boolean values, integers, floating-point values, byte
+          strings, and text strings.
         </t>
 
         <t>
           A link can occur as a top-level element in a document or as a nested
           element within a link. When a link occurs as a top-level element in a
-          document, the link context is the document's retrieval context. When a
-          link occurs within a link, the link context of the inner link is the
-          link target of the outer link.
+          document, the link context is equal to the document's retrieval
+          context. When a link occurs within a link, the link context of the
+          inner link is equal to the link target of the outer link.
         </t>
 
         <t>
@@ -294,8 +294,8 @@
           multiple links to and from a particular target, and multiple links of
           the same or different types between a given link context and target.
           However, the CoRAL data model constrains the description of a web of
-          resources to trees; links between linked resources can only be
-          described by nesting links.
+          resources to a graph in tree form; links between linked resources can
+          only be described by further nesting links.
         </t>
 
       </section>
@@ -319,9 +319,9 @@
         </t>
 
         <t>
-          The form relation type identifies the semantics of the operation. Form
-          relation types in CoRAL are, like link relation types, denoted by IRIs
-          and unsigned integers.
+          The form relation type identifies the semantics of the operation. Like
+          link relation types, form relation types can be denoted by IRIs and
+          unsigned integers.
         </t>
 
         <t>
@@ -330,24 +330,24 @@
           with the specified request method and submission IRI. The set of
           possible request methods is defined by the protocol identified by the
           scheme of the submission IRI. The submission IRI typically refers to
-          the form context, but may refer to a different resource. The
+          the form context, but MAY refer to a different resource. The
           submission IRI may need to be converted to a URI (see RFC 3987,
           Section 3.1) for protocols that do not support IRIs. Constructing and
           sending the request is called _submitting the form_.
         </t>
 
         <t>
-          If a form is accompanied by form data, the agent must construct and
-          include a request payload that matches the specifications of the form
-          data.
+          If a form is accompanied by form data, the agent must also construct
+          and include a request payload that matches the specifications of the
+          form data.
         </t>
 
         <t>
           A form can occur as a top-level element in a document or as a nested
           element within a link. When a form occurs as a top-level element in a
-          document, the form context is the document's retrieval context. When a
-          form occurs within a link, the form context is the target of the
-          enclosing link.
+          document, the form context is equal to the document's retrieval
+          context. When a form occurs within a link, the form context is equal
+          to the target of the enclosing link.
         </t>
 
       </section>
@@ -362,16 +362,16 @@
         </t>
 
         <t>
-          Form fields can either directly identify data items that can be sent
-          to the server for processing, or reference an external resource (such
-          as a schema) that describes the data. Additionally, they can be used
-          to specify acceptable serialization formats for the data and provide
-          other processing instructions.
+          Form fields can either directly identify data items that need to be
+          included in the request payload, or reference an external resource
+          (such as a schema) that describes the data. Additionally, they can
+          specify other information, such as acceptable serialization formats
+          for the data.
         </t>
 
         <t>
-          The key in a form field identifies the semantics of the field. Keys
-          are, like link and form relation types, denoted by IRIs and unsigned
+          The key in a form field identifies the semantics of the field. Like
+          link and form relation types, keys are denoted by IRIs and unsigned
           integers.
         </t>
 
@@ -401,11 +401,11 @@
     <section title="Textual Format" anchor="textual">
 
       <t>
-        This section defines the syntax of the CoRAL textual format using two
-        grammars: The lexical grammar defines how Unicode characters are
-        combined to form line terminators, white space, comments, and tokens.
-        The syntactic grammar defines how the tokens are combined to form
-        documents. Both grammars are presented in <xref
+        This section defines the syntax of documents in the CoRAL textual format
+        using two grammars: The lexical grammar defines how Unicode characters
+        are combined to form line terminators, white space, comments, and
+        tokens. The syntactic grammar defines how the tokens are combined to
+        form documents. Both grammars are presented in <xref
         target="RFC5234">Augmented Backus-Naur Form (ABNF)</xref>.
       </t>
 
@@ -505,7 +505,7 @@
           <t>
             An IRI reference is a Unicode string that conforms to the syntax
             defined in <xref target="RFC3987">RFC 3987</xref>. An IRI reference
-            can be absolute or relative and may contain a fragment identifier.
+            can be absolute or relative and can contain a fragment identifier.
             IRI references are enclosed in angle brackets ("&lt;" and "&gt;").
             <list>
               <t>iri = %x3C IRI-reference %x3E</t>
@@ -519,7 +519,7 @@
 
           <t>
             A literal is a textual representation of a value. There are six
-            kinds of literals: Boolean, integer, floating-point, byte string,
+            types of literals: Boolean, integer, floating-point, byte string,
             text string, and null.
           </t>
 
@@ -539,8 +539,8 @@
 
             <t>
               Integer literals denote integer values of unspecified precision.
-              By default, integer literals are expressed in decimal, but can
-              also be specified in an alternate base using a prefix. Binary
+              By default, integer literals are expressed in decimal, but they
+              can also be specified in an alternate base using a prefix. Binary
               literals begin with "0b", octal literals begin with "0o", and
               hexadecimal literals begin with "0x".
             </t>
@@ -580,10 +580,10 @@
               Floating-point literals consist of a sequence of decimal digits
               followed by either a fraction, an exponent, or both. The fraction
               consists of a decimal point (".") followed by a sequence of
-              decimal digits. The exponent consists of an upper- or lowercase
-              "e" followed by an optional sign and a sequence of decimal digits
-              that indicate a power of 10 by which the value preceding the "e"
-              is multiplied.
+              decimal digits. The exponent consists of the upper- or lowercase
+              letter "e" followed by an optional sign and a sequence of decimal
+              digits that indicate a power of 10 by which the value preceding
+              the "e" is multiplied.
             </t>
 
             <t>
@@ -654,8 +654,8 @@
               An escape sequence denotes a single Unicode code point. For
               hexadecimal and Unicode escape sequences, the code point is formed
               by the hexadecimal number following the "\X", "\x", "\U", or "\u"
-              prefix. Simple escape sequences indicate the following code
-              points:
+              prefix. Simple escape sequences indicate the code points listed in
+              <xref target="escape"/>.
             </t>
 
             <texttable title="Simple Escape Sequences" anchor="escape">
@@ -737,12 +737,13 @@
 
         <t>
           Elements are processed in the order they appear in the document.
-          Document processors maintain an <spanx>environment</spanx> while
-          iterating a list of elements. The environment consists of a
-          <spanx>current context IRI</spanx>, a <spanx>current base IRI</spanx>,
-          and a mapping from identifiers to IRIs. The current context IRI and
-          current base IRI are both initially set to the document's retrieval
-          context. The mapping from identifiers to IRIs is initially empty.
+          Document processors need to maintain an <spanx>environment</spanx>
+          while iterating a list of elements. The environment consists of three
+          variables: a <spanx>current context IRI</spanx>, a <spanx>current base
+          IRI</spanx>, and a mapping from identifiers to IRIs. The current
+          context IRI and current base IRI are both initially set to the
+          document's retrieval context. The mapping from identifiers to IRIs is
+          initially empty.
         </t>
 
         <section title="Documents">
@@ -778,17 +779,17 @@
             </list>
             A simple name consists of an identifier. It is resolved to an IRI by
             looking up the empty string in the mapping from identifiers to IRIs
-            and concatenating the looked up IRI with the specified identifier.
-            It is an error if the empty string is not present in the mapping.
+            and concatenating the looked up IRI and the specified identifier. It
+            is an error if the empty string is not present in the mapping.
             <list>
               <t>simple-name = identifier</t>
             </list>
             A qualified name consists of two identifiers separated by a colon
             (":"). It is resolved to an IRI by looking up the identifier on the
             left hand side in the mapping from identifiers to IRIs and
-            concatenating the looked up IRI with the identifier on the right
-            hand side. It is an error if the identifier on the left hand side is
-            not present in the mapping.
+            concatenating the looked up IRI and the identifier on the right hand
+            side. It is an error if the identifier on the left hand side is not
+            present in the mapping.
             <list>
               <t>qualified-name = identifier ":" identifier</t>
             </list>
@@ -836,11 +837,14 @@
             The method identifier refers to one of the request methods defined
             by the protocol that is identified by the scheme of the submission
             IRI. Method identifiers are constrained to the range of US-ASCII
-            characters and are case-insensitive. For <xref
-            target="RFC7231">HTTP</xref>, the set of possible identifiers can be
-            found in the HTTP Method Registry. For <xref
-            target="RFC7252">CoAP</xref>, the set of possible identifiers can be
-            foundin the CoAP Method Codes Registry.
+            characters and are case-insensitive.
+          </t>
+
+          <t>
+            For <xref target="RFC7231">HTTP</xref>, the set of possible method
+            identifiers is maintained in the HTTP Method Registry. For <xref
+            target="RFC7252">CoAP</xref>, the set of possible method identifiers
+            is maintained in the CoAP Method Codes Registry.
             <list>
               <t>method = identifier</t>
             </list>
@@ -862,6 +866,14 @@
             </t>
 
             <t>
+              Form data is processed in a fresh environment. The current context
+              IRI and current base IRI in this environment are both initially
+              set to the submission IRI of the enclosing form. The mapping from
+              identifiers to IRIs is initially set to a copy of the mapping from
+              identifiers to IRIs in the current environment.
+            </t>
+
+            <t>
               The key is denoted in the same way as a link relation type; see
               <xref target="textual-links"/>.
               <list>
@@ -870,10 +882,10 @@
             </t>
 
             <t>
-              The value can be an IRI reference, a Boolean literal, an integer
-              literal, a floating-point literal, a byte string literal, or a
-              text string literal. The IRI reference may be relative or absolute
-              and is resolved against the current base IRI.
+              The value can be an IRI reference, Boolean literal, integer
+              literal, floating-point literal, byte string literal, or text
+              string literal. An IRI reference may be relative or absolute and
+              is resolved against the current base IRI.
               <list>
                 <t>value = iri / boolean / integer / floating-point / bytes / text</t>
               </list>
@@ -894,7 +906,8 @@
           </t>
 
           <t>
-            The following directives are available: "#base" and "#using".
+            The following directives are available: Base IRI directives and
+            Using directives.
             <list>
               <t>directive = base-directive / using-directive</t>
             </list>
@@ -903,7 +916,7 @@
           <section title="Base IRI Directives">
 
             <t>
-              A base IRI directive consists of a hash ("#"), followed by the
+              A Base IRI directive consists of a hash ("#"), followed by the
               identifier "base" in upper- or lowercase, followed by an IRI
               reference.
               <list>
@@ -919,7 +932,7 @@
           <section title="Using Directives">
 
             <t>
-              A using directive consists of a hash ("#"), followed by the
+              A Using directive consists of a hash ("#"), followed by the
               identifier "using" in upper- or lowercase, optionally followed by
               an identifier and an equals sign ("="), followed by an absolute
               IRI reference. If the optional identifier is not specified, it is
