@@ -391,6 +391,259 @@
 
     <section title="Binary Format" anchor="binary">
 
+      <t>
+        This section defines the encoding of documents in the CoRAL binary
+        format.
+      </t>
+
+      <t>
+        A document in the binary format is a data item in the <xref
+        target="RFC7049">Concise Binary Object Representation (CBOR)</xref>. The
+        structure of this data item is presented in the <xref
+        target="I-D.ietf-cbor-cddl">Concise Data Definition Language
+        (CDDL)</xref>.
+      </t>
+
+      <section title="Data Structure">
+
+        <t>
+          The data structure of a document in the binary format is made up of
+          three kinds of elements: links and forms, as defined by the CoRAL data
+          model, and base IRI directives. Base IRI directives provide a way to
+          encode IRI references with a common base more efficiently.
+        </t>
+
+        <t>
+          Elements are processed in the order they appear in the document.
+          Document processors need to maintain an <spanx>environment</spanx>
+          while iterating an array of elements. The environment consists of
+          three variables: a <spanx>current context IRI</spanx>, a
+          <spanx>current base IRI</spanx>, and a <spanx>current relation
+          type</spanx>. The current context IRI and current base IRI are both
+          initially set to the document's retrieval context. The current
+          relation type is initially set to zero.
+        </t>
+
+        <section title="Documents">
+
+          <t>
+            The body of a document in the binary format is encoded as an array
+            of zero or more links, forms, and directives.
+            <list>
+              <t>body = [*(link / form / directive)]</t>
+            </list>
+          </t>
+
+        </section>
+
+        <section title="Links" anchor="binary-links">
+
+          <t>
+            A link is encoded as an array that consists of the unsigned integer
+            2, followed by the link relation type and the link target,
+            optionally followed by a link body that contains nested elements.
+            <list>
+              <t>link = [link: 2, relation, target, ?body]</t>
+            </list>
+          </t>
+
+          <t>
+            The link relation type is encoded either as a text string containing
+            an absolute IRI reference or as an (unsigned or negative) integer
+            representing the difference to the current relation type. A link is
+            processed by updating the current relation type to the result of
+            adding the specified integer (or zero in the case of a text string)
+            to the current relation type.
+            <list>
+              <t>relation = text / int</t>
+            </list>
+          </t>
+
+          <t>
+            The link target can be denoted by an IRI reference or represented by
+            a literal value. The IRI reference may be relative or absolute and
+            is resolved against the current base IRI. The encoding of IRI
+            references in the binary format is described in <xref
+            target="binary-iri"/>. The link target MAY be null, which indicates
+            that the link target is an unspecified resource.
+            <list>
+              <t>target = iri / literal / null</t>
+              <t>literal = bool / int / float / bytes / text</t>
+            </list>
+          </t>
+
+          <t>
+            The array of elements in the link body (if any) is processed in a
+            fresh environment. The current context IRI and current base IRI in
+            the new environment are both initially set to the link target of the
+            enclosing link. The current relation type in the new environment is
+            initially set to the current relation type.
+          </t>
+
+        </section>
+
+        <section title="Forms">
+
+          <t>
+            A form is encoded as an array that consists of the unsigned integer
+            3, followed by the form relation type, the submission method, and a
+            submission IRI reference, optionally followed by form data.
+            <list>
+              <t>form = [form: 3, relation, method, iri, ?form-data]</t>
+            </list>
+          </t>
+
+          <t>
+            The form relation type is encoded and processed in the same way as a
+            link relation type; see <xref target="binary-links"/>.
+          </t>
+
+          <t>
+            The method is encoded as a text string or an unsigned integer that
+            refers to one of the request methods defined by the protocol that is
+            identified by the scheme of the submission IRI. Methods as text
+            strings are constrained to the range of US-ASCII characters and are
+            case-insensitive.
+          </t>
+
+          <t>
+            For <xref target="RFC7231">HTTP</xref>, the method MUST be encoded
+            as a text string; the set of possible values is maintained in the
+            HTTP Method Registry. For <xref target="RFC7252">CoAP</xref>, the
+            method MUST be encoded as an unsigned integer; the set of possible
+            values is maintained in the CoAP Method Codes Registry.
+            <list>
+              <t>method = text / uint</t>
+            </list>
+          </t>
+
+          <t>
+            The submission IRI reference may be relative or absolute and is
+            resolved against the current base IRI. The encoding of IRI
+            references in the binary format is described in <xref
+            target="binary-iri"/>.
+          </t>
+
+          <section title="Form Data">
+
+            <t>
+              Form data is encoded as an array of zero or more key-value pairs.
+              <list>
+                <t>form-data = [*(key, value)]</t>
+              </list>
+              Form data is processed in a fresh environment. The current context
+              IRI and current base IRI in the new environment are both initially
+              set to the submission IRI of the enclosing form. The current
+              relation type in the new environment is initially set to the
+              current relation type.
+            </t>
+
+            <t>
+              A key is encoded and processed in the same way as a link relation
+              type; see <xref target="binary-links"/>.
+              <list>
+                <t>key = text / uint</t>
+              </list>
+            </t>
+
+            <t>
+              A value can be an IRI reference, Boolean value, integer,
+              floating-point value, byte string, or text string. An IRI
+              reference may be relative or absolute and is resolved against the
+              current base IRI. The encoding of IRI references in the binary
+              format is described in <xref target="binary-iri"/>.
+              <list>
+                <t>value = iri / bool / int / float / bytes / text</t>
+              </list>
+            </t>
+
+          </section>
+
+          <section title="Short Forms">
+
+            <t>
+              Forms in certain shapes can be encoded in a more efficient manner
+              using short forms. The following short forms are available:
+              <list>
+                <t>form =/ [form.create: 4, ?accept: uint .size 2]</t>
+                <t>form =/ [form.update: 5]</t>
+                <t>form =/ [form.delete: 6]</t>
+              </list>
+            </t>
+
+            <t>
+              If the scheme of the submission IRI indicates HTTP, the short
+              forms expand as follows:
+              <list>
+                <t>
+                  [ 4 ] &nbsp;&nbsp; -&gt; [ 3, "create", "POST", [ ] ]<vspace/>
+                  [ 4, x ] -&gt; [ 3, "create", "POST", [ ], [ "accept", x ] ]<vspace/>
+                  [ 5 ] &nbsp;&nbsp; -&gt; [ 3, "update", "PUT", [ ] ]<vspace/>
+                  [ 6 ] &nbsp;&nbsp; -&gt; [ 3, "delete", "DELETE", [ ] ]
+                </t>
+              </list>
+              If the scheme of the submission IRI indicates CoAP, the short
+              forms expand as follows:
+              <list>
+                <t>
+                  [ 4 ] &nbsp;&nbsp; -&gt; [ 3, "create", 2, [] ]<vspace/>
+                  [ 4, x ] -&gt; [ 3, "create", 2, [ ], [ "accept", x ] ]<vspace/>
+                  [ 5 ] &nbsp;&nbsp; -&gt; [ 3, "update", 3, [ ] ]<vspace/>
+                  [ 6 ] &nbsp;&nbsp; -&gt; [ 3, "delete", 4, [ ] ]
+                 </t>
+              </list>
+            </t>
+
+          </section>
+
+        </section>
+
+        <section title="Directives">
+
+          <t>
+            Directives provide the ability to manipulate the environment when
+            processing a list of elements. There is one directive available: the
+            Base URI directive.
+            <list>
+              <t>directive = base-directive</t>
+            </list>
+          </t>
+
+          <section title="Base URI Directives">
+
+            <t>
+              A Base IRI directive is encoded as an array that consists of the
+              unsigned integer 1, followed by an IRI reference.
+              <list>
+                <t>base-directive = [base: 1, iri]</t>
+              </list>
+            </t>
+
+            <t>
+              The encoding of IRI references in the binary format is described in
+              <xref target="binary-iri"/>.
+            </t>
+
+            <t>
+              The directive is processed by resolving the IRI reference against
+              the current context IRI and assigning the result to the current base
+              IRI.
+            </t>
+
+          </section>
+
+        </section>
+
+      </section>
+
+      <section title="IRIs" anchor="binary-iri">
+
+        <t>
+          ...
+        </t>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
