@@ -747,7 +747,7 @@
           <t>
             All identifiers must be converted into Unicode Normalization Form C
             (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
-            Standard Annex 15</xref>. Comparison of identifiers is based on NFC
+            Standard Annex #15</xref>. Comparison of identifiers is based on NFC
             and is case-sensitive.
           </t>
 
