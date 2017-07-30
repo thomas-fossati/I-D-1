@@ -1356,6 +1356,30 @@
 
       </section>
 
+      <section title="CoAP Content Formats">
+
+        <t>
+          This document registers CoAP content formats for the media types
+          &quot;application/coral+cbor&quot; and &quot;text/coral&quot;
+          according to the procedures of <xref target="RFC6838">BCP 13</xref>.
+          <list style="symbols">
+            <t>
+              Media Type: application/coral+cbor<vspace/>
+              Content Coding: identity<vspace/>
+              ID: TBD (maybe 63)<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Media Type: text/coral<vspace/>
+              Content Coding: identity<vspace/>
+              ID: TBD (maybe 10063)<vspace/>
+              Reference: &SELF;
+            </t>
+          </list>
+        </t>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
