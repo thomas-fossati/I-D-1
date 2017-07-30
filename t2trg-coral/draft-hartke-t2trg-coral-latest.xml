@@ -1224,6 +1224,72 @@
 
     <section title="IANA Considerations">
 
+      <section title="Media Type &quot;application/coral+cbor&quot;">
+
+        <t>
+          This document registers the media type
+          &quot;application/coral+cbor&quot; according to the procedures of
+          <xref target="RFC6838">BCP 13</xref>.
+          <list style="hanging">
+            <t hangText="Type name:">
+              <vspace/>application
+            </t>
+            <t hangText="Subtype name:">
+              <vspace/>coral+cbor
+            </t>
+            <t hangText="Required parameters:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Optional parameters:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Encoding considerations:">
+              <vspace/>binary
+            </t>
+            <t hangText="Security considerations:">
+              <vspace/>See <xref target="security"/> of &SELF;.
+            </t>
+            <t hangText="Interoperability considerations:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Published specification:">
+              <vspace/>&SELF;
+            </t>
+            <t hangText="Applications that use this media type:">
+              <vspace/>See <xref target="introduction"/> of &SELF;.
+            </t>
+            <t hangText="Fragment identifier considerations:">
+              <vspace/>As specified for "application/cbor".
+            </t>
+            <t hangText="Additional information:">
+              <vspace/>Deprecated alias names for this type: N/A
+              <vspace/>Magic number(s): N/A
+              <vspace/>File extension(s): N/A
+              <vspace/>Macintosh file type code(s): N/A
+            </t>
+            <t hangText="Person &amp; email address to contact for further information:">
+              <vspace/>See the Author's Address section of &SELF;.
+            </t>
+            <t hangText="Intended usage:">
+              <vspace/>COMMON
+            </t>
+            <t hangText="Restrictions on usage:">
+              <vspace/>N/A
+            </t>
+            <t hangText="Author:">
+              <vspace/>See the Author's Address section of &SELF;.
+            </t>
+            <t hangText="Change controller:">
+              <vspace/>IESG
+            </t>
+            <t hangText="Provisional registration?">
+              <vspace/>No
+            </t>
+          </list>
+        </t>
+
+      </section>
+
       <section title="Media Type &quot;text/coral&quot;">
 
         <t>
