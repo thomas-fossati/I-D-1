@@ -382,6 +382,93 @@
 
       </section>
 
+      <section title="Navigation">
+
+        <t>
+          An agent begins interacting with an application through a GET request
+          on an <spanx>entry point IRI</spanx>. The entry point IRI is the only
+          IRI an agent is expected to know before interacting with an
+          application. From there, it makes all requests by following links and
+          submitting forms that are provided in responses. The entry point IRI
+          can be obtained by either manual configuration or discovery at
+          runtime.
+        </t>
+
+        <t>
+          If dereferencing the entry point IRI yields a CoRAL document, the
+          agent proceeds as follows:
+          <list style="numbers">
+            <t>
+              The first step for the agent is to decide what to do next, i.e.,
+              which type of link to follow or form to submit, based on the link
+              relation types and form relation types it understands.
+            </t>
+            <t>
+              The agent finds the link(s) or form(s) with the given relation
+              type in the active representation. This may yield one or more
+              candidates from which the agent must select the most appropriate
+              one in the next step. The set of candidates may be empty, for
+              example, if an operation is not supported or allowed.
+            </t>
+            <t>
+              The agent selects one of the candidates based on the metadata
+              associated with the link or form. Metadata can include the IRI
+              scheme, the media type of the target resource representation, the
+              request method, and other attributes that describe the target.
+            </t>
+            <t>
+              The agent resolves the IRI reference in the link or form in order
+              to obtain the <spanx>request IRI</spanx>. Fragment identifiers are
+              not part of request IRIs and MUST be separated from the rest of
+              the IRI prior to a dereference. The request IRI may need to be
+              converted to a URI (see Section 3.1 of <xref target="RFC3987">RFC
+              3987</xref>) for protocols that do not support IRIs.
+            </t>
+            <t>
+              The agent constructs a new request with the request IRI or URI. If
+              the agent follows a link, the request method is GET. If the agent
+              submits a form, the request method is specified in the form. The
+              agent SHOULD set header fields and options according to provided
+              metadata (e.g., set the HTTP Accept header field or the CoAP
+              Accept option when the media type of the target resource is
+              provided). In the case of a form with form data, the agent also
+              MUST construct and include a request payload that matches the
+              specifications of the form data.
+            </t>
+            <t>
+              The agent sends the request and retrieves the response.
+            </t>
+            <t>
+              If a fragment identifier was separated from the request IRI, the
+              agent dereferences the fragment identifier within the retrieved
+              representation.
+            </t>
+            <t>
+              The agent <spanx>updates the session history</spanx>: It removes
+              all the entries in the browsing context's session history after
+              the current entry. Then it appends a new entry at the end of the
+              history representing the new resource.
+            </t>
+            <t>
+              If response contains a CoRAL document, the agent can finally
+              decide again what to do next.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="History Traversal">
+
+        <t>
+          An agent can additionally navigate a browsing context by traversing
+          the browsing context's session history. An agent can <spanx>traverse
+          the session history</spanx> by updating the active representation to
+          the that entry.
+        </t>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
