@@ -260,8 +260,8 @@
           The link relation type identifies the semantics of a link. In HTML 5
           and RFC 5988, link relation types are typically denoted by registered
           names, such as "stylesheet" or "icon". In CoRAL, link relation types
-          can be denoted by IRIs and unsigned integers. The use of IRIs allows
-          the creation of new, unique relation types in a decentralized way, but
+          are denoted by IRIs and unsigned integers. The use of IRIs allows the
+          creation of new, unique relation types in a decentralized way, but
           increases the size of representations. The use of unsigned integers
           minimizes the overhead of link relation types in constrained
           environments, but requires the registration of assigned values in a
@@ -269,16 +269,14 @@
         </t>
 
         <t>
-          The link context and link target are both resources. Borrowing from
-          RDF, resources in CoRAL can be denoted either by an IRI or a literal.
-          Agents can use an IRI to navigate their browsing context to a
-          referenced resource; this is called <spanx>dereferencing the
-          IRI</spanx> or <spanx>following the link</spanx>. Not all IRIs are
-          dereferencable, however. A dereferencable IRI may need to be converted
-          to a URI (see RFC 3987, Section 3.1) for protocols that do not support
-          IRIs. Literals can be used to directly specify values. The supported
-          types are Boolean values, integers, floating-point values, byte
-          strings, and text strings.
+          The link context and link target are both resources. Resources in
+          CoRAL are denoted either by an IRI or directly by a literal, similar
+          to RDF. If the scheme of the IRI indicates a Web transfer protocol
+          such as HTTP or CoAP, agents can dereference the IRI and navigate
+          their browsing context to the referenced resource; this is called
+          <spanx>following the link</spanx>. Literals can be used to directly
+          identify values. Supported types are Boolean values, integers,
+          floating-point values, byte strings, and text strings.
         </t>
 
         <t>
@@ -330,10 +328,8 @@
           with the specified request method and submission IRI. The set of
           possible request methods is defined by the protocol identified by the
           scheme of the submission IRI. The submission IRI typically refers to
-          the form context, but MAY refer to a different resource. The
-          submission IRI may need to be converted to a URI (see RFC 3987,
-          Section 3.1) for protocols that do not support IRIs. Constructing and
-          sending the request is called _submitting the form_.
+          the form context, but MAY refer to a different resource. Constructing
+          and sending the request is called _submitting the form_.
         </t>
 
         <t>
@@ -547,9 +543,9 @@
           </t>
 
           <t>
-            The link target can be denoted by an IRI reference or represented by
-            a literal value. The IRI reference may be relative or absolute and
-            is resolved against the current base IRI. The encoding of IRI
+            The link target is denoted by an IRI reference or represented by a
+            literal value. The IRI reference may be relative or absolute and is
+            resolved against the current base IRI. The encoding of IRI
             references in the binary format is described in <xref
             target="binary-iri"/>. The link target MAY be null, which indicates
             that the link target is an unspecified resource.
