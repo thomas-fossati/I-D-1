@@ -7,9 +7,11 @@
   <!ENTITY RFC3987 SYSTEM "reference.RFC.3987.xml">
   <!ENTITY RFC4648 SYSTEM "reference.RFC.4648.xml">
   <!ENTITY RFC5234 SYSTEM "reference.RFC.5234.xml">
+  <!ENTITY RFC5246 SYSTEM "reference.RFC.5246.xml">
   <!ENTITY RFC6657 SYSTEM "reference.RFC.6657.xml">
   <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
   <!ENTITY RFC6838 SYSTEM "reference.RFC.6838.xml">
+  <!ENTITY RFC6943 SYSTEM "reference.RFC.6943.xml">
   <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7230 SYSTEM "reference.RFC.7230.xml">
@@ -1298,6 +1300,76 @@
     <!-- **************************************************************** -->
 
     <section title="Security Considerations" anchor="security">
+
+      <t>
+        Parsers of CoRAL documents must operate on input that is assumed to be
+        untrusted. This means that parsers must fail gracefully in the face of
+        malicious inputs. Additionally, parsers must deal with resource
+        exhaustion resulting, for example, from the allocation of big data items
+        or exhaustion of the stack depth. See Section 8 of <xref
+        target="RFC7049">RFC 7049</xref> for additional security considerations
+        relating to CBOR.
+      </t>
+
+      <t>
+        Implementers of the CoRAL textual format need to consider the security
+        aspects of handling Unicode input. See the <xref
+        target="UNICODE-UAX36">Unicode Standard Annex #36</xref> for security
+        considerations relating to visual spoofind and misuse of character
+        encodings. See Section 10 of <xref target="RFC3629">RFC 3629</xref> for
+        security considerations relating to UTF-8.
+      </t>
+
+      <t>
+        CoRAL makes extensive use of IRIs and URIs. See Section 8 of <xref
+        target="RFC3987">RFC 3987</xref> for security considerations relating to
+        IRIs. See Section 7 of <xref target="RFC3986">RFC 3986</xref> for
+        security considerations relating to URIs.
+      </t>
+
+      <t>
+        CoRAL is used in conjunction with a Web transfer protocol such as HTTP
+        or CoAP. See Section 9 of <xref target="RFC7230">RFC 7320</xref>,
+        Section of 9 of <xref target="RFC7231">RFC 7231</xref>, etc. for
+        security considerations relating to HTTP. See Section 11 of <xref
+        target="RFC7252">RFC 7252</xref> for security considerations relating to
+        CoAP.
+      </t>
+
+      <t>
+        CoRAL does not define any specific mechanisms for the confidentiality
+        and integrity of CoRAL documents. It relies on application layer or
+        transport layer mechanisms such as <xref target="RFC5246">Transport
+        Layer Security (TLS)</xref>.
+      </t>
+
+      <t>
+        CoRAL documents and the structure of a web of resources revealed from
+        automatically following links can disclose personal information and
+        other sensitive information. Implementations need to prevent the
+        unintentional disclosure of such information. See Section of 9 of <xref
+        target="RFC7231">RFC 7231</xref> for additional considerations.
+      </t>
+
+      <t>
+        The security of applications using CoRAL can depend on the proper
+        preparation and comparison of internationalized strings. For example,
+        such strings can be used to make authentication and authorization
+        decisions, and the security of an application could be compromised if an
+        entity providing a given string is connected to the wrong account or
+        online resource based on different interpretations of the string. See
+        <xref target="RFC6943">RFC 6943</xref> for security considerations
+        relating to identifiers in IRIs and other places.
+      </t>
+
+      <t>
+        Applications using CoRAL ought to consider the attack vectors opened by
+        automatically following, trusting, or otherwise using links and forms in
+        CoRAL documents. In particular, a server authoritative for the CoRAL
+        representation of a resource may not necessarily be the authoritative
+        source for nested links and forms.
+      </t>
+
     </section>
 
     <!-- **************************************************************** -->
@@ -1483,11 +1555,13 @@
 
       &RFC2119;
       &RFC3629;
+      &RFC3986;
       &RFC3987;
       &RFC4648;
       &RFC5234;
       &RFC6657;
       &RFC6838;
+      &RFC6943;
       &RFC7049;
       &RFC8174;
 
@@ -1529,10 +1603,21 @@
         </front>
       </reference>
 
+      <reference anchor="UNICODE-UAX36" target="http://unicode.org/reports/tr36/">
+        <front>
+          <title>Unicode Standard Annex #36: Unicode Security Considerations</title>
+          <author>
+            <organization>The Unicode Consortium</organization>
+          </author>
+          <date />
+        </front>
+      </reference>
+
     </references>
 
     <references title="Informative References">
 
+      &RFC5246;
       &RFC6690;
       &RFC7228;
       &RFC7230;
