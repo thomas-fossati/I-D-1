@@ -729,7 +729,7 @@
           <t hangText="URI schemes:">
             <vspace/>URI schemes identifying the communication protocols that
             need to be understood by clients and servers. This information is
-            mostly relevant for deploymed instances of the application rather
+            mostly relevant for deployed instances of the application rather
             than for the general specification of the application.
           </t>
           <t hangText="Media types:">
