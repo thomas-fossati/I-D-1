@@ -8,15 +8,20 @@
   <!ENTITY RFC4648 SYSTEM "reference.RFC.4648.xml">
   <!ENTITY RFC5234 SYSTEM "reference.RFC.5234.xml">
   <!ENTITY RFC5246 SYSTEM "reference.RFC.5246.xml">
+  <!ENTITY RFC5789 SYSTEM "reference.RFC.5789.xml">
+  <!ENTITY RFC6573 SYSTEM "reference.RFC.6573.xml">
   <!ENTITY RFC6657 SYSTEM "reference.RFC.6657.xml">
   <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
   <!ENTITY RFC6838 SYSTEM "reference.RFC.6838.xml">
+  <!ENTITY RFC6903 SYSTEM "reference.RFC.6903.xml">
+  <!ENTITY RFC6906 SYSTEM "reference.RFC.6906.xml">
   <!ENTITY RFC6943 SYSTEM "reference.RFC.6943.xml">
   <!ENTITY RFC7049 SYSTEM "reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
   <!ENTITY RFC7230 SYSTEM "reference.RFC.7230.xml">
   <!ENTITY RFC7231 SYSTEM "reference.RFC.7231.xml">
   <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY RFC8132 SYSTEM "reference.RFC.8132.xml">
   <!ENTITY RFC8174 SYSTEM "reference.RFC.8174.xml">
   <!ENTITY I-D.ietf-cbor-cddl SYSTEM "reference.I-D.ietf-cbor-cddl.xml">
   <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
@@ -1632,11 +1637,16 @@
     <references title="Informative References">
 
       &RFC5246;
+      &RFC5789;
+      &RFC6573;
       &RFC6690;
+      &RFC6903;
+      &RFC6906;
       &RFC7228;
       &RFC7230;
       &RFC7231;
       &RFC7252;
+      &RFC8132;
 
       &I-D.ietf-core-links-json;
 
@@ -1646,6 +1656,118 @@
       &W3C.REC-webarch-20041215;
 
     </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Core Vocabulary" anchor="core-vocabulary">
+
+      <t>
+        This section defines the core vocabulary for CoRAL. It is RECOMMENDED
+        that all profiles assign an unsigned integer to each of these link
+        relation types, form relation types, and form field keys.
+      </t>
+
+      <section title="Link Relation Types">
+
+        <t>
+          <list style="hanging">
+            <t hangText="&lt;http://www.iana.org/assignments/relation/type&gt;">
+              <vspace/>Indicates that the link's context is an instance of the
+              type specified as the link's target; see Section 6 of <xref
+              target="RFC6903">RFC 6903</xref>.
+            </t>
+            <t>
+              This link relation type serves in CoRAL the same purpose as the
+              RDF predicate identified by the IRI
+              &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;.
+            </t>
+            <t hangText="&lt;http://www.iana.org/assignments/relation/profile&gt;">
+              <vspace/>Indicates that the present representation of the link's
+              context conforms to the profile specified as the link's target;
+              see <xref target="RFC6906">RFC 6906</xref>. Since this link
+              relation type is about a CoRAL representation and not a resource,
+              it MUST NOT be used in nested links.
+            </t>
+            <t hangText="&lt;http://www.iana.org/assignments/relation/item&gt;">
+              <vspace/>Indicates that the link's context is a collection and
+              that the link's target is a member of that collection; see Section
+              2.1 of <xref target="RFC6573">RFC 6573</xref>.
+            </t>
+            <t hangText="&lt;http://www.iana.org/assignments/relation/collection&gt;">
+              <vspace/>Indicates that the link's target is a collection and that
+              the link's context is a member of that collection; see Section 2.2
+              of <xref target="RFC6573">RFC 6573</xref>.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Form Relation Types">
+
+        <t>
+          <list style="hanging">
+            <t hangText="&lt;urn:ietf:rfc:XXXX#create&gt;">
+              <vspace/>Indicates that the form's context is a collection and
+              that a new item can be created in that collection by submitting
+              the form with a representation. This form relation type is
+              typically used with the POST method <xref target="RFC7231"/> <xref
+              target="RFC7252"/>.
+            </t>
+            <t hangText="&lt;urn:ietf:rfc:XXXX#update&gt;">
+              <vspace/>Indicates that the form's context can be updated by
+              submitting a representation. This form relation type is typically
+              used with the PUT method <xref target="RFC7231"/> <xref
+              target="RFC7252"/> or PATCH method <xref target="RFC5789"/> <xref
+              target="RFC8132"/>.
+            </t>
+            <t hangText="&lt;urn:ietf:rfc:XXXX#delete&gt;">
+              <vspace/>Indicates that the form's context can be deleted. This
+              form relation type is typically used with the DELETE method <xref
+              target="RFC7231"/> <xref target="RFC7252"/>.
+            </t>
+            <t hangText="&lt;urn:ietf:rfc:XXXX#search&gt;">
+              <vspace/>Indicates that the form's context can be searched by
+              submitting a search query. This form relation type is typically
+              used with the POST method <xref target="RFC7231"/> <xref
+              target="RFC7252"/> or FETCH method <xref target="RFC8132"/>.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Form Fields">
+
+        <t>
+          <list style="hanging">
+            <t hangText="&lt;urn:ietf:rfc:XXXX#accept&gt;">
+              <vspace/>Specifies an acceptable content type or content format
+              for the request payload. There MAY be multiple form fields with
+              this key. If a form does not include a form field with this key,
+              the server accepts any or no request payload, depending on the
+              form relation type.
+            </t>
+            <t>
+              For HTTP, the content type MUST be specified as a text string in
+              the format specified in Section 3.1.1.1 of <xref
+              target="RFC7231">RFC 7231</xref>; the set of possible values is
+              maintained in the Media Types Registry.
+            </t>
+            <t>
+              For CoAP, the content format MUST be specified as an unsigned
+              integer; the set of possible values is maintained in the CoAP
+              Content-Formats Registry.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+    </section>
 
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
