@@ -666,20 +666,20 @@
               forms expand as follows:
               <list>
                 <t>
-                  [ 4 ] &nbsp;&nbsp; -&gt; [ 3, "create", "POST", [ ] ]<vspace/>
-                  [ 4, x ] -&gt; [ 3, "create", "POST", [ ], [ "accept", x ] ]<vspace/>
-                  [ 5 ] &nbsp;&nbsp; -&gt; [ 3, "update", "PUT", [ ] ]<vspace/>
-                  [ 6 ] &nbsp;&nbsp; -&gt; [ 3, "delete", "DELETE", [ ] ]
+                  [4] &nbsp;&nbsp; -&gt; [3, "create", "POST", []]<vspace/>
+                  [4, x] -&gt; [3, "create", "POST", [], ["accept", x]]<vspace/>
+                  [5] &nbsp;&nbsp; -&gt; [3, "update", "PUT", []]<vspace/>
+                  [6] &nbsp;&nbsp; -&gt; [3, "delete", "DELETE", []]
                 </t>
               </list>
               If the scheme of the submission IRI indicates CoAP, the short
               forms expand as follows:
               <list>
                 <t>
-                  [ 4 ] &nbsp;&nbsp; -&gt; [ 3, "create", 2, [] ]<vspace/>
-                  [ 4, x ] -&gt; [ 3, "create", 2, [ ], [ "accept", x ] ]<vspace/>
-                  [ 5 ] &nbsp;&nbsp; -&gt; [ 3, "update", 3, [ ] ]<vspace/>
-                  [ 6 ] &nbsp;&nbsp; -&gt; [ 3, "delete", 4, [ ] ]
+                  [4] &nbsp;&nbsp; -&gt; [3, "create", 2, []]<vspace/>
+                  [4, x] -&gt; [ 3, "create", 2, [], ["accept", x]]<vspace/>
+                  [5] &nbsp;&nbsp; -&gt; [3, "update", 3, []]<vspace/>
+                  [6] &nbsp;&nbsp; -&gt; [3, "delete", 4, []]
                  </t>
               </list>
             </t>
