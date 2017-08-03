@@ -664,24 +664,36 @@
             <t>
               If the scheme of the submission IRI indicates HTTP, the short
               forms expand as follows:
-              <list>
-                <t>
-                  [4] &nbsp;&nbsp; -&gt; [3, "create", "POST", []]<vspace/>
-                  [4, x] -&gt; [3, "create", "POST", [], ["accept", x]]<vspace/>
-                  [5] &nbsp;&nbsp; -&gt; [3, "update", "PUT", []]<vspace/>
-                  [6] &nbsp;&nbsp; -&gt; [3, "delete", "DELETE", []]
-                </t>
-              </list>
+            </t>
+
+            <figure>
+              <artwork>
+   [4]     -&gt;  [3, "urn:ietf:rfc:XXXX#create", "POST", []]
+   [4, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#create", "POST", [],
+                  ["urn:ietf:rfc:XXXX#accept", x]]
+   [5]     -&gt;  [3, "urn:ietf:rfc:XXXX#update", "PUT", []]
+   [6]     -&gt;  [3, "urn:ietf:rfc:XXXX#delete", "DELETE", []]
+              </artwork>
+            </figure>
+
+            <t>
               If the scheme of the submission IRI indicates CoAP, the short
               forms expand as follows:
-              <list>
-                <t>
-                  [4] &nbsp;&nbsp; -&gt; [3, "create", 2, []]<vspace/>
-                  [4, x] -&gt; [ 3, "create", 2, [], ["accept", x]]<vspace/>
-                  [5] &nbsp;&nbsp; -&gt; [3, "update", 3, []]<vspace/>
-                  [6] &nbsp;&nbsp; -&gt; [3, "delete", 4, []]
-                 </t>
-              </list>
+            </t>
+
+            <figure>
+              <artwork>
+   [4]     -&gt;  [3, "urn:ietf:rfc:XXXX#create", 2, []]
+   [4, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#create", 2, [],
+                  ["urn:ietf:rfc:XXXX#accept", x]]
+   [5]     -&gt;  [3, "urn:ietf:rfc:XXXX#update", 3, []]
+   [6]     -&gt;  [3, "urn:ietf:rfc:XXXX#delete", 4, []]
+              </artwork>
+            </figure>
+
+            <t>
+              The form relation types above identified are defined in <xref
+              target="core-vocabulary"/>.
             </t>
 
           </section>
