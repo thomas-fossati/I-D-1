@@ -600,9 +600,10 @@
           <t>
             For <xref target="RFC7231">HTTP</xref>, the method MUST be encoded
             as a text string; the set of possible values is maintained in the
-            HTTP Method Registry. For <xref target="RFC7252">CoAP</xref>, the
-            method MUST be encoded as an unsigned integer; the set of possible
-            values is maintained in the CoAP Method Codes Registry.
+            IANA HTTP Method Registry. For <xref target="RFC7252">CoAP</xref>,
+            the method MUST be encoded as an unsigned integer; the set of
+            possible values is maintained in the IANA CoAP Method Codes
+            Registry.
             <list>
               <t>method = text / uint</t>
             </list>
@@ -1198,9 +1199,9 @@
 
           <t>
             For <xref target="RFC7231">HTTP</xref>, the set of possible method
-            identifiers is maintained in the HTTP Method Registry. For <xref
-            target="RFC7252">CoAP</xref>, the set of possible method identifiers
-            is maintained in the CoAP Method Codes Registry.
+            identifiers is maintained in the IANA HTTP Method Registry. For
+            <xref target="RFC7252">CoAP</xref>, the set of possible method
+            identifiers is maintained in the IANA CoAP Method Codes Registry.
             <list>
               <t>method = identifier</t>
             </list>
@@ -1855,11 +1856,11 @@
               For HTTP, the content type MUST be specified as a text string in
               the format specified in Section 3.1.1.1 of <xref
               target="RFC7231">RFC 7231</xref>; the set of possible values is
-              maintained in the Media Types Registry.
+              maintained in the IANA Media Types Registry.
             </t>
             <t>
               For CoAP, the content format MUST be specified as an unsigned
-              integer; the set of possible values is maintained in the CoAP
+              integer; the set of possible values is maintained in the IANA CoAP
               Content-Formats Registry.
             </t>
           </list>
