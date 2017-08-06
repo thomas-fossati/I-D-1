@@ -1325,6 +1325,62 @@
         applications and managing link and form relation types.
       </t>
 
+      <section title="Specifying CoRAL-based Applications">
+
+        <t>
+          Implementing the <xref target="W3C.REC-webarch-20041215">Web
+          architecture</xref>, CoRAL-based applications are centered around
+          orthogonal specifications for identification, interaction, and
+          representation:
+          <list style="symbols">
+            <t hangText="Identification:">
+              Resources in CoRAL are identified by IRIs or represented by value
+              literals.
+            </t>
+            <t hangText="Interaction:">
+              Interactions in CoRAL are based on the hypermedia interaction
+              model of the Web and the methods provided by the Web transfer
+              protocol. The semantics of possible interactions are identified by
+              link and form relation types.
+            </t>
+            <t hangText="Representation:">
+              Representations are CoRAL documents encoded in the binary format
+              defined in <xref target="binary"/> or the textual format defined
+              in <xref target="textual"/>, or other representations depending on
+              the application.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Specifications for CoRAL-based applications need to specify the
+          specific protocols and vocabulary used in the application. This SHOULD
+          include at least the following items:
+          <list style="symbols">
+            <t hangText="URI Schemes:">
+              URI schemes identifying the Web transfer protocol(s) used by the
+              application.
+            </t>
+            <t hangText="Media Types:">
+              Internet media types that identify the representation format(s)
+              used by the application, including the media type of the CoRAL
+              serialization format(s) used.
+            </t>
+            <t hangText="Link Relation Types:">
+              Link relation types that identify the semantics of links.
+            </t>
+            <t hangText="Form Relation Types:">
+              Form relation types that identify the semantics of forms and, for
+              each form relation type, the request method(s) to be used.
+            </t>
+            <t hangText="Form Field Names:">
+              Form field names that identify the semantics of form fields.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
       <section title="Naming Resources">
 
         <t>
