@@ -1457,6 +1457,62 @@
 
       </section>
 
+      <section title="Minting New Relation Types">
+
+        <t>
+          Link relation types, form relation types, and form field keys can be
+          minted by defining an <xref target="RFC3987">IRI</xref> that uniquely
+          identifies the vocable. Although the IRI can point to a resource that
+          contains a definition of the semantics of the relation type, clients
+          SHOULD NOT automatically access that resource to avoid overburdening
+          its server. The IRI SHOULD be under the control of the person or party
+          defining it, or be delegated to them.
+        </t>
+
+        <t>
+          Link relation types registered in the IANA Link Relations Registry for
+          use with RFC 5988 (e.g., "stylesheet", "icon", and "license") can be
+          used in CoRAL by prepending the IRI
+          &lt;http://www.iana.org/assignments/relation/&gt; to the registered
+          name:
+        </t>
+
+        <figure>
+          <artwork>
+   #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
+
+   iana:stylesheet &lt;/assets/style.css&gt;
+   iana:icon &lt;/favicon.png&gt;
+   iana:license &lt;https://creativecommons.org/licenses/by-sa/4.0/&gt;
+          </artwork>
+        </figure>
+
+        <t>
+          A good source for link relation types for resource metadata are <xref
+          target="W3C.REC-rdf11-concepts-20140225">RDF predicates</xref>. An RDF
+          statement says that some relationship, indicated by a predicate, holds
+          between two resources. RDF predicates and link relation types can
+          therefore be used interchangeably in many cases. For example, a CoRAL
+          document could describe its maker using the <xref target="FOAF">FOAF
+          vocabulary</xref>:
+        </t>
+
+        <figure>
+          <artwork>
+   #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
+   #using foaf = &lt;http://xmlns.com/foaf/0.1/&gt;
+
+   foaf:maker ? {
+      iana:type &lt;http://xmlns.com/foaf/0.1/Person&gt;
+      foaf:familyName "Hartke"
+      foaf:givenName "Klaus"
+      foaf:mbox &lt;mailto:hartke@tzi.org&gt;
+   }
+          </artwork>
+        </figure>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
@@ -1811,7 +1867,16 @@
         </front>
       </reference>
       -->
-    
+
+      <reference anchor="FOAF" target="http://xmlns.com/foaf/spec/20140114.html">
+        <front>
+          <title>FOAF Vocabulary Specification 0.99</title>
+          <author initials="D." surname="Brickley" fullname="Dan Brickley"/>
+          <author initials="L." surname="Miller" fullname="Libby Miller"/>
+          <date month="January" day="14" year="2014"/>
+        </front>
+      </reference>
+
     </references>
 
     <!-- **************************************************************** -->
