@@ -1513,6 +1513,76 @@
 
       </section>
 
+      <section title="Registering Relation Types">
+
+        <t>
+          IRIs identifying link relation types, form relation types, and form
+          field keys do not have to be registered. The use of DNS names in them
+          allows decentralized creation of new IRIs without the risk of
+          collisions. However, IRIs can be relatively verbose and can impose a
+          high overhead in CoRAL representations, which can be a problem in
+          <xref target="RFC7228">constrained environments</xref>.
+        </t>
+
+        <t>
+          CoRAL alternatively allows the use of small, unsigned integers to
+          identify link relation types, form relation types, and form field
+          keys. These impose a much smaller overhead, but need to be assigned by
+          a registry in order to avoid collisions.
+        </t>
+
+        <t>
+          This document does not create a registry for such integers. Instead,
+          the media types for CoRAL documents in the binary and textual format
+          define <xref target="RFC6906">a "profile" parameter</xref>, which
+          specifies the registry to use. For example, a CoRAL document that uses
+          the registry identified by the URI &lt;http://example.com/coral&gt;
+          can use the following media type:
+          <list>
+            <t>application/coral+cbor; profile="http://www.example.com/coral"</t>
+          </list>
+        </t>
+
+        <t>
+          Registries are identified by a <xref target="RFC3986">URI</xref>. The
+          URI serves only as an identifier; it does not necessarily have to be
+          dereferencable (or even use a dereferencable URI scheme). It is
+          permissible, though, to use a dereferencable URI and serve a
+          representation that provides information about the registry in a
+          human- or machine-readable way. (The format of such a representation
+          is outside the scope of this document.)
+        </t>
+
+        <t>
+          For simplicity, a CoRAL document can use only at most one registry at
+          the same time. The "profile" parameter of the CoRAL media types MUST
+          contain a single URI, not a whitespace-separated list of URIs as
+          recommended by <xref target="RFC6906"/>. If the "profile" parameter is
+          absent, the default profile specified in <xref
+          target="default-profile"/> applies.
+        </t>
+
+        <t>
+          In CoAP, media types (including specific values for their parameters)
+          are encoded as a small, unsigned integer, called the content format.
+          For use with CoAP, each CoRAL registry needs to register a new content
+          format in the IANA CoAP Content-Formats Registry, specifying a CoRAL
+          media type with a "profile" parameter that contains the registry URI.
+        </t>
+
+        <t>
+          A registry SHOULD map an unsigned integer to the IRI that identifies
+          the link relation type, form relation type, or form field key. The
+          namespaces for these three kinds of identifiers are separated, i.e.,
+          the same integer MAY be assigned to a link relation type and a form
+          relation type without ambiguity. Once an integer has been assigned,
+          the assignment MUST NOT change. A registry MAY provide additional
+          information about an assignment (for example, whether a link relation
+          type is deprecated).
+        </t>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
@@ -1988,6 +2058,42 @@
         </t>
 
       </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Default Profile" anchor="default-profile">
+
+      <t>
+        Link Relation Types
+        <list>
+          <t>
+            0 = &lt;http://www.iana.org/assignments/relation/type&gt;<vspace/>
+            1 = &lt;http://www.iana.org/assignments/relation/profile&gt;<vspace/>
+            2 = &lt;http://www.iana.org/assignments/relation/item&gt;<vspace/>
+            3 = &lt;http://www.iana.org/assignments/relation/collection&gt;
+          </t>
+        </list>
+        Form Relation Types
+        <list>
+          <t>
+            0 = &lt;urn:ietf:rfc:XXXX#create&gt;<vspace/>
+            1 = &lt;urn:ietf:rfc:XXXX#update&gt;<vspace/>
+            2 = &lt;urn:ietf:rfc:XXXX#delete&gt;<vspace/>
+            3 = &lt;urn:ietf:rfc:XXXX#search&gt;
+          </t>
+        </list>
+        Form Fields
+        <list>
+          <t>
+            0 = &lt;urn:ietf:rfc:XXXX#accept&gt;
+          </t>
+        </list>
+      </t>
 
     </section>
 
