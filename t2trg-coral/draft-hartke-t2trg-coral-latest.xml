@@ -1471,8 +1471,9 @@
 
         <t>
           Link relation types registered in the IANA Link Relations Registry for
-          use with RFC 5988 (e.g., "stylesheet", "icon", and "license") can be
-          used in CoRAL by prepending the IRI
+          use with RFC 5988 (e.g., <xref target="RFC6573">collection"</xref> and
+          <xref target="W3C.REC-html51-20161101">"icon"</xref>) can be used in
+          CoRAL by prepending the IRI
           &lt;http://www.iana.org/assignments/relation/&gt; to the registered
           name:
         </t>
@@ -1481,9 +1482,30 @@
           <artwork>
    #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
 
-   iana:stylesheet &lt;/assets/style.css&gt;
+   iana:collection &lt;/items&gt;
    iana:icon &lt;/favicon.png&gt;
-   iana:license &lt;https://creativecommons.org/licenses/by-sa/4.0/&gt;
+          </artwork>
+        </figure>
+
+        <t>
+          Link target attributes defined for use with RFC 5988 (e.g., <xref
+          target="I-D.nottingham-rfc5988bis">"type"</xref> and <xref
+          target="RFC6690">"ct"</xref>) can be expressed in CoRAL by nesting
+          links under the respective link and specifying the attribute name
+          appended to the IRI &lt;http://www.example.org/TBD/&gt; as the link
+          relation type. The targets of those nested links MUST be text string
+          literals:
+        </t>
+
+        <figure>
+          <artwork>
+   #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
+   #using attr = &lt;http://www.example.org/TBD/&gt;
+
+   iana:item &lt;/patches/1&gt; {
+      attr:type "application/json-patch+json"
+      attr:ct "51"
+   }
           </artwork>
         </figure>
 
