@@ -1618,6 +1618,23 @@
 
       </section>
 
+      <section title="Embedding CoRAL">
+
+        <t>
+          Data items in the CoRAL binary format (<xref target="binary"/>) MAY be
+          embedded in other <xref target="RFC7049">CBOR</xref> data structures.
+          Specifications using <xref target="I-D.ietf-cbor-cddl">CDDL</xref>
+          SHOULD reference the following CDDL definitions for this purpose:
+          <list>
+            <t>CoRAL-Body = body</t>
+            <t>CoRAL-Link = link</t>
+            <t>CoRAL-Form = form</t>
+            <t>CoRAL-IRI = iri</t>
+          </list>
+        </t>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
