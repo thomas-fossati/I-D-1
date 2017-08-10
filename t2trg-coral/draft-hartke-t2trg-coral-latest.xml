@@ -1610,7 +1610,7 @@
 
       </section>
 
-      <section title="Embedding CoRAL">
+      <section title="Embedding CoRAL in CBOR">
 
         <t>
           Data items in the CoRAL binary format (<xref target="binary"/>) MAY be
