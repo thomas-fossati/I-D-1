@@ -50,8 +50,6 @@
 
     <date />
 
-    <area>ART</area>
-
     <workgroup>CoRE Working Group</workgroup>
 
     <abstract>
@@ -67,6 +65,15 @@
 
     </abstract>
 
+    <note title="Note">
+
+      <t>
+        The string "2.__" is a placeholder for the CoAP response code that will
+        be assigned by IANA on completion of this document.
+      </t>
+
+    </note>
+
   </front>
 
   <middle>
@@ -81,20 +88,20 @@
       <t>
         The Constrained Application Protocol (CoAP) <xref target="RFC7252"/> is
         a request/response protocol not unlike HTTP. CoAP defines no upper bound
-        for the time between a request and the resulting response. E.g., in CoAP
-        over UDP, a server is expected to return an empty Acknowledgement to the
-        client if it cannot provide a response right away, but there is no limit
-        on when the server should return the Separate Response.
+        for the time between a request and the resulting response. For example,
+        a CoAP-over-UDP server is expected to return an empty Acknowledgement to
+        the client if it cannot provide a response right away, but there is no
+        limit on the time when the server should return the Separate Response.
       </t>
 
       <t>
         In particular in the case of requests with long processing times, a CoAP
         client faces the problem that it cannot easily determine how long it
-        should wait for the response and whether the CoAP server is even still
-        processing the request. Long processing times occur, for example, when
-        requests need manual intervention to authorize their processing, or when
-        they perform a long sequence of remote actions. An example is provided
-        by the "possibly long" authorization request specified in <xref
+        should wait for the response and whether the CoAP server is actually
+        still processing the request. Long processing times occur, for example,
+        when requests need manual intervention to authorize their processing, or
+        when they perform a long sequence of remote actions. An example for this
+        is the "possibly long" authorization request specified in <xref
         target="I-D.vanderstok-ace-coap-est">EST-coaps</xref>.
       </t>
 
@@ -117,8 +124,9 @@
       </t>
 
       <t>
-        The 2.__ (Pending) response code is not meant for overload cases, which
-        are better handled by the 5.03 (Service Unavailable) response code.
+        The 2.__ (Pending) response code adapts this status to CoAP. The 2.__
+        (Pending) response code is not meant for overload cases, which are
+        better handled by the 5.03 (Service Unavailable) response code.
       </t>
 
       <section title="Terminology">
@@ -148,11 +156,12 @@
 
       <t>
         A 2.__ (Pending) response in reply to a GET request indicates that the
-        target resource exists but no representation of the resource is
+        target resource exists but a representation of the resource is not
         available yet. The Max-Age Option indicates after what time a client
         should retry its GET request to retrieve the representation. The client
-        MAY observe the resource (see <xref target="observing"/>) to be notified
-        when the representation becomes available.
+        MAY observe the resource as defined in <xref target="RFC7641"/> to be
+        notified when the representation becomes available (see <xref
+        target="observing"/>).
       </t>
 
       <t>
@@ -164,8 +173,8 @@
         available. If the server does not specify a location, the result will
         become available at the target resource of the POST request. To receive
         the result, the client MAY poll or observe the resource at the specified
-        location using a GET request. The Max-Age Option indicates how long the
-        client should wait before making the GET request.
+        location using the GET request method. The Max-Age Option indicates how
+        long the client should wait before making the GET request.
       </t>
 
       <t>
@@ -194,7 +203,7 @@
       <section title="Observing Resources" anchor="observing">
 
         <t>
-          When a client registers to observe <xref target="RFC7641"/> a resource
+          When a client registers to observe a resource <xref target="RFC7641"/>
           for which no representation is available yet, the server MAY send one
           or more 2.__ (Pending) notifications before sending the first 2.05
           (Content) or 2.03 (Valid) notification. The possible resulting
@@ -215,7 +224,7 @@
         </figure>
 
         <t>
-          Unless the server is not willing to add the client to the list of
+          Unless the server is unwilling to add the client to the list of
           observers, each 2.__ (Pending) notification MUST include an Observe
           Option with a sequence number as specified in <xref
           target="RFC7641"/>. Otherwise, the registration request falls back to
