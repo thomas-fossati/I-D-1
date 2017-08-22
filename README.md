@@ -1,3 +1,4 @@
+<!--
 * <b>CoRE Application Descriptions</b> <br>
   <i>draft-hartke-core-apps</i> <br>
   The interfaces of RESTful, hypertext-driven applications consist of reusable
@@ -10,17 +11,21 @@
   [html](https://tools.ietf.org/html/draft-hartke-core-apps) |
   [datatracker](https://datatracker.ietf.org/doc/draft-hartke-core-apps/) |
   [sources](core-apps)
+-->
 
 * <b>The Constrained RESTful Application Language (CoRAL)</b> <br>
   <i>draft-hartke-t2trg-coral</i> <br>
-  The Constrained RESTful Application Language (CoRAL) is a compact, binary
-  representation format for building RESTful, hypermedia-driven applications
-  that run in constrained environments. <br>
+  The Constrained RESTful Application Language (CoRAL) defines a data model and
+  interaction model as well as two specialized serialization formats for the
+  description of typed connections between resources on the Web ("links"),
+  possible operations on such resources ("forms"), and simple resource metadata.
+  <br>
   [text](https://tools.ietf.org/id/draft-hartke-t2trg-coral.txt) |
   [html](https://tools.ietf.org/html/draft-hartke-t2trg-coral) |
   [datatracker](https://datatracker.ietf.org/doc/draft-hartke-t2trg-coral/) |
   [sources](t2trg-coral)
 
+<!--
 * <b>CBOR-encoded Form Data</b> <br>
   <i>draft-hartke-t2trg-cbor-forms</i> <br>
   This document describes a media type to encode form data in CBOR format,
@@ -32,6 +37,7 @@
   [html](https://tools.ietf.org/html/draft-hartke-t2trg-cbor-forms) |
   [datatracker](https://datatracker.ietf.org/doc/draft-hartke-t2trg-cbor-forms/) |
   [sources](t2trg-cbor-forms)
+-->
 
 * <b>Thing-to-Thing Data Hub</b> <br>
   <i>draft-hartke-t2trg-data-hub</i> <br>
