@@ -2146,10 +2146,46 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="IRIs" anchor="binary-iri">
+    <section title="CBOR-encoded IRI References" anchor="binary-iri">
 
       <t>
-        ...
+        <xref target="RFC3986">URI references</xref> and, secondarily, <xref
+        target="RFC3987">IRI references</xref> and are the most common usage of
+        resource identifiers in hypertext representation formats such as <xref
+        target="W3C.REC-html51-20161101">HTML 5</xref> and the <xref
+        target="RFC6690">CoRE Link Format</xref>. They encode the components of
+        a resource identifier either as an absolute URI/IRI or as a relative
+        reference that is resolved against a base URI/IRI.
+      </t>
+
+      <t>
+        URI and IRI references are sequences of characters chosen from a limited
+        subset of the repertoire of ASCII and Unicode characters, respectively.
+        The components of a URI or IRI are delimited by a number of reserved
+        characters, which necessitates the use of percent-encoding for reserved
+        characters in a non-delimiting function. The resolution of references
+        involves parsing URI/IRI references into their components, combining the
+        components with those of the base URI/IRI, merging paths, removing dot
+        segments, and recomposing the result into a URI/IRI reference string.
+      </t>
+
+      <t>
+        Altogether, proper URI processing can be quite complex, which can be a
+        problem in particular in <xref target="RFC7228">constrained
+        environments</xref> with severe code size limitations. As a result, many
+        implementations in such environments choose to implement only an ad-hoc,
+        informally-specified, bug-ridden, non-interoperable subset of half of
+        RFC 3986.
+      </t>
+
+      <t>
+        This section defines CBOR-encoded IRI References, a serialization format
+        for IRI references that encodes their components as CBOR data items
+        rather than text. Given a CBOR implementation, typical operations on IRI
+        references such as parsing, reference resolution and comparison can be
+        implemented much more easily than with the text-based format. A full
+        implementation that covers all corner cases of the specification can be
+        implemented in a comparatively small amount of code.
       </t>
 
     </section>
