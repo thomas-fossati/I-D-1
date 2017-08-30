@@ -2198,6 +2198,43 @@
         implemented in a comparatively small amount of code.
       </t>
 
+      <t>
+        CBOR-encoded IRI References are not capable of expressing all IRI
+        references permitted by <xref target="RFC3987">RFC 3987</xref>. The
+        supported subset covers all <xref target="RFC7252">CoAP URIs</xref> and
+        many <xref target="RFC7230">HTTP URIs</xref>.
+      </t>
+
+      <section title="Data Structure">
+
+        <t>
+          The encoding is very similar to the <xref target="RFC7252">encoding of
+          the request URI in CoAP messages</xref>. The components of an IRI
+          reference are encoded as a sequence of options. Each option consists
+          of an option number identifying the type of option (IRI scheme, host
+          name, etc.) and the option value.
+        </t>
+
+<figure><artwork><![CDATA[
+   iri = [?(scheme:    1, text),
+          ?(host.name: 2, text //
+            host.ip:   3, bytes .size 4 / bytes .size 16),
+          ?(port:      4, uint .size 2),
+          ?(path.type: 5, path-type),
+          *(path:      6, text),
+          *(query:     7, text),
+          ?(fragment:  8, text)]
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   path-type = &(absolute-path:   0,
+                 append-path:     1,
+                 relative-path:   2,
+                 append-relation: 3)
+]]></artwork></figure>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
