@@ -83,6 +83,16 @@
 
     </abstract>
 
+    <note title="Discussion Venue">
+
+      <t>
+        This Internet-Draft is discussed on the Thing-to-Thing Research Group
+        (T2TRG) mailing list
+        &lt;https://www.irtf.org/mailman/listinfo/t2trg&gt;.
+      </t>
+
+    </note>
+
   </front>
 
   <middle>
