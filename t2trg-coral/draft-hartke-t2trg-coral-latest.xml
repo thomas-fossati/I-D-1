@@ -1521,6 +1521,11 @@
         </figure>
 
         <t>
+          [[NOTE TO RFC EDITOR: Please replace all occurrences of
+          "http://www.example.org/TBD/" with a RFC-Editor-controlled URI.]]
+        </t>
+
+        <t>
           A good source for link relation types for resource metadata are <xref
           target="W3C.REC-rdf11-concepts-20140225">RDF predicates</xref>. An RDF
           statement says that some relationship, indicated by a predicate, holds
@@ -2014,6 +2019,11 @@
         This section defines the core vocabulary for CoRAL. It is RECOMMENDED
         that all profiles assign an unsigned integer to each of these link
         relation types, form relation types, and form field names.
+      </t>
+
+      <t>
+        [[NOTE TO RFC EDITOR: Please replace all occurrences of
+        "urn:ietf:rfc:XXXX#" with a RFC-Editor-controlled URI.]]
       </t>
 
       <section title="Link Relation Types">
