@@ -574,7 +574,7 @@
             literal value. The IRI reference may be relative or absolute and is
             resolved against the current base IRI. The encoding of IRI
             references in the binary format is described in <xref
-            target="binary-iri"/>. The link target MAY be null, which indicates
+            target="cbor-iri"/>. The link target MAY be null, which indicates
             that the link target is an unidentified resource.
             <list>
               <t>target = iri / literal / null</t>
@@ -632,7 +632,7 @@
             The submission IRI reference may be relative or absolute and is
             resolved against the current base IRI. The encoding of IRI
             references in the binary format is described in <xref
-            target="binary-iri"/>.
+            target="cbor-iri"/>.
           </t>
 
           <section title="Form Data">
@@ -662,7 +662,7 @@
               integer, floating-point value, byte string, or text string. An IRI
               reference may be relative or absolute and is resolved against the
               current base IRI. The encoding of IRI references in the binary
-              format is described in <xref target="binary-iri"/>.
+              format is described in <xref target="cbor-iri"/>.
               <list>
                 <t>form-field-value = iri / bool / int / float / bytes / text</t>
               </list>
@@ -744,7 +744,7 @@
 
             <t>
               The encoding of IRI references in the binary format is described
-              in <xref target="binary-iri"/>.
+              in <xref target="cbor-iri"/>.
             </t>
 
             <t>
@@ -2156,7 +2156,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="CBOR-encoded IRI References" anchor="binary-iri">
+    <section title="CBOR-encoded IRI References" anchor="cbor-iri">
 
       <t>
         <xref target="RFC3986">URI references</xref> and, secondarily, <xref
