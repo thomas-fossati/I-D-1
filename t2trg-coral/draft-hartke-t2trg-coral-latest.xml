@@ -2210,9 +2210,10 @@
         <t>
           The encoding is very similar to the <xref target="RFC7252">encoding of
           the request URI in CoAP messages</xref>. The components of an IRI
-          reference are encoded as a sequence of options. Each option consists
-          of an option number identifying the type of option (IRI scheme, host
-          name, etc.) and the option value.
+          reference are encoded as a sequence of <spanx>options</spanx>. Each
+          option consists of an <spanx>option number</spanx> identifying the
+          type of option (IRI scheme, host name, etc.) and the <spanx>option
+          value</spanx>.
         </t>
 
 <figure><artwork><![CDATA[
