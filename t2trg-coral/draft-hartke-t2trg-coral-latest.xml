@@ -68,7 +68,7 @@
       </address>
     </author>
 
-    <date />
+    <date/>
 
     <workgroup>Thing-to-Thing Research Group</workgroup>
 
@@ -1934,7 +1934,7 @@
           <author>
             <organization>The Unicode Consortium</organization>
           </author>
-          <date />
+          <date/>
         </front>
         <annotation>
           Note that this reference is to the latest version of Unicode, rather
@@ -1949,7 +1949,7 @@
           <author>
             <organization>The Unicode Consortium</organization>
           </author>
-          <date />
+          <date/>
         </front>
       </reference>
 
@@ -1959,7 +1959,7 @@
           <author>
             <organization>The Unicode Consortium</organization>
           </author>
-          <date />
+          <date/>
         </front>
       </reference>
 
@@ -1969,7 +1969,7 @@
           <author>
             <organization>The Unicode Consortium</organization>
           </author>
-          <date />
+          <date/>
         </front>
       </reference>
 
@@ -2002,8 +2002,8 @@
       <reference anchor="COOLURI" target="http://www.w3.org/Provider/Style/URI.html">
         <front>
           <title>Cool URIs don't change</title>
-          <author initials="T." surname="Berners-Lee" fullname="Tim Berners-Lee" />
-          <date year="1998" />
+          <author initials="T." surname="Berners-Lee" fullname="Tim Berners-Lee"/>
+          <date year="1998"/>
         </front>
       </reference>
       -->
