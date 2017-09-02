@@ -2198,13 +2198,6 @@
               RDF predicate identified by the IRI
               &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;.
             </t>
-            <t hangText="&lt;http://www.iana.org/assignments/relation/profile&gt;">
-              <vspace/>Indicates that the present representation of the link's
-              context conforms to the profile specified as the link's target;
-              see <xref target="RFC6906">RFC 6906</xref>. Since this link
-              relation type is about a CoRAL representation and not a resource,
-              it MUST NOT be used in nested links.
-            </t>
             <t hangText="&lt;http://www.iana.org/assignments/relation/item&gt;">
               <vspace/>Indicates that the link's context is a collection and
               that the link's target is a member of that collection; see Section
@@ -2295,9 +2288,8 @@
         <list>
           <t>
             0 = &lt;http://www.iana.org/assignments/relation/type&gt;<vspace/>
-            1 = &lt;http://www.iana.org/assignments/relation/profile&gt;<vspace/>
-            2 = &lt;http://www.iana.org/assignments/relation/item&gt;<vspace/>
-            3 = &lt;http://www.iana.org/assignments/relation/collection&gt;
+            1 = &lt;http://www.iana.org/assignments/relation/item&gt;<vspace/>
+            2 = &lt;http://www.iana.org/assignments/relation/collection&gt;
           </t>
         </list>
         Form Relation Types
