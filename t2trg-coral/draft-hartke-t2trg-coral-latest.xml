@@ -194,7 +194,155 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Overview" anchor="overview">
+    <section title="Examples" anchor="examples">
+
+      <section title="Web Linking">
+
+        <t>
+          At its core, CoRAL is just yet another serialization format for Web
+          links. For example, if an HTTP client sends the following request:
+        </t>
+
+<figure><artwork><![CDATA[
+   GET /TheBook/chapter3 HTTP/1.1
+   Host: example.com
+]]></artwork></figure>
+
+        <t>
+          and receives the following response:
+        </t>
+
+<figure><artwork><![CDATA[
+   HTTP/1.1 200 OK
+   Content-Type: text/coral
+
+   #using <http://www.iana.org/assignments/relation/>
+
+   next    <./chapter4>
+   icon    </favicon.png>
+   license <http://creativecommons.org/licenses/by/4.0/>
+]]></artwork></figure>
+
+        <t>
+          then the representation contains the following three links:
+          <list style="symbols">
+            <t>
+              one link from &lt;http://example.com/TheBook/chapter3&gt; to
+              &lt;http://example.com/TheBook/chapter4&gt; of type
+              "http://www.iana.org/assignments/relation/next",
+            </t>
+            <t>
+              one link from &lt;http://example.com/TheBook/chapter3&gt; to
+              &lt;http://example.com/favicon.png&gt; of type
+              "http://www.iana.org/assignments/relation/icon", and
+            </t>
+            <t>
+              one link from &lt;http://example.com/TheBook/chapter3&gt; to
+              &lt;http://creativecommons.org/licenses/by/4.0/&gt; of type
+              "http://www.iana.org/assignments/relation/license".
+            </t>
+          </list>
+        </t>
+
+        <t>
+          This representation is equivalent to the following <xref
+          target="I-D.nottingham-rfc5988bis">Link header field</xref>:
+        </t>
+
+<figure><artwork><![CDATA[
+   Link: <./chapter4>; rel="next",
+         </favicon.png>; rel="icon",
+         <http://creativecommons.org/licenses/by/4.0/>; rel="license"
+]]></artwork></figure>
+
+        <t>
+          and the following <xref target="W3C.REC-html51-20161101">HTML 5</xref>
+          link elements:
+        </t>
+
+<figure><artwork><![CDATA[
+   <link rel="next" href="./chapter4">
+   <link rel="icon" href="/favicon.png">
+   <link rel="license"
+         href="http://creativecommons.org/licenses/by/4.0/">
+]]></artwork></figure>
+
+      </section>
+
+      <section title="Links, Forms, and Metadata">
+
+        <t>
+          At large, CoRAL is an expressive language for describing Web links,
+          possible operations on resources, and simple resource metadata. For
+          example, if an HTTP client sends the following request:
+        </t>
+
+<figure><artwork><![CDATA[
+   GET /tasks HTTP/1.1
+   Host: example.com
+]]></artwork></figure>
+
+        <t>
+          and receives the following response:
+        </t>
+
+<figure><artwork><![CDATA[
+   HTTP/1.1 200 OK
+   Content-Type: text/coral
+
+   #using <http://example.org/vocabulary#>
+   #using coral = <urn:ietf:rfc:XXXX#>
+
+   task </tasks/1> {
+      description "Pick up the kids"
+   }
+
+   task </tasks/2> {
+      description "Return the books to the library"
+      coral:delete -> DELETE </tasks/2>
+   }
+
+   coral:create -> POST </tasks> [coral:accept "example/task"]
+]]></artwork></figure>
+
+        <t>
+          then the representation contains the following six elements:
+          <list style="symbols">
+            <t>
+              one link from &lt;http://example.com/tasks&gt; to
+              &lt;http://example.com/tasks/1&gt; of type
+              "http://example.org/vocabulary#task",
+            </t>
+            <t>
+              one link from &lt;http://example.com/tasks/1&gt; to "Pick up the
+              kids" of type "http://example.org/vocabulary#description",
+            </t>
+            <t>
+              one link from &lt;http://example.com/tasks&gt; to
+              &lt;http://example.com/tasks/2&gt; of type
+              "http://example.org/vocabulary#task",
+            </t>
+            <t>
+              one link from &lt;http://example.com/tasks/2&gt; to "Return the
+              books to the library" of type
+              "http://example.org/vocabulary#description", and
+            </t>
+            <t>
+              one form of type "urn:ietf:rfc:XXXX#delete" that can be used to
+              delete &lt;http://example.com/tasks/2&gt; by making a DELETE
+              request to &lt;http://example.com/tasks/2&gt;.
+            </t>
+            <t>
+              one form of type "urn:ietf:rfc:XXXX#create" that can be used to
+              create new items in &lt;http://example.com/tasks&gt; by making a
+              POST request to &lt;http://example.com/tasks&gt; with an
+              "example/task" payload.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
     </section>
 
     <!-- **************************************************************** -->
