@@ -1500,13 +1500,12 @@
         </figure>
 
         <t>
-          Link target attributes defined for use with RFC 5988 (e.g., <xref
-          target="I-D.nottingham-rfc5988bis">"type"</xref> or <xref
-          target="RFC6690">"ct"</xref>) can be expressed in CoRAL by nesting
-          links under the respective link and specifying the attribute name
-          appended to the IRI &lt;http://www.example.org/TBD/&gt; as the link
-          relation type. The targets of such nested links MUST be text string
-          literals:
+          Link target attributes defined for use with RFC 6690 (e.g., "type",
+          "hreflang", "media", "ct", "rt", "if", "sz") can be expressed in
+          CoRAL by nesting links under the respective link and specifying the
+          attribute name appended to the IRI &lt;http://www.example.org/TBD/&gt;
+          as the link relation type. The target of such nested links MUST be a
+          text string literal:
         </t>
 
         <figure>
@@ -1517,6 +1516,7 @@
    iana:item &lt;/patches/1&gt; {
       attr:type "application/json-patch+json"
       attr:ct "51"
+      attr:obs ""
    }
           </artwork>
         </figure>
@@ -1524,6 +1524,12 @@
         <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of
           "http://www.example.org/TBD/" with a RFC-Editor-controlled URI.]]
+        </t>
+
+        <t>
+          Link target attributes that actually describe the link and not the
+          link target (e.g., "rel", "anchor", "rev", "title", and "title*") are
+          excluded from this provision and MUST NOT occur in a CoRAL document.
         </t>
 
         <t>
