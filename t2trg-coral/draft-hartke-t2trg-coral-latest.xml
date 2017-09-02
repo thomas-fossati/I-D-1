@@ -1411,19 +1411,18 @@
           IRIs and URIs often include structured application data in the path
           and query components, such as paths in a filesystem or keys in a
           database. It is a common practice in many HTTP-based applications to
-          treat these structures not only as an implementation detail but also
-          to make them part of the public API, prescribing a fixed format that
-          is hard-coded in clients. However, there are a number of problems with
+          make them part of the public API, prescribing a fixed format that is
+          hard-coded in clients. However, there are a number of problems with
           this practice <xref target="RFC7320"/>.
         </t>
 
         <t>
-          In CoRAL-based applications, resource names are therefore not part of
-          the application interface. The specification of a CoRAL-based
-          application MUST NOT mandate any particular form of resource name
-          structure. <xref target="RFC7320">RFC 7320</xref> describes the
-          problematic practice of fixed URI structures in detail and provides
-          some acceptable alternatives.
+          In CoRAL-based applications, resource names are not part of the
+          application interface; they are an implementation detail. The
+          specification of a CoRAL-based application MUST NOT mandate any
+          particular form of resource name structure. <xref target="RFC7320">RFC
+          7320</xref> describes the problematic practice of fixed URI structures
+          in detail and provides some acceptable alternatives.
         </t>
 
         <!--
