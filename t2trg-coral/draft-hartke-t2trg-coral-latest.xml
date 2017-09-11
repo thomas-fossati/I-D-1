@@ -1734,8 +1734,8 @@
           A registry SHOULD map each unsigned integer to the full IRI that
           identifies the link relation type, form relation type, or form field
           name. The namespaces for these three kinds of identifiers are
-          disjoined, i.e., the same integer may be assigned to a link relation
-          type, form relation type, adn form field name without ambiguity. Once
+          disjoint, i.e., the same integer may be assigned to a link relation
+          type, form relation type, and form field name without ambiguity. Once
           an integer has been assigned, the assignment MUST NOT be changed or
           removed. A registry MAY provide additional information about an
           assignment (for example, whether a link relation type is deprecated).
@@ -1828,7 +1828,7 @@
         Implementers of the CoRAL textual format need to consider the security
         aspects of handling Unicode input. See the <xref
         target="UNICODE-UAX36">Unicode Standard Annex #36</xref> for security
-        considerations relating to visual spoofind and misuse of character
+        considerations relating to visual spoofing and misuse of character
         encodings. See Section 10 of <xref target="RFC3629">RFC 3629</xref> for
         security considerations relating to UTF-8.
       </t>
