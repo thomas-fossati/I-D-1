@@ -1699,10 +1699,10 @@
         </t>
 
         <t>
-          This document does not create a registry for such integers. Instead, a
-          <xref target="RFC6906">"profile" parameter</xref> is specified for use
-          with the media types for CoRAL documents in the binary and textual
-          format. The parameter specifies which registry to use.
+          This document does not create a registry for such integers. Instead,
+          the media types for CoRAL documents in the binary and textual format
+          are defined to have a <xref target="RFC6906">"profile"
+          parameter</xref> that indicates the registry to use.
         </t>
 
         <t>
