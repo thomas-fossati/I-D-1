@@ -1843,7 +1843,7 @@
       <t>
         CoRAL is intended to be used in conjunction with a Web transfer protocol
         such as HTTP or CoAP. See Section 9 of <xref target="RFC7230">RFC
-        7320</xref>, Section of 9 of <xref target="RFC7231">RFC 7231</xref>,
+        7320</xref>, Section 9 of <xref target="RFC7231">RFC 7231</xref>,
         etc. for security considerations relating to HTTP. See Section 11 of
         <xref target="RFC7252">RFC 7252</xref> for security considerations
         relating to CoAP.
