@@ -763,8 +763,8 @@
             The method is encoded as a text string or an unsigned integer that
             refers to one of the request methods defined by the protocol that is
             identified by the scheme of the submission IRI. Method identifiers
-            in the form of text strings are constrained to the range of US-ASCII
-            characters and are case-insensitive.
+            in the form of text strings are constrained to US-ASCII letters and
+            are case-insensitive.
             <list>
               <t>method = text / uint</t>
             </list>
@@ -1361,8 +1361,8 @@
           <t>
             The method identifier refers to one of the request methods defined
             by the protocol that is identified by the scheme of the submission
-            IRI. Method identifiers are constrained to the range of US-ASCII
-            characters and are case-insensitive.
+            IRI. Method identifiers are constrained to US-ASCII letters and are
+            case-insensitive.
             <list>
               <t>method = identifier</t>
             </list>
@@ -1427,8 +1427,7 @@
             Directives provide the ability to manipulate the environment when
             processing a list of elements. All directives start with a number
             sign ("#") followed by a directive identifier. Directive identifiers
-            are constrained to the range of US-ASCII characters and are
-            case-insensitive.
+            are constrained to US-ASCII letters and are case-insensitive.
           </t>
 
           <t>
