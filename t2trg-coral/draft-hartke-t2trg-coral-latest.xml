@@ -1756,10 +1756,10 @@
       <section title="Expressing Target Attributes">
 
         <t>
-          Link target attributes defined for use with RFC 6690 (e.g., "type",
+          Link target attributes defined for use with RFC 6690 (such as "type",
           "hreflang", "media", "ct", "rt", "if", "sz") can be expressed in CoRAL
           by nesting links under the respective link and specifying the
-          attribute name appended to the IRI &lt;http://www.example.org/TBD/&gt;
+          attribute name appended to the IRI &lt;http://TBD/&gt;
           as the link relation type. The target of such nested links MUST be a
           text string literal:
         </t>
@@ -1767,7 +1767,7 @@
         <figure>
           <artwork>
    #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
-   #using attr = &lt;http://www.example.org/TBD/&gt;
+   #using attr = &lt;http://TBD/&gt;
 
    iana:item &lt;/patches/1&gt; {
       attr:type "application/json-patch+json"
@@ -1778,12 +1778,12 @@
 
         <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of
-          "http://www.example.org/TBD/" with a RFC-Editor-controlled IRI.]]
+          "http://TBD/" with a RFC-Editor-controlled IRI.]]
         </t>
 
         <t>
           Link target attributes that actually describe the link and not the
-          link target (e.g., "rel", "anchor", "rev", "title", and "title*") are
+          link target (such as "rel", "anchor", "rev", "title", and "title*") are
           excluded from this provision and MUST NOT occur in a CoRAL document.
         </t>
 
