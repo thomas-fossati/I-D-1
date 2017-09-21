@@ -2341,10 +2341,10 @@
       </t>
 
       <t>
-        URI and IRI references are sequences of characters chosen from limited
-        subsets of the repertoires of US-ASCII and Unicode characters,
+        URI and IRI references are sequences of characters chosen from a limited
+        subset of the repertoires of US-ASCII characters and Unicode characters,
         respectively. The individual components of a URI or IRI are delimited by
-        several reserved characters, which necessitates the use of
+        several reserved characters. This necessitates the use of
         percent-encoding for reserved characters in a non-delimiting function.
         The resolution of references involves parsing URI/IRI references into
         their components, combining the components with those of the base
