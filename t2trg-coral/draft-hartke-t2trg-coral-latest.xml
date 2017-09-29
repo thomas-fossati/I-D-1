@@ -1724,7 +1724,7 @@
         <t>
           For simplicity, a CoRAL document can only use at most one registry at
           a time. The "profile" parameter of the CoRAL media types MUST contain
-          a single URI, not a whitespace-separated list of URIs as recommended
+          a single URI, not a white space-separated list of URIs as recommended
           in <xref target="RFC6906">RFC 6906</xref>. If the "profile" parameter
           is absent, the profile specified in <xref target="default-profile"/>
           is assumed.
