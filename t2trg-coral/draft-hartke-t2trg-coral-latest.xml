@@ -959,8 +959,7 @@
             Line terminators divide text into lines. A line terminator is any
             Unicode character with Line_Break class BK, CR, LF, or NL. However,
             any CR character that immediately precedes a LF character is
-            ignored. (This affects only the numbering of lines in error
-            messages.)
+            ignored. (This affects only the line numbering in error messages.)
           </t>
 
         </section>
