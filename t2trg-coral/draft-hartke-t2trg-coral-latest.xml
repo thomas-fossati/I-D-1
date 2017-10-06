@@ -1027,7 +1027,7 @@
             may be absolute or relative and may contain a fragment identifier.
             IRI references are enclosed in angle brackets ("&lt;" and "&gt;").
             <list>
-              <t>iri = %x3C IRI-reference %x3E</t>
+              <t>iri = "&lt;" IRI-reference "&gt;"</t>
               <t>IRI-reference = &lt;Defined in RFC 3987&gt;</t>
             </list>
           </t>
@@ -1074,7 +1074,7 @@
             <t>
               Negative integers are expressed by prepending a minus sign ("-").
               <list>
-                <t>integer = [%x2D] (decimal / binary / octal / hexadecimal)</t>
+                <t>integer = ["+" / "-"] (decimal / binary / octal / hexadecimal)</t>
                 <t>decimal = 1*DIGIT</t>
                 <t>binary = %x30 (%x42 / %x62) 1*BINDIG</t>
                 <t>octal = %x30 (%x4F / %x6F) 1*OCTDIG</t>
@@ -1109,9 +1109,9 @@
               Negative floating-point values are expressed by prepending a minus
               sign ("-").
               <list>
-                <t>floating-point = [%x2D] 1*DIGIT [fraction] [exponent]</t>
-                <t>fraction = %x2E 1*DIGIT</t>
-                <t>exponent = (%x45 / %x65) [%x2B / %x2D] 1*DIGIT</t>
+                <t>floating-point = ["+" / "-"] 1*DIGIT [fraction] [exponent]</t>
+                <t>fraction = "." 1*DIGIT</t>
+                <t>exponent = (%x45 / %x65) ["+" / "-"] 1*DIGIT</t>
               </list>
             </t>
 
@@ -1123,8 +1123,7 @@
               tokens "+Infinity" (or simply "Infinity") and "-Infinity".
               <list>
                 <t>floating-point =/ %x4E.61.4E</t>
-                <t>floating-point =/ [%x2B] %x49.6E.66.69.6E.69.74.79</t>
-                <t>floating-point =/ %x2D.49.6E.66.69.6E.69.74.79</t>
+                <t>floating-point =/ ["+" / "-"] %x49.6E.66.69.6E.69.74.79</t>
               </list>
             </t>
 
@@ -1222,7 +1221,7 @@
               The literals "null" and "?" denote the intentional absence of any
               value.
               <list>
-                <t>null = %x6E.75.6C.6C / %x3F</t>
+                <t>null = %x6E.75.6C.6C / "?"</t>
               </list>
             </t>
 
