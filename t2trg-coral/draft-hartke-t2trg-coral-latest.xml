@@ -1258,7 +1258,7 @@
           Document processors need to maintain an <spanx>environment</spanx>
           while iterating a list of elements. The environment consists of three
           variables: a <spanx>current context IRI</spanx>, a <spanx>current base
-          IRI</spanx>, and a mapping from identifiers to IRIs. The current
+          IRI</spanx>, and a <spanx>mapping from identifiers to IRIs</spanx>. The current
           context IRI and current base IRI are initially both set to the
           document's retrieval context. The mapping from identifiers to IRIs is
           initially empty.
