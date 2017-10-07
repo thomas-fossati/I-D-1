@@ -1464,7 +1464,7 @@
                 <t>using-directive = "#" "using" [identifier "="] iri</t>
               </list>
               The directive is processed by resolving the IRI reference to an
-              IRI, normalizing the IRI according to the IRIs scheme, and adding
+              IRI, normalizing the IRI according to the IRI scheme, and adding
               the specified identifier and resulting IRI to the mapping from
               identifiers to IRIs in the current environment. (It doesn't matter
               what the IRI reference is resolved against, since it is always an
