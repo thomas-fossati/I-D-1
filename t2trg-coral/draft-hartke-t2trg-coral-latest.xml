@@ -1293,9 +1293,6 @@
             <list>
               <t>relation = iri / simple-name / qualified-name / integer</t>
             </list>
-            An absolute IRI reference MUST be resolved and normalized according
-            to the IRI scheme. (It doesn't matter what base IRI it is resolved
-            against, since it is always an absolute reference.)
           </t>
 
           <t>
@@ -1463,13 +1460,9 @@
               <list>
                 <t>using-directive = "#" "using" [identifier "="] iri</t>
               </list>
-              The directive is processed by resolving the IRI reference to an
-              IRI, normalizing the IRI according to the IRI scheme, and adding
-              the specified identifier and resulting IRI to the mapping from
-              identifiers to IRIs in the current environment. (It doesn't matter
-              what the IRI reference is resolved against, since it is always an
-              absolute reference.) It is an error if the identifier is already
-              present in the mapping.
+              The directive is processed by adding the specified identifier and
+              IRI to the mapping from identifiers to IRIs. It is an error if the
+              identifier is already present in the mapping.
             </t>
 
           </section>
