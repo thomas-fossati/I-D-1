@@ -1045,10 +1045,10 @@
           <section title="Boolean Literals">
 
             <t>
-              The case-sensitive literals "true" and "false" denote the Boolean
+              The case-insensitive tokens "true" and "false" denote the Boolean
               values true and false, respectively.
               <list>
-                <t>boolean = %x74.72.75.65 / %x66.61.6C.73.65</t>
+                <t>boolean = "true" / "false"</t>
               </list>
             </t>
 
@@ -1118,12 +1118,13 @@
             <t>
               Floating-point literals can additionally denote the special
               "Not-a-Number" (NaN) value, positive infinity, and negative
-              infinity. The NaN value is produced by the case-sensitive token
-              "NaN". The two infinite values are produced by the case-sensitive
-              tokens "+Infinity" (or simply "Infinity") and "-Infinity".
+              infinity. The NaN value is produced by the case-insensitive token
+              "NaN". The two infinite values are produced by the
+              case-insensitive tokens "+Infinity" (or simply "Infinity") and
+              "-Infinity".
               <list>
-                <t>floating-point =/ %x4E.61.4E</t>
-                <t>floating-point =/ ["+" / "-"] %x49.6E.66.69.6E.69.74.79</t>
+                <t>floating-point =/ "NaN"</t>
+                <t>floating-point =/ ["+" / "-"] "Infinity"</t>
               </list>
             </t>
 
@@ -1218,10 +1219,10 @@
           <section title="Null Literal">
 
             <t>
-              The literals "null" and "?" denote the intentional absence of any
-              value.
+              The case-insensitive tokens "null" and "?" denote the intentional
+              absence of any value.
               <list>
-                <t>null = %x6E.75.6C.6C / "?"</t>
+                <t>null = "null" / "?"</t>
               </list>
             </t>
 
