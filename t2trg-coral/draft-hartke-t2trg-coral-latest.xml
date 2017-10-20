@@ -1049,7 +1049,7 @@
             IRI references are enclosed in angle brackets ("&lt;" and "&gt;").
             <list>
               <t>iri = "&lt;" IRI-reference "&gt;"</t>
-              <t>IRI-reference = &lt;Defined in RFC 3987&gt;</t>
+              <t>IRI-reference = &lt;Defined in Section 2.2 of RFC 3987&gt;</t>
             </list>
           </t>
 
