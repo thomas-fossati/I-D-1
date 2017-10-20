@@ -951,8 +951,8 @@
           The lexical structure of a document in the textual format is made up
           of four basic elements: line terminators, white space, comments, and
           tokens. Of these, only tokens are significant in the syntactic
-          grammar. There are four kinds of tokens: identifiers, IRI references,
-          literals, and punctuators.
+          grammar. There are five kinds of tokens: identifiers, method tokens,
+          IRI references, literals, and punctuators.
         </t>
 
         <t>
@@ -1022,6 +1022,20 @@
             (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
             Standard Annex #15</xref>. Comparison of identifiers is based on NFC
             and is case-sensitive (unless otherwise noted).
+          </t>
+
+        </section>
+
+        <section title="Method Tokens">
+
+          <t>
+            Method tokens refer to one of the request method tokens defined by
+            the Web transfer protocol, such as "GET" or "POST". The rules for
+            method tokens are adopted from Section 4.1 of <xref
+            target="RFC7231">RFC 7231</xref>.
+            <list>
+              <t>method = &lt;Defined in Section 4.1 of RFC 7231&gt;</t>
+            </list>
           </t>
 
         </section>
@@ -1349,7 +1363,7 @@
 
           <t>
             A form consists of the form relation type, followed by a "->" token,
-            a method identifier, and a submission IRI reference, optionally
+            a method token, and a submission IRI reference, optionally
             followed by form data enclosed in square brackets ("[" and "]").
             <list>
               <t>form = relation "->" method iri ["[" form-data "]"]</t>
@@ -1362,20 +1376,12 @@
           </t>
 
           <t>
-            The method identifier refers to one of the request methods defined
-            by the protocol that is identified by the scheme of the submission
-            IRI. Method identifiers are constrained to US-ASCII letters and are
-            case-insensitive.
-            <list>
-              <t>method = identifier</t>
-            </list>
-          </t>
-
-          <t>
-            For <xref target="RFC7230">HTTP</xref>, the set of possible method
-            identifiers is maintained in the IANA HTTP Method Registry. For
-            <xref target="RFC7252">CoAP</xref>, the set of possible method
-            identifiers is maintained in the IANA CoAP Method Codes Registry.
+            The method token refers to one of the request methods defined by the
+            protocol that is identified by the scheme of the submission IRI. For
+            <xref target="RFC7230">HTTP</xref>, the set of possible method
+            tokens is maintained in the IANA HTTP Method Registry. For <xref
+            target="RFC7252">CoAP</xref>, the set of possible method tokens is
+            maintained in the IANA CoAP Method Codes Registry.
           </t>
 
           <t>
