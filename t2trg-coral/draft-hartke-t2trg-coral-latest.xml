@@ -1026,10 +1026,10 @@
         <section title="Method Tokens">
 
           <t>
-            Method tokens refer to one of the request method tokens defined by
-            the Web transfer protocol, such as "GET" or "POST". The rules for
-            method tokens are adopted from Section 4.1 of <xref
-            target="RFC7231">RFC 7231</xref>.
+            Method tokens refer to one of the request methods defined by the Web
+            transfer protocol used, such as "GET" or "POST". The rules for
+            method tokens are adopted from <xref target="RFC7231">RFC
+            7231</xref>.
             <list>
               <t>method = &lt;Defined in Section 4.1 of RFC 7231&gt;</t>
             </list>
