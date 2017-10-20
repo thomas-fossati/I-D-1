@@ -1263,9 +1263,9 @@
           Document processors need to maintain an <spanx>environment</spanx>
           while iterating a list of elements. The environment consists of three
           variables: a <spanx>current context IRI</spanx>, a <spanx>current base
-          IRI</spanx>, and a <spanx>mapping from identifiers to IRIs</spanx>. The current
+          IRI</spanx>, and a <spanx>current mapping from identifiers to IRIs</spanx>. The current
           context IRI and current base IRI are initially both set to the
-          document's retrieval context. The mapping from identifiers to IRIs is
+          document's retrieval context. The current mapping from identifiers to IRIs is
           initially empty.
         </t>
 
@@ -1302,8 +1302,8 @@
 
           <t>
             A simple name consists of an identifier. It is resolved to an IRI by
-            looking up the empty string in the mapping from identifiers to IRIs
-            in the current environment and concatenating the looked up IRI with
+            looking up the empty string in the current mapping from identifiers to IRIs
+            and concatenating the looked up IRI with
             the specified identifier. It is an error if the empty string is not
             present in the mapping.
             <list>
@@ -1311,8 +1311,8 @@
             </list>
             A qualified name consists of two identifiers separated by a colon
             (":"). It is resolved to an IRI by looking up the identifier on the
-            left hand side in the mapping from identifiers to IRIs in the
-            current environment and concatenating the looked up IRI with the
+            left hand side in the current mapping from identifiers to IRIs
+            and concatenating the looked up IRI with the
             identifier on the right hand side. It is an error if the identifier
             on the left hand side is not present in the mapping.
             <list>
@@ -1466,7 +1466,7 @@
                 <t>using-directive = "#" "using" [identifier "="] iri</t>
               </list>
               The directive is processed by adding the specified identifier and
-              IRI to the mapping from identifiers to IRIs. It is an error if the
+              IRI to the current mapping from identifiers to IRIs. It is an error if the
               identifier is already present in the mapping.
             </t>
 
