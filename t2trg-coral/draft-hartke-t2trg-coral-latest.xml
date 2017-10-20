@@ -762,21 +762,24 @@
           <t>
             The method is encoded as a text string or an unsigned integer that
             refers to one of the request methods defined by the protocol that is
-            identified by the scheme of the submission IRI. Method identifiers
-            in the form of text strings are constrained to US-ASCII letters and
-            are case-insensitive.
+            identified by the scheme of the submission IRI.
             <list>
               <t>method = text / uint</t>
             </list>
           </t>
 
           <t>
-            For <xref target="RFC7231">HTTP</xref>, the method MUST be encoded
-            as a text string; the set of possible values is maintained in the
-            IANA HTTP Method Registry. For <xref target="RFC7252">CoAP</xref>,
-            the method MUST be encoded as an unsigned integer (e.g., the
-            unsigned integer 2 for the POST method); the set of possible values
-            is maintained in the IANA CoAP Method Codes Registry.
+            For <xref target="RFC7230">HTTP</xref>, the method MUST be encoded
+            as a text string that matches the "method" rule defined in Section
+            4.1 of <xref target="RFC7231">RFC 7231</xref>; the set of possible
+            values is maintained in the IANA HTTP Method Registry.
+          </t>
+
+          <t>
+            For <xref target="RFC7252">CoAP</xref>, the method MUST be encoded
+            as an unsigned integer (e.g., the unsigned integer 2 for the POST
+            method); the set of possible values is maintained in the IANA CoAP
+            Method Codes Registry.
           </t>
 
           <t>
@@ -1369,7 +1372,7 @@
           </t>
 
           <t>
-            For <xref target="RFC7231">HTTP</xref>, the set of possible method
+            For <xref target="RFC7230">HTTP</xref>, the set of possible method
             identifiers is maintained in the IANA HTTP Method Registry. For
             <xref target="RFC7252">CoAP</xref>, the set of possible method
             identifiers is maintained in the IANA CoAP Method Codes Registry.
@@ -2073,6 +2076,7 @@
       &RFC6838;
       &RFC6943;
       &RFC7049;
+      &RFC7231;
       &RFC8174;
       &RFC8288;
 
@@ -2136,7 +2140,6 @@
       &RFC6906;
       &RFC7228;
       &RFC7230;
-      &RFC7231;
       &RFC7252;
       &RFC7320;
       &RFC8132;
