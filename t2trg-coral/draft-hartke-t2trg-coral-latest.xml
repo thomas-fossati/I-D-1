@@ -1541,7 +1541,7 @@
             <t hangText="Form Field Names:">
               Form field names that identify the semantics of form fields.
               Additionally, for each form field name, the permissible form field
-              value(s).
+              value(s) or type(s).
             </t>
           </list>
         </t>
