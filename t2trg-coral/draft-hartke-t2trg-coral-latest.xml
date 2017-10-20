@@ -773,9 +773,6 @@
             as a text string that matches the "method" rule defined in Section
             4.1 of <xref target="RFC7231">RFC 7231</xref>; the set of possible
             values is maintained in the IANA HTTP Method Registry.
-          </t>
-
-          <t>
             For <xref target="RFC7252">CoAP</xref>, the method MUST be encoded
             as an unsigned integer (e.g., the unsigned integer 2 for the POST
             method); the set of possible values is maintained in the IANA CoAP
