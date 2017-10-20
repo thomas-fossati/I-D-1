@@ -162,12 +162,11 @@
       </t>
 
       <t>
-        The second serialization format is a light, textual encoding of links
-        and forms that is intended to be easy to read and write by humans. The
-        format is used for giving examples throughout the document and is
-        stylistically similar to <xref
-        target="W3C.REC-turtle-20140225">Turtle</xref>, although it is not a
-        syntax for RDF.
+        The second serialization format is a lightweight, textual encoding of
+        links and forms that is easy to read and write by humans. The format is
+        inspired by the syntax of <xref
+        target="W3C.REC-turtle-20140225">Turtle</xref> and is used for giving
+        examples throughout the document.
       </t>
 
       <!--
