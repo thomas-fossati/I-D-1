@@ -25,9 +25,9 @@
   <!ENTITY RFC7320 SYSTEM "reference.RFC.7320.xml">
   <!ENTITY RFC8132 SYSTEM "reference.RFC.8132.xml">
   <!ENTITY RFC8174 SYSTEM "reference.RFC.8174.xml">
+  <!ENTITY RFC8288 SYSTEM "reference.RFC.8288.xml">
   <!ENTITY I-D.ietf-cbor-cddl SYSTEM "reference.I-D.ietf-cbor-cddl.xml">
   <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
-  <!ENTITY I-D.nottingham-rfc5988bis SYSTEM "reference.I-D.nottingham-rfc5988bis.xml">
   <!ENTITY W3C.REC-html51-20161101 SYSTEM "reference.W3C.REC-html51-20161101.xml">
   <!ENTITY W3C.REC-rdf11-concepts-20140225 SYSTEM "reference.W3C.REC-rdf11-concepts-20140225.xml">
   <!ENTITY W3C.REC-turtle-20140225 SYSTEM "reference.W3C.REC-turtle-20140225.xml">
@@ -128,8 +128,8 @@
 
       <t>
         The CoRAL data and interaction model is a superset of the Web linking
-        model described in <xref target="I-D.nottingham-rfc5988bis">RFC
-        5988</xref>. The data model consists of two elements:
+        model described in <xref target="RFC8288">RFC 8288</xref>. The data
+        model consists of two elements:
         <spanx>links</spanx>, which describe relationships between pairs of
         resources and the type of those relationships, and <spanx>forms</spanx>,
         which describe possible operations on resources and the type of those
@@ -251,7 +251,7 @@
 
         <t>
           This representation is equivalent to the following <xref
-          target="I-D.nottingham-rfc5988bis">Link header field</xref>:
+          target="RFC8288">Link header field</xref>:
         </t>
 
 <figure><artwork><![CDATA[
@@ -433,7 +433,7 @@
 
         <t>
           The link relation type identifies the semantics of a link. In HTML 5
-          and RFC 5988 Link headers, a link relation type is typically denoted
+          and RFC 8288 Link headers, a link relation type is typically denoted
           by a registered name, such as "stylesheet" or "icon". In CoRAL, a link
           relation type is denoted by an IRI or an unsigned integer. IRIs allow
           the creation of new, unique relation types in a decentralized fashion,
@@ -2074,9 +2074,9 @@
       &RFC6943;
       &RFC7049;
       &RFC8174;
+      &RFC8288;
 
       &I-D.ietf-cbor-cddl;
-      &I-D.nottingham-rfc5988bis;
 
       <reference anchor="UNICODE" target="http://www.unicode.org/versions/latest/">
         <front>
