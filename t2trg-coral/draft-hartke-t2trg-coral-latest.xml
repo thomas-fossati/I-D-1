@@ -1432,8 +1432,7 @@
           <t>
             Directives provide the ability to manipulate the environment when
             processing a list of elements. All directives start with a number
-            sign ("#") followed by a directive identifier. Directive identifiers
-            are constrained to US-ASCII letters and are case-insensitive.
+            sign ("#") followed by a directive identifier.
           </t>
 
           <t>
