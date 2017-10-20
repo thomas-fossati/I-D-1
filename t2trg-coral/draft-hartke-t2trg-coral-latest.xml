@@ -828,7 +828,7 @@
               using short forms. The following short forms are available:
               <list>
                 <t>form =/ [form.create: 4, ?accept: uint .size 2]</t>
-                <t>form =/ [form.update: 5]</t>
+                <t>form =/ [form.update: 5, ?accept: uint .size 2]</t>
                 <t>form =/ [form.delete: 6]</t>
               </list>
             </t>
@@ -844,6 +844,8 @@
    [4, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#create", "POST", [],
                   ["urn:ietf:rfc:XXXX#accept", x]]
    [5]     -&gt;  [3, "urn:ietf:rfc:XXXX#update", "PUT", []]
+   [5, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#update", "PUT", [],
+                  ["urn:ietf:rfc:XXXX#accept", x]]
    [6]     -&gt;  [3, "urn:ietf:rfc:XXXX#delete", "DELETE", []]
               </artwork>
             </figure>
@@ -859,6 +861,8 @@
    [4, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#create", 2, [],
                   ["urn:ietf:rfc:XXXX#accept", x]]
    [5]     -&gt;  [3, "urn:ietf:rfc:XXXX#update", 3, []]
+   [5, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#update", 3, [],
+                  ["urn:ietf:rfc:XXXX#accept", x]]
    [6]     -&gt;  [3, "urn:ietf:rfc:XXXX#delete", 4, []]
               </artwork>
             </figure>
