@@ -1622,6 +1622,43 @@
 
         </section>
 
+        <section title="Implementation Limits">
+
+          <t>
+            This document places no restrictions on the number of elements in a
+            CoRAL document or the depth of nested elements. Applications using
+            CoRAL (in particular those that run in constrained environments) MAY
+            wish to limit these numbers and specify implementation limits that
+            an application implementation MUST at least support to be
+            interoperable. Implementation limits MAY also include the following
+            as well as other items:
+            <list style="symbols">
+              <t>
+                use of only either the binary format or the text format;
+              </t>
+              <t>
+                use of only either HTTP or CoAP as the Web transfer protocol;
+              </t>
+              <t>
+                use of only either IRIs or unsigned integers to denote link
+                relation types, form relation types, and form field names;
+              </t>
+              <t>
+                use of only either short forms or long forms in the binary
+                format;
+              </t>
+              <t>
+                use of IRI references only up to a specific length;
+              </t>
+              <t>
+                use of CBOR in a canonical format (Section 3.9 of <xref
+                target="RFC7049">RFC 7049</xref>).
+              </t>
+            </list>
+          </t>
+
+        </section>
+
       </section>
 
       <section title="Minting New Relation Types">
