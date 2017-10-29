@@ -1665,7 +1665,7 @@
 
         <t>
           New link relation types, form relation types, and form field names can
-          be minted by defining a new <xref target="RFC3987">IRI</xref> that
+          be minted by defining an <xref target="RFC3987">IRI</xref> that
           uniquely identifies the item. Although the IRI can point to a resource
           that contains a definition of the semantics of the relation type,
           clients SHOULD NOT automatically access that resource to avoid
@@ -1721,8 +1721,8 @@
         <t>
           IRIs that identify link relation types, form relation types, and form
           field names do not need to be registered. The inclusion of DNS names
-          allows for the decentralized creation of new IRIs without the risk of
-          collisions.
+          in IRIs allows for the decentralized creation of new IRIs without the
+          risk of collisions.
         </t>
 
         <t>
@@ -1731,15 +1731,15 @@
           target="RFC7228">constrained environments</xref>. Therefore, CoRAL
           alternatively allows the use of unsigned integers to identify link
           relation types, form relation types, and form field names. These
-          impose a much smaller overhead but need to be assigned by a registry
-          to avoid collisions.
+          impose a much smaller overhead but instead need to be assigned by a
+          registry to avoid collisions.
         </t>
 
         <t>
           This document does not create a registry for such integers. Instead,
           the media types for CoRAL documents in the binary and textual format
           are defined to have a <xref target="RFC6906">"profile"
-          parameter</xref> that determines the registry. The registry is
+          parameter</xref> that determines the registry in use. The registry is
           identified by a <xref target="RFC3986">URI</xref>. For example, a
           CoRAL document that uses the registry identified by the URI
           &lt;http://example.com/registry&gt; can use the following media type:
@@ -1747,17 +1747,17 @@
             <t>application/coral+cbor; profile="http://example.com/registry"</t>
           </list>
           The URI serves only as an identifier; it does not necessarily have to
-          be dereferencable (or even use a dereferencable URI scheme). But it is
-          permissible to use a dereferencable URI and serve a representation
-          that provides information about the registry in a human- or
-          machine-readable way. (The format of such a representation is outside
-          the scope of this document.)
+          be dereferencable (or even use a dereferencable URI scheme). It is
+          permissible, though, to use a dereferencable URI and serve a
+          representation that provides information about the registry in a
+          human- or machine-readable way. (The format of such a representation
+          is outside the scope of this document.)
         </t>
 
         <t>
-          For simplicity, a CoRAL document can use integers from at most one
-          registry. The "profile" parameter of the CoRAL media types MUST
-          contain a single URI, not a white space-separated list of URIs as
+          For simplicity, a CoRAL document can use unsigned integers from at
+          most one registry. The "profile" parameter of the CoRAL media types
+          MUST contain a single URI, not a white space-separated list of URIs as
           recommended in <xref target="RFC6906">RFC 6906</xref>. If the
           "profile" parameter is absent, the default profile specified in <xref
           target="default-profile"/> is assumed.
