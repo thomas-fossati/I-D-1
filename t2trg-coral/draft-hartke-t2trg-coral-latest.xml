@@ -142,8 +142,8 @@
         message format of the <xref target="RFC7252">Constrained Application
         Protocol (CoAP)</xref>: It uses numeric identifiers instead of verbose
         strings for link and form relation types, and pre-parses URIs into (what
-        CoAP considers to be) their components, which greatly simplifies URI
-        handling. As a result, link serializations are often much more compact
+        CoAP considers to be) their components, which simplifies URI processing
+        greatly. As a result, link serializations are often much more compact
         than equivalent serializations in <xref target="RFC6690">CoRE Link
         Format</xref>, including <xref target="I-D.ietf-core-links-json">its
         CBOR variant</xref>. Additionally, CoRAL supports the serialization of
@@ -922,11 +922,12 @@
 
       <t>
         A document in the textual format is a Unicode string in a Unicode
-        encoding form <xref target="UNICODE"/>. The media type is "text/coral".
-        The "charset" parameter is not used; charset information is transported
-        inside the document in the form of an OPTIONAL Byte Order Mark (BOM).
-        The use of the <xref target="RFC3629">UTF-8 encoding scheme</xref>,
-        without a BOM, is RECOMMENDED.
+        encoding form <xref target="UNICODE"/>. The media type for such
+        documents is "text/coral". The "charset" parameter is not used; charset
+        information is transported inside the document in the form of an
+        OPTIONAL Byte Order Mark (BOM). The use of the <xref
+        target="RFC3629">UTF-8 encoding scheme</xref>, without a BOM, is
+        RECOMMENDED.
       </t>
 
       <section title="Lexical Structure">
@@ -1256,8 +1257,7 @@
           of three kinds of elements: links and forms, as defined by the CoRAL
           data model, and directives. Directives provide a way to make documents
           easier to read and write by defining a base IRI for relative IRI
-          references and introducing shorthands for link and form relation
-          types.
+          references and introducing shorthands for IRIs.
         </t>
 
         <t>
@@ -1552,11 +1552,11 @@
         <section title="Naming Resources">
 
           <t>
-            Resource names <xref target="RFC3986"/> <xref target="RFC3987"/> are
-            a cornerstone of Web-based applications. They enable uniform
-            identification of resources and are used every time a client
-            interacts with a server or a resource representation needs to refer
-            to another resource.
+            Resource names -- i.e., <xref target="RFC3986">URIs</xref> and <xref
+            target="RFC3987">IRIs</xref> -- are a cornerstone of Web-based
+            applications. They enable uniform identification of resources and
+            are used every time a client interacts with a server or a resource
+            representation needs to refer to another resource.
           </t>
 
           <t>
