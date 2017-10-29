@@ -2256,16 +2256,16 @@
             <t hangText="&lt;urn:ietf:rfc:XXXX#create&gt;">
               <vspace/>Indicates that the form's context is a collection and
               that a new item can be created in that collection by submitting a
-              representation of the item. This form relation type is typically
-              used with the POST method <xref target="RFC7231"/> <xref
+              suitable representation. This form relation type is typically used
+              with the POST method <xref target="RFC7231"/> <xref
               target="RFC7252"/>.
             </t>
             <t hangText="&lt;urn:ietf:rfc:XXXX#update&gt;">
               <vspace/>Indicates that the form's context can be updated by
-              submitting an updated representation of the item. This form
-              relation type is typically used with the PUT method <xref
-              target="RFC7231"/> <xref target="RFC7252"/> or PATCH method <xref
-              target="RFC5789"/> <xref target="RFC8132"/>.
+              submitting a suitable representation. This form relation type is
+              typically used with the PUT method <xref target="RFC7231"/> <xref
+              target="RFC7252"/> or PATCH method <xref target="RFC5789"/> <xref
+              target="RFC8132"/>.
             </t>
             <t hangText="&lt;urn:ietf:rfc:XXXX#delete&gt;">
               <vspace/>Indicates that the form's context can be deleted. This
@@ -2288,7 +2288,7 @@
         <t>
           <list style="hanging">
             <t hangText="&lt;urn:ietf:rfc:XXXX#accept&gt;">
-              <vspace/>Specifies an acceptable HTTP content type/CoAP content
+              <vspace/>Specifies an acceptable HTTP content type or CoAP content
               format for the request payload. There MAY be multiple form fields
               with this name. If a form does not include a form field with this
               name, the server accepts any or no request payload, depending on
@@ -2358,7 +2358,7 @@
     <section title="CBOR-encoded IRI References" anchor="cbor-iri">
 
       <t>
-        <xref target="RFC3986">URI references</xref> and (secondarily) <xref
+        <xref target="RFC3986">URI references</xref> and <xref
         target="RFC3987">IRI references</xref> and are the most common usage of
         resource identifiers in hypertext representation formats such as <xref
         target="W3C.REC-html51-20161101">HTML 5</xref> and the <xref
@@ -2503,20 +2503,20 @@
               a "host.ip" option is followed by a "port" option;
             </t>
             <t>
-              a "port" option is at the end of the sequence or followed by a
-              "path", "query", or "fragment" option;
+              a "port" option is followed by a "path", "query", or "fragment"
+              option or is at the end of the sequence;
             </t>
             <t>
-              a "path.type" option is at the end of the sequence or followed by
-              a "path", "query", or "fragment" option;
+              a "path.type" option is followed by a "path", "query", or
+              "fragment" option or is at the end of the sequence;
             </t>
             <t>
-              a "path" option is at the end of the sequence or followed by a
-              "path", "query", or "fragment" option;
+              a "path" option is followed by a "path", "query", or "fragment"
+              option or is at the end of the sequence;
             </t>
             <t>
-              a "query" option is at the end of the sequence or followed by a
-              "query" or "fragment" option; and
+              a "query" option is followed by a "query" or "fragment" option or
+              is at the end of the sequence; and
             </t>
             <t>
               a "fragment" option is at the end of the sequence.
