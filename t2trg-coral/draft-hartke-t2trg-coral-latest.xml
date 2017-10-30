@@ -513,7 +513,7 @@
 
         <t>
           Form fields can either directly identify data items that need to be
-          included in the request payload, or reference an external resource
+          included in the request payload or reference an external resource
           (such as a schema) that describes the data. They can also provide
           other information, such as acceptable data formats.
         </t>
@@ -568,12 +568,12 @@
               provided as nested elements in a link and form data in a form.
             </t>
             <t>
-              The agent resolves the IRI reference in the link or form (as
-              specified in Section 5 of <xref target="RFC3986">RFC 3986</xref>)
+              The agent resolves the IRI reference in the link or form as
+              specified in Section 5 of <xref target="RFC3986">RFC 3986</xref>
               to obtain the <spanx>request IRI</spanx>. Fragment identifiers are
               not part of the request IRI and MUST be separated from the rest of
               the IRI prior to a dereference. The request IRI may need to be
-              converted to a URI (as specified in Section 3.1 of <xref
+              converted to a URI (Section 3.1 of <xref
               target="RFC3987">RFC 3987</xref>) for protocols that do not
               support IRIs.
             </t>
@@ -584,7 +584,7 @@
               the form. The agent SHOULD set HTTP header fields and CoAP request
               options according to provided metadata (e.g., set the HTTP Accept
               header field or the CoAP Accept option when the media type of the
-              target resource is provided). In case of a form that has form
+              target resource is provided). In case of a form with form
               data, the agent MUST include a request payload that matches the
               specifications of the form data.
             </t>
@@ -751,7 +751,9 @@
 
           <t>
             For <xref target="RFC7230">HTTP</xref>, the method MUST be encoded
-            as a text string; the set of possible values is maintained in the
+            as a text string in the format defined in Section 4.1 of <xref
+            target="RFC7231">RFC 7231</xref>; the set of possible values is
+            maintained in the
             IANA HTTP Method Registry. For <xref target="RFC7252">CoAP</xref>,
             the method MUST be encoded as an unsigned integer (e.g., the
             unsigned integer 2 for the POST method); the set of possible values
@@ -972,7 +974,7 @@
           </t>
 
           <t>
-            Comments do not nest: The character sequences "/*" and "*/" have no
+            Comments do not nest. The character sequences "/*" and "*/" have no
             special meaning within a single-line comment; the character
             sequences "//" and "/*" have no special meaning within a delimited
             comment.
@@ -1360,8 +1362,7 @@
           <section title="Form Data">
 
             <t>
-              Form data consists of zero or more space-separated name-value
-              pairs.
+              Form data consists of zero or more name-value pairs.
               <list>
                 <t>form-data = *(form-field-name form-field-value)</t>
               </list>
@@ -1741,7 +1742,7 @@
         <t>
           For simplicity, a CoRAL document can use unsigned integers from at
           most one registry. The "profile" parameter of the CoRAL media types
-          MUST contain a single URI, not a white space-separated list of URIs as
+          MUST contain a single URI, not a white space separated list of URIs as
           recommended in <xref target="RFC6906">RFC 6906</xref>. If the
           "profile" parameter is absent, the default profile specified in <xref
           target="default-profile"/> is assumed.
@@ -2347,7 +2348,7 @@
     <section title="CBOR-encoded IRI References" anchor="cbor-iri">
 
       <t>
-        <xref target="RFC3986">URI references</xref> and <xref
+        <xref target="RFC3986">URI references</xref> and, secondarily, <xref
         target="RFC3987">IRI references</xref> and are the most common usage of
         resource identifiers in hypertext representation formats such as <xref
         target="W3C.REC-html51-20161101">HTML 5</xref> and the <xref
