@@ -751,13 +751,11 @@
 
           <t>
             For <xref target="RFC7230">HTTP</xref>, the method MUST be encoded
-            as a text string that matches the "method" rule defined in Section
-            4.1 of <xref target="RFC7231">RFC 7231</xref>; the set of possible
-            values is maintained in the IANA HTTP Method Registry. For <xref
-            target="RFC7252">CoAP</xref>, the method MUST be encoded as an
-            unsigned integer (e.g., the unsigned integer 2 for the POST method);
-            the set of possible values is maintained in the IANA CoAP Method
-            Codes Registry.
+            as a text string; the set of possible values is maintained in the
+            IANA HTTP Method Registry. For <xref target="RFC7252">CoAP</xref>,
+            the method MUST be encoded as an unsigned integer (e.g., the
+            unsigned integer 2 for the POST method); the set of possible values
+            is maintained in the IANA CoAP Method Codes Registry.
           </t>
 
           <t>
@@ -931,8 +929,8 @@
           The lexical structure of a document in the textual format is made up
           of four basic elements: line terminators, white space, comments, and
           tokens. Of these, only tokens are significant in the syntactic
-          grammar. There are five kinds of tokens: identifiers, method tokens,
-          IRI references, literals, and punctuators.
+          grammar. There are four kinds of tokens: identifiers, IRI references,
+          literals, and punctuators.
         </t>
 
         <t>
@@ -1003,20 +1001,6 @@
             (NFC), as defined by the <xref target="UNICODE-UAX15">Unicode
             Standard Annex #15</xref>. Comparison of identifiers is based on NFC
             and is case-sensitive (unless otherwise noted).
-          </t>
-
-        </section>
-
-        <section title="Method Tokens">
-
-          <t>
-            A method token refers to one of the request methods (such as "GET"
-            or "POST") defined by the Web transfer protocol in use. The rules
-            for method tokens are adopted from <xref
-            target="RFC7230">HTTP</xref>.
-            <list>
-              <t>method = &lt;Defined in Section 4.1 of RFC 7231&gt;</t>
-            </list>
           </t>
 
         </section>
@@ -1342,7 +1326,7 @@
 
           <t>
             A form consists of the form relation type, followed by a "->" token,
-            a method token, and a submission IRI reference, optionally
+            a method identifier, and a submission IRI reference, optionally
             followed by form data enclosed in square brackets ("[" and "]").
             <list>
               <t>form = relation "->" method iri ["[" form-data "]"]</t>
@@ -1355,12 +1339,17 @@
           </t>
 
           <t>
-            The method token MUST refer to one of the request methods defined by
-            the Web transfer protocol identified by the scheme of the submission
-            IRI. For <xref target="RFC7230">HTTP</xref>, the set of possible
-            method tokens is maintained in the IANA HTTP Method Registry. For
+            The method identifier refers to one of the request methods defined
+            by the Web transfer protocol identified by the scheme of the
+            submission IRI. Method identifiers are case-insensitive and
+            constrained to Unicode characters in the Basic Latin block.
+            <list>
+              <t>method = identifier</t>
+            </list>
+            For <xref target="RFC7230">HTTP</xref>, the set of possible method
+            identifiers is maintained in the IANA HTTP Method Registry. For
             <xref target="RFC7252">CoAP</xref>, the set of possible method
-            tokens is maintained in the IANA CoAP Method Codes Registry.
+            identifiers is maintained in the IANA CoAP Method Codes Registry.
           </t>
 
           <t>
@@ -1415,8 +1404,8 @@
             Directives provide the ability to manipulate the environment when
             processing a list of elements. All directives start with a number
             sign ("#") followed by a directive identifier. Directive identifiers
-            are case-insensitive and constrained to Unicode characters with the
-            Alphabetic property in the Basic Latin block.
+            are case-insensitive and constrained to Unicode characters in the
+            Basic Latin block.
           </t>
 
           <t>
@@ -2106,7 +2095,6 @@
       &RFC6838;
       &RFC6943;
       &RFC7049;
-      &RFC7231;
       &RFC8174;
       &RFC8288;
 
@@ -2170,6 +2158,7 @@
       &RFC6906;
       &RFC7228;
       &RFC7230;
+      &RFC7231;
       &RFC7252;
       &RFC7320;
       &RFC8132;
