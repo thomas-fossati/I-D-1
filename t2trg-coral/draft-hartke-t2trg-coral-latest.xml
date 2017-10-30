@@ -854,11 +854,6 @@
               expansions are defined in <xref target="core-vocabulary"/>.
             </t>
 
-            <t>
-              [[NOTE TO RFC EDITOR: Please replace all occurrences of
-              "urn:ietf:rfc:XXXX#" with a RFC-Editor-controlled IRI.]]
-            </t>
-
           </section>
 
         </section>
@@ -2218,6 +2213,11 @@
         This section defines the core vocabulary for CoRAL. It is RECOMMENDED
         that all CoRAL registries assign an unsigned integer to each of these
         link relation types, form relation types, and form field names.
+      </t>
+
+      <t>
+        [[NOTE TO RFC EDITOR: Please replace all occurrences of
+        "urn:ietf:rfc:XXXX#" with a RFC-Editor-controlled IRI.]]
       </t>
 
       <section title="Link Relation Types">
