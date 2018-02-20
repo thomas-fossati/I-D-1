@@ -17,12 +17,12 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="2"?>
 
-<rfc category="info" docName="draft-hartke-core-pending-01" ipr="trust200902">
+<rfc category="info" docName="draft-hartke-core-pending-02" ipr="trust200902">
 
   <front>
 
-    <title abbrev="The 'Pending' Response Code for CoAP">
-      The 'Pending' Response Code for the Constrained Application Protocol (CoAP)
+    <title abbrev="&quot;Pending&quot; Responses for CoAP">
+      "Pending" Responses for the Constrained Application Protocol (CoAP)
     </title>
 
     <author initials="P." surname="van der Stok" fullname="Peter van der Stok">
@@ -55,24 +55,15 @@
     <abstract>
 
       <t>
-        This document proposes a new CoAP response code, 2.__ Pending. A CoAP
-        server can use this response code to signal that it has accepted the
+        This document proposes a new type of response for the Constrained
+        Application Protocol (CoAP) called a "Pending" response. A CoAP
+        server can use a Pending response to indicate that it has accepted a
         request but has not yet started processing it or that processing the
         request will take longer than a client is typically willing to wait for
-        a response. A 2.__ response can include status information and indicate
-        a location where the result will become available.
+        a response.
       </t>
 
     </abstract>
-
-    <note title="Note">
-
-      <t>
-        The string "2.__" is a placeholder for the CoAP response code that will
-        be assigned by IANA on completion of this document.
-      </t>
-
-    </note>
 
   </front>
 
@@ -106,9 +97,9 @@
       </t>
 
       <t>
-        This document proposes a new CoAP response code, 2.__ Pending. The
-        semantics of this response code are modelled after the <xref
-        target="RFC7231">HTTP</xref> 202 (Accepted) status code:
+        This document proposes a new kind of response in CoAP, called a
+        "Pending" response. The semantics of this response are modelled after
+        the <xref target="RFC7231">HTTP 202 (Accepted) status code</xref>:
         <list>
           <t>
             The 202 (Accepted) status code indicates that the request has been
@@ -124,8 +115,7 @@
       </t>
 
       <t>
-        The 2.__ (Pending) response code adapts this status to CoAP. The 2.__
-        (Pending) response code is not meant for overload cases, which are
+        Pending responses are not intended for overload cases, which are
         better handled by the 5.03 (Service Unavailable) response code.
       </t>
 
@@ -152,52 +142,55 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="2.__ Pending">
+    <section title="Pending Responses">
 
       <t>
-        A 2.__ (Pending) response in reply to a GET request indicates that the
-        target resource exists but a representation of the resource is not
-        available yet. The Max-Age Option indicates after what time a client
-        should retry its GET request to retrieve the representation. The client
-        MAY observe the resource as defined in <xref target="RFC7641"/> to be
-        notified when the representation becomes available (see <xref
-        target="observing"/>).
+        A Pending response is denoted by a response code in the 2.xx range and a
+        Content-Format Option that is set to content-format ID 12345.
       </t>
 
       <t>
-        A 2.__ (Pending) response in reply to a POST request indicates that the
+        A 2.01 (Creation Pending) response in reply to a POST request indicates that the
         result of processing the request is not available yet, for example,
         because the server needs more time to process the request than a client
         is typically willing to wait for a response. The server MAY specify a
         location using the Location-* options where the result will become
         available. If the server does not specify a location, the result will
-        become available at the target resource of the POST request. To receive
-        the result, the client MAY poll or observe the resource at the specified
-        location using the GET request method. The Max-Age Option indicates how
-        long the client should wait before making the GET request.
+        become available at the target resource of the POST request. To retrieve
+        the result, the client MAY poll or observe the resource at this
+        location using the GET request method.
+      </t>
+      
+      <t>
+        A 2.02 (Deletion Pending) response in reply to a DELETE request
+        indicates that the server has accepted the request but the target has
+        not been fully deleted yet.
       </t>
 
       <t>
-        A 2.__ (Pending) response MAY contain a payload that represents the
-        progress of processing the original request or any other status
-        information. The content format of this representation is specified by
-        the Content-Format Option.
+        A 2.04 (Change Pending) response in reply to a POST or PUT request
+        indicates that the server has accepted the request but the result of
+        processing the request is not available yet.
       </t>
 
       <t>
-        A 2.__ (Pending) response is cacheable, but cannot be validated. If it
-        contains Location-* options, it invalidates any cached response for the
-        resource at the specified location; otherwise, it invalidates any cached
-        response for the target resource of the request.
+        A 2.05 (Content Pending) response in reply to GET request indicates that the
+        target resource exists but a representation of the resource is not
+        available yet. The Max-Age Option indicates after what time a client
+        should retry its GET request to retrieve the representation. The client
+        MAY <xref target="RFC7641">observe the resource</xref> to get
+        notified when the representation becomes available (see <xref
+        target="observing"/> for details).
       </t>
 
       <t>
-        As a consequence of being cacheable, a 2.__ (Pending) response in reply
-        to a POST request makes the POST method temporarily idempotent: until
-        Max-Age expires, any POST request with the same cache-key -- be it from
-        the same client or any another client -- can yield the same 2.__
-        (Pending) response. (This is the same behavior as for 4.xx and 5.xx
-        error responses in reply to POST requests.)
+        The payload of a Pending response MAY be a brief human-readable
+        diagnostic message, explaining the situation, or MUST be absent.
+      </t>
+
+      <t>
+        The cacheability of Pending responses is as specified for the respective
+        response code.
       </t>
 
       <section title="Observing Resources" anchor="observing">
@@ -205,7 +198,7 @@
         <t>
           When a client registers to observe a resource <xref target="RFC7641"/>
           for which no representation is available yet, the server MAY send one
-          or more 2.__ (Pending) notifications before sending the first 2.05
+          or more 2.05 (Content Pending) notifications before sending the first actual 2.05
           (Content) or 2.03 (Valid) notification. The possible resulting
           sequence of notifications is shown in <xref target="figure-1"/>.
         </t>
@@ -214,7 +207,7 @@
 <artwork align="center"><![CDATA[
       __________       __________       __________
      |          |     |          |     |          |
----->|   2.__   |---->|  2.05 /  |---->|  4.xx /  |
+---->|   2.05   |---->|  2.05 /  |---->|  4.xx /  |
      | Pending  |     |   2.03   |     |   5.xx   |
      |__________|     |__________|     |__________|
         ^   \ \          ^    \           ^
@@ -225,7 +218,7 @@
 
         <t>
           Unless the server is unwilling to add the client to the list of
-          observers, each 2.__ (Pending) notification MUST include an Observe
+          observers, each 2.05 (Content Pending) notification MUST include an Observe
           Option with a sequence number as specified in <xref
           target="RFC7641"/>. Otherwise, the registration request falls back to
           a normal GET request.
@@ -243,14 +236,14 @@
     <section title="Security Considerations">
 
       <t>
-        This section analyses the possible threats related to 2.__ (Pending)
+        This section analyses the possible threats related to Pending
         responses. It is meant to inform protocol and application developers
         about the security limitations of the response code as described in this
         document.
       </t>
 
       <t>
-        A 2.__ (Pending) response is subject to the same general security
+        A Pending response is subject to the same general security
         considerations as all CoAP responses as described in Section 11 of <xref
         target="RFC7252"/>. Specifically, the security considerations for the
         response code are closest to those of the Observe Option as stated in
@@ -259,7 +252,7 @@
       </t>
 
       <t>
-        2.__ (Pending) responses are secured following the recommendations for
+        Pending responses are secured following the recommendations for
         the existing CoAP response codes as specified in Section 9 of <xref
         target="RFC7252"/>. When additional security techniques are standardized
         for CoAP (e.g., based on object security), these are then also available
@@ -276,25 +269,21 @@
     <section title="IANA Considerations">
 
       <t>
-        This document adds the 2.__ (Pending) response code to the "CoAP
-        Response Codes" registry.
+        This document adds the content-format used to signal Pending responses
+        to the "CoAP Content-Formats" registry.
       </t>
 
-      <texttable title="New CoAP Response Codes" anchor="response-codes">
-        <ttcol align="right">Code</ttcol>
-        <ttcol align="left">Description</ttcol>
+      <texttable title="New CoAP Content-Formats">
+        <ttcol align="left">Media Type</ttcol>
+        <ttcol align="left">Content Coding</ttcol>
+        <ttcol align="left">ID</ttcol>
         <ttcol align="left">Reference</ttcol>
 
-        <c>2.__</c>
-        <c>Pending</c>
-        <c>[RFCXXXX]</c>
+        <c>-</c>
+        <c>-</c>
+        <c>12345</c>
+        <c>[This Document]</c>
       </texttable>
-
-      <t>
-        [[IANA: Please assign a code point in the range 2.06-2.30.]] [[RFC
-        Editor: Please replace every occurrence of "2.__" in this document with
-        the assigned code point and remove this paragraph before publication.]]
-      </t>
 
     </section>
 
