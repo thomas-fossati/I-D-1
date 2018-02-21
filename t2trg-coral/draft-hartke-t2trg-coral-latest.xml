@@ -28,7 +28,7 @@
   <!ENTITY RFC8288 SYSTEM "reference.RFC.8288.xml">
   <!ENTITY I-D.ietf-cbor-cddl SYSTEM "reference.I-D.ietf-cbor-cddl.xml">
   <!ENTITY I-D.ietf-core-links-json SYSTEM "reference.I-D.ietf-core-links-json.xml">
-  <!ENTITY W3C.REC-html51-20161101 SYSTEM "reference.W3C.REC-html51-20161101.xml">
+  <!ENTITY W3C.REC-html52-20171214 SYSTEM "reference.W3C.REC-html52-20171214.xml">
   <!ENTITY W3C.REC-rdf11-concepts-20140225 SYSTEM "reference.W3C.REC-rdf11-concepts-20140225.xml">
   <!ENTITY W3C.REC-turtle-20140225 SYSTEM "reference.W3C.REC-turtle-20140225.xml">
   <!ENTITY W3C.REC-webarch-20041215 SYSTEM "reference.W3C.REC-webarch-20041215.xml">
@@ -128,7 +128,7 @@
         Framework (RDF)</xref>. However, in contrast to RDF, the focus of CoRAL
         is on the interaction with resources, not just on the relationships
         between them. The CoRAL interaction model derives from <xref
-        target="W3C.REC-html51-20161101">HTML 5</xref> and specifies how an
+        target="W3C.REC-html52-20171214">HTML 5</xref> and specifies how an
         automated software agent can navigate between resources by following
         links and perform operations on resources by submitting forms.
       </t>
@@ -240,7 +240,7 @@
 ]]></artwork></figure>
 
         <t>
-          and the following <xref target="W3C.REC-html51-20161101">HTML 5</xref>
+          and the following <xref target="W3C.REC-html52-20171214">HTML 5</xref>
           link elements:
         </t>
 
@@ -348,7 +348,7 @@
       <section title="Browsing Context">
 
         <t>
-          Borrowing from <xref target="W3C.REC-html51-20161101">HTML 5</xref>,
+          Borrowing from <xref target="W3C.REC-html52-20171214">HTML 5</xref>,
           each such agent maintains a <spanx>browsing context</spanx> in which
           the representations of Web resources are processed. (In HTML 5, the
           browsing context typically corresponds to a tab or window in a Web
@@ -1661,7 +1661,7 @@
         <t>
           Link relation types registered in the IANA Link Relations Registry,
           such as <xref target="RFC6573">"collection"</xref> or <xref
-          target="W3C.REC-html51-20161101">"icon"</xref>, can be used in CoRAL
+          target="W3C.REC-html52-20171214">"icon"</xref>, can be used in CoRAL
           by appending the registered name to the IRI
           &lt;http://www.iana.org/assignments/relation/&gt;:
         </t>
@@ -2166,7 +2166,7 @@
 
       &I-D.ietf-core-links-json;
 
-      &W3C.REC-html51-20161101;
+      &W3C.REC-html52-20171214;
       &W3C.REC-rdf11-concepts-20140225;
       &W3C.REC-turtle-20140225;
       &W3C.REC-webarch-20041215;
@@ -2351,7 +2351,7 @@
         <xref target="RFC3986">URI references</xref> and, secondarily, <xref
         target="RFC3987">IRI references</xref> and are the most common usage of
         resource identifiers in hypertext representation formats such as <xref
-        target="W3C.REC-html51-20161101">HTML 5</xref> and the <xref
+        target="W3C.REC-html52-20171214">HTML 5</xref> and the <xref
         target="RFC6690">CoRE Link Format</xref>. They encode the components of
         a resource identifier either as an absolute URI/IRI or as a relative
         reference that is resolved against a base URI/IRI.
