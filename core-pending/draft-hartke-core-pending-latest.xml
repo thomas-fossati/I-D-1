@@ -96,6 +96,9 @@
         target="I-D.vanderstok-ace-coap-est">EST-coaps</xref>.
       </t>
 
+<t> Additionally, with long response times, a client is likely to start multiple requests to a given server, and needs to know the mapping between request and returned data.
+</t>
+
       <t>
         This document proposes a new kind of response in CoAP, called a
         "Pending" response. The semantics of this response are modelled after
@@ -146,7 +149,7 @@
 
       <t>
         A Pending response is denoted by a response code in the 2.xx range and a
-        Content-Format Option that is set to content-format ID 12345.
+        Content-Format Option that is set to content-format ID TBD1.
       </t>
 
       <t>
@@ -281,9 +284,11 @@
 
         <c>-</c>
         <c>-</c>
-        <c>12345</c>
+        <c>TBD1</c>
         <c>[This Document]</c>
       </texttable>
+<t> TBD1 is taken from the First Come First Served range of Content-Format registry.
+ </t>
 
     </section>
 
