@@ -96,9 +96,6 @@
         target="I-D.vanderstok-ace-coap-est">EST-coaps</xref>.
       </t>
 
-<t> Additionally, with long response times, a client is likely to start multiple requests to a given server, and needs to know the mapping between request and returned data.
-</t>
-
       <t>
         This document proposes a new kind of response in CoAP, called a
         "Pending" response. The semantics of this response are modelled after
