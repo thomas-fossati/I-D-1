@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="us-ascii"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC2119 SYSTEM "reference.RFC.2119.xml">
+  <!ENTITY RFC6573 SYSTEM "reference.RFC.6573.xml">
+  <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
+  <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
+  <!ENTITY RFC7641 SYSTEM "reference.RFC.7641.xml">
+  <!ENTITY RFC8132 SYSTEM "reference.RFC.8132.xml">
+  <!ENTITY I-D.hartke-t2trg-coral SYSTEM "reference.I-D.hartke-t2trg-coral.xml">
+  <!ENTITY I-D.ietf-core-coap-pubsub SYSTEM "reference.I-D.ietf-core-coap-pubsub.xml">
+  <!ENTITY I-D.ietf-core-resource-directory SYSTEM "reference.I-D.ietf-core-resource-directory.xml">
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+
+<?rfc compact="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="2"?>
+
+<rfc category="exp" docName="draft-hartke-t2trg-data-hub-01" ipr="trust200902">
+
+  <front>
+
+    <title>Thing-to-Thing Data Hub</title>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Universitaet Bremen TZI</organization>
+      <address>
+        <postal>
+          <street>Postfach 330440</street>
+          <city>Bremen</city>
+          <code>D-28359</code>
+          <country>Germany</country>
+        </postal>
+        <phone>+49-421-218-63905</phone>
+        <email>hartke@tzi.org</email>
+      </address>
+    </author>
+
+    <date />
+
+    <workgroup>Thing-to-Thing Research Group</workgroup>
+
+    <abstract>
+
+      <t>
+        The Thing-to-Thing Data Hub is a RESTful, hypermedia-driven Web
+        application that can be used in Thing-to-Thing communication to share
+        data items such as thing descriptions, configurations, resource
+        descriptions, or firmware updates at a central location.
+      </t>
+
+    </abstract>
+
+  </front>
+
+  <middle>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Introduction">
+
+      <t>
+        In Thing-to-Thing communication, there is often a need to share data
+        items of common interest at a central location. For example, the <xref
+        target="I-D.ietf-core-resource-directory">CoRE Resource Directory</xref>
+        aggregates descriptions of resources held on other servers, which
+        enables things to easily discover these resources. Similarly, a <xref
+        target="WOT">W3C Web-of-Things Thing Description Repository</xref>
+        stores semantic metadata of things as well as functional descriptions of
+        their interfaces, making this data available to Web dashboards,
+        commissioning tools and other things.
+      </t>
+
+      <t>
+        As more and more thing-to-thing applications are implemented, it becomes
+        increasingly important to be able to share not only resource and thing
+        descriptions but also many other kinds of data, such as default
+        configurations for new devices, service locations, firmware updates, or
+        certificate revocation lists. The existing resource directories and
+        thing description repositories are not a good fit for these kinds of
+        data, as they're specialized to their use case and don't accept other
+        kinds of data. And defining a new specialized application for each use
+        case is not practical in the long term.
+      </t>
+
+      <t>
+        This document defines a simple "data hub" application, a RESTful Web
+        application with a hypermedia API that is suitable for constrained
+        environments and that generalizes the concept of a central repository
+        for sharing any kinds of data. A data hub enables clients to share data
+        items in any format and provides means for creating, reading, observing,
+        updating, deleting and finding data items at a data hub server.
+      </t>
+
+      <t>
+        Data hubs are intended to be used primarily with <xref
+        target="RFC7252">CoAP</xref>.
+        <vspace blankLines="10"/>
+      </t>
+
+      <t>
+        Features:
+        <list style="symbols">
+          <t>
+            General
+            <vspace blankLines="1"/>
+            The data hub generalizes the concept of a directory or repository to
+            data items to any Internet media type. This means applications using
+            the data hub aren't stuck forever with the same media types or
+            limited to resource descriptions and thing descriptions.
+          </t>
+          <t>
+            Searchable
+            <vspace blankLines="1"/>
+            Clients can retrieve a subset of data items from a data hub based on
+            item metadata.
+          </t>
+          <t>
+            Observable
+            <vspace blankLines="1"/>
+            Data items published to a data hub are exposed as resources. As
+            such, they can be <xref target="RFC7641">observed for
+            changes</xref>. This allows clients to stay informed of information
+            that other clients update over time. As a result, the data hub
+            functions similar to a <xref target="I-D.ietf-core-coap-pubsub">CoAP
+            Publish-Subscribe Broker</xref>, although this isn't its primary use
+            case.
+          </t>
+          <t>
+            Evolvable
+            <vspace blankLines="1"/>
+            The key differentiator of the data hub compared to CoRE Resource
+            Directory and CoAP Publish-Subscribe Broker is the evolvability --
+            the ability to respond effectively to the need for changes without
+            negatively impacting existing and new clients. Data hubs enable
+            fine-grained evolvability by driving all interactions by
+            machine-readable hypermedia elements. Features can be added, changed
+            or removed in a safe, backwards-compatible way simply by updating
+            the data hub representation to expose appropriate links and forms.
+          </t>
+        </list>
+      </t>
+
+      <section title="Requirements Notation">
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+          "OPTIONAL" in this document are to be interpreted as described in
+          <xref target="RFC2119"/>.
+          <vspace blankLines="10"/>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Data Model">
+
+      <t>
+        The data model consists of two elements: the <spanx>data hub</spanx> and
+        a number of shared <spanx>data items</spanx> (<xref
+        target="fig-data-hub"/>).
+      </t>
+
+<figure anchor="fig-data-hub" title="A Data Hub with a Number of Shared Data Items"><artwork align="center"><![CDATA[
+           ___
+Data Hub  /   \
+          \___/
+            |         ___
+            |________/   \  Data Item
+            |  item  \___/
+            |         ___
+            |________/   \  Data Item
+            |  item  \___/
+            |                   .
+            |                   .
+            |                   .
+            |         ___
+            |________/   \  Data Item
+               item  \___/
+]]></artwork></figure>
+
+      <t>
+        <list style="hanging">
+          <t hangText="Data Hub">
+            <vspace blankLines="1"/>
+            A data hub resource is a collection of shared data items.
+          </t>
+          <t>
+            Data hub representations MUST be formatted in the <xref
+            target="I-D.hartke-t2trg-coral">"application/coral+cbor" or
+            "text/coral" media type</xref>. They primarily consist of links to
+            the data items using the <xref target="RFC6573">"item" link relation
+            type</xref>. To reduce the number of round-trips, they MAY also
+            embed (complete or partial) representations of data items. Forms
+            contained in the representation enable interactions with the hub and
+            data items, as described in the following section. The
+            representations MAY additionally contain other links and forms that
+            are not described in this document, such as a link with the
+            "alternate" link relation type that references an alternate
+            representation of the data hub resource.
+          </t>
+          <t>
+            For a start, a data hub is defined to have a depth of only one
+            level; i.e., all data item resources are organized directly under
+            the top-level data hub resource. This could be extended to multiple
+            levels in a future revision of this document.
+          </t>
+          <t hangText="Data Item">
+            <vspace blankLines="1"/>
+            A data item is a member of the collection.
+          </t>
+          <t>
+            Data item representations MAY be formatted in any media type.
+            However, a data hub instance MAY restrict the media types it accepts
+            for publication. The form in the data hub representation for
+            creating data items MUST list the acceptable media types in this
+            case using form fields with name &lt;urn:ietf:rfc:XXXX#accept&gt;.
+          </t>
+          <t>
+            The representations of data items MAY link back to a data hub
+            resource using the <xref target="RFC6573">"collection" link relation
+            type</xref>.
+          </t>
+        </list>
+      </t>
+
+    </section>
+
+    <section title="Interaction Model">
+
+      <t>
+        The interaction model consists of eight possible interactions with a
+        data hub: discovering and reading the data hub, and creating, reading,
+        observing, updating, deleting, and finding shared data items in the data
+        hub.
+      </t>
+
+      <t>
+        <list style="hanging">
+          <t hangText="Discovering a Data Hub">
+            <vspace blankLines="1"/>
+            For a start, this revision of the document assumes that clients are
+            pre-configured with a link to a data hub.
+          </t>
+          <t hangText="Reading a Data Hub">
+            <vspace blankLines="1"/>
+            A client can retrieve a representation of a data hub by following
+            the pre-configured link. The representation of the data hub includes
+            links to (and, optionally, representations of) the data items in the
+            data hub. The data hub representation also includes forms for
+            creating, updating, deleting, and finding data items.
+          </t>
+          <t hangText="Creating an Item">
+            <vspace blankLines="1"/>
+            The representation of a data hub MAY contain a form with the
+            &lt;urn:ietf:rfc:XXXX#create&gt; form relation type. Submitting this
+            form with a representation in one of the acceptable media types
+            creates a new data item in the data hub. The acceptable media types
+            are indicated by &lt;urn:ietf:rfc:XXXX#accept&gt; form fields.
+          </t>
+          <t>
+            Data hubs implementing this specification MUST offer the <xref
+            target="RFC7252">POST method</xref> in this form.
+          </t>
+          <t hangText="Reading an Item">
+            <vspace blankLines="1"/>
+            A client can retrieve a representation of a data item by following a
+            link with the &lt;http://www.iana.org/assignments/relation/item&gt;
+            link relation type in the data hub representation.
+          </t>
+          <t hangText="Observing an Item">
+            <vspace blankLines="1"/>
+            A client can observe a data item by following a link with the
+            &lt;http://www.iana.org/assignments/relation/item&gt; link relation
+            type in the data hub representation and observing the target
+            resource as specified in <xref target="RFC7641">RFC 7641</xref>.
+          </t>
+          <t hangText="Updating an Item">
+            <vspace blankLines="1"/>
+            For each data item in a data hub, the representation of the data hub
+            MAY include a nested form with the &lt;urn:ietf:rfc:XXXX#update&gt;
+            form relation type. Submitting this form updates the data item in
+            the data hub to the submitted representation.
+          </t>
+          <t>
+            Data hubs implementing this specification MUST offer the <xref
+            target="RFC7252">PUT method</xref> in this form.
+          </t>
+          <t hangText="Deleting an Item">
+            <vspace blankLines="1"/>
+            For each data item in a data hub, the representation of the data hub
+            MAY include a nested form with the &lt;urn:ietf:rfc:XXXX#delete&gt;
+            form relation type. Submitting this form deletes the data item from
+            the data hub.
+          </t>
+          <t>
+            Data hubs implementing this specification MUST offer the <xref
+            target="RFC7252">DELETE method</xref> in this form.
+          </t>
+          <t hangText="Searching for Items">
+            <vspace blankLines="1"/>
+            The representation of a data hub MAY contain a form with the
+            &lt;urn:ietf:rfc:XXXX#search&gt; form relation type. This form can
+            be used to find data items in the data hub. Submitting this form
+            with a search query returns the subset of data items that match the
+            query.
+          </t>
+          <t>
+            Data hubs implementing this specification MUST offer the <xref
+            target="RFC8132">FETCH method</xref> in this form.
+          </t>
+        </list>
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Security Considerations" anchor="security">
+
+      <t>
+        TODO.
+      </t>
+
+      <!--
+
+      * CoRAL security considerations
+      * authorization/access control
+      * ...
+
+      -->
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="IANA Considerations">
+
+      <t>
+        This document includes no request to IANA.
+      </t>
+
+    </section>
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC2119;
+      &RFC6573;
+      &RFC7252;
+      &RFC7641;
+      &RFC8132;
+      &I-D.hartke-t2trg-coral;
+
+    </references>
+
+    <references title="Informative References">
+
+      &RFC6690;
+      &I-D.ietf-core-coap-pubsub;
+      &I-D.ietf-core-resource-directory;
+
+      <reference anchor="WOT" target="http://w3c.github.io/wot/current-practices/wot-practices.html">
+        <front>
+          <title>WoT Current Practices</title>
+          <author initials="M." surname="Kovatsch" fullname="Matthias Kovatsch" role="editor"/>
+          <author initials="D." surname="Peintner" fullname="Daniel Peintner" role="editor"/>
+          <date month="February" day="22" year="2018"/>
+        </front>
+      </reference>
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Related Work">
+
+      <t>
+        The data hub is an instance of the well-known collection pattern. As
+        such, it might be used in places where a more specialized instance of
+        the collection pattern is currently used, such as the <xref
+        target="I-D.ietf-core-coap-pubsub">CoAP Publish-Subscribe Broker</xref>
+        or the <xref target="I-D.ietf-core-resource-directory">CoRE Resource
+        Directory</xref>. This section shows how these two applications might be
+        implemented with a data hub (without trying to replicate all of their
+        features in detail).
+      </t>
+
+      <section title="CoAP Publish-Subscribe">
+
+        <t>
+          <xref target="I-D.ietf-core-coap-pubsub">CoAP Publish-Subscribe</xref>
+          provides means for resource-constrained sensor and actuator nodes to
+          publish and receive data without having to be available at the same
+          time. The basic operation involves clients called "publishers"
+          updating "topic" resources at a server called the "broker" and clients
+          called "subscribers" observing these resources (<xref
+          target="fig-broker"/>).
+        </t>
+
+<figure anchor="fig-broker" title="CoAP Publish-Subscribe"><artwork align="center"><![CDATA[
+ ____________            ____________            ____________
+|            |--------->|            |          |            |
+|  Publisher |<---------|   Broker   |          | Subscriber |
+|  (Client)  |          |  (Server)  |<---------|  (Client)  |
+|____________|          |____________|--------->|____________|
+]]></artwork></figure>
+
+        <t>
+          A broker might be implemented as a data hub by creating the topics as
+          resources on the data hub server and linking to these from the data
+          hub resource (<xref target="fig-pubsub"/>). Hypermedia controls in the
+          data hub representation enable publishers to create, update, and
+          delete topics as well as subscribers to read or observe these topics.
+        </t>
+
+<figure anchor="fig-pubsub" title="A Data Hub Acting as a Publish-Subscribe Broker"><artwork align="center"><![CDATA[
++----------------------------+
+|   ___                      |
+|  /   \ Data Hub            |
+|  \___/                     |
+|    |         ___           |
+|    |________/   \ Topic A  |
+|    |  item  \___/          |
+|    |         ___           |
+|    |________/   \ Topic B  |
+|    |  item  \___/          |
+|    |         ___           |
+|    |________/   \ Topic C  |
+|       item  \___/          |
+|                            |
++----------------------------+
+]]></artwork></figure>
+
+        <texttable anchor="mapping-pubsub" title="Mapping of Pub/Sub Interactions to Data Hub">
+          <ttcol>Interaction</ttcol>
+          <ttcol>Mapped to</ttcol>
+
+          <c>DISCOVERY</c>
+          <c>Discovering a Data Hub /</c>
+          <c></c>
+          <c>Reading a Data Hub / </c>
+          <c></c>
+          <c>Searching for Items</c>
+
+          <c>CREATE</c>
+          <c>Creating an Item</c>
+
+          <c>PUBLISH</c>
+          <c>Updating an Item</c>
+
+          <c>SUBSCRIBE</c>
+          <c>Observing an Item</c>
+
+          <c>UNSUBSCRIBE</c>
+          <c>Observing an Item</c>
+
+          <c>READ</c>
+          <c>Reading an Item</c>
+
+          <c>REMOVE</c>
+          <c>Deleting an Item</c>
+        </texttable>
+
+      </section>
+
+      <section title="CoRE Resource Directory">
+
+        <t>
+          A <xref target="I-D.ietf-core-resource-directory">CoRE Resource
+          Directory</xref> hosts descriptions of resources held on other
+          servers, allowing lookups to be performed for those descriptions. The
+          descriptions are encoded as links in <xref target="RFC6690">CoRE Link
+          Format</xref> annotated with a variety of link attributes providing
+          the type of and hints about the linked resources.
+        </t>
+
+<figure anchor="fig-rd" title="A Data Hub Storing Link Format Items"><artwork align="center"><![CDATA[
++---------------------------------+
+|   ___                           |
+|  /   \ Data Hub                 |
+|  \___/                          |
+|    |         ___                |
+|    |________/   \ Data Item in  |    +------------------+
+|    |  item  \___/ Link Format   |    |   ___            |
+|    |          |_________________|____|__/   \ Resource  |
+|    |          |          hosts  |    |  \___/           |
+|    |          |                 |    |   ___            |
+|    |          |_________________|____|__/   \ Resource  |
+|    |                     hosts  |    |  \___/           |
+|    |                            |    |                  |
+|    |         ___                |    +------------------+
+|    |________/   \ Data Item in  |    +------------------+
+|       item  \___/ Link Format   |    |   ___            |
+|               |_________________|____|__/   \ Resource  |
+|                          hosts  |    |  \___/           |
+|                                 |    |                  |
++---------------------------------+    +------------------+
+]]></artwork></figure>
+
+        <t>
+          A data hub might be used to store these resource descriptions. Each
+          resource description becomes a data item in the data hub (<xref
+          target="fig-rd"/>). A specialized interface for querying the
+          cumulative set of stored links might be provided separately.
+        </t>
+
+        <texttable anchor="mapping-rd" title="Mapping of Resource Directory Interactions to Data Hub">
+          <ttcol>Interaction</ttcol>
+          <ttcol>Mapped to</ttcol>
+
+          <c>Discovery</c>
+          <c>Discovering a Data Hub</c>
+
+          <c>Registration</c>
+          <c>Creating an Item</c>
+
+          <c>Registration Update</c>
+          <c>-</c>
+
+          <c>Registration Removal</c>
+          <c>Deleting an Item</c>
+
+          <c>Read Endpoint Links</c>
+          <c>Reading an Item</c>
+
+          <c>Update Endpoint Links</c>
+          <c>Updating an Item</c>
+
+          <!--
+          <c>Register a Group</c>
+          <c>-</c>
+
+          <c>Group Removal</c>
+          <c>-</c>
+
+          <c>Resource lookup</c>
+          <c>-</c>
+
+          <c>Endpoint and group lookup</c>
+          <c>-</c>
+
+          <c>Lookup filtering</c>
+          <c>-</c>
+          -->
+        </texttable>
+
+        <t>
+          <vspace blankLines="10"/>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <!--
+    <section title="Acknowledgements" numbered="no">
+
+      <t>
+        Thanks to
+        X,
+        Y, and
+        Z
+        for helpful comments and discussions that have shaped the document.
+      </t>
+
+    </section>
+    -->
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </back>
+
+</rfc>
