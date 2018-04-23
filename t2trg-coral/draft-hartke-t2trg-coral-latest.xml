@@ -843,9 +843,9 @@
               Forms in certain shapes can be encoded in a more efficient manner
               using short forms. The following short forms are available:
               <list>
-                <t>form =/ [form.create: 4, ?accept: uint .size 2]</t>
-                <t>form =/ [form.update: 5, ?accept: uint .size 2]</t>
-                <t>form =/ [form.delete: 6]</t>
+                <t>form /= [form.create: 4, ?accept: uint .size 2]</t>
+                <t>form /= [form.update: 5, ?accept: uint .size 2]</t>
+                <t>form /= [form.delete: 6]</t>
               </list>
             </t>
 
