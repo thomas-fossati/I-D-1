@@ -384,7 +384,7 @@
         </t>
 
         <t>
-          A CoRAL document consists of a list of zero or more links and forms,
+          A CoRAL document consists of a list of zero or more links, forms, and embedded representations,
           collectively called <spanx>elements</spanx>. CoRAL serialization
           formats may define additional types of elements for efficiency or
           convenience, such as a base IRI for the resolution of relative IRI
@@ -532,6 +532,32 @@
 
       </section>
 
+      <section title="Representations">
+
+        <t>
+          If a representation links to many resources, it may be inefficient to
+          retrieve representations of each link target individually. For this
+          reason, CoRAL supports nesting an <spanx>embedded
+          representation</spanx> of a resource in a document.
+        </t>
+
+        <t>
+          An embedded representation may be a full, partial, or inconsistent
+          version of the representation served from the IRI of the represented
+          resource. As transferred representations in HTTP and CoAP, embedded
+          representations are labeled with a media type.
+        </t>
+
+        <t>
+          An embedded representation can occur as a top-level element in a
+          document or as a nested element within a link. When it occurs as a
+          top-level element, it provides an alternative representation of the
+          document's retrieval context. When it occurs nested within a link, it
+          provides a representation of link target of the enclosing link.
+        </t>
+
+      </section>
+
       <section title="Navigation">
 
         <t>
@@ -567,6 +593,11 @@
               includes the media type of the target resource representation, the
               IRI scheme, the request method, and other information that is
               provided as nested elements in a link and form data in a form.
+              <vspace blankLines="1"/>
+              If the selected candidate contains an embedded representation,
+              then the agent MAY skip the following steps and immediately
+              proceed with step <xref target="continue-with-representation"
+              format="counter"/>.
             </t>
             <t>
               The agent resolves the IRI reference in the link or form as
@@ -597,17 +628,17 @@
               agent dereferences the fragment identifier within the retrieved
               representation.
             </t>
-            <t>
+            <t anchor="continue-with-representation">
               The agent <spanx>updates the session history</spanx>: It removes
               all the entries in the browsing context's session history after
               the current entry. Then it appends a new entry at the end of the
               history representing the new resource.
             </t>
             <t>
-              Finally, if response contains a CoRAL document or any other
-              representation that implements the CoRAL data and interaction
-              model, the agent can again decide what to do next and the cycle
-              repeats.
+              Finally, the agent processes the representation. If it's a CoRAL
+              document or any other representation that implements the CoRAL
+              data and interaction model, this means the agent decides again
+              what to do next and the cycle repeats.
             </t>
           </list>
         </t>
@@ -651,9 +682,10 @@
 
         <t>
           The data structure of a document in the binary format is made up of
-          three kinds of elements: links and forms, as defined by the CoRAL data
-          model, and base IRI directives. Base IRI directives provide a way to
-          encode IRI references with a common base more efficiently.
+          four kinds of elements: links, forms, embedded representations, and
+          (as an extension of the CoRAL data model) base IRI directives. Base
+          IRI directives provide a way to more efficiently encode IRI references
+          that have a common base.
         </t>
 
         <t>
@@ -671,9 +703,10 @@
 
           <t>
             The body of a document in the binary format is encoded as an array
-            of zero or more links, forms, and directives.
+            of zero or more links, forms, embedded representations, and
+            directives.
             <list>
-              <t>body = [*(link / form / directive)]</t>
+              <t>body = [*(link / form / representation / directive)]</t>
             </list>
           </t>
 
@@ -856,6 +889,32 @@
             </t>
 
           </section>
+
+        </section>
+
+        <section title="Representations">
+
+          <t>
+            An embedded representation is encoded as an array that consists of
+            the unsigned integer 0, followed by the HTTP content type or CoAP
+            content format of the representation and a byte string containing
+            the representation itself.
+            <list>
+              <t>representation = [representation: 0, media-type, bytes]</t>
+              <t>media-type = text / uint</t>
+            </list>
+            For HTTP, the content type MUST be specified as a text string in the
+            format defined in Section 3.1.1.1 of <xref target="RFC7231">RFC
+            7231</xref>; the set of possible values is maintained in the IANA
+            Media Types Registry. For CoAP, the content format MUST be specified
+            as an unsigned integer; the set of possible values is maintained in
+            the IANA CoAP Content-Formats Registry.
+          </t>
+
+          <t>
+            Processing an embedded representation does not change the
+            environment.
+          </t>
 
         </section>
 
@@ -1236,10 +1295,11 @@
 
         <t>
           The syntactic structure of a document in the textual format is made up
-          of three kinds of elements: links and forms, as defined by the CoRAL
-          data model, and directives. Directives provide a way to make documents
-          easier to read and write by defining a base IRI for relative IRI
-          references and introducing shorthands for IRIs.
+          of four kinds of elements: links, forms, embedded representations, and
+          (as an extension of the CoRAL data model) directives. Directives
+          provide a way to make documents easier to read and write by defining a
+          base IRI for relative IRI references and introducing shorthands for
+          IRIs.
         </t>
 
         <t>
@@ -1259,7 +1319,7 @@
             The body of a document in the textual format consists of zero or
             more links, forms, and directives.
             <list>
-              <t>body = *(link / form / directive)</t>
+              <t>body = *(link / form / representation / directive)</t>
             </list>
           </t>
 
@@ -1397,6 +1457,31 @@
             </t>
 
           </section>
+
+        </section>
+
+        <section title="Representations">
+
+          <t>
+            An embedded representation consists of the TBD, followed by the HTTP
+            content type or CoAP content format of the representation and a byte
+            string literal containing the representation itself.
+            <list>
+              <t>representation = TBD content-type bytes</t>
+              <t>content-type = text / integer</t>
+            </list>
+            For HTTP, the content type MUST be specified as a text string in the
+            format defined in Section 3.1.1.1 of <xref target="RFC7231">RFC
+            7231</xref>; the set of possible values is maintained in the IANA
+            Media Types Registry. For CoAP, the content format MUST be specified
+            as an unsigned integer; the set of possible values is maintained in
+            the IANA CoAP Content-Formats Registry.
+          </t>
+
+          <t>
+            Processing an embedded representation does not change the
+            environment.
+          </t>
 
         </section>
 
@@ -1632,6 +1717,9 @@
               <t>
                 use of only either short forms or long forms in the binary
                 format;
+              </t>
+              <t>
+                use of only either HTTP content types or CoAP content formats;
               </t>
               <t>
                 use of IRI references only up to a specific length;
