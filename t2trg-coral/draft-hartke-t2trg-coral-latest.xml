@@ -112,7 +112,7 @@
       </t>
 
       <t>
-        This document defines the CoRAL data and interaction model as well as
+        This document defines the CoRAL data and interaction model, as well as
         two specialized CoRAL serialization formats.
       </t>
 
@@ -123,7 +123,7 @@
         the relationships between pairs of resources and the type of those
         relationships, and <spanx>forms</spanx> that describe possible
         operations on resources and the type of those operations. In addition,
-        the model can describe simple resource metadata in a way similar to the
+        the data model can describe simple resource metadata in a way similar to the
         <xref target="W3C.REC-rdf11-concepts-20140225">Resource Description
         Framework (RDF)</xref>. However, in contrast to RDF, the focus of CoRAL
         is on the interaction with resources, not just on the relationships
@@ -138,7 +138,7 @@
         links and forms in <xref target="RFC7049">Concise Binary Object
         Representation (CBOR)</xref>. It is intended for <xref
         target="RFC7228">environments with constraints on power, memory, and
-        processing resources</xref> and shares many similarities with the
+        processing resources</xref>, and shares many similarities with the
         message format of the <xref target="RFC7252">Constrained Application
         Protocol (CoAP)</xref>: It uses numeric identifiers instead of verbose
         strings for link and form relation types, and pre-parses URIs into (what
@@ -151,7 +151,7 @@
       </t>
 
       <t>
-        The second CoRAL serialization format is a lightweight, textual encoding
+        The secondary CoRAL serialization format is a lightweight, textual encoding
         of links and forms that is intended to be easy to read and write by
         humans. The format is loosely inspired by the syntax of <xref
         target="W3C.REC-turtle-20140225">Turtle</xref> and is used for giving
@@ -387,7 +387,8 @@
           A CoRAL document consists of a list of zero or more links and forms,
           collectively called <spanx>elements</spanx>. CoRAL serialization
           formats may define additional types of elements for efficiency or
-          convenience, such as a base IRI for relative IRI references.
+          convenience, such as a base IRI for the resolution of relative IRI
+          references.
         </t>
 
       </section>
@@ -396,11 +397,11 @@
 
         <t>
           A <spanx>link</spanx> describes a relationship between two resources
-          on the Web <xref target="RFC8288"/>. It consists of a <spanx>link
+          on the Web <xref target="RFC8288"/>. As defined in RFC 8288, it consists of a <spanx>link
           context</spanx>, a <spanx>link relation type</spanx>, and a
           <spanx>link target</spanx>. A link can additionally have a nested list
-          of zero or more elements, which take the place of link target
-          attributes in CoRAL.
+          of zero or more elements in CoRAL, which takes the place of link
+          target attributes.
         </t>
 
         <t>
@@ -414,9 +415,9 @@
           The link relation type identifies the semantics of a link. In HTML 5
           and the RFC 8288 Link header field, a link relation type is typically
           denoted by a registered name, such as "stylesheet" or "icon". In
-          CoRAL, a link relation type is denoted by an IRI or an unsigned
-          integer. IRIs allow the creation of new, unique relation types in a
-          decentralized fashion but can incur a high overhead in terms of
+          CoRAL, a link relation type is denoted in contrast by an IRI or an unsigned
+          integer. IRIs on the one hand allow for the creation of new, unique relation types in a
+          decentralized fashion, but can incur a high overhead in terms of
           message size. Small, unsigned integers on the other hand minimize the
           overhead of link relation types in constrained environments, but
           require the assignment of values by a registry to avoid collisions.
@@ -429,7 +430,7 @@
           indicates a Web transfer protocol such as HTTP or CoAP, then an agent
           can dereference the IRI and navigate the browsing context to the
           referenced resource; this is called <spanx>following the link</spanx>.
-          A literal directly identifies a value, which can be Boolean, an
+          A literal directly identifies a value, which in CoRAL can be a Boolean value, an
           integer, a floating-point number, a byte string, or a text string.
         </t>
 
@@ -446,7 +447,7 @@
           multiple links to and from a particular target, and multiple links of
           the same or different types between a given link context and target.
           However, the CoRAL data model constrains the description of a web of
-          resources to a tree: Links between linked resources can only be
+          resources to a tree structure: Links between linked resources can only be
           described by further nesting links.
         </t>
 
@@ -459,7 +460,7 @@
           an operation on a Web resource. It consists of a <spanx>form
           context</spanx>, a <spanx>form relation type</spanx>, a <spanx>request
           method</spanx>, and a <spanx>submission IRI</spanx>. Additionally, a
-          form can be accompanied by <spanx>form data</spanx>.
+          form may be accompanied by <spanx>form data</spanx>.
         </t>
 
         <t>
@@ -471,16 +472,16 @@
         </t>
 
         <t>
-          The form relation type identifies the semantics of the operation. Like
-          link relation types, the form relation type is denoted by an IRI or an
-          unsigned integer.
+          The form relation type identifies the semantics of the operation. The
+          form relation type is denoted by an IRI or an unsigned integer,
+          exactly in the same way as a link relation type.
         </t>
 
         <t>
           The form context is the resource on which an operation is ultimately
-          performed. To perform the operation, an agent must construct a request
+          performed. To perform the operation, an agent needs to construct a request
           with the specified request method and submission IRI. The submission
-          IRI typically refers to the form context, but MAY refer to another
+          IRI typically refers to the form context, but MAY refer to different
           resource. Constructing and sending the request is called _submitting
           the form_.
         </t>
@@ -488,7 +489,7 @@
         <t>
           If a form is accompanied by form data (<xref target="form-data"/>),
           the agent MUST also construct a payload that matches the
-          specifications of the form data, and include it in the same request
+          specifications of the form data and include it in the request
           when submitting the form.
         </t>
 
