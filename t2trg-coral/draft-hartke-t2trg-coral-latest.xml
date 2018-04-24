@@ -846,6 +846,7 @@
                 <t>form /= [form.create: 4, ?accept: uint .size 2]</t>
                 <t>form /= [form.update: 5, ?accept: uint .size 2]</t>
                 <t>form /= [form.delete: 6]</t>
+                <t>form /= [form.search: 7, ?accept: uint .size 2]</t>
               </list>
             </t>
 
@@ -863,6 +864,9 @@
    [5, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#update", "PUT", [],
                   ["urn:ietf:rfc:XXXX#accept", x]]
    [6]     -&gt;  [3, "urn:ietf:rfc:XXXX#delete", "DELETE", []]
+   [7]     -&gt;  [3, "urn:ietf:rfc:XXXX#search", "FETCH", []]
+   [7, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#search", "FETCH", [],
+                  ["urn:ietf:rfc:XXXX#accept", x]]
               </artwork>
             </figure>
 
@@ -880,11 +884,14 @@
    [5, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#update", 3, [],
                   ["urn:ietf:rfc:XXXX#accept", x]]
    [6]     -&gt;  [3, "urn:ietf:rfc:XXXX#delete", 4, []]
+   [7]     -&gt;  [3, "urn:ietf:rfc:XXXX#create", 5, []]
+   [7, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#create", 5, [],
+                  ["urn:ietf:rfc:XXXX#accept", x]]
               </artwork>
             </figure>
 
             <t>
-              The form relation types and form field names in the above
+              The form relation types and form field names used in the above
               expansions are defined in <xref target="core-vocabulary"/>.
             </t>
 
