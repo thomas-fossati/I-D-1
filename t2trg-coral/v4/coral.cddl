@@ -16,6 +16,8 @@ form /= [form.update: 5, ?accept: uint .size 2]
 
 form /= [form.delete: 6]
 
+form /= [form.search: 7, ?accept: uint .size 2]
+
 method = text / uint
 
 form-data = [*(form-field-name, form-field-value)]
@@ -24,9 +26,7 @@ form-field-name = text / uint
 
 form-field-value = iri / bool / int / float / bytes / text / null
 
-representation = [representation: 0, media-type, bytes]
-
-media-type = text / uint
+representation = [representation: 0, text / uint, bytes]
 
 directive = base-directive
 
