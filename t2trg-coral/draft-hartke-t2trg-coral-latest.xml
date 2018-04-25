@@ -2372,20 +2372,22 @@
               used with the POST method <xref target="RFC7231"/> <xref
               target="RFC7252"/> or FETCH method <xref target="RFC8132"/>.
             </t>
+            <!--
             <t hangText="&lt;urn:ietf:rfc:XXXX#link&gt;">
               <vspace/>Indicates that the form's context can be associated with
-              other resources by submitting one or more links to be established.
-              This form relation type is typically used with the PATCH method
-              <xref target="RFC5789"/> <xref target="RFC8132"/>, or iPATCH
-              method <xref target="RFC8132"/>.
+              other resources by submitting one or more links. This form
+              relation type is typically used with the PATCH method <xref
+              target="RFC5789"/> <xref target="RFC8132"/>, or iPATCH method
+              <xref target="RFC8132"/>.
             </t>
             <t hangText="&lt;urn:ietf:rfc:XXXX#unlink&gt;">
               <vspace/>Indicates that the form's context can be disassociated
-              from other resources by submitting one or more links to be
-              removed. This form relation type is typically used with the PATCH
-              method <xref target="RFC5789"/> <xref target="RFC8132"/>, or
-              iPATCH method <xref target="RFC8132"/>.
+              from other resources by submitting one or more links. This form
+              relation type is typically used with the PATCH method <xref
+              target="RFC5789"/> <xref target="RFC8132"/>, or iPATCH method
+              <xref target="RFC8132"/>.
             </t>
+            -->
           </list>
         </t>
 
@@ -2445,9 +2447,9 @@
             0 = &lt;urn:ietf:rfc:XXXX#create&gt;<vspace/>
             1 = &lt;urn:ietf:rfc:XXXX#update&gt;<vspace/>
             2 = &lt;urn:ietf:rfc:XXXX#delete&gt;<vspace/>
-            3 = &lt;urn:ietf:rfc:XXXX#search&gt;<vspace/>
+            3 = &lt;urn:ietf:rfc:XXXX#search&gt;<!--<vspace/>
             4 = &lt;urn:ietf:rfc:XXXX#link&gt;<vspace/>
-            5 = &lt;urn:ietf:rfc:XXXX#unlink&gt;
+            5 = &lt;urn:ietf:rfc:XXXX#unlink&gt;-->
           </t>
         </list>
         Form Fields
