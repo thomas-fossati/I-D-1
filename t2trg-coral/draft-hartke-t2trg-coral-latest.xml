@@ -384,10 +384,10 @@
         </t>
 
         <t>
-          A CoRAL document consists of a list of zero or more links, forms, and embedded representations,
-          collectively called <spanx>elements</spanx>. CoRAL serialization
-          formats may define additional types of elements for efficiency or
-          convenience, such as a base IRI for the resolution of relative IRI
+          A CoRAL document consists of a list of zero or more links, forms, and
+          embedded resource representations, collectively called <spanx>elements</spanx>.
+          CoRAL serialization formats may define additional types of elements
+          for efficiency or convenience, such as base IRIs for relative IRI
           references.
         </t>
 
@@ -397,11 +397,11 @@
 
         <t>
           A <spanx>link</spanx> describes a relationship between two resources
-          on the Web <xref target="RFC8288"/>. As defined in RFC 8288, it consists of a <spanx>link
-          context</spanx>, a <spanx>link relation type</spanx>, and a
-          <spanx>link target</spanx>. A link can additionally have a nested list
-          of zero or more elements in CoRAL, which takes the place of link
-          target attributes.
+          on the Web <xref target="RFC8288"/>. As defined in RFC 8288, it
+          consists of a <spanx>link context</spanx>, a <spanx>link relation
+          type</spanx>, and a <spanx>link target</spanx>. A link can
+          additionally have a nested list of zero or more elements, which takes
+          the place of link target attributes in CoRAL.
         </t>
 
         <t>
@@ -446,8 +446,8 @@
           There are no restrictions on the cardinality of links; there can be
           multiple links to and from a particular target, and multiple links of
           the same or different types between a given link context and target.
-          However, the CoRAL data model constrains the description of a web of
-          resources to a tree structure: Links between linked resources can only be
+          However, the CoRAL data model constrains the description of a 
+          resource graph to a tree: Links between linked resources can only be
           described by further nesting links.
         </t>
 
@@ -472,9 +472,8 @@
         </t>
 
         <t>
-          The form relation type identifies the semantics of the operation. The
-          form relation type is denoted by an IRI or an unsigned integer,
-          exactly in the same way as a link relation type.
+          The form relation type identifies the semantics of the operation. Like
+          a link relation type, it is denoted by an IRI or an unsigned integer.
         </t>
 
         <t>
@@ -514,14 +513,14 @@
 
         <t>
           Form fields can either directly identify data items that need to be
-          included in the request payload or reference an external resource
-          (such as a schema) that describes the data. They can also provide
-          other information, such as acceptable data formats.
+          included in the request payload or reference another resource (such as
+          a schema) that describes the data items. Form fields may also provide
+          other information, such as acceptable representation formats.
         </t>
 
         <t>
           The form field name identifies the semantics of the form field. Like
-          link and form relation types, a form field name is denoted by an IRI
+          a link or form relation type, a form field name is denoted by an IRI
           or an unsigned integer.
         </t>
 
@@ -535,23 +534,24 @@
       <section title="Representations">
 
         <t>
-          If a representation links to many resources, it may be inefficient to
-          retrieve representations of each link target individually. For this
-          reason, CoRAL supports nesting an <spanx>embedded
-          representation</spanx> of a resource in a document.
+          If a representation links to many resources and an agent requires a
+          representation of each link target, it may be inefficient to retrieve
+          each representation individually. To alleviate this, CoRAL supports
+          the embedding of a <spanx>representation</spanx> of a resource in a
+          document.
         </t>
 
         <t>
-          An embedded representation may be a full, partial, or inconsistent
-          version of the representation served from the IRI of the represented
-          resource. As transferred representations in HTTP and CoAP, embedded
-          representations are labeled with a media type.
+          An embedded representation consists of a sequence of bytes, plus
+          <spanx>representation metadata</spanx> to describe those bytes. It may
+          be a full, partial, or inconsistent version of the representation
+          served from the IRI of the represented resource.
         </t>
 
         <t>
           An embedded representation can occur as a top-level element in a
           document or as a nested element within a link. When it occurs as a
-          top-level element, it provides an alternative representation of the
+          top-level element, it provides an alternate representation of the
           document's retrieval context. When it occurs nested within a link, it
           provides a representation of link target of the enclosing link.
         </t>
@@ -635,7 +635,7 @@
               history representing the new resource.
             </t>
             <t>
-              Finally, the agent processes the representation. If it's a CoRAL
+              Finally, the agent processes the representation. In case of a CoRAL
               document or any other representation that implements the CoRAL
               data and interaction model, this means the agent decides again
               what to do next and the cycle repeats.
@@ -683,9 +683,9 @@
         <t>
           The data structure of a document in the binary format is made up of
           four kinds of elements: links, forms, embedded representations, and
-          (as an extension of the CoRAL data model) base IRI directives. Base
-          IRI directives provide a way to more efficiently encode IRI references
-          that have a common base.
+          (as an extension to the CoRAL data model) base IRI directives. Base
+          IRI directives provide a way to encode IRI references that have a
+          common base more efficiently.
         </t>
 
         <t>
@@ -864,8 +864,8 @@
    [5, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#update", "PUT", [],
                   ["urn:ietf:rfc:XXXX#accept", x]]
    [6]     -&gt;  [3, "urn:ietf:rfc:XXXX#delete", "DELETE", []]
-   [7]     -&gt;  [3, "urn:ietf:rfc:XXXX#search", "FETCH", []]
-   [7, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#search", "FETCH", [],
+   [7]     -&gt;  [3, "urn:ietf:rfc:XXXX#search", "POST", []]
+   [7, x]  -&gt;  [3, "urn:ietf:rfc:XXXX#search", "POST", [],
                   ["urn:ietf:rfc:XXXX#accept", x]]
               </artwork>
             </figure>
@@ -905,10 +905,9 @@
             An embedded representation is encoded as an array that consists of
             the unsigned integer 0, followed by the HTTP content type or CoAP
             content format of the representation and a byte string containing
-            the representation itself.
+            the representation data.
             <list>
-              <t>representation = [representation: 0, media-type, bytes]</t>
-              <t>media-type = text / uint</t>
+              <t>representation = [representation: 0, text / uint, bytes]</t>
             </list>
             For HTTP, the content type MUST be specified as a text string in the
             format defined in Section 3.1.1.1 of <xref target="RFC7231">RFC
@@ -916,11 +915,6 @@
             Media Types Registry. For CoAP, the content format MUST be specified
             as an unsigned integer; the set of possible values is maintained in
             the IANA CoAP Content-Formats Registry.
-          </t>
-
-          <t>
-            Processing an embedded representation does not change the
-            environment.
           </t>
 
         </section>
@@ -1290,7 +1284,7 @@
           <t>
             Punctuator tokens are used for grouping and separating.
             <list>
-              <t>punctuator = "#" | ":" | "[" | "]" | "{" | "}" | "=" | "->"</t>
+              <t>punctuator = "#" | ":" | "*" | "[" | "]" | "{" | "}" | "=" | "->"</t>
             </list>
           </t>
 
@@ -1303,9 +1297,9 @@
         <t>
           The syntactic structure of a document in the textual format is made up
           of four kinds of elements: links, forms, embedded representations, and
-          (as an extension of the CoRAL data model) directives. Directives
-          provide a way to make documents easier to read and write by defining a
-          base IRI for relative IRI references and introducing shorthands for
+          (as an extension to the CoRAL data model) directives. Directives
+          provide a way to make documents easier to read and write by defining
+          base IRIs for relative IRI references and introducing shorthands for
           IRIs.
         </t>
 
@@ -1345,7 +1339,7 @@
 
           <t>
             The link relation type is denoted either by an absolute IRI
-            reference, a simple name, a qualified name, or an unsigned integer.
+            reference, a simple name, a qualified name, or an integer.
             <list>
               <t>relation = iri / simple-name / qualified-name / integer</t>
             </list>
@@ -1470,24 +1464,41 @@
         <section title="Representations">
 
           <t>
-            An embedded representation consists of the TBD, followed by the HTTP
-            content type or CoAP content format of the representation and a byte
-            string literal containing the representation itself.
+            An embedded representation consists of a "*" token, followed by the
+            representation data, optionally followed by representation metadata
+            enclosed in square brackets ("[" and "]").
             <list>
-              <t>representation = TBD content-type bytes</t>
-              <t>content-type = text / integer</t>
+              <t>representation = "*" bytes ["[" representation-metadata "]"]</t>
+            </list>
+          </t>
+
+          <t>
+            Representation metadata consists of zero or more name-value pairs.
+            <list>
+              <t>representation-metadata = *(metadata-name metadata-value)</t>
+            </list>
+          </t>
+
+          <t>
+            This document specifies only one kind of metadata item, labeled with
+            the name "type": the HTTP content type or CoAP content format of the
+            representation.
+            <list>
+              <t>metadata-name = "type"</t>
+              <t>metadata-value = text / integer</t>
             </list>
             For HTTP, the content type MUST be specified as a text string in the
             format defined in Section 3.1.1.1 of <xref target="RFC7231">RFC
             7231</xref>; the set of possible values is maintained in the IANA
             Media Types Registry. For CoAP, the content format MUST be specified
-            as an unsigned integer; the set of possible values is maintained in
+            as an integer; the set of possible values is maintained in
             the IANA CoAP Content-Formats Registry.
           </t>
-
+          
           <t>
-            Processing an embedded representation does not change the
-            environment.
+            A metadata item with the name "type" MUST NOT occur more than once.
+            If absent, its value defaults to content type
+            "application/octet-stream" or content format 42.
           </t>
 
         </section>
@@ -1892,7 +1903,7 @@
    iana:item &lt;/patches/1&gt; {
       attr:type "application/json-patch+json"
       attr:ct   "51"
-      attr:ct   "50"
+      attr:sz   "247"
       attr:obs  true
    }
           </artwork>
