@@ -696,10 +696,20 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <!--
     <section title="Acknowledgements" numbered="no">
+
+      <!-- sorted by last name -->
+      <t>
+        Thanks to
+        Ari Keranen,
+        Jim Schaad,
+        Goeran Selander, and
+        Malisa Vucinic
+        for helpful comments and discussions that have shaped the
+        document.
+      </t>
+
     </section>
-    -->
 
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
