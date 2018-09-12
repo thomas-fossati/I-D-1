@@ -21,7 +21,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="std" docName="draft-hartke-core-stateless-00" ipr="trust200902" updates="7252, 8323">
+<rfc category="std" docName="draft-hartke-core-stateless-01" ipr="trust200902" updates="7252, 8323">
 
   <front>
 
@@ -55,16 +55,7 @@
       </t>
 
       <t>
-        [[The present draft presents two alternative variants for extending CoAP
-        with extended tokens. Variant A makes use of the unused values in the
-        TKL field of the CoAP header. Variant B duplicates the functionality of
-        the token field of the CoAP header in a new CoAP option,
-        "Extended-Token". The considerations for stateless clients making use of
-        either variant are the same.]]
-      </t>
-
-      <t>
-        This document updates RFCs 7252 and 8323 (if Variant A).
+        This document updates RFCs 7252 and 8323.
       </t>
 
     </abstract>
@@ -149,9 +140,9 @@
         Serializing state into tokens is complicated by the fact that both <xref
         target="RFC7252">CoAP over UDP</xref> and <xref target="RFC8323">CoAP
         over reliable transports</xref> limit the maximum token length to 8
-        bytes. To overcome this limitation, <xref target="extended-tokens-a"/>
-        (Variant A) / <xref target="extended-tokens-b"/> (Variant B) of this
-        document first introduces a CoAP protocol extension for extended tokens.
+        bytes. To overcome this limitation, <xref target="extended-tokens"/> of
+        this document first introduces a CoAP protocol extension for extended
+        tokens.
       </t>
 
       <section title="Requirements Notation">
@@ -173,7 +164,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="(Variant A:) Extended Tokens" anchor="extended-tokens-a">
+    <section title="Extended Tokens" anchor="extended-tokens">
 
       <section title="Extended Token Length (TKL) Field">
 
@@ -220,7 +211,7 @@
 
       </section>
 
-      <section title="Discovering Support" anchor="discovery-a">
+      <section title="Discovering Support" anchor="discovery">
 
         <t>
            Extended token lengths require support from the server or, if there
@@ -233,12 +224,12 @@
           role) in one of two ways: If Capabilities and Settings Messages (CSMs)
           are available, such as in CoAP over TCP, then support can be
           discovered using the new Extended-Token-Lengths Capability Option
-          defined in <xref target="capability-option-a"/>. Otherwise, such as in
+          defined in <xref target="capability-option"/>. Otherwise, such as in
           CoAP over UDP, support can only be discovered by trial and error,
-          which is described in <xref target="trial-and-error-a"/>.
+          which is described in <xref target="trial-and-error"/>.
         </t>
 
-        <section title="Extended-Token-Lengths Capability Option" anchor="capability-option-a">
+        <section title="Extended-Token-Lengths Capability Option" anchor="capability-option">
 
           <t>
             A sender can use the elective Extended-Token-Lengths Capability
@@ -246,7 +237,7 @@
             field as specified above.
           </t>
 
-          <texttable title="The Extended-Token-Lengths Capability Option" anchor="capability-option-definition-a">
+          <texttable title="The Extended-Token-Lengths Capability Option" anchor="capability-option-definition">
             <ttcol align="right">#</ttcol>
             <ttcol align="left">C</ttcol>
             <ttcol align="left">R</ttcol>
@@ -270,7 +261,7 @@
 
         </section>
 
-        <section title="Trial and Error" anchor="trial-and-error-a">
+        <section title="Trial and Error" anchor="trial-and-error">
 
           <t>
             A request with a TKL field value outside the range from 0 to 8 will
@@ -289,10 +280,10 @@
             it is RECOMMENDED that the client uses a confirmable message. As per
             RFC 7252, a Reset message does not contain a token and only echoes
             back the Message ID of the confirmable or non-confirmable message
-            (<xref target="trial-and-error-illustration-a"/>).
+            (<xref target="trial-and-error-illustration"/>).
           </t>
           
-<figure anchor="trial-and-error-illustration-a" title="A Confirmable Request With an Extended Token is Rejected With a Reset Message if the Next Hop Does Not Support It"><artwork align="center"><![CDATA[   
+<figure anchor="trial-and-error-illustration" title="A Confirmable Request With an Extended Token is Rejected With a Reset Message if the Next Hop Does Not Support It"><artwork align="center"><![CDATA[   
 +-----------------+   request message    +------------+
 |        |        |    with extended     |            |
 |        |        |     token length     |            |
@@ -314,150 +305,6 @@
             connection (Section 5.6 of RFC 8323). There is no specific Abort
             message option indicating the reason defined for this case.
           </t>
-
-        </section>
-
-      </section>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <section title="(Variant B:) Extended Tokens" anchor="extended-tokens-b">
-
-      <section title="Extended-Token Option">
-
-        <t>
-          The Extended-Token Option contains an extension of the token that can
-          additionally be used for matching a response with a request.
-        </t>
-
-        <texttable title="The Extended-Token Option" anchor="token-option-b">
-          <ttcol align="right">#</ttcol>
-          <ttcol align="left">C</ttcol>
-          <ttcol align="left">U</ttcol>
-          <ttcol align="left">N</ttcol>
-          <ttcol align="left">R</ttcol>
-          <ttcol align="left">Name</ttcol>
-          <ttcol align="left">Format</ttcol>
-          <ttcol align="left">Length</ttcol>
-          <ttcol align="left">Default</ttcol>
-
-          <c>TBD</c>
-          <c>x</c>
-          <c>x</c>
-          <c></c>
-          <c></c>
-          <c>Extended-Token</c>
-          <c>opaque</c>
-          <c>0-65535</c>
-          <c>(none)</c>
-
-          <postamble>C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable</postamble>
-        </texttable>
-
-        <t>
-          A client (or intermediary in the role of a client) can include the
-          Extended-Token Option in a request with any client-generated value. A
-          server (or intermediary in the role of a server) MUST echo the value
-          without modification in an Extended-Token Option in any resulting
-          response.
-        </t>
-
-        <t>
-          It is entirely up to the client how it splits the token between the
-          Token field in the message header and the Extended-Token Option.
-        </t>
-        
-      </section>
-
-      <section title="Discovering Support" anchor="discovery-b">
-
-        <t>
-          The Extended-Token Option requires support from the server or, if
-          there are intermediaries between the client and the origin server, the
-          intermediary in the server role that the client is interacting with.
-        </t>
-
-        <t>
-          Support can be discovered by a client (or intermediary in the client
-          role) in one of two ways: If Capabilities and Settings Messages (CSMs)
-          are available, such as in CoAP over TCP, then support can be
-          discovered using the new Extended-Token-Option Capability Option
-          defined in <xref target="capability-option-b"/>. Otherwise, such as in
-          CoAP over UDP, support can only be discovered by trial and error,
-          which is described in <xref target="trial-and-error-b"/>.
-        </t>
-
-        <section title="Extended-Token-Option Capability Option" anchor="capability-option-b">
-
-          <t>
-            A sender can use the elective Extended-Token-Option Capability
-            Option to indicate its support for the Extended-Token Option
-            specified above.
-          </t>
-
-          <texttable title="The Extended-Token-Option Capability Option" anchor="capability-option-definition-b">
-            <ttcol align="right">#</ttcol>
-            <ttcol align="left">C</ttcol>
-            <ttcol align="left">R</ttcol>
-            <ttcol align="left">Applies to</ttcol>
-            <ttcol align="left">Name</ttcol>
-            <ttcol align="left">Format</ttcol>
-            <ttcol align="left">Length</ttcol>
-            <ttcol align="left">Base Value</ttcol>
-
-            <c>TBD</c>
-            <c></c>
-            <c></c>
-            <c>CSM</c>
-            <c>Extended-Token-Option</c>
-            <c>empty</c>
-            <c>0</c>
-            <c>(none)</c>
-
-            <postamble>C=Critical, R=Repeatable</postamble>
-          </texttable>
-
-        </section>
-
-        <section title="Trial and Error" anchor="trial-and-error-b">
-
-          <t>
-            A request with a critical, unsafe-to-forward option such as the
-            Extended-Token Option will cause the return of a 4.02 (Bad Option)
-            response from the next hop if that does not support the option. A
-            client can therefore determine support by sending a request with an
-            Extended-Token Option to next hop and checking if that returns such
-            a response. As per RFC 7252, the response will not contain an
-            Extended-Token Option, so only the regular token can be used for
-            matching the response to the request.
-        </t>
-
-        <t>
-          Note that a 4.02 (Bad Option) response does not
-            necessarily mean that the Extended-Token Option is unsupported if
-            there is another unsupported critical option in the request.
-          </t>
-
-<figure anchor="trial-and-error-illustration-b" title="A Request With an Extended-Token Option Results in a 4.02 (Bad Option) Response if the Next Hop Does Not Support It"><artwork align="center"><![CDATA[   
-+-----------------+   request message    +------------+
-|        |        |    with Extended-    |            |
-|        |        |     Token option     |            |
-|    .-<-+->------|--------------------->|------.     |
-|   _|_           |                      |      |     |
-|  /   \ stored   |                      |      |     |
-|  \___/ state    |                      |      |     |
-|    |            |                      |      |     |
-|    '->-+-<------|<---------------------|------'     |
-|        |        |   4.02 (Bad Option)  |            |
-|        v        |   response without   |            |
-+-----------------+    Extended-Token    +------------+
-      Client               Option            Server
-]]></artwork></figure>
 
         </section>
 
@@ -533,14 +380,13 @@
         <t>
           A client or intermediary in the client role that depends on support
           for extended tokens from the next hop to avoid keeping request state
-          MUST perform a discovery of support (<xref
-          target="discovery-a"/>/<xref target="discovery-b"/>) before it can be
-          stateless. This discovery MUST be performed in a stateful way, i.e.,
-          keeping state for the request (<xref target="stateful-discovery"/>):
-          If the client was stateless from the start and the next hop doesn't
-          support extended tokens, then any error message couldn't be processed
-          as the state would neither be present at the client nor echoed back in
-          the error message.
+          MUST perform a discovery of support (<xref target="discovery"/>)
+          before it can be stateless. This discovery MUST be performed in a
+          stateful way, i.e., keeping state for the request (<xref
+          target="stateful-discovery"/>): If the client was stateless from the
+          start and the next hop doesn't support extended tokens, then any error
+          message couldn't be processed as the state would neither be present at
+          the client nor echoed back in the error message.
         </t>
 
 <figure anchor="stateful-discovery" title="Depending on Extended Tokens for Being Stateless First Requires a Successful Stateful Discovery of Support"><artwork align="center"><![CDATA[   
@@ -620,7 +466,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="(Variant A:) IANA Considerations">
+    <section title="IANA Considerations">
 
       <section title="CoAP Signaling Option Number">
 
@@ -641,77 +487,10 @@
           <c>[[this document]]</c>
         </texttable>
 
-        <t>
-          [[The three lowest available option numbers with the properties
-          specified in <xref target="capability-option-definition-a"/> are 6, 8,
-          and 10 at the time of writing.]]
-        </t>
-
       </section>
 
     </section>
 
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
-    <section title="(Variant B:) IANA Considerations">
-
-      <section title="CoAP Option Number">
-
-        <t>
-          The following entries are added to the "CoAP Option Numbers" registry
-          within the "CoRE Parameters" registry.
-        </t>
-
-        <texttable>
-          <ttcol align="right">Number</ttcol>
-          <ttcol align="left">Name</ttcol>
-          <ttcol align="left">Reference</ttcol>
-
-          <c>TBD</c>
-          <c>Extended-Token</c>
-          <c>[[this document]]</c>
-        </texttable>
-        
-        <t>
-          [[The three lowest available option numbers with the properties
-          specified in <xref target="token-option-b"/> are 19, 31, and 43 at the
-          time of writing.]]
-        </t>
-
-      </section>
-
-      <section title="CoAP Signaling Option Number">
-
-        <t>
-          The following entries are added to the "CoAP Signaling Option Numbers"
-          registry within the "CoRE Parameters" registry.
-        </t>
-
-        <texttable>
-          <ttcol align="left">Applies to</ttcol>
-          <ttcol align="right">Number</ttcol>
-          <ttcol align="left">Name</ttcol>
-          <ttcol align="left">Reference</ttcol>
-
-          <c>7.01</c>
-          <c>TBD</c>
-          <c>Extended-Token-Option</c>
-          <c>[[this document]]</c>
-        </texttable>
-
-        <t>
-          [[The three lowest available option numbers with the properties
-          specified in <xref target="capability-option-definition-b"/> are 6, 8,
-          and 10 at the time of writing.]]
-        </t>
-        
-      </section>
-
-    </section>
-    
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
@@ -751,11 +530,11 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="(Variant A:) Updated Message Formats" anchor="message-formats">
+    <section title="Updated Message Formats" anchor="message-formats">
 
       <t>
         This appendix illustrates the CoAP message formats updated with the new
-        definition of the TKL field (<xref target="extended-tokens-a"/>).
+        definition of the TKL field (<xref target="extended-tokens"/>).
         <vspace blankLines="100"/>
       </t>
       
