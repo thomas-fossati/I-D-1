@@ -46,7 +46,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-coral-05" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-coral-06" ipr="trust200902">
 
   <front>
 
@@ -78,8 +78,8 @@
         The Constrained RESTful Application Language (CoRAL) defines a data
         model and interaction model as well as two specialized serialization
         formats for the description of typed connections between resources on
-        the Web ("links"), possible operations on such resources ("forms"), and
-        simple resource metadata.
+        the Web ("links"), possible operations on such resources ("forms"), as
+        well as simple resource metadata.
       </t>
 
     </abstract>
@@ -112,22 +112,22 @@
       </t>
 
       <t>
-        This document defines the CoRAL data and interaction model, as well as
-        two specialized CoRAL serialization formats.
+        This document defines the CoRAL data and interaction model as well as
+        two specialized CoRAL serialization formats:
       </t>
 
       <t>
         The CoRAL data and interaction model is a superset of the Web Linking
-        model described in <xref target="RFC8288">RFC 8288</xref>. The CoRAL
-        data model consists of two elements: <spanx>links</spanx> that describe
-        the relationships between pairs of resources and the type of those
+        model of <xref target="RFC8288">RFC 8288</xref>. The CoRAL data model
+        consists of two elements: <spanx>links</spanx> that describe the
+        relationships between pairs of resources and the type of those
         relationships, and <spanx>forms</spanx> that describe possible
-        operations on resources and the type of those operations. In addition,
-        the data model can describe simple resource metadata in a way similar to the
-        <xref target="W3C.REC-rdf11-concepts-20140225">Resource Description
-        Framework (RDF)</xref>. However, in contrast to RDF, the focus of CoRAL
-        is on the interaction with resources, not just on the relationships
-        between them. The CoRAL interaction model derives from <xref
+        operations on resources and the type of those operations. Additionally,
+        the data model can describe simple resource metadata in a way similar to
+        the <xref target="W3C.REC-rdf11-concepts-20140225">Resource Description
+        Framework (RDF)</xref>. In contrast to RDF, the focus of CoRAL is on the
+        interaction with resources, not just the relationships between them. The
+        CoRAL interaction model derives from <xref
         target="W3C.REC-html52-20171214">HTML 5</xref> and specifies how an
         automated software agent can navigate between resources by following
         links and perform operations on resources by submitting forms.
@@ -140,14 +140,13 @@
         target="RFC7228">environments with constraints on power, memory, and
         processing resources</xref>, and shares many similarities with the
         message format of the <xref target="RFC7252">Constrained Application
-        Protocol (CoAP)</xref>: It uses numeric identifiers instead of verbose
-        strings for link and form relation types, and pre-parses URIs into (what
-        CoAP considers to be) their components, which simplifies URI processing
-        greatly. As a result, link serializations are often much more compact
-        than equivalent serializations in <xref target="RFC6690">CoRE Link
-        Format</xref>, including <xref target="I-D.ietf-core-links-json">its
-        CBOR variant</xref>. Additionally, CoRAL supports the serialization of
-        forms, which CoRE Link Format does not support.
+        Protocol (CoAP)</xref>. For example, it uses numeric identifiers instead
+        of verbose strings for link and form relation types, and pre-parses URIs
+        into (what CoAP considers to be) their components, which greatly
+        simplifies URI processing. As a result, link serializations are often
+        much more compact than equivalent serializations in <xref
+        target="RFC6690">CoRE Link Format</xref> <xref
+        target="I-D.ietf-core-links-json"/>.
       </t>
 
       <t>
