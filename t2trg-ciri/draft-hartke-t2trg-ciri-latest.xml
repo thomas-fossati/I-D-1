@@ -253,11 +253,51 @@
           absolute.)
         </t>
 
+        <t>
+          The following operations can be performed on a sequence of options:
+          <list style="hanging">
+            <t hangText="Resolve(href, base)">
+              <vspace/>Resolves a well-formed sequence of options `href` against
+              an absolute sequence of options `base`. This operation MUST be
+              performed by applying any algorithm that is functionally
+              equivalent to the reference implementation in <xref
+              target="py-resolve"/>.
+            </t>
+            <t hangText="Recompose(href)">
+              <vspace/>Recomposes a IRI reference string from an absolute
+              sequence of options `href`. This operation MUST be performed by
+              applying any algorithm that is functionally equivalent to the
+              reference implementation in <xref target="py-recompose"/>.
+            </t>
+            <t>
+              To reduce variability, it is RECOMMENDED that the hexadecimal
+              notation when percent-encoding octets use uppercase letters <xref
+              target="RFC3986"/> and the text representation of IPv6 addresses
+              follow the recommendations of Section 4 of <xref
+              target="RFC5952">RFC 5952</xref>.
+            </t>
+            <t hangText="Decompose(iri)">
+              <vspace/>Decomposes a IRI reference string into a sequence of
+              options. This operation MUST be performed by applying any
+              algorithm that returns a sequence of options such that
+              `Recompose(Decompose(x))` is equivalent to `x`.
+            </t>
+            <t hangText="CoAP(href)">
+              <vspace/>Constructs CoAP options from an absolute, normalized
+              sequence of options. This operation MUST be performed by
+              recomposing the sequence of options to an IRI reference string,
+              mapping the IRI to an URI (Section 3.1 of RFC 3987), and
+              decomposing the URI into CoAP options (Section 6.4 of RFC 7252).
+              This process is illustrated in <xref target="py-coap"/>.
+            </t>
+          </list>
+        </t>
+
       </section>
 
     </section>
 
-    <section title="CBOR Serialization">
+    <section title="CBOR">
 
       <t>
         A sequence of options is serialized as an array in <xref
@@ -286,20 +326,14 @@
 ]]></artwork></figure>      
 
     </section>
-             
-    <section title="Python Implementation">
-    
-      <section title="Reference Resolution">
+
+    <section title="Python">
+
+      <section title="Reference Resolution" anchor="py-resolve">
 
         <t>
-          This section defines how to resolve a CBOR-encoded IRI reference that
-          might be relative to a given base IRI.
-        </t>
-
-        <t>
-          Applications MUST resolve a well-formed sequence of options `href`
-          against an absolute sequence of options `base` by using an algorithm
-          that is functionally equivalent to the following Python 3.5 code.
+          The following Python 3.5 code defines how to resolve a sequence of
+          options that might be relative to a given base IRI.
         </t>
 
 <figure><artwork><![CDATA[
@@ -363,24 +397,11 @@
 
       </section>
 
-      <section title="IRI Recomposition" anchor="recomposition">
+      <section title="IRI Recomposition" anchor="py-recompose">
 
         <t>
-          This section defines how to recompose an IRI from a sequence of
-          options that encodes an absolute IRI reference.
-        </t>
-
-        <t>
-          Applications MUST recompose an IRI from a sequence of options by using
-          an algorithm that is functionally equivalent to the following Python
-          3.5 code.
-        </t>
-
-        <t>
-          To reduce variability, the hexadecimal notation when percent-encoding
-          octets SHOULD use uppercase letters. The text representation of IPv6
-          addresses SHOULD follow the recommendations in Section 4 of <xref
-          target="RFC5952">RFC 5952</xref>.
+          The following Python 3.5 code defines how to recompose an IRI from a
+          sequence of options that encodes an absolute IRI reference.
         </t>
 
 <figure><artwork><![CDATA[
@@ -508,23 +529,12 @@
 
       </section>
 
-      <section title="CoAP Encoding">
+      <section title="CoAP Encoding" anchor="py-coap">
 
         <t>
-          This section defines how to construct CoAP options from an absolute,
-          normalized, CBOR-encoded IRI Reference.
-        </t>
-
-        <t>
-          Applications MUST construct CoAP options by recomposing the sequence
-          of options to an IRI (<xref target="recomposition"/> of this
-          document), mapping the IRI to an URI (Section 3.1 of RFC 3987), and
-          decomposing the URI into CoAP options (Section 6.4 of RFC 7252).
-        </t>
-
-        <t>
-          The following illustrative Python 3.5 code is roughly equivalent to
-          this.
+          The following Python 3.5 code shows how to construct CoAP options from
+          an absolute sequence of options. For simplicity, the code does not
+          omit CoAP options with their default value in a CoAP request.
         </t>
 
 <figure><artwork><![CDATA[
