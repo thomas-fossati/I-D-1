@@ -6,6 +6,7 @@
   <!ENTITY RFC3987 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3987.xml">
   <!ENTITY RFC5952 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5952.xml">
   <!ENTITY RFC6690 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6690.xml">
+  <!ENTITY RFC7049 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7228.xml">
   <!ENTITY RFC7230 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7230.xml">
   <!ENTITY RFC7252 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7252.xml">
@@ -68,52 +69,56 @@
     <section title="Introduction" anchor="introduction">
 
       <t>
-        <xref target="RFC3986">URI references</xref> and, secondarily, <xref
-        target="RFC3987">IRI references</xref> and are the most common usage of
-        resource identifiers in hypertext representation formats such as <xref
-        target="W3C.REC-html52-20171214">HTML 5</xref> and the <xref
+        <xref target="RFC3986">URI references</xref> and, albeit less
+        prevalently, <xref target="RFC3987">IRI references</xref> are the
+        standard way to link to resources in hypertext formats like <xref
+        target="W3C.REC-html52-20171214">HTML</xref> and the <xref
         target="RFC6690">CoRE Link Format</xref>. They encode the components of
-        a resource identifier either as an absolute URI/IRI or as a relative
-        reference that is resolved against a base URI/IRI.
+        a resource reference either as an absolute URI/IRI or as a relative
+        reference that must be resolved against a base URI/IRI to receive an
+        absolute URI/IRI.
       </t>
 
       <t>
-        URI and IRI references are sequences of characters chosen from limited
-        subsets of the repertoires of US-ASCII characters and Unicode
-        characters, respectively. The individual components of a URI or IRI are
-        delimited by several reserved characters, which necessitates the use of
-        percent-encoding for reserved characters in a non-delimiting function.
-        The resolution of references involves parsing URI/IRI references into
-        their components, combining the components with those of the base
-        URI/IRI, merging paths, removing dot segments, and recomposing the
-        result into a URI/IRI reference string.
+        URI and IRI references are strings of characters where the characters
+        are chosen from a limited subset of the repertoires of US-ASCII and
+        Unicode characters, respectively. The individual components of a URI or
+        IRI reference are delimited by a number of reserved characters, which
+        necessitates the use of percent-encoding when these reserved characters
+        are used in a non-delimiting function. The resolution of references
+        involves parsing URI/IRI references into their components, combining
+        those components with the components of the base URI/IRI, merging paths,
+        removing dot segments, and recomposing the result back into a character
+        string.
       </t>
 
       <t>
-        Altogether, proper processing of URIs is quite complex. This can be
-        a problem in particular in <xref target="RFC7228">constrained
-        environments</xref> with severe code size limitations. As a result, many
-        implementations in these environments choose to implement only an
-        ad-hoc, informally-specified, bug-ridden, non-interoperable subset of
-        half of RFC 3986.
+        Altogether, the proper processing of URIs is quite complex. This can be
+        a problem particularly in <xref target="RFC7228">constrained
+        environments</xref>, where devices often have severe code size
+        limitations. As a result, many implementations in these environments
+        choose to implement only an ad-hoc, informally-specified, bug-ridden,
+        non-interoperable subset of less than half of RFC 3986.
       </t>
 
       <t>
-        This section specifies CBOR-encoded IRI References, a serialization
-        format for IRI references that encodes the IRI components as CBOR data
-        items rather than text. Assuming that a CBOR implementation is already
-        present, typical operations on CBOR-encoded IRI references such as
-        parsing, reference resolution, and comparison can be implemented much
-        more easily than with the text-based format. A full implementation that
-        covers all corner cases of the specification can be implemented in a
-        relatively small amount of code.
+        This document specifies Constrained IRI References, a serialization
+        format for IRI references that encodes the IRI components as <xref
+        target="RFC7049">Concise Binary Object Representation (CBOR)</xref> data
+        items rather than as a string of characters. Assuming that a CBOR
+        implementation is already present on a device, typical operations on
+        Constrained IRI references such as parsing, reference resolution, and
+        comparison can be implemented much more easily than with the original
+        format. A full implementation that covers all corner cases of the
+        specification can be implemented in a relatively small amount of code.
       </t>
 
       <t>
-        CBOR-encoded IRI References are not capable of expressing all IRI
+        Constrained IRI References are not capable of expressing all IRI
         references permitted by the syntax of <xref target="RFC3987">RFC
-        3987</xref>. The supported subset covers all <xref target="RFC7252">CoAP
-        URIs</xref> and most <xref target="RFC7230">HTTP URIs</xref>.
+        3987</xref>. The supported subset is capable of expressing all <xref
+        target="RFC7252">CoAP URIs</xref> and most <xref target="RFC7230">HTTP
+        URIs</xref>.
       </t>
 
       <section title="Requirements Notation">
@@ -630,6 +635,7 @@
       &RFC2119;
       &RFC3986;
       &RFC3987;
+      &RFC7049;
       &RFC8174;
 
     </references>
