@@ -333,6 +333,62 @@
 
     <section title="Python">
 
+        <t>
+          The following Python 3.5 code shows how to work with a sequence of
+          options.
+        </t>
+
+<figure><artwork><![CDATA[
+<CODE BEGINS>
+
+   import enum
+
+   class Option(enum.IntEnum):
+     SCHEME = 1
+     HOST_NAME = 2
+     HOST_IP = 3
+     PORT = 4
+     PATH_TYPE = 5
+     PATH = 6
+     QUERY = 7
+     FRAGMENT = 8
+     END = 9
+
+   class PathType(enum.IntEnum):
+     ABSOLUTE_PATH = 0
+     APPEND_PATH = 1
+     RELATIVE_PATH = 2
+     APPEND_RELATION = 3
+
+   _TRANSITIONS = [0b1111111110,
+                   0b0000001100,
+                   0b0000010000,
+                   0b0000010000,
+                   0b1111000000,
+                   0b1111000000,
+                   0b1111000000,
+                   0b1110000000,
+                   0b1000000000]
+
+   def is_well_formed(href):
+     previous = 0
+     for (option, value) in href:
+       if not (_TRANSITIONS[previous] & (1 << option)):
+         return False
+       previous = option
+     return True
+
+   def is_absolute(href):
+     return is_well_formed(href) and                                \
+       (href and href[0][0] == Option.SCHEME)
+
+   def is_relative(href):
+     return is_well_formed(href) and                                \
+       (not href or href[0][0] != Option.SCHEME)
+
+<CODE ENDS>
+]]></artwork></figure>
+
       <section title="Reference Resolution" anchor="py-resolve">
 
         <t>
