@@ -240,7 +240,11 @@
         <t>
           A well-formed sequence of options is considered
           <spanx>absolute</spanx> if the sequence of options starts with a
-          "scheme" option. A well-formed sequence of options is considered
+          "scheme" option.
+        </t>
+
+        <t>
+          A well-formed sequence of options is considered
           <spanx>relative</spanx> if the sequence of options is empty or starts
           with an option other than the "scheme" option.
         </t>
