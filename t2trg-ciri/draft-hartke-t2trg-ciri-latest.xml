@@ -13,7 +13,6 @@
   <!ENTITY RFC8174 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml">
   <!ENTITY I-D.ietf-cbor-cddl SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-cbor-cddl.xml">
   <!ENTITY W3C.REC-html52-20171214 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-html52-20171214.xml">
-  <!ENTITY SELF "[I-D.hartke-t2trg-coral]">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
