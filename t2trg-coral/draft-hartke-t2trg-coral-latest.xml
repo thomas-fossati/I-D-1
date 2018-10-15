@@ -31,8 +31,6 @@
   <!ENTITY W3C.REC-rdf11-concepts-20140225 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-rdf11-concepts-20140225.xml">
   <!ENTITY W3C.REC-turtle-20140225 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-turtle-20140225.xml">
   <!ENTITY W3C.REC-webarch-20041215 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-webarch-20041215.xml">
-  <!ENTITY W3C.REC-xml-20081126 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-20081126.xml">
-  <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-names-20091208.xml">
   <!ENTITY SELF "[I-D.hartke-t2trg-coral]">
 ]>
 
@@ -2277,7 +2275,6 @@
     <references title="Informative References">
 
       &RFC5789;
-      &RFC5952;
       &RFC6573;
       &RFC6690;
       &RFC6903;
