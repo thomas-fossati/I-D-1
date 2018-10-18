@@ -201,6 +201,17 @@
 
       <section title="Option Sequences">
 
+<figure title="Structure of a Well-Formed Sequence of Options" anchor="wellformed"><artwork align="center"><![CDATA[
+               _ host.name _
+____ scheme __/             \___ port _
+ \ \________/ \__ host.ip __/ /        \
+  \__________________________/ ________/
+   \                          / ________    _________
+    \                        / /        \  /         \
+     \__________ path.type __\_\_ path _/__\_ query _/__ fragment __
+               \___________/   \________/  \_________/ \__________/
+]]></artwork></figure>
+
         <t>
           A sequence of options is considered <spanx>well-formed</spanx> if:
           <list style="symbols">
