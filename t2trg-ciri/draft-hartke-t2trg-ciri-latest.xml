@@ -327,14 +327,14 @@
                  append-path:     1,
                  relative-path:   2,
                  append-relation: 3)
-]]></artwork></figure>      
+]]></artwork></figure>
 
     </section>
 
     <section title="Python">
 
         <t>
-          The following Python 3.5 code shows how to work with a sequence of
+          The following Python 3.6 code shows how to work with a sequence of
           options.
         </t>
 
@@ -380,12 +380,12 @@
      return True
 
    def is_absolute(href):
-     return is_well_formed(href) and                                \
-       (href and href[0][0] == Option.SCHEME)
+     return is_well_formed(href) and \
+       (href != [] and href[0][0] == Option.SCHEME)
 
    def is_relative(href):
-     return is_well_formed(href) and                                \
-       (not href or href[0][0] != Option.SCHEME)
+     return is_well_formed(href) and \
+       (href == [] or href[0][0] != Option.SCHEME)
 
 <CODE ENDS>
 ]]></artwork></figure>
@@ -393,14 +393,14 @@
       <section title="Reference Resolution" anchor="py-resolve">
 
         <t>
-          The following Python 3.5 code defines how to resolve a sequence of
+          The following Python 3.6 code defines how to resolve a sequence of
           options that might be relative to a given base IRI.
         </t>
 
 <figure><artwork><![CDATA[
 <CODE BEGINS>
 
-   def resolve(base, href, relation=None):
+   def resolve(base, href, relation=0):
      if not is_absolute(base) or not is_well_formed(href):
        return None
      result = []
@@ -417,10 +417,8 @@
      else:
        _copy_until(base, result, Option.QUERY)
        if type == PathType.APPEND_RELATION:
-         _append_and_normalize(result, Option.PATH,
-                               format(relation, 'x'))
-         return result
-       if type == PathType.RELATIVE_PATH:
+         _append_and_normalize(result, Option.PATH, str(relation))
+       elif type == PathType.RELATIVE_PATH:
          _remove_last_path_segment(result)
      _copy_until(href, result, Option._END)
      _append_and_normalize(href, Option._END, None)
@@ -440,10 +438,11 @@
          _remove_last_path_segment(output)
          return
      elif option > Option.PATH:
-       if len(output) >= 2 and                                      \
-           output[-1] == (Option.PATH, '') and                      \
-           (output[-2][0] < Option.PATH_TYPE or                     \
-           output[-2] == (Option.PATH_TYPE, PathType.ABSOLUTE_PATH)):
+       if len(output) >= 2 and \
+           output[-1] == (Option.PATH, '') and (\
+           output[-2][0] < Option.PATH_TYPE or (\
+           output[-2][0] == Option.PATH_TYPE and \
+           output[-2][1] == PathType.ABSOLUTE_PATH)):
          _remove_last_path_segment(output)
        if option >= Option._END:
          return
@@ -461,7 +460,7 @@
       <section title="IRI Recomposition" anchor="py-recompose">
 
         <t>
-          The following Python 3.5 code defines how to recompose an IRI from a
+          The following Python 3.6 code defines how to recompose an IRI from a
           sequence of options that encodes an absolute IRI reference.
         </t>
 
@@ -471,63 +470,62 @@
    def recompose(href):
      if not is_absolute(href):
        return None
-     result = ""
+     result = ''
      no_path = True
      first_query = True
      for (option, value) in href:
        if option == Option.SCHEME:
-         result += value + ":"
+         result += value + ':'
        elif option == Option.HOST_NAME:
-         result += "//" + _encode_ireg_name(value)
+         result += '//' + _encode_ireg_name(value)
        elif option == Option.HOST_IP:
-         result += "//" + _encode_ip_address(value)
+         result += '//' + _encode_ip_address(value)
        elif option == Option.PORT:
-         result += ":" + str(value)
+         result += ':' + str(value)
        elif option == Option.PATH:
-         result += "/" + _encode_path_segment(value)
+         result += '/' + _encode_path_segment(value)
          no_path = False
        elif option == Option.QUERY:
          if no_path:
-           result += "/"
+           result += '/'
            no_path = False
-         result += "?" if first_query else "&"
+         result += '?' if first_query else '&'
          result += _encode_query_argument(value)
          first_query = False
        elif option == Option.FRAGMENT:
          if no_path:
-           result += "/"
+           result += '/'
            no_path = False
-         result += "#" + _encode_fragment(value)
+         result += '#' + _encode_fragment(value)
      if no_path:
-       result += "/"
+       result += '/'
        no_path = False
      return result
 
    def _encode_ireg_name(s):
-     return "".join(c if _is_ireg_name_char(c) else
-         _encode_pct(c) for c in s)
+     return ''.join(c if _is_ireg_name_char(c)
+                      else _encode_pct(c) for c in s)
 
    def _encode_ip_address(b):
      if len(b) == 4:
-       return ".".join(str(c) for c in b)
+       return '.'.join(str(c) for c in b)
      elif len(b) == 16:
-       return "[" + ... + "]"  # see RFC 5952
+       return '[' + ... + ']'  # see RFC 5952
 
    def _encode_path_segment(s):
-     return "".join(c if _is_isegment_char(c) else
-         _encode_pct(c) for c in s)
+     return ''.join(c if _is_isegment_char(c)
+                      else _encode_pct(c) for c in s)
 
    def _encode_query_argument(s):
-     return "".join(c if _is_iquery_char(c) and c != "&" else
-         _encode_pct(c) for c in s)
+     return ''.join(c if _is_iquery_char(c) and c != '&'
+                      else _encode_pct(c) for c in s)
 
    def _encode_fragment(s):
-     return "".join(c if _is_ifragment_char(c) else
-         _encode_pct(c) for c in s)
+     return ''.join(c if _is_ifragment_char(c)
+                      else _encode_pct(c) for c in s)
 
    def _encode_pct(s):
-     return "".join(
-         "%{0:0>2X}".format(c) for c in s.encode("utf-8"))
+     return ''.join('%{0:0>2X}'.format(c) for c in s.encode('utf-8'))
 
    def _is_ireg_name_char(c):
      return _is_iunreserved(c) or _is_sub_delim(c)
@@ -536,54 +534,54 @@
      return _is_ipchar(c)
 
    def _is_iquery_char(c):
-     return _is_ipchar(c) or _is_iprivate(c) or c == "/" or c == "?"
+     return _is_ipchar(c) or _is_iprivate(c) or c == '/' or c == '?'
 
    def _is_ifragment_char(c):
-     return _is_ipchar(c) or c == "/" or c == "?"
+     return _is_ipchar(c) or c == '/' or c == '?'
 
    def _is_ipchar(c):
-     return _is_iunreserved(c) or _is_sub_delim(c) or               \
-            c == ":" or c == "@"
+     return _is_iunreserved(c) or _is_sub_delim(c) or \
+            c == ':' or c == '@'
 
    def _is_iunreserved(c):
-     return _is_alpha(c) or _is_digit(c) or                         \
-            c == "-" or c == "." or c == "_" or c == "~" or         \
+     return _is_alpha(c) or _is_digit(c) or \
+            c == '-' or c == '.' or c == '_' or c == '~' or \
             _is_ucschar(c)
 
    def _is_alpha(c):
-     return c >= "A" and c <= "Z" or c >= "a" and c <= "z"
+     return c >= 'A' and c <= 'Z' or c >= 'a' and c <= 'z'
 
    def _is_digit(c):
-     return c >= "0" and c <= "9"
+     return c >= '0' and c <= '9'
 
    def _is_sub_delim(c):
-     return c == "!" or c == "$" or c == "&" or c == "'" or         \
-            c == "(" or c == ")" or c == "*" or c == "+" or         \
-            c == "," or c == ";" or c == "="
+     return c == '!' or c == '$' or c == '&' or c == '\'' or \
+            c == '(' or c == ')' or c == '*' or c == '+' or \
+            c == ',' or c == ';' or c == '='
 
    def _is_ucschar(c):
-     return c >= "\U000000A0" and c <= "\U0000D7FF" or              \
-            c >= "\U0000F900" and c <= "\U0000FDCF" or              \
-            c >= "\U0000FDF0" and c <= "\U0000FFEF" or              \
-            c >= "\U00010000" and c <= "\U0001FFFD" or              \
-            c >= "\U00020000" and c <= "\U0002FFFD" or              \
-            c >= "\U00030000" and c <= "\U0003FFFD" or              \
-            c >= "\U00040000" and c <= "\U0004FFFD" or              \
-            c >= "\U00050000" and c <= "\U0005FFFD" or              \
-            c >= "\U00060000" and c <= "\U0006FFFD" or              \
-            c >= "\U00070000" and c <= "\U0007FFFD" or              \
-            c >= "\U00080000" and c <= "\U0008FFFD" or              \
-            c >= "\U00090000" and c <= "\U0009FFFD" or              \
-            c >= "\U000A0000" and c <= "\U000AFFFD" or              \
-            c >= "\U000B0000" and c <= "\U000BFFFD" or              \
-            c >= "\U000C0000" and c <= "\U000CFFFD" or              \
-            c >= "\U000D0000" and c <= "\U000DFFFD" or              \
-            c >= "\U000E1000" and c <= "\U000EFFFD"
+     return c >= '\U000000A0' and c <= '\U0000D7FF' or \
+            c >= '\U0000F900' and c <= '\U0000FDCF' or \
+            c >= '\U0000FDF0' and c <= '\U0000FFEF' or \
+            c >= '\U00010000' and c <= '\U0001FFFD' or \
+            c >= '\U00020000' and c <= '\U0002FFFD' or \
+            c >= '\U00030000' and c <= '\U0003FFFD' or \
+            c >= '\U00040000' and c <= '\U0004FFFD' or \
+            c >= '\U00050000' and c <= '\U0005FFFD' or \
+            c >= '\U00060000' and c <= '\U0006FFFD' or \
+            c >= '\U00070000' and c <= '\U0007FFFD' or \
+            c >= '\U00080000' and c <= '\U0008FFFD' or \
+            c >= '\U00090000' and c <= '\U0009FFFD' or \
+            c >= '\U000A0000' and c <= '\U000AFFFD' or \
+            c >= '\U000B0000' and c <= '\U000BFFFD' or \
+            c >= '\U000C0000' and c <= '\U000CFFFD' or \
+            c >= '\U000D0000' and c <= '\U000DFFFD' or \
+            c >= '\U000E1000' and c <= '\U000EFFFD'
 
    def _is_iprivate(c):
-     return c >= "\U0000E000" and c <= "\U0000F8FF" or              \
-            c >= "\U000F0000" and c <= "\U000FFFFD" or              \
-            c >= "\U00100000" and c <= "\U0010FFFD"
+     return c >= '\U0000E000' and c <= '\U0000F8FF' or \
+            c >= '\U000F0000' and c <= '\U000FFFFD' or \
+            c >= '\U00100000' and c <= '\U0010FFFD'
 
 <CODE ENDS>
 ]]></artwork></figure>
@@ -593,7 +591,7 @@
       <section title="CoAP Encoding" anchor="py-coap">
 
         <t>
-          The following Python 3.5 code shows how to construct CoAP options from
+          The following Python 3.6 code shows how to construct CoAP options from
           an absolute sequence of options. For simplicity, the code does not
           omit CoAP options with their default value in a CoAP request.
         </t>
@@ -604,37 +602,37 @@
    def coap(href, to_proxy=False):
      if not is_absolute(href):
        return None
-     result = b""
+     result = b''
      previous = 0
      for (option, value) in href:
        if option == Option.SCHEME:
          pass
        elif option == Option.HOST_NAME:
          opt = 3  # Uri-Host
-         val = value.encode("utf-8")
+         val = value.encode('utf-8')
          result += _encode_coap_option(opt - previous, val)
          previous = opt
        elif option == Option.HOST_IP:
          opt = 3  # Uri-Host
          if len(value) == 4:
-           val = ".".join(str(c) for c in b).encode("utf-8")
+           val = '.'.join(str(c) for c in value).encode('utf-8')
          elif len(value) == 16:
-           val = b"[" + ... + b"]"  # see RFC 5952
+           val = b'[' + ... + b']'  # see RFC 5952
          result += _encode_coap_option(opt - previous, val)
          previous = opt
        elif option == Option.PORT:
          opt = 7  # Uri-Port
-         val = value.to_bytes((value.bit_length() + 7) // 8, "big")
+         val = value.to_bytes((value.bit_length() + 7) // 8, 'big')
          result += _encode_coap_option(opt - previous, val)
          previous = opt
        elif option == Option.PATH:
          opt = 11  # Uri-Path
-         val = value.encode("utf-8")
+         val = value.encode('utf-8')
          result += _encode_coap_option(opt - previous, val)
          previous = opt
        elif option == Option.QUERY:
          opt = 15  # Uri-Query
-         val = value.encode("utf-8")
+         val = value.encode('utf-8')
          result += _encode_coap_option(opt - previous, val)
          previous = opt
        elif option == Option.FRAGMENT:
@@ -642,7 +640,7 @@
      if to_proxy:
        (option, value) = href[0]
        opt = 39  # Proxy-Scheme
-       val = value.encode("utf-8")
+       val = value.encode('utf-8')
        result += _encode_coap_option(opt - previous, val)
        previous = opt
      return result
