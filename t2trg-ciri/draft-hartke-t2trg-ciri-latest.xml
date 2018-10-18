@@ -376,31 +376,35 @@ ____ scheme __/             \___ port _
      RELATIVE_PATH = 2
      APPEND_RELATION = 3
 
-   _TRANSITIONS = [0b1111111110,
-                   0b0000001100,
-                   0b0000010000,
-                   0b0000010000,
-                   0b1111000000,
-                   0b1111000000,
-                   0b1111000000,
-                   0b1110000000,
-                   0b1000000000]
+   _TRANSITIONS = [(Option.SCHEME, Option.HOST_NAME, Option.HOST_IP,
+       Option.PORT, Option.PATH_TYPE, Option.PATH, Option.QUERY,
+       Option.FRAGMENT, Option._END),
+     (Option.HOST_NAME, Option.HOST_IP),
+     (Option.PORT,),
+     (Option.PORT,),
+     (Option.PATH, Option.QUERY, Option.FRAGMENT, Option._END),
+     (Option.PATH, Option.QUERY, Option.FRAGMENT, Option._END),
+     (Option.PATH, Option.QUERY, Option.FRAGMENT, Option._END),
+     (Option.QUERY, Option.FRAGMENT, Option._END),
+     (Option._END,)]
 
    def is_well_formed(href):
      previous = Option._BEGIN
-     for (option, _) in href + [(Option._END, None)]:
-       if not (_TRANSITIONS[previous] & (1 << option)):
+     for option, _ in href:
+       if option not in _TRANSITIONS[previous]:
          return False
        previous = option
+     if Option._END not in _TRANSITIONS[previous]:
+       return False
      return True
 
    def is_absolute(href):
      return is_well_formed(href) and \
-       (href != [] and href[0][0] == Option.SCHEME)
+       (len(href) != 0 and href[0][0] == Option.SCHEME)
 
    def is_relative(href):
      return is_well_formed(href) and \
-       (href == [] or href[0][0] != Option.SCHEME)
+       (len(href) == 0 or href[0][0] != Option.SCHEME)
 
 <CODE ENDS>
 ]]></artwork></figure>
@@ -440,7 +444,7 @@ ____ scheme __/             \___ port _
      return result
 
    def _copy_until(input, output, end):
-     for (option, value) in input:
+     for option, value in input:
        if option >= end:
          break
        _append_and_normalize(output, option, value)
@@ -454,12 +458,12 @@ ____ scheme __/             \___ port _
          return
      elif option > Option.PATH:
        if len(output) >= 2 and \
-           output[-1] == (Option.PATH, '') and (\
-           output[-2][0] < Option.PATH_TYPE or (\
-           output[-2][0] == Option.PATH_TYPE and \
+           output[-1] == (Option.PATH, '') and (
+           output[-2][0] < Option.PATH_TYPE or (
+           output[-2][0] == Option.PATH_TYPE and
            output[-2][1] == PathType.ABSOLUTE_PATH)):
          _remove_last_path_segment(output)
-       if option >= Option._END:
+       if option > Option.FRAGMENT:
          return
      output.append((option, value))
 
@@ -488,7 +492,7 @@ ____ scheme __/             \___ port _
      result = ''
      no_path = True
      first_query = True
-     for (option, value) in href:
+     for option, value in href:
        if option == Option.SCHEME:
          result += value + ':'
        elif option == Option.HOST_NAME:
@@ -619,7 +623,7 @@ ____ scheme __/             \___ port _
        return None
      result = b''
      previous = 0
-     for (option, value) in href:
+     for option, value in href:
        if option == Option.SCHEME:
          pass
        elif option == Option.HOST_NAME:
