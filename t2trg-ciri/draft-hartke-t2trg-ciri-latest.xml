@@ -436,7 +436,7 @@ ____ scheme __/             \___ port _
        elif type == PathType.RELATIVE_PATH:
          _remove_last_path_segment(result)
      _copy_until(href, result, Option._END)
-     _append_and_normalize(href, Option._END, None)
+     _append_and_normalize(result, Option._END, None)
      return result
 
    def _copy_until(input, output, end):
