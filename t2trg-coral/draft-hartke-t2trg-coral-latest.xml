@@ -1798,7 +1798,7 @@
       iana:type       &lt;http://xmlns.com/foaf/0.1/Person&gt;
       foaf:familyName "Hartke"
       foaf:givenName  "Klaus"
-      foaf:mbox       &lt;mailto:hartke@tzi.org&gt;
+      foaf:mbox       &lt;mailto:klaus.hartke@ericsson.com&gt;
    }
           </artwork>
         </figure>
