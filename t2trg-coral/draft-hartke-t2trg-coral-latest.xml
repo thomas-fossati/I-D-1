@@ -880,8 +880,8 @@
    [5, x]  -&gt;  [3, "urn:TBD#update", 3, [],
                   ["urn:TBD#accept", x]]
    [6]     -&gt;  [3, "urn:TBD#delete", 4, []]
-   [7]     -&gt;  [3, "urn:TBD#create", 5, []]
-   [7, x]  -&gt;  [3, "urn:TBD#create", 5, [],
+   [7]     -&gt;  [3, "urn:TBD#search", 5, []]
+   [7, x]  -&gt;  [3, "urn:TBD#search", 5, [],
                   ["urn:TBD#accept", x]]
               </artwork>
             </figure>
