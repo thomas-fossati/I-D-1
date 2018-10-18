@@ -526,7 +526,7 @@
 
       </section>
 
-      <section title="Representations">
+      <section title="Embedded Representations">
 
         <t>
           If a representation links to many resources and an agent requires a
@@ -895,7 +895,7 @@
 
         </section>
 
-        <section title="Representations">
+        <section title="Embedded Representations">
 
           <t>
             An embedded representation is encoded as an array that consists of
@@ -1458,7 +1458,7 @@
 
         </section>
 
-        <section title="Representations">
+        <section title="Embedded Representations">
 
           <t>
             An embedded representation consists of a "*" token, followed by the
