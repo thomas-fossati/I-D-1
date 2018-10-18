@@ -52,7 +52,11 @@
     <abstract>
 
       <t>
-        TODO.
+        This document specifies Constrained IRI References, a serialization of
+        IRI references that encodes the IRI components as Concise Binary Object
+        Representation (CBOR) data items rather than as a string of characters.
+        This intends to simplify parsing, reference resolution, and comparison
+        of IRIs in Constrained RESTful Environments (CoRE).
       </t>
 
     </abstract>
