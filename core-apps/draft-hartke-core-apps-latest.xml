@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="us-ascii"?>
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-  <!ENTITY RFC3986 SYSTEM "reference.RFC.3986.xml">
-  <!ENTITY RFC5785 SYSTEM "reference.RFC.5785.xml">
-  <!ENTITY RFC5988 SYSTEM "reference.RFC.5988.xml">
-  <!ENTITY RFC6415 SYSTEM "reference.RFC.6415.xml">
-  <!ENTITY RFC6570 SYSTEM "reference.RFC.6570.xml">
-  <!ENTITY RFC6690 SYSTEM "reference.RFC.6690.xml">
-  <!ENTITY RFC6838 SYSTEM "reference.RFC.6838.xml">
-  <!ENTITY RFC6906 SYSTEM "reference.RFC.6906.xml">
-  <!ENTITY RFC7228 SYSTEM "reference.RFC.7228.xml">
-  <!ENTITY RFC7230 SYSTEM "reference.RFC.7230.xml">
-  <!ENTITY RFC7231 SYSTEM "reference.RFC.7231.xml">
-  <!ENTITY RFC7252 SYSTEM "reference.RFC.7252.xml">
-  <!ENTITY RFC7301 SYSTEM "reference.RFC.7301.xml">
-  <!ENTITY RFC7320 SYSTEM "reference.RFC.7320.xml">
-  <!ENTITY RFC7540 SYSTEM "reference.RFC.7540.xml">
-  <!ENTITY RFC7595 SYSTEM "reference.RFC.7595.xml">
-  <!ENTITY W3C.REC-xml11-20060816 SYSTEM "reference.W3C.REC-xml11-20060816.xml">
-  <!ENTITY W3C.REC-xml-20081126 SYSTEM "reference.W3C.REC-xml-20081126.xml">
-  <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "reference.W3C.REC-xml-names-20091208.xml">
+  <!ENTITY RFC3986 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3986.xml">
+  <!ENTITY RFC5785 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5785.xml">
+  <!ENTITY RFC6415 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6415.xml">
+  <!ENTITY RFC6570 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6570.xml">
+  <!ENTITY RFC6690 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6690.xml">
+  <!ENTITY RFC6838 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6838.xml">
+  <!ENTITY RFC6906 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6906.xml">
+  <!ENTITY RFC7228 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7228.xml">
+  <!ENTITY RFC7230 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7230.xml">
+  <!ENTITY RFC7231 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7231.xml">
+  <!ENTITY RFC7252 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7252.xml">
+  <!ENTITY RFC7301 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7301.xml">
+  <!ENTITY RFC7320 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7320.xml">
+  <!ENTITY RFC7540 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7540.xml">
+  <!ENTITY RFC7595 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7595.xml">
+  <!ENTITY RFC8288 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8288.xml">
+  <!ENTITY W3C.REC-xml11-20060816 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml11-20060816.xml">
+  <!ENTITY W3C.REC-xml-20081126 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-20081126.xml">
+  <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-names-20091208.xml">
   <!ENTITY SELF "[RFCXXXX]">
 ]>
 
@@ -374,7 +374,7 @@
         <section title="Links" anchor="links">
 
           <t>
-            As described in <xref target="RFC5988">RFC 5988</xref>, a link is a
+            As described in <xref target="RFC8288">RFC 8288</xref>, a link is a
             typed connection between two resources. Additionally, a link is the
             primary means for a client to navigate from one resource to another.
           </t>
@@ -402,7 +402,7 @@
           <t>
             A link can be viewed as a statement of the form "{link context} has
             a {link relation type} resource at {link target}, which has {target
-            attributes}" <xref target="RFC5988"/>. For example, the resource
+            attributes}" <xref target="RFC8288"/>. For example, the resource
             &lt;http://example.com/&gt; could have a "terms-of-service" resource
             at &lt;http://example.com/tos&gt;, which has a representation with
             the media type "text/html".
@@ -506,7 +506,7 @@
 
         <t>
           A link relation type identifies the semantics of a link <xref
-          target="RFC5988"/>. For example, a link with the relation type
+          target="RFC8288"/>. For example, a link with the relation type
           "copyright" indicates that the resource identified by the target URI
           is a statement of the copyright terms applying to the link context.
         </t>
@@ -514,9 +514,9 @@
         <t>
           Relation types are not to be confused with media types; they do not
           identify the format of the representation that results when the link
-          is dereferenced <xref target="RFC5988"/>. Rather, they only describe
+          is dereferenced <xref target="RFC8288"/>. Rather, they only describe
           how the link context is related to another resource <xref
-          target="RFC5988"/>.
+          target="RFC8288"/>.
         </t>
 
         <t>
@@ -530,7 +530,7 @@
 
         <t>
           Applications that don't wish to register a link relation type can use
-          an extension link relation type <xref target="RFC5988"/>, which is a
+          an extension link relation type <xref target="RFC8288"/>, which is a
           URI that uniquely identifies the link relation type. For example, an
           application can use the string "http://example.com/foo" as link
           relation type without having to register it. Using a URI to identify
@@ -885,11 +885,11 @@
         The security considerations of
         <xref target="RFC3986">RFC 3986</xref>,
         <xref target="RFC5785">RFC 5785</xref>,
-        <xref target="RFC5988">RFC 5988</xref>,
         <xref target="RFC6570">RFC 6570</xref>,
         <xref target="RFC6838">RFC 6838</xref>,
-        <xref target="RFC7320">RFC 7320</xref>, and
-        <xref target="RFC7595">RFC 7595</xref>
+        <xref target="RFC7320">RFC 7320</xref>,
+        <xref target="RFC7595">RFC 7595</xref>, and
+        <xref target="RFC8288">RFC 8288</xref>
         are inherited.
       </t>
 
@@ -932,7 +932,7 @@
       <section title="Link Relation Type Registry" anchor="iana-link">
 
         <t>
-          <xref target="RFC5988">RFC 5988</xref> establishes a IANA registry for
+          <xref target="RFC8288">RFC 8288</xref> establishes a IANA registry for
           link relation types. This specification extends the registration
           template with a "Relation ID": a numeric identifier that can be used
           instead of the "Relation Name" to identify a link relation type. IANA
@@ -953,14 +953,14 @@
 
           <t>
             Form relation types are registered in the same way as <xref
-            target="RFC5988">link relation types</xref>, i.e., they are
+            target="RFC8288">link relation types</xref>, i.e., they are
             registered on the advice of a Designated Expert with a Specification
             Required.
           </t>
 
           <t>
             The requirements for registered relation types are adopted from
-            Section 4.1 of <xref target="RFC5988">RFC 5988</xref>.
+            Section 4.1 of <xref target="RFC8288">RFC 8288</xref>.
           </t>
 
           <t>
@@ -1046,9 +1046,9 @@
 
       &RFC5785; <!--Nottingham-->
 
-      &RFC5988; <!--Nottingham-->
-
       &RFC7320; <!--Nottingham-->
+
+      &RFC8288; <!--Nottingham-->
 
       &RFC7595; <!--Thaler-->
 
@@ -1178,7 +1178,7 @@
 
       <t>
         Some of the text in this document has been borrowed from
-        <xref target="RFC5988" />, <xref target="RFC7320" />,
+        <xref target="RFC8288" />, <xref target="RFC7320" />,
         <xref target="RESTAPI" />, <xref target="SDNREST" />,
         and <xref target="MIMEWEB" />. All errors are my own.
       </t>
