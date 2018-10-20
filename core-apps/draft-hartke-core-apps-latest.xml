@@ -101,37 +101,37 @@
 
       <t>
         In the coming years, the size and scope of the Internet is expected to
-        greatly increase as physical-world objects become smart enough to
+        increase greatly as physical-world objects become smart enough to
         communicate over the Internet -- a phenomenon known as the Internet of
         Things (IoT). As things learn to speak the languages of the net, the
         idea of applying REST principles to the design of IoT application
         architectures suggests itself. To this end, the <xref
         target="RFC7252">Constrained Application Protocol (CoAP)</xref> was
         created, an application-layer protocol that enables RESTful applications
-        in <xref target="RFC7228">constrained-node networks</xref>, thus giving
+        in <xref target="RFC7228">constrained-node networks</xref>, giving
         rise to a new setting for Internet-based applications: the Constrained
         RESTful Environment (CoRE).
       </t>
 
       <t>
-        To realize the full benefits and advantages of the REST style, a set of
-        constraints needs to be maintained when designing new applications and
+        To realize the full benefits and advantages of the REST architectural style, a set of
+        constraints needs to be maintained when designing applications and
         their application programming interfaces (APIs). One of the fundamental
-        principles is that <xref target="RESTAPI">"REST APIs must be
-        hypertext-driven"</xref>. This principle is often ignored by application
-        designers, who instead specify their APIs out-of-band in terms of fixed
-        URI patterns, e.g., in the API documentation or in a machine-readable
-        format that facilitates code generation. Although this approach may
+        principles of REST is that <xref target="RESTAPI">"REST APIs must be
+        hypertext-driven"</xref>. However, this principle is often ignored by application
+        designers. Instead, APIs are specified out-of-band in terms of fixed
+        URI patterns (e.g., in the API documentation or in a machine-readable
+        format that facilitates code generation). Although this approach may
         appear easy for clients to use, the fixed resource names and data
         formats lead to a tight coupling between client and server
-        implementations and make the system less flexible. Violations of REST
+        implementations and make the system less flexible <xref
+        target="RFC7320"/>. Violations of REST
         design principles like this result in APIs that may not be as scalable,
-        extensible, and interoperable as promised by REST <xref
-        target="SDNREST"/>.
+        extensible, and interoperable as promised by REST.
       </t>
 
       <t>
-        REST is intended for long-lived network-based applications that span
+        REST is intended for network-based applications that are long-lived and span
         multiple organizations <xref target="RESTAPI"/>. Principled REST APIs
         require some design effort, since application designers do not only have
         to take current requirements into consideration, but also have to
@@ -971,19 +971,6 @@
 
       &RFC6415; <!--Hammer-Lahav-->
 
-      <reference anchor="SDNREST">
-        <front>
-          <title>Requirements and Design Patterns for REST Northbound API in SDN</title>
-          <author initials="L." surname="Li" fullname="Li Li" />
-          <author initials="Z." surname="Wei" fullname="Wei Zhou" />
-          <author initials="M." surname="Luo" fullname="Min Luo" />
-          <author initials="W." surname="Chou" fullname="Wu Chou" />
-          <date month="July" day="8" year="2016" />
-        </front>
-        <seriesInfo name="Internet-Draft" value="draft-li-sdnrg-design-restapi-02" />
-        <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-li-sdnrg-design-restapi-02.txt" />
-      </reference>
-
       <reference anchor="MIMEWEB">
         <front>
           <title>MIME and the Web</title>
@@ -1046,8 +1033,8 @@
       <t>
         Some of the text in this document has been borrowed from
         <xref target="RFC8288" />, <xref target="RFC7320" />,
-        <xref target="RESTAPI" />, <xref target="SDNREST" />,
-        and <xref target="MIMEWEB" />. All errors are my own.
+        <xref target="RESTAPI" />, and <xref target="MIMEWEB" />.
+        All errors are my own.
       </t>
 
       <t>
