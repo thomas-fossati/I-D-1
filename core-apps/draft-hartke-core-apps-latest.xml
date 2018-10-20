@@ -539,16 +539,6 @@
           identifiers.
         </t>
 
-        <t>
-          In order to minimize the overhead of link relation types in
-          representation formats with space constraints, IANA-registered link
-          relation types are assigned a numeric identifier that can be used in
-          place of the textual name (see also <xref target="iana-link"/>). For
-          example, the link relation type "copyright" has the number 12. A
-          representation format may additionally provide numeric identifiers for
-          extension link relation types.
-        </t>
-
       <section title="Template Variable Names">
 
         <t>
@@ -588,27 +578,9 @@
         </t>
 
         <t>
-          <list>
-            <t>
-              IANA maintains a list of registered form relation types
-              at<vspace/>
-              &lt;TBD&gt;.
-            </t>
-          </list>
-        </t>
-
-        <t>
           Similar to extension link relation types, applications can use
           extension form relation types when they don't wish to register a form
           relation type.
-        </t>
-
-        <t>
-          IANA-registered form relation types are assigned a numeric identifier
-          that can be used in place of the textual name. For example, the form
-          relation type "update" has the number 3. A representation format may
-          additionally provide numeric identifiers for extension form relation
-          types.
         </t>
 
       <section title="Form Field Names" anchor="form-fields">
