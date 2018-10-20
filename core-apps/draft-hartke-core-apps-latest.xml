@@ -185,7 +185,7 @@
           <t>optionally, well-known locations.</t>
         </list>
         Together, these components provide the specific, in-band instructions
-        for interfacing with a given application.
+        to a client for interfacing with a given application.
       </t>
 
       <section title="URI Schemes">
@@ -199,11 +199,10 @@
         </t>
 
         <t>
-          The use of a particular protocol by a client is guided by <xref
+          The usage of a particular protocol by a client is guided by <xref
           target="RFC7595">URI schemes</xref>. URI schemes specify the syntax
           and semantics of <xref target="RFC3986">URI references</xref> that the
-          server includes in links (<xref target="links"/>) and forms (<xref
-          target="forms"/>).
+          server includes in hypermedia controls such as links and forms.
         </t>
 
         <t>
@@ -289,12 +288,12 @@
         </t>
 
         <t>
-          In CoAP, media types are combined with <xref target="RFC7231">content
-          coding information</xref> to indicate the "content format" <xref
+          In CoAP, media types are paired with a <xref target="RFC7231">content
+          coding</xref> to indicate the "content format" <xref
           target="RFC7252"/> of a representation. Each content format is
           assigned a numeric identifier that can be used instead of the
-          (typically much longer) textual name of the media type in
-          representation formats with space constraints. The flat number space
+          (more verbose) textual name of the media type in
+          representation formats with size constraints. The flat number space
           loses the structural information that the textual names have, however.
         </t>
 
@@ -354,25 +353,16 @@
 
           <t>
             Representation formats enable hypermedia-driven applications when
-            they support the expression of hypermedia controls, i.e., links
+            they support the expression of hypermedia controls such as links
             (<xref target="links"/>) and forms (<xref target="forms"/>).
           </t>
-
-          <!--
-          <t>
-            It is beyond the scope of this document to specify how hypermedia
-            controls can be expressed. The appropriate syntax, when available,
-            is described by the representation format specification associated
-            with each media type.
-          </t>
-          -->
 
         </section>
 
         <section title="Links" anchor="links">
 
           <t>
-            As described in <xref target="RFC8288">RFC 8288</xref>, a link is a
+            As defined in <xref target="RFC8288">RFC 8288</xref>, a link is a
             typed connection between two resources. Additionally, a link is the
             primary means for a client to navigate from one resource to another.
           </t>
@@ -381,7 +371,7 @@
             A link is comprised of:
             <list style="symbols">
               <t>
-                a link context (usually the "current" resource),
+                a link context,
               </t>
               <t>
                 a link relation type that identifies the semantics of the link
@@ -450,17 +440,17 @@
           <t>A form is comprised of:
             <list style="symbols">
               <t>
-                a form context (usually the "current" resource),
+                a form context,
               </t>
               <t>
                 a form relation type that identifies the semantics of the form
                 (see <xref target="form-relations"/>),
               </t>
               <t>
-                a form target, identified by a URI,
+                a request method (e.g., PUT, POST, DELETE),
               </t>
               <t>
-                a submission method (PUT, POST, PATCH, FETCH, or DELETE),
+                a submission URI,
               </t>
               <t>
                 a description of a representation that the server expects as
@@ -471,11 +461,11 @@
                 the form target.
               </t>
             </list>
-            A form can be viewed as an instruction of the form "To {form
-            relation type} the {form context}, make a {method} request to {form
-            target}, which has {target attributes}". For example, to "update"
-            the resource &lt;http://example.com/config&gt;, a client could be
-            required to make a PUT request to &lt;http://example.com/config&gt;.
+            A form can be viewed as an instruction of the form "To perform a {form
+            relation type} operation on {form context}, make a {request method} request to {submission
+            URI}, which has {target attributes}". For example, to "update"
+            the resource &lt;http://example.com/config&gt;, a client would
+            make a PUT request to &lt;http://example.com/config&gt;.
             (In many cases, the target of a form is the same resource as the
             context, but this is not required.)
           </t>
@@ -528,7 +518,7 @@
 
         <t>
           Applications that don't wish to register a link relation type can use
-          an extension link relation type <xref target="RFC8288"/>, which is a
+          an extension link relation type <xref target="RFC8288"/>: a
           URI that uniquely identifies the link relation type. For example, an
           application can use the string "http://example.com/foo" as link
           relation type without having to register it. Using a URI to identify
@@ -570,13 +560,13 @@
 
         <t>
           A form relation type identifies the semantics of a form. For example,
-          a form with the form relation type "create-item" indicates that a new
+          a form with the form relation type "create" indicates that a new
           item can be created within the form context by making a request to the
           resource identified by the target URI.
         </t>
 
         <t>
-          Similar to extension link relation types, applications can use
+          Similarly to extension link relation types, applications can use
           extension form relation types when they don't wish to register a form
           relation type.
         </t>
