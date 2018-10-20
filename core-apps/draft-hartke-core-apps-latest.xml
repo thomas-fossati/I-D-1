@@ -167,28 +167,28 @@
     <section title="CoRE Applications">
 
       <t>
-        A CoRE Application Description is a named set of reusable components. It
+        A CoRE Application API is a named set of reusable components. It
         describes a contract between a server hosting an instance of the
         described application and clients that wish to interface with that
         instance.
       </t>
 
       <t>
-        A CoRE Application Description is comprised of:
+        The API is generally comprised of:
         <list style="symbols">
-          <t>URI schemes that identify communication protocols,</t>
-          <t>Internet media types that identify representation formats,</t>
-          <t>link relation types that identify link semantics,</t>
-          <t>form relation types that identify form semantics,</t>
-          <t>variable names that identify the semantics of variables in templated links,</t>
-          <t>form field names that identify the semantics of form fields in forms, and</t>
-          <t>optionally, well-known locations.</t>
+          <t>communication protocols, identified by URI schemes,</t>
+          <t>representation formats, identified by Internet media types,</t>
+          <t>link relation types,</t>
+          <t>form relation types,</t>
+          <t>template variables in templated links,</t>
+          <t>form field names in forms, and</t>
+          <t>well-known locations.</t>
         </list>
         Together, these components provide the specific, in-band instructions
         to a client for interfacing with a given application.
       </t>
 
-      <section title="URI Schemes">
+      <section title="Communication Protocols">
 
         <t>
           The foundation of a hypermedia-driven REST API are the communication
@@ -197,6 +197,8 @@
           communication protocol for REST APIs, a REST API should typically not
           be dependent on any specific communication protocol.
         </t>
+
+        <section title="URI Schemes">
 
         <t>
           The usage of a particular protocol by a client is guided by <xref
@@ -226,7 +228,45 @@
           </list>
         </t>
 
+        </section>
+
       </section>
+
+      <section title="Representation Formats" anchor="representations">
+
+        <t>
+          In RESTful applications, clients and servers exchange
+          representations that capture the current or intended state of a
+          resource and that are labeled with a media type. A representation is
+          a sequence of bytes whose structure and semantics are specified by a
+          representation format: a set of rules for encoding information.
+        </t>
+
+        <t>
+          Representation formats should generally allow clients with different
+          goals, so they can do different things with the same data. The
+          specification of a representation format "describes a problem space,
+          not a prescribed relationship between client and server. Client and
+          server must share an understanding of the representations they're
+          passing back and forth, but they don't need to have the same idea of
+          what the problem is that needs to be solved."&nbsp;<xref
+          target="WEBAPIS"/>
+        </t>
+
+        <t>
+          Representation formats and their specifications frequently evolve
+          over time. It is part of the responsibility of the designer of a new
+          version to insure both forward and backward compatibility: new
+          representations should work reasonably (with some fallback) with old
+          processors and old representations should work reasonably with new
+          processors <xref target="MIMEWEB" />.
+        </t>
+
+        <t>
+          Representation formats enable hypermedia-driven applications when
+          they support the expression of hypermedia controls such as links
+          (<xref target="links"/>) and forms (<xref target="forms"/>).
+        </t>
 
       <section title="Internet Media Types">
 
@@ -237,17 +277,6 @@
           representation should be interpreted and how it is encoded. The
           centerpiece of a CoRE Application Description should be one or more
           media types.
-        </t>
-
-        <t>
-          A media type identifies a versioned series of representation formats
-          (<xref target="representations"/>): a media type does not
-          identify a particular version of a representation format; rather, the
-          media type identifies the family, and includes provisions for version
-          indicator(s) embedded in the representations themselves to determine
-          more precisely the nature of how the data is to be interpreted <xref
-          target="MIMEWEB"/>. A new media type is only needed to designate a
-          completely incompatible format <xref target="MIMEWEB"/>.
         </t>
 
         <t>
@@ -263,6 +292,17 @@
               1.1</xref>.
             </t>
           </list>
+        </t>
+
+        <t>
+          A media type identifies a versioned series of representation formats
+          (<xref target="representations"/>): a media type does not
+          identify a particular version of a representation format; rather, the
+          media type identifies the family, and includes provisions for version
+          indicator(s) embedded in the representations themselves to determine
+          more precisely the nature of how the data is to be interpreted <xref
+          target="MIMEWEB"/>. A new media type is only needed to designate a
+          completely incompatible format <xref target="MIMEWEB"/>.
         </t>
 
         <t>
@@ -321,43 +361,9 @@
           </list>
         </t>
 
-        <section title="Representation Formats" anchor="representations">
+      </section>
 
-          <t>
-            In RESTful applications, clients and servers exchange
-            representations that capture the current or intended state of a
-            resource and that are labeled with a media type. A representation is
-            a sequence of bytes whose structure and semantics are specified by a
-            representation format: a set of rules for encoding information.
-          </t>
-
-          <t>
-            Representation formats should generally allow clients with different
-            goals, so they can do different things with the same data. The
-            specification of a representation format "describes a problem space,
-            not a prescribed relationship between client and server. Client and
-            server must share an understanding of the representations they're
-            passing back and forth, but they don't need to have the same idea of
-            what the problem is that needs to be solved."&nbsp;<xref
-            target="WEBAPIS"/>
-          </t>
-
-          <t>
-            Representation formats and their specifications frequently evolve
-            over time. It is part of the responsibility of the designer of a new
-            version to insure both forward and backward compatibility: new
-            representations should work reasonably (with some fallback) with old
-            processors and old representations should work reasonably with new
-            processors <xref target="MIMEWEB" />.
-          </t>
-
-          <t>
-            Representation formats enable hypermedia-driven applications when
-            they support the expression of hypermedia controls such as links
-            (<xref target="links"/>) and forms (<xref target="forms"/>).
-          </t>
-
-        </section>
+      </section>
 
         <section title="Links" anchor="links">
 
@@ -428,6 +434,72 @@
             </list>
           </t>
 
+      <section title="Link Relation Types" anchor="link-relations">
+
+        <t>
+          A link relation type identifies the semantics of a link <xref
+          target="RFC8288"/>. For example, a link with the relation type
+          "copyright" indicates that the resource identified by the target URI
+          is a statement of the copyright terms applying to the link context.
+        </t>
+
+        <t>
+          Relation types are not to be confused with media types; they do not
+          identify the format of the representation that results when the link
+          is dereferenced <xref target="RFC8288"/>. Rather, they only describe
+          how the link context is related to another resource <xref
+          target="RFC8288"/>.
+        </t>
+
+        <t>
+          <list>
+            <t>
+              IANA maintains a list of registered link relation types at
+              &lt;http://www.iana.org/assignments/link-relations&gt;.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Applications that don't wish to register a link relation type can use
+          an extension link relation type <xref target="RFC8288"/>: a
+          URI that uniquely identifies the link relation type. For example, an
+          application can use the string "http://example.com/foo" as link
+          relation type without having to register it. Using a URI to identify
+          an extension link relation type, rather than a simple string, reduces
+          the probability of different link relation types using the same
+          identifiers.
+        </t>
+
+      </section>
+
+      <section title="Template Variable Names">
+
+        <t>
+          A templated link enables clients to construct the target URI of a
+          link, for example, when the link refers to a space of resources rather
+          than a single resource. The most prominent mechanisms for this are
+          <xref target="RFC6570">URI Templates</xref> and the HTML &lt;form&gt;
+          element with a submission method of GET.
+        </t>
+
+        <t>
+          To enable an automated client to construct an URI reference from a URI
+          Template, the name of the variable in the template can be used to
+          identify the semantics of the variable. For example, when retrieving
+          the representation of a collection of temperature readings, a variable
+          named "threshold" could indicate the variable for setting a threshold
+          of the readings to retrieve.
+        </t>
+
+        <t>
+          Template variable names are scoped to link relation types, i.e., two
+          variables with the same name can have different semantics if they
+          appear in links with different link relation types.
+        </t>
+
+      </section>
+
         </section>
 
         <section title="Forms" anchor="forms">
@@ -486,76 +558,6 @@
             </list>
           </t>
 
-        </section>
-
-      </section>
-
-      <section title="Link Relation Types" anchor="link-relations">
-
-        <t>
-          A link relation type identifies the semantics of a link <xref
-          target="RFC8288"/>. For example, a link with the relation type
-          "copyright" indicates that the resource identified by the target URI
-          is a statement of the copyright terms applying to the link context.
-        </t>
-
-        <t>
-          Relation types are not to be confused with media types; they do not
-          identify the format of the representation that results when the link
-          is dereferenced <xref target="RFC8288"/>. Rather, they only describe
-          how the link context is related to another resource <xref
-          target="RFC8288"/>.
-        </t>
-
-        <t>
-          <list>
-            <t>
-              IANA maintains a list of registered link relation types at
-              &lt;http://www.iana.org/assignments/link-relations&gt;.
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Applications that don't wish to register a link relation type can use
-          an extension link relation type <xref target="RFC8288"/>: a
-          URI that uniquely identifies the link relation type. For example, an
-          application can use the string "http://example.com/foo" as link
-          relation type without having to register it. Using a URI to identify
-          an extension link relation type, rather than a simple string, reduces
-          the probability of different link relation types using the same
-          identifiers.
-        </t>
-
-      <section title="Template Variable Names">
-
-        <t>
-          A templated link enables clients to construct the target URI of a
-          link, for example, when the link refers to a space of resources rather
-          than a single resource. The most prominent mechanisms for this are
-          <xref target="RFC6570">URI Templates</xref> and the HTML &lt;form&gt;
-          element with a submission method of GET.
-        </t>
-
-        <t>
-          To enable an automated client to construct an URI reference from a URI
-          Template, the name of the variable in the template can be used to
-          identify the semantics of the variable. For example, when retrieving
-          the representation of a collection of temperature readings, a variable
-          named "threshold" could indicate the variable for setting a threshold
-          of the readings to retrieve.
-        </t>
-
-        <t>
-          Template variable names are scoped to link relation types, i.e., two
-          variables with the same name can have different semantics if they
-          appear in links with different link relation types.
-        </t>
-
-      </section>
-
-      </section>
-
       <section title="Form Relation Types" anchor="form-relations">
 
         <t>
@@ -570,6 +572,8 @@
           extension form relation types when they don't wish to register a form
           relation type.
         </t>
+
+      </section>
 
       <section title="Form Field Names" anchor="form-fields">
 
