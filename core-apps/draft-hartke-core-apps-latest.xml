@@ -108,33 +108,33 @@
         architectures suggests itself. To this end, the <xref
         target="RFC7252">Constrained Application Protocol (CoAP)</xref> was
         created, an application-layer protocol that enables RESTful applications
-        in <xref target="RFC7228">constrained-node networks</xref>, giving
-        rise to a new setting for Internet-based applications: the Constrained
+        in <xref target="RFC7228">constrained-node networks</xref>, giving rise
+        to a new setting for Internet-based applications: the Constrained
         RESTful Environment (CoRE).
       </t>
 
       <t>
-        To realize the full benefits and advantages of the REST architectural style, a set of
-        constraints needs to be maintained when designing applications and
-        their application programming interfaces (APIs). One of the fundamental
-        principles of REST is that <xref target="RESTAPI">"REST APIs must be
-        hypertext-driven"</xref>. However, this principle is often ignored by application
-        designers. Instead, APIs are specified out-of-band in terms of fixed
-        URI patterns (e.g., in the API documentation or in a machine-readable
-        format that facilitates code generation). Although this approach may
-        appear easy for clients to use, the fixed resource names and data
-        formats lead to a tight coupling between client and server
-        implementations and make the system less flexible <xref
-        target="RFC7320"/>. Violations of REST
-        design principles like this result in APIs that may not be as scalable,
-        extensible, and interoperable as promised by REST.
+        To realize the full benefits and advantages of the REST architectural
+        style, a set of constraints needs to be maintained when designing
+        applications and their application programming interfaces (APIs). One of
+        the fundamental principles of REST is that <xref target="RESTAPI">"REST
+        APIs must be hypertext-driven"</xref>. However, this principle is often
+        ignored by application designers. Instead, APIs are specified
+        out-of-band in terms of fixed URI patterns (e.g., in the API
+        documentation or in a machine-readable format that facilitates code
+        generation). Although this approach may appear easy for clients to use,
+        the fixed resource names and data formats lead to a tight coupling
+        between client and server implementations and make the system less
+        flexible <xref target="RFC7320"/>. Violations of REST design principles
+        like this result in APIs that may not be as scalable, extensible, and
+        interoperable as promised by REST.
       </t>
 
       <t>
-        REST is intended for network-based applications that are long-lived and span
-        multiple organizations <xref target="RESTAPI"/>. Principled REST APIs
-        require some design effort, since application designers do not only have
-        to take current requirements into consideration, but also have to
+        REST is intended for network-based applications that are long-lived and
+        span multiple organizations <xref target="RESTAPI"/>. Principled REST
+        APIs require some design effort, since application designers do not only
+        have to take current requirements into consideration, but also have to
         anticipate changes that may be required in the future -- years or even
         decades after the application has been deployed for the first time. The
         reward is long-term stability and evolvability, both of which are very
@@ -184,8 +184,8 @@
           <t>form field names in forms, and</t>
           <t>well-known locations.</t>
         </list>
-        Together, these components provide the specific, in-band instructions
-        to a client for interfacing with a given application.
+        Together, these components provide the specific, in-band instructions to
+        a client for interfacing with a given application.
       </t>
 
       <section title="Communication Protocols">
@@ -200,33 +200,33 @@
 
         <section title="URI Schemes">
 
-        <t>
-          The usage of a particular protocol by a client is guided by <xref
-          target="RFC7595">URI schemes</xref>. URI schemes specify the syntax
-          and semantics of <xref target="RFC3986">URI references</xref> that the
-          server includes in hypermedia controls such as links and forms.
-        </t>
+          <t>
+            The usage of a particular protocol by a client is guided by <xref
+            target="RFC7595">URI schemes</xref>. URI schemes specify the syntax
+            and semantics of <xref target="RFC3986">URI references</xref> that
+            the server includes in hypermedia controls such as links and forms.
+          </t>
 
-        <t>
-          A URI scheme refers to a family of protocols, typically distinguished
-          by a version number. For example, the "http" URI scheme refers to the
-          two members of the HTTP family of protocols: <xref
-          target="RFC7230">HTTP/1.1</xref> and <xref
-          target="RFC7540">HTTP/2</xref> (as well as some predecessors). The
-          specific HTTP version used is negotiated between a client and a server
-          in-band using the version indicator in the HTTP request-line or the
-          TLS <xref target="RFC7301">Application-Layer Protocol Negotiation
-          (ALPN) extension</xref>.
-        </t>
+          <t>
+            A URI scheme refers to a family of protocols, typically
+            distinguished by a version number. For example, the "http" URI
+            scheme refers to the two members of the HTTP family of protocols:
+            <xref target="RFC7230">HTTP/1.1</xref> and <xref
+            target="RFC7540">HTTP/2</xref> (as well as some predecessors). The
+            specific HTTP version used is negotiated between a client and a
+            server in-band using the version indicator in the HTTP request-line
+            or the TLS <xref target="RFC7301">Application-Layer Protocol
+            Negotiation (ALPN) extension</xref>.
+          </t>
 
-        <t>
-          <list>
-            <t>
-              IANA maintains a list of registered URI schemes at
-              &lt;http://www.iana.org/assignments/uri-schemes&gt;.
-            </t>
-          </list>
-        </t>
+          <t>
+            <list>
+              <t>
+                IANA maintains a list of registered URI schemes at
+                &lt;http://www.iana.org/assignments/uri-schemes&gt;.
+              </t>
+            </list>
+          </t>
 
         </section>
 
@@ -235,11 +235,11 @@
       <section title="Representation Formats" anchor="representations">
 
         <t>
-          In RESTful applications, clients and servers exchange
-          representations that capture the current or intended state of a
-          resource and that are labeled with a media type. A representation is
-          a sequence of bytes whose structure and semantics are specified by a
-          representation format: a set of rules for encoding information.
+          In RESTful applications, clients and servers exchange representations
+          that capture the current or intended state of a resource and that are
+          labeled with a media type. A representation is a sequence of bytes
+          whose structure and semantics are specified by a representation
+          format: a set of rules for encoding information.
         </t>
 
         <t>
@@ -254,8 +254,8 @@
         </t>
 
         <t>
-          Representation formats and their specifications frequently evolve
-          over time. It is part of the responsibility of the designer of a new
+          Representation formats and their specifications frequently evolve over
+          time. It is part of the responsibility of the designer of a new
           version to insure both forward and backward compatibility: new
           representations should work reasonably (with some fallback) with old
           processors and old representations should work reasonably with new
@@ -263,352 +263,354 @@
         </t>
 
         <t>
-          Representation formats enable hypermedia-driven applications when
-          they support the expression of hypermedia controls such as links
-          (<xref target="links"/>) and forms (<xref target="forms"/>).
+          Representation formats enable hypermedia-driven applications when they
+          support the expression of hypermedia controls such as links (<xref
+          target="links"/>) and forms (<xref target="forms"/>).
         </t>
 
-      <section title="Internet Media Types">
-
-        <t>
-          One of the most important aspect of hypermedia-driven communications
-          is the concept of Internet media types <xref target="RFC6838"/>. Media
-          types are used to label representations so that it is known how the
-          representation should be interpreted and how it is encoded. The
-          centerpiece of a CoRE Application Description should be one or more
-          media types.
-        </t>
-
-        <t>
-          <list style="hanging">
-            <t hangText="Note:">
-              The terms media type and representation format are often used
-              interchangeably. In this document, the term "media type" refers
-              specifically to a string of characters such as "application/xml"
-              that is used to label representations; the term "representation
-              format" refers to the definition of the syntax and semantics of
-              representations, such as <xref target="W3C.REC-xml-20081126">XML
-              1.0</xref> or <xref target="W3C.REC-xml11-20060816">XML
-              1.1</xref>.
-            </t>
-          </list>
-        </t>
-
-        <t>
-          A media type identifies a versioned series of representation formats
-          (<xref target="representations"/>): a media type does not
-          identify a particular version of a representation format; rather, the
-          media type identifies the family, and includes provisions for version
-          indicator(s) embedded in the representations themselves to determine
-          more precisely the nature of how the data is to be interpreted <xref
-          target="MIMEWEB"/>. A new media type is only needed to designate a
-          completely incompatible format <xref target="MIMEWEB"/>.
-        </t>
-
-        <t>
-          Media types consist of a top-level type and a subtype, structured into
-          trees <xref target="RFC6838"/>. Optionally, media types can have
-          parameters. For example, the media type "text/plain; charset=utf-8" is
-          a subtype for plain text under the "text" top-level type in the
-          standards tree and has a parameter "charset" with the value "utf-8".
-        </t>
-
-        <t>
-          Media types can be further refined by <list style="symbols"><t>
-          structured type name suffixes (e.g., "+xml" appended to the base
-          subtype name; see Section 4.2.8 of <xref target="RFC6838">RFC
-          6838</xref>),</t><t>a "profile" parameter (see Section 3.1 of <xref
-          target="RFC6906">RFC 6906</xref>),</t><t>subtype information embedded
-          in the representations themselves (e.g., "xmlns" declarations in XML
-          documents <xref target="W3C.REC-xml-names-20091208"/>),</t></list> or
-          a similar annotation. An annotation directly in the media type is
-          generally preferable, since subtype information embedded in
-          representations can typically not be negotiated during content
-          negotiation (e.g., using the CoAP Accept option).
-        </t>
-
-        <t>
-          In CoAP, media types are paired with a <xref target="RFC7231">content
-          coding</xref> to indicate the "content format" <xref
-          target="RFC7252"/> of a representation. Each content format is
-          assigned a numeric identifier that can be used instead of the
-          (more verbose) textual name of the media type in
-          representation formats with size constraints. The flat number space
-          loses the structural information that the textual names have, however.
-        </t>
-
-        <t>
-          The media type of a representation must be determined from in-band
-          information (e.g., from the CoAP Content-Format option). Clients must
-          not assume a structure from the application context or other
-          out-of-band information.
-        </t>
-
-        <t>
-          <list>
-            <t>
-              IANA maintains a list of registered Internet media types at
-              &lt;http://www.iana.org/assignments/media-types&gt;.
-            </t>
-            <t>
-              IANA maintains a list of registered structured suffixes at
-              &lt;http://www.iana.org/assignments/media-type-structured-suffix&gt;.
-            </t>
-            <t>
-              IANA maintains a list of registered CoAP content formats at
-              &lt;http://www.iana.org/assignments/core-parameters&gt;.
-            </t>
-          </list>
-        </t>
-
-      </section>
-
-      </section>
-
-        <section title="Links" anchor="links">
+        <section title="Internet Media Types">
 
           <t>
-            As defined in <xref target="RFC8288">RFC 8288</xref>, a link is a
-            typed connection between two resources. Additionally, a link is the
-            primary means for a client to navigate from one resource to another.
-          </t>
-
-          <t>
-            A link is comprised of:
-            <list style="symbols">
-              <t>
-                a link context,
-              </t>
-              <t>
-                a link relation type that identifies the semantics of the link
-                (see <xref target="link-relations"/>),
-              </t>
-              <t>
-                a link target, identified by a URI, and
-              </t>
-              <t>
-                optionally, target attributes that further describe the link or
-                the link target.
-              </t>
-            </list>
-          </t>
-
-          <t>
-            A link can be viewed as a statement of the form "{link context} has
-            a {link relation type} resource at {link target}, which has {target
-            attributes}" <xref target="RFC8288"/>. For example, the resource
-            &lt;http://example.com/&gt; could have a "terms-of-service" resource
-            at &lt;http://example.com/tos&gt;, which has a representation with
-            the media type "text/html".
-          </t>
-
-          <t>
-            There are two special kinds of links:
-            <list style="symbols">
-              <t>
-                An embedding link is a link with an additional hint: when the
-                link is processed, it should be substituted with the
-                representation of the referenced resource rather than cause the
-                client to navigate away from the current resource. Thus,
-                traversing an embedding link adds to the current state rather
-                than replacing it.
-                <vspace blankLines="1"/>
-                The most well known example for an embedding link is the HTML
-                &lt;img&gt; element. When a Web browser processes this element,
-                it automatically dereferences the "src" and renders the
-                resulting image in place of the &lt;img&gt; element.
-              </t>
-              <t>
-                A templated link is a link where the client constructs the link
-                target URI from provided in-band instructions. The specific
-                rules for such instructions are described by the representation
-                format. <xref target="RFC6570">URI Templates</xref> provide a
-                generic way to construct URIs through variable expansion.
-                <vspace blankLines="1"/>
-                Templated links allow a client to construct resource URIs
-                without being coupled to the resource structure at the server,
-                provided that the client learns the template from a
-                representation sent by the server and does not have the template
-                hard-coded.
-              </t>
-            </list>
-          </t>
-
-      <section title="Link Relation Types" anchor="link-relations">
-
-        <t>
-          A link relation type identifies the semantics of a link <xref
-          target="RFC8288"/>. For example, a link with the relation type
-          "copyright" indicates that the resource identified by the target URI
-          is a statement of the copyright terms applying to the link context.
-        </t>
-
-        <t>
-          Relation types are not to be confused with media types; they do not
-          identify the format of the representation that results when the link
-          is dereferenced <xref target="RFC8288"/>. Rather, they only describe
-          how the link context is related to another resource <xref
-          target="RFC8288"/>.
-        </t>
-
-        <t>
-          <list>
-            <t>
-              IANA maintains a list of registered link relation types at
-              &lt;http://www.iana.org/assignments/link-relations&gt;.
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Applications that don't wish to register a link relation type can use
-          an extension link relation type <xref target="RFC8288"/>: a
-          URI that uniquely identifies the link relation type. For example, an
-          application can use the string "http://example.com/foo" as link
-          relation type without having to register it. Using a URI to identify
-          an extension link relation type, rather than a simple string, reduces
-          the probability of different link relation types using the same
-          identifiers.
-        </t>
-
-      </section>
-
-      <section title="Template Variable Names">
-
-        <t>
-          A templated link enables clients to construct the target URI of a
-          link, for example, when the link refers to a space of resources rather
-          than a single resource. The most prominent mechanisms for this are
-          <xref target="RFC6570">URI Templates</xref> and the HTML &lt;form&gt;
-          element with a submission method of GET.
-        </t>
-
-        <t>
-          To enable an automated client to construct an URI reference from a URI
-          Template, the name of the variable in the template can be used to
-          identify the semantics of the variable. For example, when retrieving
-          the representation of a collection of temperature readings, a variable
-          named "threshold" could indicate the variable for setting a threshold
-          of the readings to retrieve.
-        </t>
-
-        <t>
-          Template variable names are scoped to link relation types, i.e., two
-          variables with the same name can have different semantics if they
-          appear in links with different link relation types.
-        </t>
-
-      </section>
-
-        </section>
-
-        <section title="Forms" anchor="forms">
-
-          <t>
-            A form is the primary means for a client to submit information to a
-            server, typically in order to change resource state.
-          </t>
-
-          <t>A form is comprised of:
-            <list style="symbols">
-              <t>
-                a form context,
-              </t>
-              <t>
-                a form relation type that identifies the semantics of the form
-                (see <xref target="form-relations"/>),
-              </t>
-              <t>
-                a request method (e.g., PUT, POST, DELETE),
-              </t>
-              <t>
-                a submission URI,
-              </t>
-              <t>
-                a description of a representation that the server expects as
-                part of the form submission, and
-              </t>
-              <t>
-                optionally, target attributes that further describe the form or
-                the form target.
-              </t>
-            </list>
-            A form can be viewed as an instruction of the form "To perform a {form
-            relation type} operation on {form context}, make a {request method} request to {submission
-            URI}, which has {target attributes}". For example, to "update"
-            the resource &lt;http://example.com/config&gt;, a client would
-            make a PUT request to &lt;http://example.com/config&gt;.
-            (In many cases, the target of a form is the same resource as the
-            context, but this is not required.)
-          </t>
-
-          <t>
-            The description of the expected representation can be a set of form
-            fields (see <xref target="form-fields"/>) or simply a list of
-            acceptable media types.
+            One of the most important aspect of hypermedia-driven communications
+            is the concept of Internet media types <xref target="RFC6838"/>.
+            Media types are used to label representations so that it is known
+            how the representation should be interpreted and how it is encoded.
+            The centerpiece of a CoRE Application Description should be one or
+            more media types.
           </t>
 
           <t>
             <list style="hanging">
               <t hangText="Note:">
-                A form with a submission method of GET is, strictly speaking, a
-                templated link, since it provides a way to construct a URI and
-                does not submit a representation to the server.
-               </t>
+                The terms media type and representation format are often used
+                interchangeably. In this document, the term "media type" refers
+                specifically to a string of characters such as "application/xml"
+                that is used to label representations; the term "representation
+                format" refers to the definition of the syntax and semantics of
+                representations, such as <xref target="W3C.REC-xml-20081126">XML
+                1.0</xref> or <xref target="W3C.REC-xml11-20060816">XML
+                1.1</xref>.
+              </t>
             </list>
           </t>
 
-      <section title="Form Relation Types" anchor="form-relations">
+          <t>
+            A media type identifies a versioned series of representation formats
+            (<xref target="representations"/>): a media type does not identify a
+            particular version of a representation format; rather, the media
+            type identifies the family, and includes provisions for version
+            indicator(s) embedded in the representations themselves to determine
+            more precisely the nature of how the data is to be interpreted <xref
+            target="MIMEWEB"/>. A new media type is only needed to designate a
+            completely incompatible format <xref target="MIMEWEB"/>.
+          </t>
 
-        <t>
-          A form relation type identifies the semantics of a form. For example,
-          a form with the form relation type "create" indicates that a new
-          item can be created within the form context by making a request to the
-          resource identified by the target URI.
-        </t>
+          <t>
+            Media types consist of a top-level type and a subtype, structured
+            into trees <xref target="RFC6838"/>. Optionally, media types can
+            have parameters. For example, the media type "text/plain;
+            charset=utf-8" is a subtype for plain text under the "text"
+            top-level type in the standards tree and has a parameter "charset"
+            with the value "utf-8".
+          </t>
 
-        <t>
-          Similarly to extension link relation types, applications can use
-          extension form relation types when they don't wish to register a form
-          relation type.
-        </t>
+          <t>
+            Media types can be further refined by <list style="symbols"><t>
+            structured type name suffixes (e.g., "+xml" appended to the base
+            subtype name; see Section 4.2.8 of <xref target="RFC6838">RFC
+            6838</xref>),</t><t>a "profile" parameter (see Section 3.1 of <xref
+            target="RFC6906">RFC 6906</xref>),</t><t>subtype information
+            embedded in the representations themselves (e.g., "xmlns"
+            declarations in XML documents <xref
+            target="W3C.REC-xml-names-20091208"/>),</t></list> or a similar
+            annotation. An annotation directly in the media type is generally
+            preferable, since subtype information embedded in representations
+            can typically not be negotiated during content negotiation (e.g.,
+            using the CoAP Accept option).
+          </t>
+
+          <t>
+            In CoAP, media types are paired with a <xref
+            target="RFC7231">content coding</xref> to indicate the "content
+            format" <xref target="RFC7252"/> of a representation. Each content
+            format is assigned a numeric identifier that can be used instead of
+            the (more verbose) textual name of the media type in representation
+            formats with size constraints. The flat number space loses the
+            structural information that the textual names have, however.
+          </t>
+
+          <t>
+            The media type of a representation must be determined from in-band
+            information (e.g., from the CoAP Content-Format option). Clients
+            must not assume a structure from the application context or other
+            out-of-band information.
+          </t>
+
+          <t>
+            <list>
+              <t>
+                IANA maintains a list of registered Internet media types at
+                &lt;http://www.iana.org/assignments/media-types&gt;.
+              </t>
+              <t>
+                IANA maintains a list of registered structured suffixes at
+                &lt;http://www.iana.org/assignments/media-type-structured-suffix&gt;.
+              </t>
+              <t>
+                IANA maintains a list of registered CoAP content formats at
+                &lt;http://www.iana.org/assignments/core-parameters&gt;.
+              </t>
+            </list>
+          </t>
+
+        </section>
 
       </section>
 
-      <section title="Form Field Names" anchor="form-fields">
+      <section title="Links" anchor="links">
 
         <t>
-          Forms can have a detailed description of the representation expected
-          by the server as part of form submission. This description typically
-          consists of a set of form fields where each form field is comprised of
-          a field name, a field type, and optionally a number of attributes such
-          as a default value, a validation rule or a human-readable label.
+          As defined in <xref target="RFC8288">RFC 8288</xref>, a link is a
+          typed connection between two resources. Additionally, a link is the
+          primary means for a client to navigate from one resource to another.
         </t>
 
         <t>
-          To enable an automated client to fill out a form, the field name can
-          be used to identify the semantics of the form field. For example, when
-          controlling a smart light bulb, the field name "brightness" could
-          indicate the field for setting the desired brightness of the light
-          bulb.
+          A link is comprised of:
+          <list style="symbols">
+            <t>
+              a link context,
+            </t>
+            <t>
+              a link relation type that identifies the semantics of the link
+              (see <xref target="link-relations"/>),
+            </t>
+            <t>
+              a link target, identified by a URI, and
+            </t>
+            <t>
+              optionally, target attributes that further describe the link or
+              the link target.
+            </t>
+          </list>
         </t>
 
         <t>
-          Field names are scoped to form relation types, i.e., two form fields
-          with the same name can have different semantics if they appear in
-          forms with different form relation types.
+          A link can be viewed as a statement of the form "{link context} has a
+          {link relation type} resource at {link target}, which has {target
+          attributes}" <xref target="RFC8288"/>. For example, the resource
+          &lt;http://example.com/&gt; could have a "terms-of-service" resource
+          at &lt;http://example.com/tos&gt;, which has a representation with the
+          media type "text/html".
         </t>
 
         <t>
-          The type of a form field is a data type such as "an integer between 1
-          and 100" or "a RGB color". The type is orthogonal to the field name,
-          i.e., the type should not be determined from the field name even
-          though the client can identify the semantics of the field from the
-          name. This separation makes it easy to change the set of acceptable
-          values in the future.
+          There are two special kinds of links:
+          <list style="symbols">
+            <t>
+              An embedding link is a link with an additional hint: when the link
+              is processed, it should be substituted with the representation of
+              the referenced resource rather than cause the client to navigate
+              away from the current resource. Thus, traversing an embedding link
+              adds to the current state rather than replacing it.
+              <vspace blankLines="1"/>
+              The most well known example for an embedding link is the HTML
+              &lt;img&gt; element. When a Web browser processes this element, it
+              automatically dereferences the "src" and renders the resulting
+              image in place of the &lt;img&gt; element.
+            </t>
+            <t>
+              A templated link is a link where the client constructs the link
+              target URI from provided in-band instructions. The specific rules
+              for such instructions are described by the representation format.
+              <xref target="RFC6570">URI Templates</xref> provide a generic way
+              to construct URIs through variable expansion.
+              <vspace blankLines="1"/>
+              Templated links allow a client to construct resource URIs without
+              being coupled to the resource structure at the server, provided
+              that the client learns the template from a representation sent by
+              the server and does not have the template hard-coded.
+            </t>
+          </list>
         </t>
+
+        <section title="Link Relation Types" anchor="link-relations">
+
+          <t>
+            A link relation type identifies the semantics of a link <xref
+            target="RFC8288"/>. For example, a link with the relation type
+            "copyright" indicates that the resource identified by the target URI
+            is a statement of the copyright terms applying to the link context.
+          </t>
+
+          <t>
+            Relation types are not to be confused with media types; they do not
+            identify the format of the representation that results when the link
+            is dereferenced <xref target="RFC8288"/>. Rather, they only describe
+            how the link context is related to another resource <xref
+            target="RFC8288"/>.
+          </t>
+
+          <t>
+            <list>
+              <t>
+                IANA maintains a list of registered link relation types at
+                &lt;http://www.iana.org/assignments/link-relations&gt;.
+              </t>
+            </list>
+          </t>
+
+          <t>
+            Applications that don't wish to register a link relation type can
+            use an extension link relation type <xref target="RFC8288"/>: a URI
+            that uniquely identifies the link relation type. For example, an
+            application can use the string "http://example.com/foo" as link
+            relation type without having to register it. Using a URI to identify
+            an extension link relation type, rather than a simple string,
+            reduces the probability of different link relation types using the
+            same identifiers.
+          </t>
+
+        </section>
+
+        <section title="Template Variable Names">
+
+          <t>
+            A templated link enables clients to construct the target URI of a
+            link, for example, when the link refers to a space of resources
+            rather than a single resource. The most prominent mechanisms for
+            this are <xref target="RFC6570">URI Templates</xref> and the HTML
+            &lt;form&gt; element with a submission method of GET.
+          </t>
+
+          <t>
+            To enable an automated client to construct an URI reference from a
+            URI Template, the name of the variable in the template can be used
+            to identify the semantics of the variable. For example, when
+            retrieving the representation of a collection of temperature
+            readings, a variable named "threshold" could indicate the variable
+            for setting a threshold of the readings to retrieve.
+          </t>
+
+          <t>
+            Template variable names are scoped to link relation types, i.e., two
+            variables with the same name can have different semantics if they
+            appear in links with different link relation types.
+          </t>
+
+        </section>
 
       </section>
+
+      <section title="Forms" anchor="forms">
+
+        <t>
+          A form is the primary means for a client to submit information to a
+          server, typically in order to change resource state.
+        </t>
+
+        <t>
+          A form is comprised of:
+          <list style="symbols">
+            <t>
+              a form context,
+            </t>
+            <t>
+              a form relation type that identifies the semantics of the form
+              (see <xref target="form-relations"/>),
+            </t>
+            <t>
+              a request method (e.g., PUT, POST, DELETE),
+            </t>
+            <t>
+              a submission URI,
+            </t>
+            <t>
+              a description of a representation that the server expects as part
+              of the form submission, and
+            </t>
+            <t>
+              optionally, target attributes that further describe the form or
+              the form target.
+            </t>
+          </list>
+          A form can be viewed as an instruction of the form "To perform a {form
+          relation type} operation on {form context}, make a {request method}
+          request to {submission URI}, which has {target attributes}". For
+          example, to "update" the resource &lt;http://example.com/config&gt;, a
+          client would make a PUT request to &lt;http://example.com/config&gt;.
+          (In many cases, the target of a form is the same resource as the
+          context, but this is not required.)
+        </t>
+
+        <t>
+          The description of the expected representation can be a set of form
+          fields (see <xref target="form-fields"/>) or simply a list of
+          acceptable media types.
+        </t>
+
+        <t>
+          <list style="hanging">
+            <t hangText="Note:">
+              A form with a submission method of GET is, strictly speaking, a
+              templated link, since it provides a way to construct a URI and
+              does not submit a representation to the server.
+            </t>
+          </list>
+        </t>
+
+        <section title="Form Relation Types" anchor="form-relations">
+
+          <t>
+            A form relation type identifies the semantics of a form. For
+            example, a form with the form relation type "create" indicates that
+            a new item can be created within the form context by making a
+            request to the resource identified by the target URI.
+          </t>
+
+          <t>
+            Similarly to extension link relation types, applications can use
+            extension form relation types when they don't wish to register a
+            form relation type.
+          </t>
+
+        </section>
+
+        <section title="Form Field Names" anchor="form-fields">
+
+          <t>
+            Forms can have a detailed description of the representation expected
+            by the server as part of form submission. This description typically
+            consists of a set of form fields where each form field is comprised
+            of a field name, a field type, and optionally a number of attributes
+            such as a default value, a validation rule or a human-readable
+            label.
+          </t>
+
+          <t>
+            To enable an automated client to fill out a form, the field name can
+            be used to identify the semantics of the form field. For example,
+            when controlling a smart light bulb, the field name "brightness"
+            could indicate the field for setting the desired brightness of the
+            light bulb.
+          </t>
+
+          <t>
+            Field names are scoped to form relation types, i.e., two form fields
+            with the same name can have different semantics if they appear in
+            forms with different form relation types.
+          </t>
+
+          <t>
+            The type of a form field is a data type such as "an integer between
+            1 and 100" or "a RGB color". The type is orthogonal to the field
+            name, i.e., the type should not be determined from the field name
+            even though the client can identify the semantics of the field from
+            the name. This separation makes it easy to change the set of
+            acceptable values in the future.
+          </t>
+
+        </section>
 
       </section>
 
