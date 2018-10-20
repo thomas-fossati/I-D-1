@@ -20,7 +20,6 @@
   <!ENTITY W3C.REC-xml11-20060816 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml11-20060816.xml">
   <!ENTITY W3C.REC-xml-20081126 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-20081126.xml">
   <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-names-20091208.xml">
-  <!ENTITY SELF "[RFCXXXX]">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
