@@ -229,7 +229,7 @@ Data Hub  /   \
             However, a data hub instance MAY restrict the media types it accepts
             for publication. The form in the data hub representation for
             creating data items MUST list the acceptable media types in this
-            case using form fields with name &lt;urn:ietf:rfc:XXXX#accept&gt;.
+            case using form fields with name &lt;urn:TBD#accept&gt;.
           </t>
           <t>
             The representations of data items MAY link back to a data hub
@@ -268,10 +268,10 @@ Data Hub  /   \
           <t hangText="Creating an Item">
             <vspace blankLines="1"/>
             The representation of a data hub MAY contain a form with the
-            &lt;urn:ietf:rfc:XXXX#create&gt; form relation type. Submitting this
+            &lt;urn:TBD#create&gt; form relation type. Submitting this
             form with a representation in one of the acceptable media types
             creates a new data item in the data hub. The acceptable media types
-            are indicated by &lt;urn:ietf:rfc:XXXX#accept&gt; form fields.
+            are indicated by &lt;urn:TBD#accept&gt; form fields.
           </t>
           <t>
             Data hubs implementing this specification MUST offer the <xref
@@ -293,7 +293,7 @@ Data Hub  /   \
           <t hangText="Updating an Item">
             <vspace blankLines="1"/>
             For each data item in a data hub, the representation of the data hub
-            MAY include a nested form with the &lt;urn:ietf:rfc:XXXX#update&gt;
+            MAY include a nested form with the &lt;urn:TBD#update&gt;
             form relation type. Submitting this form updates the data item in
             the data hub to the submitted representation.
           </t>
@@ -304,7 +304,7 @@ Data Hub  /   \
           <t hangText="Deleting an Item">
             <vspace blankLines="1"/>
             For each data item in a data hub, the representation of the data hub
-            MAY include a nested form with the &lt;urn:ietf:rfc:XXXX#delete&gt;
+            MAY include a nested form with the &lt;urn:TBD#delete&gt;
             form relation type. Submitting this form deletes the data item from
             the data hub.
           </t>
@@ -315,7 +315,7 @@ Data Hub  /   \
           <t hangText="Searching for Items">
             <vspace blankLines="1"/>
             The representation of a data hub MAY contain a form with the
-            &lt;urn:ietf:rfc:XXXX#search&gt; form relation type. This form can
+            &lt;urn:TBD#search&gt; form relation type. This form can
             be used to find data items in the data hub. Submitting this form
             with a search query returns the subset of data items that match the
             query.
