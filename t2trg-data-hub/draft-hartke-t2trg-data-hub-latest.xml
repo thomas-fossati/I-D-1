@@ -28,16 +28,15 @@
     <title>Thing-to-Thing Data Hub</title>
 
     <author initials="K." surname="Hartke" fullname="Klaus Hartke">
-      <organization>Universitaet Bremen TZI</organization>
+      <organization>Ericsson</organization>
       <address>
         <postal>
-          <street>Postfach 330440</street>
-          <city>Bremen</city>
-          <code>D-28359</code>
-          <country>Germany</country>
+          <street>Torshamnsgatan 23</street>
+          <city>Stockholm</city>
+          <code>SE-16483</code>
+          <country>Sweden</country>
         </postal>
-        <phone>+49-421-218-63905</phone>
-        <email>hartke@tzi.org</email>
+        <email>klaus.hartke@ericsson.com</email>
       </address>
     </author>
 
