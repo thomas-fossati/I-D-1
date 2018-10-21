@@ -118,11 +118,12 @@
       </t>
 
       <t>
-        Constrained IRI References are not capable of expressing all IRI
-        references permitted by the syntax of <xref target="RFC3987">RFC
-        3987</xref>. The supported subset is capable of expressing all <xref
-        target="RFC7252">CoAP URIs</xref> and most <xref target="RFC7230">HTTP
-        URIs</xref>.
+        As a result of the simplification, Constrained IRI References are not
+        capable of expressing all IRI references that are permitted by the
+        syntax of RFC 3987. The supported subset includes all <xref
+        target="RFC7252">Constrained Application Protocol (CoAP) URIs</xref>,
+        most <xref target="RFC7230"> Hypertext Transfer Protocol (HTTP)
+        URIs</xref>, and many other URIs and IRIs.
       </t>
 
       <section title="Requirements Notation">
@@ -147,22 +148,23 @@
     <section title="Data Model">
 
       <t>
-        The encoding is very similar to the <xref target="RFC7252">encoding of
-        the request URI in CoAP messages</xref>. The components of an IRI
-        reference are encoded as a sequence of <spanx>options</spanx>. Each
-        option consists of an <spanx>option number</spanx> identifying the type
-        of option (scheme, host name, etc.) and the <spanx>option value</spanx>.
+        The data model for Constrained IRI References is very similar to the
+        <xref target="RFC7252">encoding of a request URI in CoAP
+        messages</xref>: The components of an IRI reference are encoded as a
+        sequence of <spanx>options</spanx>. Each option consists of an
+        <spanx>option number</spanx> identifying the type of option (scheme,
+        host name, etc.) and the <spanx>option value</spanx>.
       </t>
 
       <section title="Options">
 
         <t>
-          The following options are defined:
+          The following types of options are defined:
           <list style="hanging">
             <t hangText="scheme">
-              <vspace/>Specifies the IRI scheme. IRI schemes have the same
-              syntax as URI schemes. The option value therefore MUST match the
-              "scheme" rule defined in Section 3.1 of RFC 3986.
+              <vspace/>Specifies the IRI scheme. Since IRI schemes have the same
+              syntax as URI schemes, the option value MUST match the "scheme"
+              rule defined in Section 3.1 of RFC 3986.
             </t>
             <t hangText="host.name">
               <vspace/>Specifies the host of the IRI authority as a registered
@@ -275,18 +277,19 @@ ____ scheme __/             \___ port _
         <t>
           The following operations can be performed on a sequence of options:
           <list style="hanging">
-            <t hangText="Resolve(href, base)">
+            <t hangText="resolve(href, base)">
               <vspace/>Resolves a well-formed sequence of options `href` against
               an absolute sequence of options `base`. This operation MUST be
               performed by applying any algorithm that is functionally
               equivalent to the reference implementation in <xref
-              target="py-resolve"/>.
+              target="py-resolve"/> of this document.
             </t>
-            <t hangText="Recompose(href)">
+            <t hangText="recompose(href)">
               <vspace/>Recomposes a IRI reference string from an absolute
               sequence of options `href`. This operation MUST be performed by
               applying any algorithm that is functionally equivalent to the
-              reference implementation in <xref target="py-recompose"/>.
+              reference implementation in <xref target="py-recompose"/> of this
+              document.
             </t>
             <t>
               To reduce variability, it is RECOMMENDED that the hexadecimal
@@ -295,19 +298,20 @@ ____ scheme __/             \___ port _
               follow the recommendations of Section 4 of <xref
               target="RFC5952">RFC 5952</xref>.
             </t>
-            <t hangText="Decompose(iri)">
+            <t hangText="decompose(iri)">
               <vspace/>Decomposes a IRI reference string into a sequence of
               options. This operation MUST be performed by applying any
               algorithm that returns a sequence of options such that
-              `Recompose(Decompose(x))` is equivalent to `x`.
+              `recompose(decompose(x))` is equivalent to `x`.
             </t>
-            <t hangText="CoAP(href)">
+            <t hangText="coap(href)">
               <vspace/>Constructs CoAP options from an absolute, normalized
               sequence of options. This operation MUST be performed by
-              recomposing the sequence of options to an IRI reference string,
-              mapping the IRI to an URI (Section 3.1 of RFC 3987), and
-              decomposing the URI into CoAP options (Section 6.4 of RFC 7252).
-              This process is illustrated in <xref target="py-coap"/>.
+              recomposing the sequence of options to an IRI reference string as
+              described above, mapping the IRI to a URI as specified in Section
+              3.1 of RFC 3987, and decomposing the URI into CoAP options as
+              specified in Section 6.4 of RFC 7252. A concise implementation is
+              illustrated in <xref target="py-coap"/> of this document.
             </t>
           </list>
         </t>
@@ -320,8 +324,8 @@ ____ scheme __/             \___ port _
 
       <t>
         A sequence of options is serialized as an array in <xref
-        target="RFC7049">Concise Binary Object Representation (CBOR)</xref>. The
-        structure of this array is as follows and presented in the <xref
+        target="RFC7049">Concise Binary Object Representation (CBOR)</xref> as
+        follows. The structure is presented in the <xref
         target="I-D.ietf-cbor-cddl">Concise Data Definition Language
         (CDDL)</xref>.
       </t>
