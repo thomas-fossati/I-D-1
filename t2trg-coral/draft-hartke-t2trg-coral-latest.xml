@@ -1863,12 +1863,11 @@
         <t>
           A CoRAL registry SHOULD map each unsigned integer to a full IRI that
           identifies a link relation type, form relation type, or form field
-          name. The namespaces for these three kinds of identifiers are
-          disjoint, i.e., the same integer MAY be assigned to a link relation
-          type, form relation type, and form field name without ambiguity. Once
+          name.
+          Once
           an integer has been assigned, the assignment MUST NOT be changed or
           removed. A registry MAY provide additional information about an
-          assignment that MAY change over time (such as whether a link relation type has been deprecated).
+          assignment that MAY change over time.
         </t>
 
         <t>
@@ -2458,33 +2457,15 @@
       <t>
         This section defines a default registry that is assumed when a CoRAL
         media type without a "profile" parameter is used.
-      </t>
-
-      <t>
-        Link Relation Types
         <list>
-          <t>
-            0 = &lt;http://www.iana.org/assignments/relation/type&gt;<vspace/>
-            1 = &lt;http://www.iana.org/assignments/relation/item&gt;<vspace/>
-            2 = &lt;http://www.iana.org/assignments/relation/collection&gt;
-          </t>
-        </list>
-        Form Relation Types
-        <list>
-          <t>
-            0 = &lt;urn:TBD#create&gt;<vspace/>
-            1 = &lt;urn:TBD#update&gt;<vspace/>
-            2 = &lt;urn:TBD#delete&gt;<vspace/>
-            3 = &lt;urn:TBD#search&gt;<!--<vspace/>
-            4 = &lt;urn:TBD#link&gt;<vspace/>
-            5 = &lt;urn:TBD#unlink&gt;-->
-          </t>
-        </list>
-        Form Fields
-        <list>
-          <t>
-            0 = &lt;urn:TBD#accept&gt;
-          </t>
+          <t>0 = &lt;http://www.iana.org/assignments/relation/type&gt;</t>
+          <t>1 = &lt;http://www.iana.org/assignments/relation/item&gt;</t>
+          <t>2 = &lt;http://www.iana.org/assignments/relation/collection&gt;</t>
+          <t>3 = &lt;urn:TBD#create&gt;</t>
+          <t>4 = &lt;urn:TBD#update&gt;</t>
+          <t>5 = &lt;urn:TBD#delete&gt;</t>
+          <t>6 = &lt;urn:TBD#search&gt;</t>
+          <t>7 = &lt;urn:TBD#accept&gt;</t>
         </list>
       </t>
 
