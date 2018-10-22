@@ -2208,11 +2208,11 @@
 
       <reference anchor="I-D.hartke-t2trg-ciri">
         <front>
-          <title>Constrained Internationalized Resource Identifiers (CIRIs)</title>
+          <title>Constrained Internationalized Resource Identifiers</title>
           <author initials="K." surname="Hartke" fullname="Klaus Hartke">
             <organization/>
           </author>
-          <date month="August" day="9" year="2018"/>
+          <date month="October" day="22" year="2018"/>
         </front>
         <seriesInfo name="Internet-Draft" value="draft-hartke-t2trg-ciri-00"/>
         <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-hartke-t2trg-ciri-00.txt"/>
