@@ -603,7 +603,7 @@
 
           <t>
             The type of a form field is a data type such as "an integer between
-            1 and 100" or "a RGB color". The type is orthogonal to the field
+            1 and 100" or "an RGB color". The type is orthogonal to the field
             name, i.e., the type should not be determined from the field name
             even though the client can identify the semantics of the field from
             the name. This separation makes it easy to change the set of
@@ -1028,8 +1028,10 @@
 
       <t>
         Some of the text in this document has been borrowed from
-        <xref target="RFC8288" />, <xref target="RFC7320" />,
-        <xref target="RESTAPI" />, and <xref target="MIMEWEB" />.
+        <xref target="RFC7320" />,
+        <xref target="RFC8288" />,
+        <xref target="RESTAPI" />, and
+        <xref target="MIMEWEB" />.
         All errors are my own.
       </t>
 
