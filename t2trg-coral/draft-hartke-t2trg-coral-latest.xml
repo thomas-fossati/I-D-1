@@ -924,13 +924,13 @@
           <t>
             Directives provide the ability to manipulate the environment when
             processing a list of elements. There is one directive available: the
-            Base URI directive.
+            Base IRI directive.
             <list>
               <t>directive = base-directive</t>
             </list>
           </t>
 
-          <section title="Base URI Directives">
+          <section title="Base IRI Directives">
 
             <t>
               A Base IRI directive is encoded as an array that consists of the
