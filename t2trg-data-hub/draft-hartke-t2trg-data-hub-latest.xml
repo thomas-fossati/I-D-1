@@ -285,7 +285,10 @@
           </t>
           <t>
             Data hubs implementing this specification MUST offer the <xref
-            target="RFC7252">POST method</xref> in this form.
+            target="RFC7252">POST method</xref> in this form. The location of
+            the created data item is conveyed in the 2.01 (Created) response by
+            the <xref target="RFC7252">Location-Path and Location-Query
+            options</xref>.
           </t>
           <t hangText="Reading an Item">
             <vspace blankLines="1"/>
