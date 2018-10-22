@@ -934,9 +934,9 @@
 
             <t>
               A Base IRI directive is encoded as an array that consists of the
-              unsigned integer 1, followed by an IRI reference.
+              negative integer -1, followed by an IRI reference.
               <list>
-                <t>base-directive = [base: 1, iri]</t>
+                <t>base-directive = [base: -1, iri]</t>
               </list>
             </t>
 
