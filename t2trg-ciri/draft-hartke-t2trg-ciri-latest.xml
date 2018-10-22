@@ -52,9 +52,9 @@
     <abstract>
 
       <t>
-        This document specifies Constrained IRI References, a serialization of
-        IRI references that encodes the IRI components as Concise Binary Object
-        Representation (CBOR) data items rather than as a string of characters.
+        This document specifies Constrained Internationalized Resource Identifier References, a serialization of
+        Internationalized Resource Identifier (IRI) references that encodes the IRI components as Concise Binary Object
+        Representation (CBOR) data items rather than a string of characters.
         This intends to simplify parsing, reference resolution, and comparison
         of IRIs in Constrained RESTful Environments (CoRE).
       </t>
@@ -223,33 +223,33 @@ ____ scheme __/             \___ port _
               or "fragment" option;
             </t>
             <t>
-              a "scheme" option is followed by either a "host.name" or a
+              any "scheme" option is followed by either a "host.name" or a
               "host.ip" option;
             </t>
             <t>
-              a "host.name" option is followed by a "port" option;
+              any "host.name" option is followed by a "port" option;
             </t>
             <t>
-              a "host.ip" option is followed by a "port" option;
+              any "host.ip" option is followed by a "port" option;
             </t>
             <t>
-              a "port" option is followed by a "path", "query", or "fragment"
+              any "port" option is followed by a "path", "query", or "fragment"
               option or is at the end of the sequence;
             </t>
             <t>
-              a "path.type" option is followed by a "path", "query", or
+              any "path.type" option is followed by a "path", "query", or
               "fragment" option or is at the end of the sequence;
             </t>
             <t>
-              a "path" option is followed by a "path", "query", or "fragment"
+              any "path" option is followed by a "path", "query", or "fragment"
               option or is at the end of the sequence;
             </t>
             <t>
-              a "query" option is followed by a "query" or "fragment" option or
+              any "query" option is followed by a "query" or "fragment" option or
               is at the end of the sequence; and
             </t>
             <t>
-              a "fragment" option is at the end of the sequence.
+              any "fragment" option is at the end of the sequence.
             </t>
           </list>
         </t>
@@ -270,7 +270,7 @@ ____ scheme __/             \___ port _
           An absolute sequence of options is considered
           <spanx>normalized</spanx> if the result of resolving the sequence of
           options against any base IRI reference is equal to the input. (It
-          doesn't matter what it is resolved against, since it is already
+          doesn't matter what base IRI it is resolved against, since it is already
           absolute.)
         </t>
 
@@ -285,17 +285,17 @@ ____ scheme __/             \___ port _
               target="py-resolve"/> of this document.
             </t>
             <t hangText="recompose(href)">
-              <vspace/>Recomposes a IRI reference string from an absolute
+              <vspace/>Recomposes an IRI reference string from an absolute
               sequence of options `href`. This operation MUST be performed by
               applying any algorithm that is functionally equivalent to the
               reference implementation in <xref target="py-recompose"/> of this
               document.
               <vspace blankLines="1"/>
-              To reduce variability, it is RECOMMENDED that the hexadecimal
-              notation when percent-encoding octets use uppercase letters <xref
-              target="RFC3986"/> and the text representation of IPv6 addresses
-              follow the recommendations of Section 4 of <xref
-              target="RFC5952">RFC 5952</xref>.
+              To reduce variability, it is RECOMMENDED to uppercase the letters
+              in the hexadecimal notation when percent-encoding octets <xref
+              target="RFC3986"/> and to follow the recommendations of Section 4
+              of RFC 5952 for the <xref target="RFC5952">text representation of
+              IPv6 addresses</xref>.
             </t>
             <t hangText="decompose(iriref)">
               <vspace/>Decomposes a IRI reference string into a sequence of
@@ -330,7 +330,7 @@ ____ scheme __/             \___ port _
       </t>
 
 <figure><artwork><![CDATA[
-   ciri = [?(scheme:    1, text),
+   ciri = [?(scheme:    1, text .regexp "[A-Za-z][A-Za-z0-9+.-]*"),
            ?(host.name: 2, text //
              host.ip:   3, bytes .size 4 / bytes .size 16),
            ?(port:      4, uint .size 2),
@@ -788,7 +788,8 @@ ____ scheme __/             \___ port _
       <!-- sorted by last name -->
       <t>
         Thanks to
-        Christian Amsuess
+        Christian Amsuess and
+        Ari Keranen
         for helpful comments and discussions that have shaped the
         document.
       </t>
