@@ -742,7 +742,7 @@
             be null, which indicates that the link target is an unidentified
             resource.
             <list>
-              <t>target = iri / literal / null</t>
+              <t>target = ciri / literal / null</t>
               <t>literal = bool / int / float / bytes / text</t>
             </list>
           </t>
@@ -764,7 +764,7 @@
             3, followed by the form relation type, the submission method, and a
             submission IRI reference, optionally followed by form data.
             <list>
-              <t>form = [form: 3, relation, method, iri, ?form-data]</t>
+              <t>form = [form: 3, relation, method, ciri, ?form-data]</t>
             </list>
           </t>
 
@@ -830,7 +830,7 @@
               references in the binary format is described in <xref
               target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>.
               <list>
-                <t>form-field-value = iri / bool / int / float / bytes / text / null</t>
+                <t>form-field-value = ciri / bool / int / float / bytes / text / null</t>
               </list>
             </t>
 
@@ -936,7 +936,7 @@
               A Base IRI directive is encoded as an array that consists of the
               negative integer -1, followed by an IRI reference.
               <list>
-                <t>base-directive = [base: -1, iri]</t>
+                <t>base-directive = [base: -1, ciri]</t>
               </list>
             </t>
 

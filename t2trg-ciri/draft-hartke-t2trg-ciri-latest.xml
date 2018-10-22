@@ -331,14 +331,14 @@ ____ scheme __/             \___ port _
       </t>
 
 <figure><artwork><![CDATA[
-   iri = [?(scheme:    1, text),
-          ?(host.name: 2, text //
-            host.ip:   3, bytes .size 4 / bytes .size 16),
-          ?(port:      4, uint .size 2),
-          ?(path.type: 5, path-type),
-          *(path:      6, text),
-          *(query:     7, text),
-          ?(fragment:  8, text)]
+   ciri = [?(scheme:    1, text),
+           ?(host.name: 2, text //
+             host.ip:   3, bytes .size 4 / bytes .size 16),
+           ?(port:      4, uint .size 2),
+           ?(path.type: 5, path-type),
+           *(path:      6, text),
+           *(query:     7, text),
+           ?(fragment:  8, text)]
 ]]></artwork></figure>
 
 <figure><artwork><![CDATA[
