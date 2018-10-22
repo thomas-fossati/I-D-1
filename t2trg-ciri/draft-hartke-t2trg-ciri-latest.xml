@@ -290,15 +290,14 @@ ____ scheme __/             \___ port _
               applying any algorithm that is functionally equivalent to the
               reference implementation in <xref target="py-recompose"/> of this
               document.
-            </t>
-            <t>
+              <vspace blankLines="1"/>
               To reduce variability, it is RECOMMENDED that the hexadecimal
               notation when percent-encoding octets use uppercase letters <xref
               target="RFC3986"/> and the text representation of IPv6 addresses
               follow the recommendations of Section 4 of <xref
               target="RFC5952">RFC 5952</xref>.
             </t>
-            <t hangText="decompose(iri)">
+            <t hangText="decompose(iriref)">
               <vspace/>Decomposes a IRI reference string into a sequence of
               options. This operation MUST be performed by applying any
               algorithm that returns a sequence of options such that
