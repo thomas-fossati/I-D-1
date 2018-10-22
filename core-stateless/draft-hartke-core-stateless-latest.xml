@@ -155,7 +155,22 @@
          cases for extended token lengths.
       </t>
 
-      <section title="Requirements Notation">
+      <section title="Terminology">
+
+        <t>
+          <list style="hanging">
+            <t hangText="Stateless">
+              <vspace/>
+              In this document, "stateless" refers to an implementation strategy
+              for a client (or intermediary in the client role) that doesn't
+              keep state for the individual requests it sends to a server (or
+              intermediary in the server role). The client still needs to keep
+              state for each server it communicates with (such as state for
+              generating tokens and congestion control), so it's not free of any
+              state.
+            </t>
+          </list>
+        </t>
 
         <t>
           The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
