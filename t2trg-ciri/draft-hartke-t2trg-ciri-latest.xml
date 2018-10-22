@@ -711,7 +711,19 @@ ____ scheme __/             \___ port _
     <section title="Security Considerations" anchor="security">
 
       <t>
-        TODO.
+        Parsers of Constrained IRI References must operate on input that is
+        assumed to be untrusted. This means that parsers MUST fail gracefully in
+        the face of malicious inputs. Additionally, parsers MUST be prepared to
+        deal with resource exhaustion (e.g., resulting from the allocation of
+        big data items) or exhaustion of the call stack (stack overflow). See
+        Section 8 of <xref target="RFC7049">RFC 7049</xref> for security
+        considerations relating to parsing CBOR.
+      </t>
+
+      <t>
+        The security considerations discussed in <xref target="RFC3986">Section
+        7 of RFC 3986</xref> and <xref target="RFC3987">Section 8 of RFC
+        3987</xref> also apply to Constrained IRI References.
       </t>
 
     </section>
