@@ -91,7 +91,7 @@
         response (<xref target="stateful-exchange"/>).
       </t>
 
-<figure anchor="stateful-exchange" title="Token as an Identifier for Request State"><artwork align="center"><![CDATA[   
+<figure anchor="stateful-exchange" title="Token as an Identifier for Request State"><artwork align="center"><![CDATA[
 +-----------------+     request with     +------------+
 |        |        |   state identifier   |            |
 |        |        |       as token       |            |
@@ -115,7 +115,7 @@
         target="stateless-exchange"/>).
       </t>
 
-<figure anchor="stateless-exchange" title="Token as Serialization of Request State"><artwork align="center"><![CDATA[   
+<figure anchor="stateless-exchange" title="Token as Serialization of Request State"><artwork align="center"><![CDATA[
 +-----------------+     request with     +------------+
 |        |        |   serialized state   |            |
 |        |        |       as token       |            |
@@ -146,7 +146,7 @@
         this document first introduces a CoAP protocol extension for extended
         token lengths.
       </t>
-      
+
       <t>
          While the mechanism (extended token lengths) and the use case
          (stateless clients) presented in this document are closely related,
@@ -305,7 +305,7 @@
             connection (Section 5.6 of RFC 8323).
           </t>
 
-<figure anchor="trial-and-error-illustration" title="A Confirmable Request With an Extended Token is Rejected With a Reset Message if the Next Hop Does Not Support It"><artwork align="center"><![CDATA[   
+<figure anchor="trial-and-error-illustration" title="A Confirmable Request With an Extended Token is Rejected With a Reset Message if the Next Hop Does Not Support It"><artwork align="center"><![CDATA[
 +-----------------+   request message    +------------+
 |        |        |    with extended     |            |
 |        |        |     token length     |            |
@@ -423,7 +423,7 @@
           the Reset message (<xref target="stateless-discovery"/>).
         </t>
 
-<figure anchor="stateful-discovery" title="Depending on Extended Tokens for Being Stateless First Requires a Successful Stateful Discovery of Support"><artwork align="center"><![CDATA[   
+<figure anchor="stateful-discovery" title="Depending on Extended Tokens for Being Stateless First Requires a Successful Stateful Discovery of Support"><artwork align="center"><![CDATA[
 +-----------------+    dummy request     +------------+
 |        |        |    with extended     |            |
 |        |        |        token         |            |
@@ -453,7 +453,7 @@
       Client                                 Server
 ]]></artwork></figure>
 
-<figure anchor="stateless-discovery" title="Stateless Discovery of Support Does Not Work"><artwork align="center"><![CDATA[   
+<figure anchor="stateless-discovery" title="Stateless Discovery of Support Does Not Work"><artwork align="center"><![CDATA[
 +-----------------+    dummy request     +------------+
 |        |        |    with extended     |            |
 |        |        |        token         |            |
@@ -501,7 +501,7 @@
               If a piggybacked response contains a valid authentication tag and
               freshness indicator in the token, the client MUST process the
               message as specified in RFC 7252; otherwise, it MUST silently
-              ignore the message. 
+              ignore the message.
             </t>
             <t>
               If a separate response contains a valid authentication tag and
@@ -613,9 +613,9 @@
         definition of the TKL field (<xref target="extended-tokens"/>).
         <vspace blankLines="100"/>
       </t>
-      
+
       <section title="CoAP over UDP">
-      
+
 <figure><artwork align="center"><![CDATA[
                 0   1   2   3   4   5   6   7
               +-------+-------+---------------+
@@ -780,7 +780,7 @@
         6TiSCH</xref> by Malisa Vucinic, Jonathan Simon, Kris Pister, and
         Michael Richardson.
       </t>
-      
+
       <!-- sorted by last name -->
       <t>
         Thanks to
