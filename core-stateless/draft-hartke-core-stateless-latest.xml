@@ -6,11 +6,11 @@
   <!ENTITY RFC7252 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7252.xml">
   <!ENTITY RFC7641 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7641.xml">
   <!ENTITY RFC7959 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7959.xml">
-  <!ENTITY RFC8152 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8152.xml">
   <!ENTITY RFC8174 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml">
   <!ENTITY RFC8323 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8323.xml">
   <!ENTITY I-D.ietf-6tisch-minimal-security SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-6tisch-minimal-security.xml">
   <!ENTITY I-D.ietf-core-echo-request-tag SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-core-echo-request-tag.xml">
+  <!ENTITY I-D.ietf-core-object-security SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-core-object-security.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -534,111 +534,88 @@
 
     <section title="Security Considerations" anchor="security">
 
-      <t>
-        Using tokens to serialize state has several significant and non-obvious
-        security and privacy implications that need to be mitigated. The
-        considerations are different for non-proxy clients and the client part
-        of proxies. In this section, the term client refer to a non-proxy client
-        and the word proxy refer to the client part of a proxy.
-      </t>
-
-      <t>
-        Being stateless means that all the information about the request is
-        stored in the token instead of being stored locally. While servers and
-        sometimes proxies are fully trusted to create responses, they are not
-        trusted to modify requests, not even when CoAP is used with no security.
-        Therefore, the serialized state MUST be integrity protect if it contains
-        a request. Serialized state not containing a request MAY be integrity
-        protected. Such serialized state may occur in a proxy serializing the
-        network address of the client.
-      </t>
-
-      <t>
-        Even if the serialized state is integrity protected, and attacker may
-        still replay a response containing a serialized request, making the
-        client believe it sent the same request twice. Therefore, the mechanism
-        used to protect serialized state MUST include replay protection (e.g. by
-        using sequence numbers and a replay window) if the reception of a
-        response modify state or have other significant side effects. Serialized
-        state not containing a request MAY use replay protection, e.g. a proxy
-        serializing the network address of the client. Note that in this case a
-        lack of replay protection mean that an attacker can send multiple
-        responses to a client behind the proxy. Integrity protection and replay
-        protection may therefore be needed also when the proxy functions as a
-        firewall to the clients behind the proxy. The use of replay protection
-        requires integrity protection.
-      </t>
-
-      <t>
-        The serialized state MAY contain information (e.g., a timestamp) so that
-        the client/proxy can determine the freshness of the response.
-      </t>
-
-      <t>
-        If CoAP is used with no security, an attacker can make a proxy believe
-        that a server supports extended token and that the clint or proxy can
-        therefore serialize state. If the requirements above are followed, this
-        does not have any security implications, but it may have privacy
-        implications when CoAP is used with no security.
-      </t>
-
-      <t>
-        Using the extended token to enable stateless clients does not lower the
-        total memory requirements of a deployment, it just changes the
-        distribution between nodes. A proxy supporting the reception of requests
-        with extended token, but not sending sending extended tokens may be
-        vulnerabele to DoS as an attacker (on-path or a malicious client) may
-        send large tokens to fill up the memory of the proxy. Implementation
-        should mitigate this.
-      </t>
-
-      <t>
-        Note that if CoAP is used with a security protocol not providing
-        bindings between requests and responses, the Token becomes a
-        cryptographically important value and the as required by <xref
-        target="I-D.ietf-core-echo-request-tag">Section 5 of RFC XXXX</xref>,
-        the client MUST NOT reuse tokens before the traffic keys have been
-        replaced. This means that the extended token must have a random part or
-        that the client/proxy must have a way to generate unique tokens.
-      </t>
-
-      <section title="Privacy Considerations">
+      <section title="Extended Tokens">
 
         <t>
-          Serielized state from a client would typically contain the whole
-          request plus additional information. Serialized state from a proxy
-          would typically contain the network address of the client, the token
-          used on the last hop plus additional information. In both cases the
-          information may be privacy sensitive.
+          Tokens significantly larger than the 8 bytes specified in RFC 7252
+          have implications for nodes in particular with constrained memory size
+          that need to be mitigated.
         </t>
 
         <t>
-          A client using OSCORE MUST encrypt the serialized state. A client
-          using no security or (D)TLS MAY encrypt the serialized state. The
-          network address can be used to identity and track a specific client.
-          The network address may therefore be sensitive to disclose on one side
-          of a proxy even if it is visible on the other side. The server should
-          in some cases not get information of which client behind a proxy sent
-          the request. A proxy MUST encrypt the serialized state if it contains
-          privacy sensitive information that an attacker would not get
-          otherwise. In wireless mesh networks where all traffic is visible to a
-          passive attacker, encryption may not be needed as the attacker can get
-          the same information from analyzing the traffic flows.
+          A node in the server role supporting extended token lengths may be
+          vulnerable to a denial-of-service when an attacker (either on-path or
+          a malicious client) sends large tokens to fill up the memory of the
+          node. Implementations MUST be prepared for this and mitigate it.
         </t>
 
       </section>
 
-      <section title="Recommended Algorithms">
+      <section title="Stateless Clients">
 
         <t>
-          The use of encryption, integrity protection and replay protection of
-          serialized state is recommended in general unless careful analysis of
-          any potential attacks to security and privacy is performed. For this
-          reason, AES_CCM with a 64 bit tag is recommended combined with state
-          containing a sequence number and a replay window. For deployments
-          where encryption is not needed, HMAC-SHA-256 combined with state
-          containing a sequence number and a replay window may be used.
+          Transporting the state needed by a client to process a response as
+          serialized state information in the token has several significant and
+          non-obvious security and privacy implications that need to be
+          mitigated.
         </t>
+
+        <t>
+          Serialized state information is an attractive target for both unwanted
+          nodes (attackers between the node in client role and the next hop) and
+          wanted nodes (the next hop itself) on the path. Therefore, a node in
+          the client role MUST integrity protect the state information, unless
+          processing a response does not modify state or cause other significant
+          side effects.
+        </t>
+
+        <t>
+          Even when the serialized state is integrity protected, an attacker may
+          still replay a response, making the client believe it sent the same
+          request twice. Therefore, the node in client role MUST implement
+          replay protection (e.g., by using sequence numbers and a replay
+          window), unless processing a response does not modify state or cause
+          other significant side effects. Integrity protection is REQUIRED for
+          replay protection.
+        </t>
+
+        <t>
+          If processing a response without keeping request state is sensitive to
+          the time elapsed to sending the request, then the serialized state
+          MUST include freshness information (e.g., a timestamp).
+        </t>
+
+        <t>
+          Information in the serialized state may be privacy sensitive. A node
+          in client role MUST encrypt the serialized state if it contains
+          privacy sensitive information that an attacker would not get
+          otherwise. For example, an intermediary that serializes the client's
+          token and transport address into its token leaks that information to
+          the next hop, which may be undesirable. In wireless mesh networks,
+          where all traffic is visible to a passive attacker, encryption may not
+          be needed as the attacker can get the same information from analyzing
+          the traffic flows.
+        </t>
+
+        <t>
+          A node in client role using <xref
+          target="I-D.ietf-core-object-security">OSCORE</xref> always MUST
+          encrypt the serialized state.
+        </t>
+
+        <section title="Recommended Algorithms">
+
+          <t>
+            The use of encryption, integrity protection, and replay protection
+            of serialized state is recommended in general, unless a careful
+            analysis of any potential attacks to security and privacy is
+            performed. AES_CCM with a 64 bit tag is recommended, combined with a
+            sequence number and a replay window. Where encryption is not needed,
+            HMAC-SHA-256, combined with a sequence number and a replay window,
+            may be used.
+          </t>
+
+        </section>
 
       </section>
 
@@ -704,7 +681,8 @@
     <references title="Informative References">
 
       &RFC7228;
-      &RFC8152;
+
+      &I-D.ietf-core-object-security;
 
       &I-D.ietf-6tisch-minimal-security;
 
