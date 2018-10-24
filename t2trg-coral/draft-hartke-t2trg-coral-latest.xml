@@ -44,7 +44,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-coral-06" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-coral-07" ipr="trust200902">
 
   <front>
 
@@ -1048,7 +1048,7 @@
         <section title="Identifiers">
 
           <t>
-            An identifier tokens is a user-defined symbolic name. The rules for
+            An identifier token is a user-defined symbolic name. The rules for
             identifiers correspond to those recommended by the <xref
             target="UNICODE-UAX31">Unicode Standard Annex #31</xref> using the
             following profile:
