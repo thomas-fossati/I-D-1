@@ -272,7 +272,7 @@
    Content-Type: text/coral
 
    #using <http://example.org/vocabulary#>
-   #using coral = <urn:TBD#>
+   #using coral = <urn:TBD1#>
 
    task </tasks/1> {
       description "Pick up the kids"
@@ -309,12 +309,12 @@
               library",
             </t>
             <t>
-              one form of type "urn:TBD#delete" that can be used to
+              one form of type "urn:TBD1#delete" that can be used to
               delete &lt;http://example.com/tasks/2&gt; by making a DELETE
               request to &lt;http://example.com/tasks/2&gt;, and
             </t>
             <t>
-              one form of type "urn:TBD#create" that can be used to
+              one form of type "urn:TBD1#create" that can be used to
               create a new item in &lt;http://example.com/tasks&gt; by making a
               POST request to &lt;http://example.com/tasks&gt; with an
               "example/task" payload.
@@ -857,16 +857,16 @@
 
             <figure>
               <artwork>
-   [4]     -&gt;  [3, "urn:TBD#create", "POST", []]
-   [4, x]  -&gt;  [3, "urn:TBD#create", "POST", [],
-                  ["urn:TBD#accept", x]]
-   [5]     -&gt;  [3, "urn:TBD#update", "PUT", []]
-   [5, x]  -&gt;  [3, "urn:TBD#update", "PUT", [],
-                  ["urn:TBD#accept", x]]
-   [6]     -&gt;  [3, "urn:TBD#delete", "DELETE", []]
-   [7]     -&gt;  [3, "urn:TBD#search", "POST", []]
-   [7, x]  -&gt;  [3, "urn:TBD#search", "POST", [],
-                  ["urn:TBD#accept", x]]
+   [4]     -&gt;  [3, "urn:TBD1#create", "POST", []]
+   [4, x]  -&gt;  [3, "urn:TBD1#create", "POST", [],
+                  ["urn:TBD1#accept", x]]
+   [5]     -&gt;  [3, "urn:TBD1#update", "PUT", []]
+   [5, x]  -&gt;  [3, "urn:TBD1#update", "PUT", [],
+                  ["urn:TBD1#accept", x]]
+   [6]     -&gt;  [3, "urn:TBD1#delete", "DELETE", []]
+   [7]     -&gt;  [3, "urn:TBD1#search", "POST", []]
+   [7, x]  -&gt;  [3, "urn:TBD1#search", "POST", [],
+                  ["urn:TBD1#accept", x]]
               </artwork>
             </figure>
 
@@ -878,16 +878,16 @@
 
             <figure>
               <artwork>
-   [4]     -&gt;  [3, "urn:TBD#create", 2, []]
-   [4, x]  -&gt;  [3, "urn:TBD#create", 2, [],
-                  ["urn:TBD#accept", x]]
-   [5]     -&gt;  [3, "urn:TBD#update", 3, []]
-   [5, x]  -&gt;  [3, "urn:TBD#update", 3, [],
-                  ["urn:TBD#accept", x]]
-   [6]     -&gt;  [3, "urn:TBD#delete", 4, []]
-   [7]     -&gt;  [3, "urn:TBD#search", 5, []]
-   [7, x]  -&gt;  [3, "urn:TBD#search", 5, [],
-                  ["urn:TBD#accept", x]]
+   [4]     -&gt;  [3, "urn:TBD1#create", 2, []]
+   [4, x]  -&gt;  [3, "urn:TBD1#create", 2, [],
+                  ["urn:TBD1#accept", x]]
+   [5]     -&gt;  [3, "urn:TBD1#update", 3, []]
+   [5, x]  -&gt;  [3, "urn:TBD1#update", 3, [],
+                  ["urn:TBD1#accept", x]]
+   [6]     -&gt;  [3, "urn:TBD1#delete", 4, []]
+   [7]     -&gt;  [3, "urn:TBD1#search", 5, []]
+   [7, x]  -&gt;  [3, "urn:TBD1#search", 5, [],
+                  ["urn:TBD1#accept", x]]
               </artwork>
             </figure>
 
@@ -1890,7 +1890,7 @@
           target="RFC6690">CoRE Link Format</xref> (such as "type", "hreflang",
           "media", "ct", "rt", "if", "sz", and "obs") can be expressed in CoRAL by
           nesting links under the respective link and specifying the attribute
-          name appended to the IRI &lt;http://TBD/&gt; as the link relation
+          name appended to the IRI &lt;http://TBD2/&gt; as the link relation
           type.
         </t>
 
@@ -1903,7 +1903,7 @@
         <figure>
           <artwork>
    #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
-   #using attr = &lt;http://TBD/&gt;
+   #using attr = &lt;http://TBD2/&gt;
 
    iana:item &lt;/patches/1&gt; {
       attr:type "application/json-patch+json"
@@ -1915,7 +1915,7 @@
         </figure>
 
         <t>
-          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD/"
+          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD2/"
           in this document with an IETF-controlled IRI, such as "urn:ietf:..."
           or "http://...ietf.org/...".]]
         </t>
@@ -2174,13 +2174,13 @@
             <t>
               Media Type: application/coral+cbor<vspace/>
               Content Coding: identity<vspace/>
-              ID: TBD (maybe 63)<vspace/>
+              ID: TBD3 (maybe 63)<vspace/>
               Reference: &SELF;
             </t>
             <t>
               Media Type: text/coral<vspace/>
               Content Coding: identity<vspace/>
-              ID: TBD (maybe 10063)<vspace/>
+              ID: TBD4 (maybe 10063)<vspace/>
               Reference: &SELF;
             </t>
           </list>
@@ -2327,7 +2327,7 @@
       </t>
 
       <t>
-        [[NOTE TO RFC EDITOR: Please replace all occurrences of "urn:TBD" in
+        [[NOTE TO RFC EDITOR: Please replace all occurrences of "urn:TBD1" in
         this document with an IETF-controlled IRI, such as "urn:ietf:..." or
         "http://...ietf.org/...".]]
       </t>
@@ -2365,40 +2365,40 @@
 
         <t>
           <list style="hanging">
-            <t hangText="&lt;urn:TBD#create&gt;">
+            <t hangText="&lt;urn:TBD1#create&gt;">
               <vspace/>Indicates that the form's context is a collection and
               that a new item can be created in that collection by submitting a
               suitable representation. This form relation type is typically used
               with the POST method <xref target="RFC7231"/> <xref
               target="RFC7252"/>.
             </t>
-            <t hangText="&lt;urn:TBD#update&gt;">
+            <t hangText="&lt;urn:TBD1#update&gt;">
               <vspace/>Indicates that the form's context can be updated by
               submitting a suitable representation. This form relation type is
               typically used with the PUT method <xref target="RFC7231"/> <xref
               target="RFC7252"/>, PATCH method <xref target="RFC5789"/> <xref
               target="RFC8132"/>, or iPATCH method <xref target="RFC8132"/>.
             </t>
-            <t hangText="&lt;urn:TBD#delete&gt;">
+            <t hangText="&lt;urn:TBD1#delete&gt;">
               <vspace/>Indicates that the form's context can be deleted. This
               form relation type is typically used with the DELETE method <xref
               target="RFC7231"/> <xref target="RFC7252"/>.
             </t>
-            <t hangText="&lt;urn:TBD#search&gt;">
+            <t hangText="&lt;urn:TBD1#search&gt;">
               <vspace/>Indicates that the form's context can be searched by
               submitting a search query. This form relation type is typically
               used with the POST method <xref target="RFC7231"/> <xref
               target="RFC7252"/> or FETCH method <xref target="RFC8132"/>.
             </t>
             <!--
-            <t hangText="&lt;urn:TBD#link&gt;">
+            <t hangText="&lt;urn:TBD1#link&gt;">
               <vspace/>Indicates that the form's context can be associated with
               other resources by submitting one or more links. This form
               relation type is typically used with the PATCH method <xref
               target="RFC5789"/> <xref target="RFC8132"/>, or iPATCH method
               <xref target="RFC8132"/>.
             </t>
-            <t hangText="&lt;urn:TBD#unlink&gt;">
+            <t hangText="&lt;urn:TBD1#unlink&gt;">
               <vspace/>Indicates that the form's context can be disassociated
               from other resources by submitting one or more links. This form
               relation type is typically used with the PATCH method <xref
@@ -2415,7 +2415,7 @@
 
         <t>
           <list style="hanging">
-            <t hangText="&lt;urn:TBD#accept&gt;">
+            <t hangText="&lt;urn:TBD1#accept&gt;">
               <vspace/>Specifies an acceptable HTTP content type or CoAP content
               format for the request payload. There MAY be multiple form fields
               with this name. If a form does not include a form field with this
@@ -2452,11 +2452,11 @@
           <t>0 = &lt;http://www.iana.org/assignments/relation/type&gt;</t>
           <t>1 = &lt;http://www.iana.org/assignments/relation/item&gt;</t>
           <t>2 = &lt;http://www.iana.org/assignments/relation/collection&gt;</t>
-          <t>3 = &lt;urn:TBD#create&gt;</t>
-          <t>4 = &lt;urn:TBD#update&gt;</t>
-          <t>5 = &lt;urn:TBD#delete&gt;</t>
-          <t>6 = &lt;urn:TBD#search&gt;</t>
-          <t>7 = &lt;urn:TBD#accept&gt;</t>
+          <t>3 = &lt;urn:TBD1#create&gt;</t>
+          <t>4 = &lt;urn:TBD1#update&gt;</t>
+          <t>5 = &lt;urn:TBD1#delete&gt;</t>
+          <t>6 = &lt;urn:TBD1#search&gt;</t>
+          <t>7 = &lt;urn:TBD1#accept&gt;</t>
         </list>
       </t>
 
