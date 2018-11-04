@@ -2174,16 +2174,33 @@
             <t>
               Media Type: application/coral+cbor<vspace/>
               Content Coding: identity<vspace/>
-              ID: TBD3 (maybe 63)<vspace/>
+              ID: TBD3<vspace/>
               Reference: &SELF;
             </t>
             <t>
               Media Type: text/coral<vspace/>
               Content Coding: identity<vspace/>
-              ID: TBD4 (maybe 10063)<vspace/>
+              ID: TBD4<vspace/>
               Reference: &SELF;
             </t>
           </list>
+        </t>
+
+        <t>
+          [[NOTE TO IANA: For "application/coral+cbor", a code point in the
+          range 0-255 is requested. For "text/coral", a code point in the range
+          256-64999 is requested.]]
+        </t>
+
+        <t>
+          [[NOTE TO RFC EDITOR: Please replace all occurrences of "TBD3" and
+          "TBD4" in this document by the code points assigned by IANA.]]
+        </t>
+
+        <t>
+          [[NOTE TO IMPLEMENTERS: Experimental implementations can use content
+          format ID 65087 for "application/coral+cbor" and content format ID
+          65343 for "text/coral" until IANA has assigned stable code points.]]
         </t>
 
       </section>
