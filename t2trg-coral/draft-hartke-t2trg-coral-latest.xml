@@ -2364,8 +2364,7 @@
     <section title="Core Vocabulary" anchor="core-vocabulary">
 
       <t>
-        This section defines the core vocabulary for CoRAL. It is RECOMMENDED
-        that all CoRAL registries assign an unsigned integer to each of these
+        This section defines the core vocabulary for CoRAL: a set of
         link relation types, form relation types, and form field names.
       </t>
 
