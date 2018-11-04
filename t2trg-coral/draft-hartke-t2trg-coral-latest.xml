@@ -1817,8 +1817,8 @@
           one registry. The "profile" parameter of the CoRAL media types
           MUST contain a single URI, not a white space separated list of URIs as
           recommended by <xref target="RFC6906">RFC 6906</xref>. If the
-          "profile" parameter is absent, the default profile specified in <xref
-          target="default-profile"/> of this document is assumed.
+          "profile" parameter is absent, the default registry specified in <xref
+          target="default-registry"/> of this document is assumed.
         </t>
 
         <t>
@@ -2488,7 +2488,7 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Default Profile" anchor="default-profile">
+    <section title="Default Registry" anchor="default-registry">
 
       <t>
         This section defines a default registry that is assumed when a CoRAL
