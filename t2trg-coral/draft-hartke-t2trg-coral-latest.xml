@@ -1698,7 +1698,7 @@
         <t>
           Specifications for CoRAL-based applications need to list the specific
           components used in the application and their identifiers. This SHOULD
-          include at least the following items:
+          include the following items:
           <list style="symbols">
             <t hangText="URI Schemes:">
               IRI schemes that identify the Web transfer protocol(s) used in the
@@ -1720,15 +1720,15 @@
             <t hangText="Form Field Names:">
               Form field names that identify the semantics of form fields.
               Additionally, for each form field name, the permissible form field
-              value(s) or type(s).
+              value(s) and/or type(s).
             </t>
           </list>
         </t>
 
-        <section title="Naming Resources">
+        <section title="Resource Names">
 
           <t>
-            Resource names -- <xref target="RFC3986">URIs</xref> and <xref
+            Resource names -- i.e., <xref target="RFC3986">URIs</xref> and <xref
             target="RFC3987">IRIs</xref> -- are a cornerstone of Web-based
             applications. They enable the uniform identification of resources and
             are used every time a client interacts with a server or a resource
@@ -1738,16 +1738,16 @@
           <t>
             URIs and IRIs often include structured application data in the path
             and query components, such as paths in a filesystem or keys in a
-            database. It is a common practice in many HTTP-based applications to
+            database. It is a common practice in many HTTP-based application programming interfaces (APIs) to
             make this part of the application specification, i.e., to
             prescribe fixed URI templates that are hard-coded in
-            implementations. There are, however, a number of problems with this
-            practice <xref target="RFC7320"/>.
+            implementations. There are a number of problems with this
+            practice <xref target="RFC7320"/>, though.
           </t>
 
           <t>
-            In CoRAL-based applications, resource names are not part of the
-            application specification; they are an implementation detail. The
+            In CoRAL-based applications, resource names are therefore not part of the
+            application specification. They are an implementation detail. The
             specification of a CoRAL-based application MUST NOT mandate any
             particular form of resource name structure. <xref
             target="RFC7320">BCP 190</xref> describes the problematic practice
@@ -1820,15 +1820,15 @@
                 protocol;
               </t>
               <t>
-                use of only either IRIs or unsigned integers to denote link
+                use of only either IRIs or unsigned integers to denote certain link
                 relation types, form relation types, and form field names;
               </t>
               <t>
                 use of only either short forms or long forms in the binary
-                format;
+                format for certain form relation types;
               </t>
               <t>
-                use of only either HTTP content types or CoAP content formats;
+                use of only either media type strings or content format IDs;
               </t>
               <t>
                 use of IRI references only up to a specific length;
