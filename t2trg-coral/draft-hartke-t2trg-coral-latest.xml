@@ -14,7 +14,6 @@
   <!ENTITY RFC6657 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6657.xml">
   <!ENTITY RFC6690 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6690.xml">
   <!ENTITY RFC6838 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6838.xml">
-  <!ENTITY RFC6906 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6906.xml">
   <!ENTITY RFC6943 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6943.xml">
   <!ENTITY RFC7049 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7228.xml">
@@ -1612,13 +1611,13 @@
       <t>
         This document does not create a registry for such integers. Instead, the
         media types for CoRAL documents in the binary and textual format are
-        defined to have a <xref target="RFC6906">"profile" parameter</xref> that
+        defined to have a "registry" parameter that
         determines the registry in use. The registry is identified by a <xref
         target="RFC3986">URI</xref>. For example, a CoRAL document that uses the
         registry identified by the URI &lt;http://example.com/registry&gt; can
         use the following media type:
         <list>
-          <t>application/coral+cbor; profile="http://example.com/registry"</t>
+          <t>application/coral+cbor; registry="http://example.com/registry"</t>
         </list>
         The URI serves only as an identifier; it does not necessarily have to be
         dereferencable (or even use a dereferencable URI scheme). It is
@@ -1630,9 +1629,8 @@
 
       <t>
         For simplicity, a CoRAL document can use unsigned integers from only one
-        registry. The "profile" parameter of the CoRAL media types MUST contain
-        a single URI, not a white space separated list of URIs as recommended by
-        <xref target="RFC6906">RFC 6906</xref>. If the "profile" parameter is
+        registry. The "registry" parameter of the CoRAL media types MUST contain
+        a single URI. If the "registry" parameter is
         absent, the default registry specified in <xref
         target="default-registry"/> of this document is assumed.
       </t>
@@ -1651,7 +1649,7 @@
         the <spanx>content format</spanx>. For use with CoAP, each CoRAL
         registry needs to register a new content format in the IANA CoAP
         Content-Formats Registry. Each such registered content format MUST
-        specify a CoRAL media type with a "profile" parameter that contains the
+        specify a CoRAL media type with a "registry" parameter that contains the
         registry URI.
       </t>
 
@@ -2069,7 +2067,7 @@
               <vspace/>N/A
             </t>
             <t hangText="Optional parameters:">
-              <vspace/>profile - See <xref target="registering"/> of &SELF;.
+              <vspace/>registry - See <xref target="registering"/> of &SELF;.
             </t>
             <t hangText="Encoding considerations:">
               <vspace/>binary - See <xref target="binary"/> of &SELF;.
@@ -2135,7 +2133,7 @@
               <vspace/>N/A
             </t>
             <t hangText="Optional parameters:">
-              <vspace/>profile - See <xref target="registering"/> of &SELF;.
+              <vspace/>registry - See <xref target="registering"/> of &SELF;.
             </t>
             <t hangText="Encoding considerations:">
               <vspace/>binary - See <xref target="textual"/> of &SELF;.
@@ -2314,7 +2312,6 @@
       &RFC5789;
       &RFC6573;
       &RFC6690;
-      &RFC6906;
       &RFC7228;
       &RFC7230;
       &RFC7231;
@@ -2481,7 +2478,7 @@
 
       <t>
         This section defines a default registry that is assumed when a CoRAL
-        media type without a "profile" parameter is used.
+        media type without a "registry" parameter is used.
         <list>
           <t>0 = &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</t>
           <t>1 = &lt;http://www.iana.org/assignments/relation/item&gt;</t>
