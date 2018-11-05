@@ -8,6 +8,7 @@
   <!ENTITY RFC4287 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.4287.xml">
   <!ENTITY RFC4648 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.4648.xml">
   <!ENTITY RFC5234 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5234.xml">
+  <!ENTITY RFC5646 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5646.xml">
   <!ENTITY RFC5789 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5789.xml">
   <!ENTITY RFC6573 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6573.xml">
   <!ENTITY RFC6657 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6657.xml">
@@ -23,6 +24,7 @@
   <!ENTITY RFC7320 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7320.xml">
   <!ENTITY RFC8132 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8132.xml">
   <!ENTITY RFC8174 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml">
+  <!ENTITY RFC8187 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8187.xml">
   <!ENTITY RFC8288 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8288.xml">
   <!ENTITY RFC8446 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml">
   <!ENTITY I-D.hartke-t2trg-ciri SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.hartke-t2trg-ciri.xml">
@@ -1885,11 +1887,11 @@
 
         <t>
           Link target attributes defined for use with <xref
-          target="RFC6690">CoRE Link Format</xref> (such as "type", "hreflang",
-          "media", "ct", "rt", "if", "sz", and "obs") can be expressed in CoRAL by
-          nesting links under the respective link. The link relation type of
-          each link MUST be the lower-case attribute name appended to the IRI
-          &lt;http://TBD2/&gt;.
+          target="RFC6690">CoRE Link Format</xref> (such as "hreflang", "media",
+          "title", "title*", "type", "ct", "rt", "if", "sz", and "obs") can be
+          expressed in CoRAL by nesting links under the respective link where
+          the link relation type of each nested link is the lower-case attribute
+          name appended to the IRI &lt;http://TBD2/&gt;.
         </t>
 
         <t>
@@ -1909,20 +1911,51 @@
       attr:sz   "247"
       attr:obs  true
    }
+
+&lt;=&gt;
+
+   &lt;/patches/1&gt;; rel=item; type="application/json-patch+json";
+      ct=51; sz=247; obs
           </artwork>
         </figure>
+
+        <t>
+          Language information in attributes as per <xref target="RFC8187">RFC
+          8187</xref>, such as in "title*" attributes, is expressed by nesting
+          an additional link of type &lt;http://TBD2/hreflang&gt; under the link
+          representing the attribute. The target of the nested link MUST be a
+          text string containing a <xref target="RFC5646">language tag</xref>.
+          The attribute name is expressed without the "*" character:
+        </t>
+
+        <figure>
+          <artwork>
+   #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
+   #using attr = &lt;http://TBD2/&gt;
+
+   iana:terms-of-service &lt;/tos&gt; {
+      attr:title "Nutzungsbedingungen" { attr:hreflang "de" }
+      attr:title "Terms of use"        { attr:hreflang "en" }
+   }
+
+&lt;=&gt;
+
+   &lt;/tos&gt;; rel=terms-of-service;
+      title*=UTF-8'de'Nutzungsbedingungen;
+      title*=UTF-8'en'Terms%20of%20use
+          </artwork>
+        </figure>
+
+        <t>
+          Link target attributes that actually do not describe the link target
+          but the link itself (such as "rel", "anchor", and "rev") are excluded
+          from this provision and MUST NOT occur in a CoRAL document.
+        </t>
 
         <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD2/"
           in this document with an IETF-controlled IRI, such as "urn:ietf:..."
           or "http://...ietf.org/...".]]
-        </t>
-
-        <t>
-          Link target attributes that do not actually describe the link target
-          but the link itself (such as "rel", "anchor", "rev", "title", and
-          "title*") are excluded from this provision and MUST NOT occur in a
-          CoRAL document.
         </t>
 
       </section>
@@ -2315,6 +2348,7 @@
     <references title="Informative References">
 
       &RFC4287;
+      &RFC5646;
       &RFC5789;
       &RFC6573;
       &RFC6690;
@@ -2325,6 +2359,7 @@
       &RFC7252;
       &RFC7320;
       &RFC8132;
+      &RFC8187;
       &RFC8446;
 
       &I-D.ietf-core-links-json;
