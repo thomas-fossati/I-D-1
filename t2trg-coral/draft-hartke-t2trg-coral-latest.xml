@@ -1826,7 +1826,7 @@
         <t>
           Since link relation types are always compared in a case-sensitive
           fashion in CoRAL, registered link relation types MUST be converted to
-          their registered form (usually, lowercase) when serialised in a CoRAL
+          their registered form (usually, lowercase) when serialized in a CoRAL
           document.
         </t>
 
