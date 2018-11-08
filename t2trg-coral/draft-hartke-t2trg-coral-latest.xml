@@ -1610,7 +1610,7 @@
 
       <t>
         This document does not create a registry for such integers. Instead, the
-        media types for CoRAL documents in the binary and textual format are
+        media type for CoRAL documents in the binary format is
         defined to have a "registry" parameter that
         determines the registry in use. The registry is identified by a <xref
         target="RFC3986">URI</xref>. For example, a CoRAL document that uses the
@@ -2133,7 +2133,7 @@
               <vspace/>N/A
             </t>
             <t hangText="Optional parameters:">
-              <vspace/>registry - See <xref target="registering"/> of &SELF;.
+              <vspace/>N/A
             </t>
             <t hangText="Encoding considerations:">
               <vspace/>binary - See <xref target="textual"/> of &SELF;.
