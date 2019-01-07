@@ -193,8 +193,22 @@
             </t>
             <t hangText="path.type">
               <vspace/>Specifies the type of the IRI path for reference
-              resolution. Possible values are 0 (absolute-path), 1
-              (append-path), 2 (relative-path), and 3 (append-relation).
+              resolution.
+              The option value is an unsigned integer in the range 0 to 127,
+              named as follows:
+              <list>
+                <t>
+                  0 - absolute-path     <vspace/>
+                  1 - append-relation   <vspace/>
+                  2 - append-path       <vspace/>
+                  3 - relative-path     <vspace/>
+                  4 - relative-path-1up <vspace/>
+                  5 - relative-path-2up <vspace/>
+                  6 - relative-path-3up <vspace/>
+                  7 - relative-path-4up <vspace/>
+                  ...
+                </t>
+              </list>
             </t>
             <t hangText="path">
               <vspace/>Specifies one segment of the IRI path.
@@ -356,17 +370,10 @@ ____ scheme __/             \___ port _
            ?(host.name: 2, text //
              host.ip:   3, bytes .size 4 / bytes .size 16),
            ?(port:      4, uint .size 2),
-           ?(path.type: 5, path-type),
+           ?(path.type: 5, 0..127),
            *(path:      6, text),
            *(query:     7, text),
            ?(fragment:  8, text)]
-]]></artwork></figure>
-
-<figure><artwork><![CDATA[
-   path-type = &(absolute-path:   0,
-                 append-path:     1,
-                 relative-path:   2,
-                 append-relation: 3)
 ]]></artwork></figure>
 
     </section>
@@ -397,21 +404,25 @@ ____ scheme __/             \___ port _
 
    class PathType(enum.IntEnum):
      ABSOLUTE_PATH = 0
-     APPEND_PATH = 1
-     RELATIVE_PATH = 2
-     APPEND_RELATION = 3
+     APPEND_RELATION = 1
+     APPEND_PATH = 2
+     RELATIVE_PATH = 3
+     RELATIVE_PATH_1UP = 4
+     RELATIVE_PATH_2UP = 5
+     RELATIVE_PATH_3UP = 6
+     RELATIVE_PATH_4UP = 7
 
-   _TRANSITIONS = [(Option.SCHEME, Option.HOST_NAME, Option.HOST_IP,
+   _TRANSITIONS = ([Option.SCHEME, Option.HOST_NAME, Option.HOST_IP,
        Option.PORT, Option.PATH_TYPE, Option.PATH, Option.QUERY,
-       Option.FRAGMENT, Option._END),
-     (Option.HOST_NAME, Option.HOST_IP),
-     (Option.PORT,),
-     (Option.PORT,),
-     (Option.PATH, Option.QUERY, Option.FRAGMENT, Option._END),
-     (Option.PATH, Option.QUERY, Option.FRAGMENT, Option._END),
-     (Option.PATH, Option.QUERY, Option.FRAGMENT, Option._END),
-     (Option.QUERY, Option.FRAGMENT, Option._END),
-     (Option._END,)]
+       Option.FRAGMENT, Option._END],
+     [Option.HOST_NAME, Option.HOST_IP],
+     [Option.PORT],
+     [Option.PORT],
+     [Option.PATH, Option.QUERY, Option.FRAGMENT, Option._END],
+     [Option.PATH, Option.QUERY, Option.FRAGMENT, Option._END],
+     [Option.PATH, Option.QUERY, Option.FRAGMENT, Option._END],
+     [Option.QUERY, Option.FRAGMENT, Option._END],
+     [Option._END])
 
    def is_well_formed(href):
      previous = Option._BEGIN
@@ -448,22 +459,28 @@ ____ scheme __/             \___ port _
      if not is_absolute(base) or not is_well_formed(href):
        return None
      result = []
-     type = PathType.RELATIVE_PATH
-     option = href[0][0] if href else Option._END
+     option = Option.FRAGMENT
+     if len(href) != 0:
+       option = href[0][0]
      if option == Option.HOST_IP:
        option = Option.HOST_NAME
      elif option == Option.PATH_TYPE:
        type = href[0][1]
        href = href[1:]
-       option = Option.PATH
-     if option != Option.PATH or type == PathType.ABSOLUTE_PATH:
+     elif option == Option.PATH:
+       type = PathType.RELATIVE_PATH
+       option = Option.PATH_TYPE
+     if option != Option.PATH_TYPE or type == PathType.ABSOLUTE_PATH:
        _copy_until(base, result, option)
      else:
        _copy_until(base, result, Option.QUERY)
        if type == PathType.APPEND_RELATION:
          _append_and_normalize(result, Option.PATH, str(relation))
-       elif type == PathType.RELATIVE_PATH:
-         _remove_last_path_segment(result)
+       while type > PathType.APPEND_PATH:
+         if len(result) == 0 or result[-1][0] != Option.PATH:
+           break
+         del result[-1]
+         type -= 1
      _copy_until(href, result, Option._END)
      _append_and_normalize(result, Option._END, None)
      return result
@@ -475,26 +492,16 @@ ____ scheme __/             \___ port _
        _append_and_normalize(output, option, value)
 
    def _append_and_normalize(output, option, value):
-     if option == Option.PATH:
-       if value == '.':
-         return
-       if value == '..':
-         _remove_last_path_segment(output)
-         return
-     elif option > Option.PATH:
+     if option > Option.PATH:
        if len(output) >= 2 and \
            output[-1] == (Option.PATH, '') and (
            output[-2][0] < Option.PATH_TYPE or (
            output[-2][0] == Option.PATH_TYPE and
            output[-2][1] == PathType.ABSOLUTE_PATH)):
-         _remove_last_path_segment(output)
+         del output[-1]
        if option > Option.FRAGMENT:
          return
      output.append((option, value))
-
-   def _remove_last_path_segment(output):
-     if len(output) >= 1 and output[-1][0] == Option.PATH:
-       del output[-1]
 
 <CODE ENDS>
 ]]></artwork></figure>
