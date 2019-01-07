@@ -224,12 +224,12 @@ ____ scheme __/             \___ port _
           A sequence of options is considered <spanx>well-formed</spanx> if:
           <list style="symbols">
             <t>
-              the sequence of options is empty or starts with a "scheme",
+              the sequence of options is either empty or starts with a "scheme",
               "host.name", "host.ip", "port", "path.type", "path", "query",
               or "fragment" option;
             </t>
             <t>
-              any "scheme" option is followed by either a "host.name" or a
+              any "scheme" option is followed either by a "host.name" or a
               "host.ip" option;
             </t>
             <t>
@@ -239,20 +239,20 @@ ____ scheme __/             \___ port _
               any "host.ip" option is followed by a "port" option;
             </t>
             <t>
-              any "port" option is followed by a "path", "query", or "fragment"
-              option or is at the end of the sequence;
+              any "port" option is either followed by a "path", "query", or "fragment"
+              option or at the end of the sequence;
             </t>
             <t>
-              any "path.type" option is followed by a "path", "query", or
-              "fragment" option or is at the end of the sequence;
+              any "path.type" option is either followed by a "path", "query", or
+              "fragment" option or at the end of the sequence;
             </t>
             <t>
-              any "path" option is followed by a "path", "query", or "fragment"
-              option or is at the end of the sequence;
+              any "path" option is either followed by a "path", "query", or "fragment"
+              option or at the end of the sequence;
             </t>
             <t>
-              any "query" option is followed by a "query" or "fragment" option or
-              is at the end of the sequence; and
+              any "query" option is either followed by a "query" or "fragment" option or
+              at the end of the sequence; and
             </t>
             <t>
               any "fragment" option is at the end of the sequence.
