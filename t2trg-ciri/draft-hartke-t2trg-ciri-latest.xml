@@ -290,6 +290,13 @@ ____ scheme __/             \___ port _
               equivalent to the reference implementation in <xref
               target="py-resolve"/> of this document.
             </t>
+            <t hangText="relative(href, base)">
+              <vspace/>Makes an absolute sequence of options `href` relative to
+              an absolute sequence of options `base`. This operation MUST be
+              performed by applying any algorithm that returns a sequence of
+              options such that `resolve(relative(h, b), b)` is equal to `h`
+              given the same `b`.
+            </t>
             <t hangText="recompose(href)">
               <vspace/>Recomposes an IRI reference string from an absolute
               sequence of options `href`. This operation MUST be performed by
