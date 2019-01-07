@@ -168,21 +168,28 @@
           The following types of options are defined:
           <list style="hanging">
             <t hangText="scheme">
-              <vspace/>Specifies the IRI scheme. Since IRI schemes have the same
-              syntax as URI schemes, the option value MUST match the "scheme"
-              rule defined in Section 3.1 of RFC 3986.
+              <vspace/>Specifies the IRI scheme.
+              The option value can be any Unicode string matching the "scheme"
+              rule described in <xref target="RFC3987">Section 2.2 of RFC
+              3987</xref>.
             </t>
             <t hangText="host.name">
               <vspace/>Specifies the host of the IRI authority as a registered
               name.
+              The option value can be any Unicode string matching the
+              specifications of the IRI scheme. For example, if the scheme
+              refers to CoAP or HTTP, then the option value is an <xref
+              target="RFC5890">Internationalized Domain Name</xref>.
             </t>
             <t hangText="host.ip">
               <vspace/>Specifies the host of the IRI authority as an IPv4
-              address (4&nbsp;bytes) or an IPv6 address (16&nbsp;bytes).
+              address or an IPv6 address.
+              The option value is a byte string consisting of 4 or 16 bytes,
+              respectively.
             </t>
             <t hangText="port">
-              <vspace/>Specifies the port number. The option value MUST be an
-              unsigned integer in the range 0 to 65535 (inclusive).
+              <vspace/>Specifies the port number.
+              The option value is an unsigned integer in the range 0 to 65535.
             </t>
             <t hangText="path.type">
               <vspace/>Specifies the type of the IRI path for reference
@@ -190,19 +197,21 @@
               (append-path), 2 (relative-path), and 3 (append-relation).
             </t>
             <t hangText="path">
-              <vspace/>Specifies one segment of the IRI path. This option can
-              occur more than once.
+              <vspace/>Specifies one segment of the IRI path.
+              The option value can be any Unicode string except "." and "..".
+              This option can occur more than once.
             </t>
             <t hangText="query">
-              <vspace/>Specifies one argument of the IRI query. This option can
-              occur more than once.
+              <vspace/>Specifies one argument of the IRI query.
+              The option value can be any Unicode string.
+              This option can occur more than once.
             </t>
             <t hangText="fragment">
               <vspace/>Specifies the fragment identifier.
+              The option value can be any Unicode string.
             </t>
           </list>
-          The value of a "host.name", "path", "query", and "fragment" option can
-          be any Unicode string. No percent-encoding is performed.
+          No percent-encoding is performed in option values.
         </t>
 
       </section>
