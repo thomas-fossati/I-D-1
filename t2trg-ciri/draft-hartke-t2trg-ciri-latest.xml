@@ -4,13 +4,14 @@
   <!ENTITY RFC2119 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml">
   <!ENTITY RFC3986 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3986.xml">
   <!ENTITY RFC3987 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3987.xml">
+  <!ENTITY RFC5890 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5890.xml">
   <!ENTITY RFC5952 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5952.xml">
-  <!ENTITY RFC6690 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6690.xml">
   <!ENTITY RFC7049 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7228.xml">
   <!ENTITY RFC7230 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7230.xml">
   <!ENTITY RFC7252 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7252.xml">
   <!ENTITY RFC8174 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml">
+  <!ENTITY RFC8288 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8288.xml">
   <!ENTITY I-D.ietf-cbor-cddl SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-cbor-cddl.xml">
   <!ENTITY W3C.REC-html52-20171214 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-html52-20171214.xml">
 ]>
@@ -24,7 +25,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-ciri-00" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-ciri-01" ipr="trust200902">
 
   <front>
 
@@ -52,11 +53,12 @@
     <abstract>
 
       <t>
-        This document specifies Constrained Internationalized Resource Identifier References, a serialization of
-        Internationalized Resource Identifier (IRI) references that encodes the IRI components as Concise Binary Object
-        Representation (CBOR) data items rather than a string of characters.
-        This intends to simplify parsing, reference resolution, and comparison
-        of IRIs in Constrained RESTful Environments (CoRE).
+        This document specifies Constrained Internationalized Resource
+        Identifier (CIRI) References, a representation of Internationalized
+        Resource Identifier (IRI) References that encodes the IRI components in
+        Concise Binary Object Representation (CBOR) rather than a string of
+        characters. This simplifies parsing, reference resolution, and
+        comparison of IRIs in Constrained RESTful Environments (CoRE).
       </t>
 
     </abstract>
@@ -73,57 +75,60 @@
     <section title="Introduction" anchor="introduction">
 
       <t>
-        <xref target="RFC3986">URI references</xref> and, albeit less
-        prevalently, <xref target="RFC3987">IRI references</xref> are the
-        standard way to link to resources in hypertext formats like <xref
+        <xref target="RFC3986">URI</xref> and (less prevalently) <xref
+        target="RFC3987">IRI</xref> references are the standard way to link to
+        resources in hypertext formats like <xref
         target="W3C.REC-html52-20171214">HTML</xref> and the <xref
-        target="RFC6690">CoRE Link Format</xref>. They encode the components of
-        a resource reference either as an absolute URI/IRI or as a relative
-        reference that must be resolved against a base URI/IRI to receive an
-        absolute URI/IRI.
+        target="RFC8288">HTTP "Link" header field</xref>. These formats
+        reference resources either through a URI/IRI or through a relative
+        reference that must be resolved against a base URI/IRI to yield a
+        URI/IRI.
       </t>
 
       <t>
-        URI and IRI references are strings of characters where the characters
-        are chosen from a limited subset of the repertoires of US-ASCII and
-        Unicode characters, respectively. The individual components of a URI or
-        IRI reference are delimited by a number of reserved characters, which
-        necessitates the use of percent-encoding when these reserved characters
-        are used in a non-delimiting function. The resolution of references
-        involves parsing URI/IRI references into their components, combining
-        those components with the components of the base URI/IRI, merging paths,
-        removing dot segments, and recomposing the result back into a character
+        URI and IRI references are strings of characters, which are chosen from
+        the repertoires of US-ASCII and Unicode characters respectively. The
+        individual components of a URI or IRI reference are delimited by a
+        number of reserved characters, which necessitates the use of escaping
+        (called percent-encoding) when these reserved characters are used in a
+        non-delimiting function. Path components can also contain special
+        character sequences (called dot-segments) that affect how the component
+        is to be interpreted. The resolution of URI/IRI references involves
+        parsing the character string into its components, combining those
+        components with the components of the base URI/IRI, merging paths,
+        removing dot-segments, and recomposing the result back into a character
         string.
       </t>
 
       <t>
-        Altogether, the proper processing of URIs is quite complex. This can be
-        a problem particularly in <xref target="RFC7228">constrained
+        Overall, the proper processing of URIs is quite complex. This can be a
+        problem particularly in <xref target="RFC7228">constrained
         environments</xref>, where devices often have severe code size
         limitations. As a result, many implementations in these environments
-        choose to implement only an ad-hoc, informally-specified, bug-ridden,
-        non-interoperable subset of less than half of RFC 3986.
+        choose to support only an ad-hoc, informally-specified, bug-ridden,
+        non-interoperable subset of half of the standard.
       </t>
 
       <t>
-        This document specifies Constrained IRI References, a serialization
-        format for IRI references that encodes the IRI components as <xref
-        target="RFC7049">Concise Binary Object Representation (CBOR)</xref> data
-        items rather than as a string of characters. Assuming that a CBOR
-        implementation is already present on a device, typical operations on
-        Constrained IRI references such as parsing, reference resolution, and
-        comparison can be implemented much more easily than with the original
-        format. A full implementation that covers all corner cases of the
-        specification can be implemented in a relatively small amount of code.
+        This document specifies Constrained IRI References, a representation of
+        IRI references that encodes the IRI components in <xref
+        target="RFC7049">Concise Binary Object Representation (CBOR)</xref>
+        rather than a string of characters. Assuming an implementation of CBOR
+        is already present on a device, typical operations on Constrained IRI
+        references, such as parsing, reference resolution, and comparison, can
+        be implemented more easily than for the character strings; a full
+        implementation that covers all corner cases can be implemented in a
+        relatively small amount of code.
       </t>
 
       <t>
         As a result of the simplification, Constrained IRI References are not
-        capable of expressing all IRI references that are permitted by the
-        syntax of RFC 3987. The supported subset includes all <xref
-        target="RFC7252">Constrained Application Protocol (CoAP) URIs</xref>,
-        most <xref target="RFC7230"> Hypertext Transfer Protocol (HTTP)
-        URIs</xref>, and many other URIs and IRIs.
+        capable of expressing all IRI references permitted by the syntax of RFC
+        3987. (Hence the "constrained" in "Constrained IRI References".) The
+        supported subset includes all <xref target="RFC7252">Constrained
+        Application Protocol (CoAP) URIs</xref>, most <xref target="RFC7230">
+        Hypertext Transfer Protocol (HTTP) URIs</xref>, and many other URIs and
+        IRIs that function as resource locators.
       </t>
 
       <section title="Requirements Notation">
@@ -148,12 +153,13 @@
     <section title="Data Model">
 
       <t>
-        The data model for Constrained IRI References is very similar to the
-        <xref target="RFC7252">encoding of a request URI in CoAP
-        messages</xref>: The components of an IRI reference are encoded as a
-        sequence of <spanx>options</spanx>. Each option consists of an
-        <spanx>option number</spanx> identifying the type of option (scheme,
-        host name, etc.) and the <spanx>option value</spanx>.
+        The data model for Constrained IRI References is similar to the <xref
+        target="RFC7252">encoding of request URIs in CoAP messages</xref>: The
+        components of an IRI reference are encoded as a sequence of
+        <spanx>options</spanx>, where each path segment and query parameter
+        becomes its own option. Every option consists of an <spanx>option
+        number</spanx> identifying the type of option (scheme, host name, path
+        segment, etc.) and an <spanx>option value</spanx>.
       </t>
 
       <section title="Options">
@@ -615,7 +621,7 @@ ____ scheme __/             \___ port _
         <t>
           The following Python 3.6 code shows how to construct CoAP options from
           an absolute sequence of options. For simplicity, the code does not
-          omit CoAP options with their default value in a CoAP request.
+          omit CoAP options with the default value.
         </t>
 
 <figure><artwork><![CDATA[
@@ -710,7 +716,7 @@ ____ scheme __/             \___ port _
     <section title="Security Considerations" anchor="security">
 
       <t>
-        Parsers of Constrained IRI References must operate on input that is
+        Parsers must operate on input that is
         assumed to be untrusted. This means that parsers MUST fail gracefully in
         the face of malicious inputs. Additionally, parsers MUST be prepared to
         deal with resource exhaustion (e.g., resulting from the allocation of
@@ -768,11 +774,12 @@ ____ scheme __/             \___ port _
 
     <references title="Informative References">
 
+      &RFC5890;
       &RFC5952;
-      &RFC6690;
       &RFC7228;
       &RFC7230;
       &RFC7252;
+      &RFC8288;
 
       &W3C.REC-html52-20171214;
 
