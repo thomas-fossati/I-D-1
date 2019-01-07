@@ -292,7 +292,7 @@ ____ scheme __/             \___ port _
         <t>
           A well-formed sequence of options is considered
           <spanx>relative</spanx> if the sequence of options is empty or starts
-          with an option other than the "scheme" option.
+          with an option other than a "scheme" option.
         </t>
 
         <t>
@@ -334,7 +334,7 @@ ____ scheme __/             \___ port _
               IPv6 addresses</xref>.
             </t>
             <t hangText="decompose(iriref)">
-              <vspace/>Decomposes a IRI reference string into a sequence of
+              <vspace/>Decomposes a IRI reference string `iriref` into a sequence of
               options. This operation MUST be performed by applying any
               algorithm that returns a sequence of options such that
               `recompose(decompose(x))` is equivalent to `x`.
@@ -360,9 +360,9 @@ ____ scheme __/             \___ port _
       <t>
         A sequence of options is represented in <xref target="RFC7049">Concise
         Binary Object Representation (CBOR)</xref> as an array of even length
-        that contains option numbers and values in an alternating fashion. The
-        structure is presented in the <xref target="I-D.ietf-cbor-cddl">Concise
-        Data Definition Language (CDDL)</xref>.
+        that contains option numbers and option values in alternating order. This
+        structure can be described in the <xref target="I-D.ietf-cbor-cddl">Concise
+        Data Definition Language (CDDL)</xref> as follows:
       </t>
 
 <figure><artwork><![CDATA[
