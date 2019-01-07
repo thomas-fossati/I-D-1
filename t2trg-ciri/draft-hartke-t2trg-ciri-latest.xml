@@ -358,11 +358,11 @@ ____ scheme __/             \___ port _
     <section title="CBOR">
 
       <t>
-        A sequence of options is serialized as an array in <xref
-        target="RFC7049">Concise Binary Object Representation (CBOR)</xref> as
-        follows. The structure is presented in the <xref
-        target="I-D.ietf-cbor-cddl">Concise Data Definition Language
-        (CDDL)</xref>.
+        A sequence of options is represented in <xref target="RFC7049">Concise
+        Binary Object Representation (CBOR)</xref> as an array of even length
+        that contains option numbers and values in an alternating fashion. The
+        structure is presented in the <xref target="I-D.ietf-cbor-cddl">Concise
+        Data Definition Language (CDDL)</xref>.
       </t>
 
 <figure><artwork><![CDATA[
@@ -376,14 +376,23 @@ ____ scheme __/             \___ port _
            ?(fragment:  8, text)]
 ]]></artwork></figure>
 
+      <t>
+        Example:
+        <list>
+          <t>[1, "coap", 3, h'20010DB8000000000000000000000001', 4, 5683, 6, ".well-known", 6, "core"]</t>
+          <t>[5, 0, 6, ".well-known", 6, "core", 7, "rt=temperature-c"]</t>
+        </list>
+      </t>
+
     </section>
 
     <section title="Python">
 
-        <t>
-          The following Python 3.6 code shows how to work with a sequence of
-          options.
-        </t>
+      <t>
+        A sequence of options is represented in the following Python 3.6 code as
+        a list of pairs, where each pair consists of an option number and an
+        option value.
+      </t>
 
 <figure><artwork><![CDATA[
 <CODE BEGINS>
@@ -411,6 +420,38 @@ ____ scheme __/             \___ port _
      RELATIVE_PATH_2UP = 5
      RELATIVE_PATH_3UP = 6
      RELATIVE_PATH_4UP = 7
+
+<CODE ENDS>
+]]></artwork></figure>
+
+      <t>
+        Examples:
+        <list>
+          <t>
+            [(Option.SCHEME, "coap"),
+             (Option.HOST_IP, b"\x20\x01\x0D\xB8\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01"),
+             (Option.PORT, 5683),
+             (Option.PATH, ".well-known"),
+             (Option.PATH, "core")]
+          </t>
+          <t>
+            [(Option.PATH_TYPE, PathType.ABSOLUTE_PATH),
+             (Option.PATH, ".well-known"),
+             (Option.PATH, "core"),
+             (Option.QUERY, "rt=temperature-c")]
+          </t>
+        </list>
+      </t>
+
+      <section title="Property Checks" anchor="py-check">
+
+        <t>
+          The following Python 3.6 code illustrates how to check a sequence of
+          options for being well-formed, absolute, and relative.
+        </t>
+
+<figure><artwork><![CDATA[
+<CODE BEGINS>
 
    _TRANSITIONS = ([Option.SCHEME, Option.HOST_NAME, Option.HOST_IP,
        Option.PORT, Option.PATH_TYPE, Option.PATH, Option.QUERY,
@@ -444,6 +485,8 @@ ____ scheme __/             \___ port _
 
 <CODE ENDS>
 ]]></artwork></figure>
+
+      </section>
 
       <section title="Reference Resolution" anchor="py-resolve">
 
@@ -642,7 +685,7 @@ ____ scheme __/             \___ port _
       <section title="CoAP Encoding" anchor="py-coap">
 
         <t>
-          The following Python 3.6 code shows how to construct CoAP options from
+          The following Python 3.6 code illustrates how to construct CoAP options from
           an absolute sequence of options. For simplicity, the code does not
           omit CoAP options with the default value.
         </t>
