@@ -1696,14 +1696,10 @@
         </t>
 
         <t>
-          <list style="hanging">
-            <t hangText="Design Note:">
-              The convention of appending the link relation type to the prefix
-              "http://www.iana.org/assignments/relation/" to form an IRI is
-              adopted from <xref target="RFC4287">Atom</xref>; see also <xref
-              target="RFC8288">Appendix A.2 of RFC 8288</xref>.
-            </t>
-          </list>
+          (The convention of appending the link relation type to the prefix
+          "http://www.iana.org/assignments/relation/" to form an IRI is adopted
+          from <xref target="RFC4287">Atom</xref>; see also <xref
+          target="RFC8288">Appendix A.2 of RFC 8288</xref>.)
         </t>
 
       </section>
