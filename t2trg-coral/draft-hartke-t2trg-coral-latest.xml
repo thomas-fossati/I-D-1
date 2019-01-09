@@ -1560,6 +1560,38 @@
 
         </section>
 
+        <section title="Resource Names">
+
+          <t>
+            Resource names -- i.e., <xref target="RFC3986">URIs</xref> and <xref
+            target="RFC3987">IRIs</xref> -- are a cornerstone of Web-based
+            applications. They enable the uniform identification of resources
+            and are used every time a client interacts with a server or a
+            resource representation needs to refer to another resource.
+          </t>
+
+          <t>
+            URIs and IRIs often include structured application data in the path
+            and query components, such as paths in a filesystem or keys in a
+            database. It is a common practice in many HTTP-based application
+            programming interfaces (APIs) to make this part of the application
+            specification, i.e., to prescribe fixed URI templates that are
+            hard-coded in implementations. There are <xref target="RFC7320">a
+            number of problems with this practice</xref>, though.
+          </t>
+
+          <t>
+            In CoRAL-based applications, resource names are therefore not part
+            of the application specification. They are an implementation detail.
+            The specification of a CoRAL-based application MUST NOT mandate any
+            particular form of resource name structure. <xref
+            target="RFC7320">BCP 190</xref> describes the problematic practice
+            of fixed URI structures in more detail and provides some acceptable
+            alternatives.
+          </t>
+
+        </section>
+
         <section title="Implementation Limits">
 
           <t>
@@ -1600,38 +1632,6 @@
                 use of CBOR in a canonical format (see Section 3.9 of RFC 7049).
               </t>
             </list>
-          </t>
-
-        </section>
-
-        <section title="Resource Names">
-
-          <t>
-            Resource names -- i.e., <xref target="RFC3986">URIs</xref> and <xref
-            target="RFC3987">IRIs</xref> -- are a cornerstone of Web-based
-            applications. They enable the uniform identification of resources
-            and are used every time a client interacts with a server or a
-            resource representation needs to refer to another resource.
-          </t>
-
-          <t>
-            URIs and IRIs often include structured application data in the path
-            and query components, such as paths in a filesystem or keys in a
-            database. It is a common practice in many HTTP-based application
-            programming interfaces (APIs) to make this part of the application
-            specification, i.e., to prescribe fixed URI templates that are
-            hard-coded in implementations. There are <xref target="RFC7320">a
-            number of problems with this practice</xref>, though.
-          </t>
-
-          <t>
-            In CoRAL-based applications, resource names are therefore not part
-            of the application specification. They are an implementation detail.
-            The specification of a CoRAL-based application MUST NOT mandate any
-            particular form of resource name structure. <xref
-            target="RFC7320">BCP 190</xref> describes the problematic practice
-            of fixed URI structures in more detail and provides some acceptable
-            alternatives.
           </t>
 
         </section>
