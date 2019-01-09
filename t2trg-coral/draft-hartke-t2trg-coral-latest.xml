@@ -1707,6 +1707,15 @@
       <section title="Expressing Link Target Attributes">
 
         <t>
+          [[NOTE TO READERS: This section describes a mechanism to convert any
+          link target attributes to CoRAL in a way that allows a conversion back
+          without loss of information (round-trip conversion). It is likely that
+          this will be replaced by a specific set of unique link relation types
+          that match the known RFC 6690 attributes semantically but do not
+          round-trip in the presence of other attributes.]]
+        </t>
+
+        <t>
           Link target attributes defined for use with <xref
           target="RFC6690">CoRE Link Format</xref> (such as "hreflang", "media",
           "title", "title*", "type", "ct", "rt", "if", "sz", and "obs") can be
