@@ -244,13 +244,15 @@
         <t>
           The link relation type identifies the semantics of a link. In HTML 5
           and the RFC 8288 Link header field, link relation types are typically
-          denoted by an IANA-registered name, such as "stylesheet" or "icon". In
-          CoRAL, in contrast, link relation types are denoted by an IRI or an unsigned
-          integer. IRIs on the one hand allow for the creation of new, unique relation types in a
-          decentralized fashion, but can incur a high overhead in terms of
-          message size. Small, unsigned integers on the other hand minimize the
-          overhead of link relation types in constrained environments, but
-          require the assignment of values by a registry to avoid collisions.
+          denoted by an IANA-registered name, such as "stylesheet" or "type". In
+          CoRAL, link relation types are denoted by an IRI, such as
+          &lt;http://www.iana.org/assignments/relation/stylesheet&gt; or
+          &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;. This allows
+          for the creation of new relation types in an uncoordinated fashion
+          without the risk of collisions, especially if they are from different
+          organizations or domains of knowledge. IRIs also can lead to
+          documentation, schema, and other information about the link relation
+          types.
         </t>
 
         <t>
@@ -301,9 +303,8 @@
         </t>
 
         <t>
-          The form relation type identifies the semantics of the operation. Like
-          link relation types, form relation types are denoted by an IRI or an
-          unsigned integer.
+          The form relation type identifies the semantics of the operation. Form
+          relation types, like link relation types, are denoted by an IRI.
         </t>
 
         <t>
@@ -348,9 +349,8 @@
         </t>
 
         <t>
-          The form field name identifies the semantics of the form field. Like
-          link and form relation types, form field names are denoted by an IRI
-          or an unsigned integer.
+          The form field name identifies the semantics of the form field. Form
+          field names, like link and form relation types, are denoted by an IRI.
         </t>
 
         <t>
@@ -557,11 +557,10 @@
           Elements are processed in the order they appear in the document.
           Document processors need to maintain an <spanx>environment</spanx>
           while iterating an array of elements. The environment consists of
-          three variables: a <spanx>current context IRI</spanx>, a
-          <spanx>current base IRI</spanx>, and a <spanx>current relation
-          type</spanx>. The current context IRI and current base IRI are
-          initially both set to the document's retrieval context. The current
-          relation type is initially set to the unsigned integer zero.
+          two variables: a <spanx>current context IRI</spanx> and a
+          <spanx>current base IRI</spanx>. Both the current context IRI and the
+          current base IRI are initially set to the document's retrieval
+          context.
         </t>
 
         <section title="Documents" anchor="binary-body">
@@ -589,15 +588,10 @@
           </t>
 
           <t>
-            The link relation type is encoded either as a text string containing
-            an absolute IRI reference or as an (unsigned or negative) integer
-            representing the difference to the current relation type. A link is
-            processed by updating the current relation type to the result of
-            adding the specified integer (or zero in the case of a text string)
-            to the current relation type. It is an error if the current relation
-            type becomes negative.
+            The link relation type is encoded as a text string containing an
+            absolute IRI reference.
             <list>
-              <t>relation = text / int</t>
+              <t>relation = text</t>
             </list>
           </t>
 
@@ -617,10 +611,9 @@
 
           <t>
             The array of elements in the link body, if any, MUST be processed in
-            a fresh environment. The current context IRI and current base IRI in
-            the new environment are initially both set to the link target of the
-            enclosing link. The current relation type in the new environment is
-            initially set to the current relation type.
+            a fresh environment. Both the current context IRI and the current
+            base IRI in the new environment are initially set to the link target
+            of the enclosing link.
           </t>
 
         </section>
@@ -637,7 +630,7 @@
           </t>
 
           <t>
-            The form relation type is encoded and processed in the same way as a
+            The form relation type is encoded in the same way as a
             link relation type (<xref target="binary-links"/>).
           </t>
 
@@ -675,15 +668,14 @@
               <list>
                 <t>form-data = [*(form-field-name, form-field-value)]</t>
               </list>
-              Form data, if any, MUST be processed in a fresh environment. The
-              current context IRI and current base IRI in the new environment
-              are initially both set to the submission IRI of the enclosing
-              form. The current relation type in the new environment is
-              initially set to the current relation type.
+              Form data, if any, MUST be processed in a fresh environment. Both
+              the current context IRI and the current base IRI in the new
+              environment are initially set to the submission IRI of the
+              enclosing form.
             </t>
 
             <t>
-              A form field name is encoded and processed in the same way as a
+              A form field name is encoded in the same way as a
               link relation type (<xref target="binary-links"/>).
               <list>
                 <t>form-field-name = text / uint</t>
@@ -824,6 +816,63 @@
           </section>
 
         </section>
+
+      </section>
+
+      <section title="Dictionaries" anchor="dictionaries">
+
+        <t>
+          The binary format can reference link and form relation types, link
+          targets, and form field names and values from a dictionary to reduce
+          representation size and processing cost. A reference is encoded as a
+          tagged, unsigned integer using CBOR tag TBD6.
+          <list>
+            <t>relation /= #6.TBD6(uint)</t>
+            <t>target /= #6.TBD6(uint)</t>
+            <t>form-field-name /= #6.TBD6(uint)</t>
+            <t>form-field-value /= #6.TBD6(uint)</t>
+          </list>
+        </t>
+
+        <t>
+          The "application/coral+cbor" media type is defined to have a
+          "dictionary" parameter that specifies the dictionary in use. The
+          dictionary is identified by a <xref target="RFC3986">URI</xref>. For
+          example, a CoRAL document that uses the dictionary identified by the
+          URI &lt;http://example.com/dictionary&gt; can use the following media
+          type:
+          <list>
+            <t>application/coral+cbor; dictionary="http://example.com/dictionary"</t>
+          </list>
+          The URI serves only as an identifier; it does not necessarily have to
+          be dereferencable (or even use a dereferencable URI scheme). It is
+          permissible, though, to use a dereferencable URI and to serve a
+          representation that provides information about the dictionary in a
+          human- or machine-readable way. (The format of such a representation
+          is outside the scope of this document.)
+        </t>
+
+        <t>
+          For simplicity, a CoRAL document can use unsigned integers only from
+          one dictionary; the value of the "dictionary" parameter MUST be a
+          single URI. If the "dictionary" parameter is absent, the default
+          dictionary specified in <xref target="default-dictionary"/> of this
+          document is assumed.
+        </t>
+
+        <t>
+          Once a dictionary has assigned an unsigned integer, the assignment
+          MUST NOT be changed or removed. A dictionary, however, MAY provide
+          additional information about an assignment that MAY change over time.
+        </t>
+
+        <t>
+          In <xref target="RFC7252">CoAP</xref>, media types (including specific
+          values for their parameters) are encoded as an unsigned integer called
+          the <spanx>content format</spanx>. For use with CoAP, each CoRAL
+          dictionary needs to register a new content format in the IANA CoAP
+          Content-Formats Registry.
+        </t>
 
       </section>
 
@@ -1178,8 +1227,8 @@
           while iterating a list of elements. The environment consists of three
           variables: a <spanx>current context IRI</spanx>, a <spanx>current base
           IRI</spanx>, and a <spanx>current mapping from identifiers to
-          IRIs</spanx>. The current context IRI and current base IRI are
-          initially both set to the document's retrieval context. The current
+          IRIs</spanx>. Both the current context IRI and the current base IRI are
+          initially set to the document's retrieval context. The current
           mapping from identifiers to IRIs is initially empty.
         </t>
 
@@ -1246,8 +1295,8 @@
 
           <t>
             The list of elements in the link body, if any, MUST be processed in
-            a fresh environment. The current context IRI and current base IRI in
-            this environment are initially both set to the link target of the
+            a fresh environment. Both the current context IRI and current base IRI in
+            this environment are initially set to the link target of the
             enclosing link. The mapping from identifiers to IRIs is initially
             set to a copy of the mapping from identifiers to IRIs in the current
             environment.
@@ -1300,9 +1349,9 @@
             </t>
 
             <t>
-              Form data, if any, MUST be processed in a fresh environment. The current
-              context IRI and current base IRI in this environment are initially
-              both set to the submission IRI of the enclosing form. The mapping
+              Form data, if any, MUST be processed in a fresh environment. Both the current
+              context IRI and the current base IRI in this environment are initially
+              set to the submission IRI of the enclosing form. The mapping
               from identifiers to IRIs is initially set to a copy of the mapping
               from identifiers to IRIs in the current environment.
             </t>
@@ -1444,87 +1493,6 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Registries" anchor="registering">
-
-      <t>
-        New link relation types, form relation types, and form field names can
-        be minted by defining an <xref target="RFC3987">IRI</xref> that uniquely
-        identifies the item. Although the IRI can point to a resource that
-        contains a definition of the semantics of the relation type, clients
-        SHOULD NOT automatically access that resource to avoid overburdening its
-        server. The IRI SHOULD be under the control of the person or party
-        defining it, or be delegated to them.
-      </t>
-
-      <t>
-        IRIs that identify link relation types, form relation types, and form
-        field names do not need to be registered. The inclusion of DNS names in
-        IRIs allows for the decentralized creation of new IRIs without the risk
-        of collisions.
-      </t>
-
-      <t>
-        However, IRIs can be relatively verbose and impose a high overhead on
-        representations. This can be a problem in <xref
-        target="RFC7228">constrained environments</xref>. Therefore, CoRAL
-        alternatively allows the use of unsigned integers to identify link
-        relation types, form relation types, and form field names. These impose
-        a much smaller overhead but instead need to be assigned by a registry to
-        avoid collisions.
-      </t>
-
-      <t>
-        This document does not create a registry for such integers. Instead, the
-        media type for CoRAL documents in the binary format is
-        defined to have a "registry" parameter that
-        determines the registry in use. The registry is identified by a <xref
-        target="RFC3986">URI</xref>. For example, a CoRAL document that uses the
-        registry identified by the URI &lt;http://example.com/registry&gt; can
-        use the following media type:
-        <list>
-          <t>application/coral+cbor; registry="http://example.com/registry"</t>
-        </list>
-        The URI serves only as an identifier; it does not necessarily have to be
-        dereferencable (or even use a dereferencable URI scheme). It is
-        permissible, though, to use a dereferencable URI and to serve a
-        representation that provides information about the registry in a human-
-        or machine-readable way. (The format of such a representation is outside
-        the scope of this document.)
-      </t>
-
-      <t>
-        For simplicity, a CoRAL document can use unsigned integers from only one
-        registry. The "registry" parameter of the CoRAL media types MUST contain
-        a single URI. If the "registry" parameter is
-        absent, the default registry specified in <xref
-        target="default-registry"/> of this document is assumed.
-      </t>
-
-      <t>
-        A CoRAL registry SHOULD map each unsigned integer to a full IRI that
-        identifies a link relation type, form relation type, or form field name.
-        Once an integer has been assigned, the assignment MUST NOT be changed or
-        removed. A registry MAY provide additional information about an
-        assignment that MAY change over time.
-      </t>
-
-      <t>
-        In <xref target="RFC7252">CoAP</xref>, media types (including specific
-        values for their parameters) are encoded as an unsigned integer called
-        the <spanx>content format</spanx>. For use with CoAP, each CoRAL
-        registry needs to register a new content format in the IANA CoAP
-        Content-Formats Registry. Each such registered content format MUST
-        specify a CoRAL media type with a "registry" parameter that contains the
-        registry URI.
-      </t>
-
-    </section>
-
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-    <!-- **************************************************************** -->
-
     <section title="Usage Considerations">
 
       <t>
@@ -1614,8 +1582,9 @@
                 protocol;
               </t>
               <t>
-                use of only either IRIs or unsigned integers to denote certain
-                link relation types, form relation types, and form field names;
+                use of only either IRIs or tagged, unsigned integers to denote
+                certain link and form relation types, link targets, and form
+                field names and values;
               </t>
               <t>
                 use of only either short forms or long forms in the binary
@@ -1666,6 +1635,37 @@
           </t>
 
         </section>
+
+      </section>
+
+      <section title="Minting New Relation Types">
+
+        <t>
+          New link relation types, form relation types, and form field names can
+          be minted by defining an <xref target="RFC3987">IRI</xref> that
+          uniquely identifies the item. Although the IRI can point to a resource
+          that contains a definition of the semantics of the relation type,
+          clients SHOULD NOT automatically access that resource to avoid
+          overburdening its server. The IRI SHOULD be under the control of the
+          person or party defining it, or be delegated to them.
+        </t>
+
+        <t>
+          IRIs that identify link relation types, form relation types, and form
+          field names do not need to be registered. The inclusion of DNS names
+          in IRIs allows for the decentralized creation of new IRIs without the
+          risk of collisions.
+        </t>
+
+        <t>
+          However, IRIs can be relatively verbose and impose a high overhead on
+          representations. This can be a problem in <xref
+          target="RFC7228">constrained environments</xref>. Therefore, CoRAL
+          alternatively allows the use of unsigned integers to reference CBOR
+          data items from a dictionary, as specified in <xref
+          target="dictionaries"/>. These impose a much smaller overhead but
+          instead need to be assigned by an authority to avoid collisions.
+        </t>
 
       </section>
 
@@ -1932,7 +1932,7 @@
               <vspace/>N/A
             </t>
             <t hangText="Optional parameters:">
-              <vspace/>registry - See <xref target="registering"/> of &SELF;.
+              <vspace/>dictionary - See <xref target="dictionaries"/> of &SELF;.
             </t>
             <t hangText="Encoding considerations:">
               <vspace/>binary - See <xref target="binary"/> of &SELF;.
@@ -2084,6 +2084,28 @@
           [[NOTE TO IMPLEMENTERS: Experimental implementations can use content
           format ID 65087 for "application/coral+cbor" and content format ID
           65343 for "text/coral" until IANA has assigned stable code points.]]
+        </t>
+
+      </section>
+
+      <section title="CBOR Tag">
+
+        <t>
+          This document registers a CBOR tag for dictionary references according
+          to the procedures of <xref target="RFC7049">RFC 7252</xref>.
+          <list style="symbols">
+            <t>
+              Tag: TBD6<vspace/>
+              Data Item: unsigned integer<vspace/>
+              Semantics: Dictionary reference<vspace/>
+              Reference: &SELF;
+            </t>
+          </list>
+        </t>
+
+        <t>
+          [[NOTE TO RFC EDITOR: Please replace all occurrences of "TBD6" in this
+          document with the code points assigned by IANA.]]
         </t>
 
       </section>
@@ -2339,11 +2361,12 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Default Registry" anchor="default-registry">
+    <section title="Default Dictionary" anchor="default-dictionary">
 
       <t>
-        This section defines a default registry that is assumed when a CoRAL
-        media type without a "registry" parameter is used.
+        This section defines a default dictionary that is assumed when the
+        "application/coral+cbor" media type is used without a "dictionary"
+        parameter.
         <list>
           <t>0 = &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</t>
           <t>1 = &lt;http://www.iana.org/assignments/relation/item&gt;</t>
