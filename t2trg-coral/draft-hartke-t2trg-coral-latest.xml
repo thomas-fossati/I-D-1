@@ -196,20 +196,10 @@
         </t>
 
         <t>
-          A browsing context has a <spanx>session history</spanx> that lists the
+          A browsing context keeps track of the
           resource representations that the agent has processed, is processing,
           or will process. At any time, one representation in each browsing
           context is designated the <spanx>active</spanx> representation.
-        </t>
-
-        <t>
-          A session history consists of a flat list of session history entries.
-          Each <spanx>session history entry</spanx> consists of a resource
-          representation and the <xref target="RFC3987">Internationalized
-          Resource Identifier (IRI)</xref> that was used to retrieve the
-          representation. An entry may additionally have other information
-          associated with it. New entries are added to the session history as
-          the agent navigates from resource to resource.
         </t>
 
       </section>
@@ -218,7 +208,8 @@
 
         <t>
           A resource representation in one of the CoRAL serialization formats is
-          called a CoRAL <spanx>document</spanx>. The IRI that was used to
+          called a CoRAL <spanx>document</spanx>. The <xref target="RFC3987">Internationalized
+          Resource Identifier (IRI)</xref> that was used to
           retrieve such a document is called the document's <spanx>retrieval
           context</spanx>.
         </t>
@@ -473,10 +464,8 @@
               representation.
             </t>
             <t anchor="continue-with-representation">
-              The agent <spanx>updates the session history</spanx>: It removes
-              all the entries in the browsing context's session history after
-              the current entry. Then it appends a new entry at the end of the
-              history representing the new resource and makes that entry the active representation.
+              The agent <spanx>updates the browsing context</spanx> by making
+              the (embedded or received) representation the active representation.
             </t>
             <t>
               Finally, the agent processes the representation. In case of a CoRAL
@@ -492,11 +481,43 @@
       <section title="History Traversal">
 
         <t>
+          In addition to following links and submitting forms, an agent can also
+          <spanx>traverse the session history</spanx> of representations that it
+          has processed so far. For example, if an agent has followed a link to
+          a representation not containing any further links, it may wish to set
+          the active representation back to one the representation containing
+          the link.
+        </t>
+
+        <t>
+          Traversing the history should take advantage of caches to avoid new
+          requests. An agent MAY reissue a safe request (e.g., a GET request) if
+          it doesn't have a fresh representation. An agent MUST NOT reissue an
+          unsafe request (e.g., a PUT or POST request).
+        </t>
+
+        <!--
+        <t>
+          A browsing context MAY entail a <spanx>session history</spanx>.
+        </t>
+
+        <t>
+          A session history consists of a flat list of session history entries.
+          Each <spanx>session history entry</spanx> consists of a resource
+          representation and the <xref target="RFC3987">Internationalized
+          Resource Identifier (IRI)</xref> that was used to retrieve the
+          representation. An entry may additionally have other information
+          associated with it. New entries are added to the session history as
+          the agent navigates from resource to resource.
+        </t>
+
+        <t>
           An agent can navigate a browsing context also by traversing the
           browsing context's session history. An agent can <spanx>traverse the
           session history</spanx> by updating the active representation to the
           that entry.
         </t>
+        -->
 
       </section>
 
