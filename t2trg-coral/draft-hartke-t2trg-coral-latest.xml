@@ -111,20 +111,20 @@
       </t>
 
       <t>
-        This document defines the CoRAL data and interaction model, as well as
-        two specialized CoRAL serialization formats:
+        This document defines the CoRAL data and interaction model as well as
+        two specialized CoRAL serialization formats.
       </t>
 
       <t>
         The CoRAL data and interaction model is a superset of the Web Linking
         model of <xref target="RFC8288">RFC 8288</xref>. The CoRAL data model
-        consists of two elements: <spanx>links</spanx> that describe the
-        relationships between pairs of resources and the type of those
-        relationships, and <spanx>forms</spanx> that describe possible
-        operations on resources and the type of those operations. Additionally,
+        consists of two primary elements: <spanx>links</spanx> that describe the
+        relationship between two resources and the type of that
+        relationship, and <spanx>forms</spanx> that describe a possible
+        operation on a resource and the type of that operation. Additionally,
         the data model can describe simple resource metadata in a way similar to
         the <xref target="W3C.REC-rdf11-concepts-20140225">Resource Description
-        Framework (RDF)</xref>. In contrast to RDF, the focus of CoRAL is on the
+        Framework (RDF)</xref>. In contrast to RDF, the focus of CoRAL however is on the
         interaction with resources, not just the relationships between them. The
         CoRAL interaction model derives from <xref
         target="W3C.REC-html52-20171214">HTML 5</xref> and specifies how an
@@ -142,7 +142,7 @@
         Protocol (CoAP)</xref>. For example, it uses numeric identifiers instead
         of verbose strings for link and form relation types, and pre-parses URIs
         into (what CoAP considers to be) their components, which greatly
-        simplifies URI processing. As a result, link serializations are often
+        simplifies URI handling. As a result, link serializations in CoRAL are often
         much more compact than equivalent serializations in <xref
         target="RFC6690">CoRE Link Format</xref> <xref
         target="I-D.ietf-core-links-json"/>.
@@ -237,7 +237,7 @@
 
         <t>
           A <spanx>link</spanx> describes a relationship between two resources
-          on the Web <xref target="RFC8288"/>. As defined in RFC 8288, it
+          on the Web <xref target="RFC8288"/>. As specified in RFC 8288, it
           consists of a <spanx>link context</spanx>, a <spanx>link relation
           type</spanx>, and a <spanx>link target</spanx>. In CoRAL, a link can
           additionally have a nested list of zero or more elements, which take
@@ -276,7 +276,7 @@
         <t>
           A link can occur as a top-level element in a document or as a nested
           element within a link. When a link occurs as a top-level element, the
-          link context is implicitly the document's retrieval context. When a
+          link context implicitly is the document's retrieval context. When a
           link occurs nested within a link, the link context of the inner link
           is the link target of the outer link.
         </t>
@@ -333,7 +333,7 @@
         <t>
           A form can occur as a top-level element in a document or as a nested
           element within a link. When a form occurs as a top-level element, the
-          form context is implicitly the document's retrieval context. When a
+          form context implicitly is the document's retrieval context. When a
           form occurs nested within a link, the form context is the link target
           of the enclosing link.
         </t>
@@ -345,15 +345,15 @@
         <t>
           Form data provides instructions for agents to construct a request
           payload. It consists of a list of zero or more <spanx>form
-          fields</spanx>. Each form field consists of a <spanx>form field
+          fields</spanx>, each consisting of a <spanx>form field
           name</spanx> and a <spanx>form field value</spanx>.
         </t>
 
         <t>
-          Form fields can either directly identify data items that need to be
+          A form field can directly identify one or more data items that need to be
           included in the request payload or reference another resource (such as
-          a schema) that describes the data items. Form fields may also provide
-          other information, such as acceptable representation formats.
+          a schema) that describes those data items. Form fields also may provide
+          other kinds of information, such as accepted formats.
         </t>
 
         <t>
@@ -380,8 +380,7 @@
 
         <t>
           An <spanx>embedded representation</spanx> consists of a sequence of
-          bytes, plus <spanx>representation metadata</spanx> to describe those
-          bytes.
+          bytes, labeled with <spanx>representation metadata</spanx>.
         </t>
 
         <t>
@@ -420,7 +419,7 @@
             <t>
               The first step for the agent is to decide what to do next, i.e.,
               which type of link to follow or form to submit, based on the link
-              relation types and form relation types it understands.
+              and form relation types it understands.
             </t>
             <t>
               The agent finds the link(s) or form(s) with the respective relation
@@ -455,8 +454,11 @@
               The agent constructs a new request with the request IRI. If the
               agent follows a link, the request method MUST be GET. If the agent
               submits a form, the request method MUST be the one specified in
-              the form. The agent SHOULD set HTTP header fields and CoAP request
-              options according to provided metadata (e.g., set the HTTP Accept
+              the form.
+              <vspace blankLines="1"/>
+              The agent SHOULD set HTTP header fields and CoAP request
+              options according to  metadata
+              associated with the link or form (e.g., set the HTTP Accept
               header field or the CoAP Accept option when the media type of the
               target resource is provided). In case of a form with form
               data, the agent MUST also include a request payload that matches the
@@ -619,9 +621,9 @@
           </t>
 
           <t>
-            The method MUST refer to one of the request methods defined by the
+            The method refers to one of the request methods defined by the
             Web transfer protocol identified by the scheme of the submission
-            IRI. It is encoded either as a text string or an unsigned integer.
+            IRI. It's encoded either as a text string or an unsigned integer.
             <list>
               <t>method = text / uint</t>
             </list>
@@ -1692,7 +1694,7 @@
           target="RFC6690">CoRE Link Format</xref> (such as "hreflang", "media",
           "title", "title*", "type", "ct", "rt", "if", "sz", and "obs") can be
           expressed in CoRAL by nesting links under the respective link where
-          the link relation type of each nested link is the lower-case attribute
+          the link relation type of each nested link is the lowercased attribute
           name appended to the IRI &lt;http://TBD2/&gt;.
         </t>
 
@@ -1767,10 +1769,10 @@
         <t>
           An <xref target="W3C.REC-rdf11-concepts-20140225">RDF statement</xref>
           says that some relationship, indicated by a predicate, holds between
-          two resources. RDF predicates and link relation types therefore can
+          two resources. RDF predicates and link relation types can therefore
           often be used interchangeably. For example, a CoRAL document could use
           the <xref target="FOAF">FOAF vocabulary</xref> to describe the person
-          or software that made the document:
+          or software that made it:
         </t>
 
         <figure>
@@ -2217,7 +2219,7 @@
             <t hangText="&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;">
               <vspace/>Indicates that the link's context is an instance of the
               class specified as the link's target, as defined by <xref
-              target="W3C.REC-rdf-schema-20140225">RDF</xref>.
+              target="W3C.REC-rdf-schema-20140225">RDF Schema</xref>.
             </t>
             <t hangText="&lt;http://www.iana.org/assignments/relation/item&gt;">
               <vspace/>Indicates that the link's context is a collection and
