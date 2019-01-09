@@ -28,7 +28,6 @@
   <!ENTITY RFC8446 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml">
   <!ENTITY I-D.hartke-t2trg-ciri SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.hartke-t2trg-ciri.xml">
   <!ENTITY I-D.ietf-cbor-cddl SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-cbor-cddl.xml">
-  <!ENTITY I-D.ietf-core-links-json SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-core-links-json.xml">
   <!ENTITY W3C.REC-html52-20171214 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-html52-20171214.xml">
   <!ENTITY W3C.REC-rdf11-concepts-20140225 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-rdf11-concepts-20140225.xml">
   <!ENTITY W3C.REC-rdf-schema-20140225 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-rdf-schema-20140225.xml">
@@ -141,19 +140,18 @@
         message format of the <xref target="RFC7252">Constrained Application
         Protocol (CoAP)</xref>. For example, it uses numeric identifiers instead
         of verbose strings for link and form relation types, and pre-parses URIs
-        into (what CoAP considers to be) their components, which greatly
-        simplifies URI handling. As a result, link serializations in CoRAL are often
+        into (what CoAP considers to be) their components, which
+        simplifies URI handling for constrained nodes greatly. As a result, link serializations in CoRAL are often
         much more compact than equivalent serializations in <xref
-        target="RFC6690">CoRE Link Format</xref> <xref
-        target="I-D.ietf-core-links-json"/>.
+        target="RFC6690">CoRE Link Format</xref>.
       </t>
 
       <t>
         The secondary CoRAL serialization format is a lightweight, textual
         encoding of links and forms that is intended to be easy to read and
         write for humans. The format is loosely inspired by the syntax of <xref
-        target="W3C.REC-turtle-20140225">Turtle</xref> and is used throughout
-        the document for examples.
+        target="W3C.REC-turtle-20140225">Turtle</xref> and is used primarily for
+        giving examples.
       </t>
 
       <section title="Requirements Notation">
@@ -202,14 +200,20 @@
           context is designated the <spanx>active</spanx> representation.
         </t>
 
+        <t>
+          A browsing context may entail a <spanx>session history</spanx>. A
+          session history keeps track of visited representations and the <xref
+          target="RFC3987">Internationalized Resource Identifier (IRI)</xref>
+          that was used to retrieve each.
+        </t>
+
       </section>
 
       <section title="Documents">
 
         <t>
           A resource representation in one of the CoRAL serialization formats is
-          called a CoRAL <spanx>document</spanx>. The <xref target="RFC3987">Internationalized
-          Resource Identifier (IRI)</xref> that was used to
+          called a CoRAL <spanx>document</spanx>. The IRI that was used to
           retrieve such a document is called the document's <spanx>retrieval
           context</spanx>.
         </t>
@@ -218,7 +222,7 @@
           A CoRAL document consists of a list of zero or more links, forms, and
           embedded resource representations, collectively called <spanx>elements</spanx>.
           CoRAL serialization formats may define additional types of elements
-          for efficiency or convenience, such as base IRIs for relative IRI
+          for efficiency or convenience, such as a base IRI element for relative IRI
           references.
         </t>
 
@@ -228,7 +232,7 @@
 
         <t>
           A <spanx>link</spanx> describes a relationship between two resources
-          on the Web <xref target="RFC8288"/>. As specified in RFC 8288, it
+          on the Web <xref target="RFC8288"/>. As defined in RFC 8288, it
           consists of a <spanx>link context</spanx>, a <spanx>link relation
           type</spanx>, and a <spanx>link target</spanx>. In CoRAL, a link can
           additionally have a nested list of zero or more elements, which take
@@ -243,13 +247,13 @@
 
         <t>
           The link relation type identifies the semantics of a link. In HTML 5
-          and the RFC 8288 Link header field, link relation types are typically
+          and RFC 8288, link relation types are typically
           denoted by an IANA-registered name, such as "stylesheet" or "type". In
-          CoRAL, link relation types are denoted by an IRI, such as
+          CoRAL, they are denoted by an IRI such as
           &lt;http://www.iana.org/assignments/relation/stylesheet&gt; or
           &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;. This allows
-          for the creation of new relation types in an uncoordinated fashion
-          without the risk of collisions, especially if they are from different
+          for the creation of new link relation types without the risk of
+          collisions when from different
           organizations or domains of knowledge. IRIs also can lead to
           documentation, schema, and other information about the link relation
           types.
@@ -311,13 +315,13 @@
           The form context is the resource on which an operation is ultimately
           performed. To perform the operation, an agent needs to construct a request
           with the specified request method and submission IRI. The submission
-          IRI typically refers to the form context, but MAY refer to another
+          IRI typically refers to the form context, but may refer to a different
           resource. Constructing and sending the request is called _submitting
           the form_.
         </t>
 
         <t>
-          If a form is accompanied by form data (<xref target="form-data"/>),
+          If a form is accompanied by form data, as described in the following section,
           then the agent MUST also construct a payload that matches the
           specifications of the form data and include that in the request.
         </t>
@@ -342,10 +346,10 @@
         </t>
 
         <t>
-          A form field can directly identify one or more data items that need to be
-          included in the request payload or reference another resource (such as
-          a schema) that describes those data items. Form fields also may provide
-          other kinds of information, such as accepted formats.
+          A form field can directly identify one or more data items that the client needs to
+          include in the request payload or can reference another resource (such as
+          a schema) that describes such data items. Form fields may also provide
+          other kinds of information, such as acceptable representation formats for the payload.
         </t>
 
         <t>
@@ -398,14 +402,14 @@
           the only IRI an agent is expected to know before interacting with an
           application. From there, the agent is expected to make all requests by
           following links and submitting forms provided by the server in
-          responses. The entry point IRI can be obtained by manual configuration
-          or through some discovery process.
+          responses. The entry point IRI can be obtained through manual configuration
+          or some discovery process.
         </t>
 
         <t>
-          If dereferencing the entry point IRI yields a CoRAL document or any
+          If dereferencing the entry point IRI yields a CoRAL document (or any
           other representation that implements the CoRAL data and interaction
-          model, then the agent proceeds as follows:
+          model), then the agent proceeds as follows:
           <list style="numbers">
             <t>
               The first step for the agent is to decide what to do next, i.e.,
@@ -416,18 +420,18 @@
               The agent finds the link(s) or form(s) with the respective relation
               type in the active representation. This may yield one or more
               candidates, from which the agent must select the most appropriate
-              one in the next step. The set of candidates may be empty, for
-              example, when a transition is not supported or not allowed.
+              one in the following step. The set of candidates may be empty, for
+              example, when a navigation or operation is not supported or not allowed.
             </t>
             <t>
               The agent selects one of the candidates based on the metadata
               associated with the link(s) or form(s). Metadata typically
-              includes the media type of the target resource representation, the
+              includes the content type of the target resource representation, the
               IRI scheme, the request method, and other information that is
               provided as nested elements in a link and form data in a form.
               <vspace blankLines="1"/>
               If the selected candidate contains an embedded representation,
-              then the agent MAY skip the following steps and immediately
+              the agent MAY skip the following steps and immediately
               proceed with step <xref target="continue-with-representation"
               format="counter"/>.
             </t>
@@ -436,15 +440,17 @@
               (Section 5 of <xref target="RFC3986">RFC 3986</xref>)
               to obtain the <spanx>request IRI</spanx>. Fragment identifiers are
               not part of the request IRI and MUST be separated from the rest of
-              the IRI prior to a dereference. The request IRI may need to be
+              the IRI prior to a dereference.
+              <vspace blankLines="1"/>
+              The request IRI may need to be
               converted to a URI (Section 3.1 of <xref
               target="RFC3987">RFC 3987</xref>) for protocols that do not
               support IRIs.
             </t>
             <t>
               The agent constructs a new request with the request IRI. If the
-              agent follows a link, the request method MUST be GET. If the agent
-              submits a form, the request method MUST be the one specified in
+              agent is following a link, then the request method MUST be GET. If the agent
+              is submitting a form, then the request method MUST be the one specified by
               the form.
               <vspace blankLines="1"/>
               The agent SHOULD set HTTP header fields and CoAP request
@@ -452,7 +458,7 @@
               associated with the link or form (e.g., set the HTTP Accept
               header field or the CoAP Accept option when the media type of the
               target resource is provided). In case of a form with form
-              data, the agent MUST also include a request payload that matches the
+              data or an applicable form relation type, the agent MUST also include a request payload that matches the
               specifications of the form data.
             </t>
             <t>
@@ -468,9 +474,9 @@
               the (embedded or received) representation the active representation.
             </t>
             <t>
-              Finally, the agent processes the representation. In case of a CoRAL
-              document or any other representation that implements the CoRAL
-              data and interaction model, this means the agent decides again
+              Finally, the agent processes the representation. If the representation is  a CoRAL
+              document (or any other representation that implements the CoRAL
+              data and interaction model), this means the agent again has the choice of
               what to do next &mdash; and the cycle repeats.
             </t>
           </list>
@@ -482,42 +488,17 @@
 
         <t>
           In addition to following links and submitting forms, an agent can also
-          <spanx>traverse the session history</spanx> of representations that it
-          has processed so far. For example, if an agent has followed a link to
-          a representation not containing any further links, it may wish to set
-          the active representation back to one the representation containing
-          the link.
+          <spanx>traverse the session history</spanx>. For example, if an agent has received
+          a representation that does not contain any further links or forms, it may wish to revert
+          the active representation back to one it has visited earlier.
         </t>
 
         <t>
           Traversing the history should take advantage of caches to avoid new
           requests. An agent MAY reissue a safe request (e.g., a GET request) if
-          it doesn't have a fresh representation. An agent MUST NOT reissue an
-          unsafe request (e.g., a PUT or POST request).
+          it doesn't have a fresh representation in its cache. An agent MUST NOT
+          reissue an unsafe request (e.g., a PUT or POST request).
         </t>
-
-        <!--
-        <t>
-          A browsing context MAY entail a <spanx>session history</spanx>.
-        </t>
-
-        <t>
-          A session history consists of a flat list of session history entries.
-          Each <spanx>session history entry</spanx> consists of a resource
-          representation and the <xref target="RFC3987">Internationalized
-          Resource Identifier (IRI)</xref> that was used to retrieve the
-          representation. An entry may additionally have other information
-          associated with it. New entries are added to the session history as
-          the agent navigates from resource to resource.
-        </t>
-
-        <t>
-          An agent can navigate a browsing context also by traversing the
-          browsing context's session history. An agent can <spanx>traverse the
-          session history</spanx> by updating the active representation to the
-          that entry.
-        </t>
-        -->
 
       </section>
 
@@ -839,7 +820,7 @@
           "dictionary" parameter that specifies the dictionary in use. The
           dictionary is identified by a <xref target="RFC3986">URI</xref>. For
           example, a CoRAL document that uses the dictionary identified by the
-          URI &lt;http://example.com/dictionary&gt; can use the following media
+          URI &lt;http://example.com/dictionary&gt; can use the following content
           type:
           <list>
             <t>application/coral+cbor; dictionary="http://example.com/dictionary"</t>
@@ -1623,7 +1604,7 @@
                 format for certain form relation types;
               </t>
               <t>
-                use of only either media type strings or content format IDs;
+                use of only either content type strings or content format IDs;
               </t>
               <t>
                 use of IRI references only up to a specific length;
@@ -1689,8 +1670,8 @@
         </figure>
 
         <t>
-          Since link relation types are always compared in a case-sensitive
-          fashion in CoRAL, registered link relation types MUST be converted to
+          Since link relation types in CoRAL are always compared in a case-sensitive
+          fashion, registered link relation types MUST be converted to
           their registered form (usually, lowercase) when serialized in a CoRAL
           document.
         </t>
@@ -1960,7 +1941,7 @@
             <t hangText="Additional information:">
               <vspace/>Deprecated alias names for this type: N/A
               <vspace/>Magic number(s): N/A
-              <vspace/>File extension(s): N/A
+              <vspace/>File extension(s): .coral.cbor
               <vspace/>Macintosh file type code(s): N/A
             </t>
             <t hangText="Person &amp; email address to contact for further information:">
@@ -2027,7 +2008,7 @@
               <vspace/>Deprecated alias names for this type: N/A
               <vspace/>Magic number(s): N/A
               <vspace/>File extension(s): .coral
-              <vspace/>Macintosh file type code(s): TEXT
+              <vspace/>Macintosh file type code(s): N/A
             </t>
             <t hangText="Person &amp; email address to contact for further information:">
               <vspace/>See the Author's Address section of &SELF;.
@@ -2082,7 +2063,7 @@
 
         <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of "TBD3" and
-          "TBD4" in this document by the code points assigned by IANA.]]
+          "TBD4" in this document with the code points assigned by IANA.]]
         </t>
 
         <t>
@@ -2212,8 +2193,6 @@
       &RFC8132;
       &RFC8187;
       &RFC8446;
-
-      &I-D.ietf-core-links-json;
 
       &W3C.REC-html52-20171214;
       &W3C.REC-rdf11-concepts-20140225;
