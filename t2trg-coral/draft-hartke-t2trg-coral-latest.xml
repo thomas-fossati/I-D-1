@@ -911,26 +911,13 @@
         <section title="IRIs">
 
           <t>
-            An IRI is a Unicode string that conforms to the syntax
-            defined in <xref target="RFC3987">RFC 3987</xref>.
-            IRIs are enclosed in angle brackets ("&lt;" and "&gt;").
+            IRIs and IRI references are Unicode strings that conforms to the syntax defined in <xref target="RFC3987">RFC 3987</xref>.
+            An IRI reference can be either an IRI or a relative reference.
+            IRIs and IRI References are enclosed in angle brackets ("&lt;" and "&gt;").
             <list>
               <t>iri = "&lt;" IRI "&gt;"</t>
-              <t>IRI = &lt;Defined in Section 2.2 of RFC 3987&gt;</t>
-            </list>
-          </t>
-
-        </section>
-
-        <section title="IRI References">
-
-          <t>
-            An IRI reference is a Unicode string that conforms to the syntax
-            defined in <xref target="RFC3987">RFC 3987</xref> and denotes
-            either an IRI or a relative reference.
-            IRI references are enclosed in angle brackets ("&lt;" and "&gt;").
-            <list>
               <t>iriref = "&lt;" IRI-reference "&gt;"</t>
+              <t>IRI = &lt;Defined in Section 2.2 of RFC 3987&gt;</t>
               <t>IRI-reference = &lt;Defined in Section 2.2 of RFC 3987&gt;</t>
             </list>
           </t>
