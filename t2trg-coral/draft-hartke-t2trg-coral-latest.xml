@@ -569,8 +569,8 @@
           </t>
 
           <t>
-            The link relation type is encoded as a text string containing an
-            absolute IRI reference.
+            The link relation type is encoded as a text string that conforms to
+            the syntax of an <xref target="RFC3987">IRI</xref>.
             <list>
               <t>relation = text</t>
             </list>
@@ -578,7 +578,7 @@
 
           <t>
             The link target is denoted by an IRI reference or represented by a
-            literal value. The IRI reference MAY be relative or absolute, and
+            literal value. The IRI reference
             MUST be resolved against the current base IRI. The encoding of IRI
             references in the binary format is described in <xref
             target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>. The link target MAY
@@ -636,7 +636,7 @@
           </t>
 
           <t>
-            The submission IRI reference MAY be relative or absolute, and MUST be
+            The submission IRI reference MUST be
             resolved against the current base IRI. The encoding of IRI
             references in the binary format is described in <xref
             target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>.
@@ -666,7 +666,7 @@
             <t>
               A form field value can be an IRI reference, a Boolean value, an
               integer, a floating-point number, a byte string, a text string, or
-              null. An IRI reference MAY be relative or absolute, and MUST be
+              null. An IRI reference MUST be
               resolved against the current base IRI. The encoding of IRI
               references in the binary format is described in <xref
               target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>.
@@ -782,7 +782,7 @@
             </t>
 
             <t>
-              The IRI reference MAY be relative or absolute, and MUST be resolved
+              The IRI reference MUST be resolved
               against the current context IRI. The encoding of IRI references in
               the binary format is described in <xref
               target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>.
@@ -967,15 +967,29 @@
 
         </section>
 
+        <section title="IRIs">
+
+          <t>
+            An IRI is a Unicode string that conforms to the syntax
+            defined in <xref target="RFC3987">RFC 3987</xref>.
+            IRIs are enclosed in angle brackets ("&lt;" and "&gt;").
+            <list>
+              <t>iri = "&lt;" IRI "&gt;"</t>
+              <t>IRI = &lt;Defined in Section 2.2 of RFC 3987&gt;</t>
+            </list>
+          </t>
+
+        </section>
+
         <section title="IRI References">
 
           <t>
             An IRI reference is a Unicode string that conforms to the syntax
-            defined in <xref target="RFC3987">RFC 3987</xref>. An IRI reference
-            can be absolute or relative, and can contain a fragment identifier.
+            defined in <xref target="RFC3987">RFC 3987</xref> and denotes
+            either an IRI or a relative reference.
             IRI references are enclosed in angle brackets ("&lt;" and "&gt;").
             <list>
-              <t>iri = "&lt;" IRI-reference "&gt;"</t>
+              <t>iriref = "&lt;" IRI-reference "&gt;"</t>
               <t>IRI-reference = &lt;Defined in Section 2.2 of RFC 3987&gt;</t>
             </list>
           </t>
@@ -1265,11 +1279,11 @@
 
           <t>
             The link target is denoted by an IRI reference or represented by a
-            value literal. The IRI reference MAY be relative or absolute, and
+            value literal. The IRI reference
             MUST be resolved against the current base IRI. If the link target is
             null, the link target is an unidentified resource.
             <list>
-              <t>target = iri / literal / null</t>
+              <t>target = iriref / literal / null</t>
               <t>literal = boolean / integer / floating-point / bytes / text</t>
             </list>
           </t>
@@ -1292,7 +1306,7 @@
             a method identifier, and a submission IRI reference, optionally
             followed by form data enclosed in square brackets ("[" and "]").
             <list>
-              <t>form = relation "->" method iri ["[" form-data "]"]</t>
+              <t>form = relation "->" method iriref ["[" form-data "]"]</t>
             </list>
           </t>
 
@@ -1316,7 +1330,7 @@
           </t>
 
           <t>
-            The submission IRI reference MAY be relative or absolute, and MUST be
+            The submission IRI reference MUST be
             resolved against the current base IRI.
           </t>
 
@@ -1348,10 +1362,10 @@
             <t>
               The form field value can be an IRI reference, Boolean literal,
               integer literal, floating-point literal, byte string literal, text
-              string literal, or null. An IRI reference MAY be relative or
-              absolute, and MUST be resolved against the current base IRI.
+              string literal, or null. An IRI reference
+              MUST be resolved against the current base IRI.
               <list>
-                <t>form-field-value = iri / boolean / integer</t>
+                <t>form-field-value = iriref / boolean / integer</t>
                 <t>form-field-value =/ floating-point / bytes / text / null</t>
               </list>
             </t>
@@ -1427,9 +1441,9 @@
               the case-insensitive identifier "base", followed by an IRI
               reference.
               <list>
-                <t>base-directive = "#" "base" iri</t>
+                <t>base-directive = "#" "base" iriref</t>
               </list>
-              The IRI reference MAY be relative or absolute, and MUST be resolved
+              The IRI reference MUST be resolved
               against the current context IRI.
             </t>
 
@@ -1447,12 +1461,11 @@
               A Using directive consists of a number sign ("#"), followed by the
               case-insensitive identifier "using", optionally followed by an
               identifier and an equals sign ("="), finally followed by an
-              absolute IRI reference. If the identifier is not specified, it is
+              IRI. If the identifier is not specified, it is
               assumed to be the empty string.
               <list>
                 <t>using-directive = "#" "using" [identifier "="] iri</t>
               </list>
-              The IRI reference MUST be absolute.
             </t>
 
             <t>
