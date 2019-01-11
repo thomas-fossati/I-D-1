@@ -1237,8 +1237,8 @@
           </t>
 
           <t>
-            The link relation type is denoted either by an absolute IRI
-            reference, a simple name, a qualified name, or an integer.
+            The link relation type is denoted by either an IRI,
+            a simple name, or a qualified name.
             <list>
               <t>relation = iri / simple-name / qualified-name</t>
             </list>
