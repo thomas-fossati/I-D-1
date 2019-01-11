@@ -679,67 +679,6 @@
 
           </section>
 
-          <section title="Short Forms">
-
-            <t>
-              Forms in certain shapes can be encoded in a more efficient manner
-              using short forms. The following short forms are available:
-              <list>
-                <t>form /= [form.create: 4, ?accept: uint .size 2]</t>
-                <t>form /= [form.update: 5, ?accept: uint .size 2]</t>
-                <t>form /= [form.delete: 6]</t>
-                <t>form /= [form.search: 7, ?accept: uint .size 2]</t>
-              </list>
-            </t>
-
-            <t>
-              If the scheme of the submission IRI indicates HTTP, the short
-              forms expand as follows:
-            </t>
-
-            <figure>
-              <artwork>
-   [4]     -&gt;  [3, "urn:TBD1#create", "POST", []]
-   [4, x]  -&gt;  [3, "urn:TBD1#create", "POST", [],
-                  ["urn:TBD1#accept", x]]
-   [5]     -&gt;  [3, "urn:TBD1#update", "PUT", []]
-   [5, x]  -&gt;  [3, "urn:TBD1#update", "PUT", [],
-                  ["urn:TBD1#accept", x]]
-   [6]     -&gt;  [3, "urn:TBD1#delete", "DELETE", []]
-   [7]     -&gt;  [3, "urn:TBD1#search", "POST", []]
-   [7, x]  -&gt;  [3, "urn:TBD1#search", "POST", [],
-                  ["urn:TBD1#accept", x]]
-              </artwork>
-            </figure>
-
-            <t>
-              If the scheme of the submission IRI indicates CoAP, the short
-              forms expand as follows (the only difference being the request
-              methods):
-            </t>
-
-            <figure>
-              <artwork>
-   [4]     -&gt;  [3, "urn:TBD1#create", 2, []]
-   [4, x]  -&gt;  [3, "urn:TBD1#create", 2, [],
-                  ["urn:TBD1#accept", x]]
-   [5]     -&gt;  [3, "urn:TBD1#update", 3, []]
-   [5, x]  -&gt;  [3, "urn:TBD1#update", 3, [],
-                  ["urn:TBD1#accept", x]]
-   [6]     -&gt;  [3, "urn:TBD1#delete", 4, []]
-   [7]     -&gt;  [3, "urn:TBD1#search", 5, []]
-   [7, x]  -&gt;  [3, "urn:TBD1#search", 5, [],
-                  ["urn:TBD1#accept", x]]
-              </artwork>
-            </figure>
-
-            <t>
-              The form relation types and form field names used in these
-              expansions are defined in <xref target="core-vocabulary"/>.
-            </t>
-
-          </section>
-
         </section>
 
         <section title="Embedded Representations">
@@ -1616,10 +1555,6 @@
                 use of only either IRIs or tagged, unsigned integers to denote
                 certain link and form relation types, link targets, and form
                 field names and values;
-              </t>
-              <t>
-                use of only either short forms or long forms in the binary
-                format for certain form relation types;
               </t>
               <t>
                 use of only either content type strings or content format IDs;
