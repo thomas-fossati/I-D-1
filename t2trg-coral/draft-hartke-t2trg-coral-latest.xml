@@ -950,11 +950,11 @@
             target="UNICODE-UAX31">Unicode Standard Annex #31</xref> using the
             following profile:
             <list>
-              <t>identifier = start *continue *(medial 1*continue)</t>
-              <t>start = &lt;Any character with the XID_Start property&gt;</t>
-              <t>continue = &lt;Any character with the XID_Continue property&gt;</t>
-              <t>medial = "-" / "." / "~" / %xB7 / %x58A / %xF0B</t>
-              <t>medial =/ %x2010 / %x2027 / %x30A0 / %x30FB</t>
+              <t>identifier = START *CONTINUE *(MEDIAL 1*CONTINUE)</t>
+              <t>START = &lt;Any character with the XID_Start property&gt;</t>
+              <t>CONTINUE = &lt;Any character with the XID_Continue property&gt;</t>
+              <t>MEDIAL = "-" / "." / "~" / %xB7 / %x58A / %xF0B</t>
+              <t>MEDIAL =/ %x2010 / %x2027 / %x30A0 / %x30FB</t>
             </list>
           </t>
 
