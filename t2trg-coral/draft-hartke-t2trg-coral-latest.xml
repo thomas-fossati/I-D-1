@@ -222,8 +222,8 @@
           A CoRAL document consists of a list of zero or more links, forms, and
           embedded resource representations, collectively called <spanx>elements</spanx>.
           CoRAL serialization formats may define additional types of elements
-          for efficiency or convenience, such as a base IRI element for relative IRI
-          references.
+          for efficiency or convenience, such as a base for <xref
+          target="RFC3987">relative IRI references</xref>
         </t>
 
       </section>
@@ -529,8 +529,8 @@
         <t>
           The data structure of a document in the binary format is made up of
           four kinds of elements: links, forms, embedded representations, and
-          (as an extension to the CoRAL data model) base IRI directives. Base
-          IRI directives provide a way to encode IRI references with a
+          (as an extension to the CoRAL data model) base directives. Base
+          directives provide a way to encode IRI references with a
           common base more efficiently.
         </t>
 
@@ -765,16 +765,16 @@
           <t>
             Directives provide the ability to manipulate the environment when
             processing a list of elements. There is one directive available: the
-            Base IRI directive.
+            Base directive.
             <list>
               <t>directive = base-directive</t>
             </list>
           </t>
 
-          <section title="Base IRI Directives">
+          <section title="Base Directives">
 
             <t>
-              A Base IRI directive is encoded as an array that consists of the
+              A Base directive is encoded as an array that consists of the
               negative integer -1, followed by an IRI reference.
               <list>
                 <t>base-directive = [base: -1, ciri]</t>
@@ -1198,7 +1198,7 @@
           of four kinds of elements: links, forms, embedded representations, and
           (as an extension to the CoRAL data model) directives. Directives
           provide a way to make documents easier to read and write by defining
-          base IRIs for relative IRI references and introducing shorthands for
+          a base for relative IRI references and introducing shorthands for
           IRIs.
         </t>
 
@@ -1413,17 +1413,17 @@
           </t>
 
           <t>
-            The following directives are available: Base IRI directives and
+            The following directives are available: Base directives and
             Using directives.
             <list>
               <t>directive = base-directive / using-directive</t>
             </list>
           </t>
 
-          <section title="Base IRI Directives">
+          <section title="Base Directives">
 
             <t>
-              A Base IRI directive consists of a number sign ("#"), followed by
+              A Base directive consists of a number sign ("#"), followed by
               the case-insensitive identifier "base", followed by an IRI
               reference.
               <list>
