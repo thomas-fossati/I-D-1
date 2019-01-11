@@ -1240,7 +1240,7 @@
             The link relation type is denoted either by an absolute IRI
             reference, a simple name, a qualified name, or an integer.
             <list>
-              <t>relation = iri / simple-name / qualified-name / integer</t>
+              <t>relation = iri / simple-name / qualified-name</t>
             </list>
           </t>
 
@@ -1341,7 +1341,7 @@
               The form field name is denoted in the same way as a link relation
               type (<xref target="textual-links"/>).
               <list>
-                <t>form-field-name = iri / simple-name / qualified-name / integer</t>
+                <t>form-field-name = iri / simple-name / qualified-name</t>
               </list>
             </t>
 
