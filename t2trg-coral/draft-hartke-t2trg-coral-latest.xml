@@ -574,6 +574,8 @@
             <list>
               <t>relation = text</t>
             </list>
+            Two link relation types are considered the same if the two text
+            strings are identical codepoint-by-codepoint.
           </t>
 
           <t>
@@ -611,7 +613,7 @@
           </t>
 
           <t>
-            The form relation type is encoded in the same way as a
+            The form relation type is defined in the same way as a
             link relation type (<xref target="binary-links"/>).
           </t>
 
@@ -656,7 +658,7 @@
             </t>
 
             <t>
-              A form field name is encoded in the same way as a
+              A form field name is defined in the same way as a
               link relation type (<xref target="binary-links"/>).
               <list>
                 <t>form-field-name = text / uint</t>
@@ -1275,6 +1277,9 @@
             <list>
               <t>qualified-name = identifier ":" identifier</t>
             </list>
+            Two link relation types are considered the same if they resolve to
+            two IRIs which, when considered as Unicode strings, are identical
+            character-by-character.
           </t>
 
           <t>
@@ -1311,7 +1316,7 @@
           </t>
 
           <t>
-            The form relation type is denoted in the same way as a link relation
+            The form relation type is defined in the same way as a link relation
             type (<xref target="textual-links"/>).
           </t>
 
@@ -1352,7 +1357,7 @@
             </t>
 
             <t>
-              The form field name is denoted in the same way as a link relation
+              The form field name is defined in the same way as a link relation
               type (<xref target="textual-links"/>).
               <list>
                 <t>form-field-name = iri / simple-name / qualified-name</t>
