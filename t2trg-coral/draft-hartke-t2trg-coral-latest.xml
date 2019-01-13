@@ -323,7 +323,7 @@
 
         <t>
           If a form is accompanied by form data, as described in the following section,
-          then the agent MUST also construct a payload that matches the
+          then the agent also must construct a payload that matches the
           specifications of the form data and include that in the request.
         </t>
 
@@ -584,7 +584,7 @@
             literal value. The IRI reference
             MUST be resolved against the current base IRI. The encoding of IRI
             references in the binary format is described in <xref
-            target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>. The link target MAY
+            target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>. The link target may
             be null, which indicates that the link target is an unidentified
             resource.
             <list>
@@ -781,8 +781,8 @@
 
         <t>
           Once a dictionary has assigned an unsigned integer, the assignment
-          MUST NOT be changed or removed. A dictionary, however, MAY provide
-          additional information about an assignment that MAY change over time.
+          MUST NOT be changed or removed. A dictionary may, however, provide
+          additional information about an assignment that may change over time.
         </t>
 
         <t>
@@ -1478,7 +1478,7 @@
           <t>
             Specifications for CoRAL-based applications need to list the
             specific components used in the application interface and their
-            identifiers. This SHOULD include the following items:
+            identifiers. This should include the following items:
             <list style="symbols">
               <t hangText="URI Schemes:">
                 IRI schemes that identify the Web transfer protocol(s) used in
@@ -1544,14 +1544,14 @@
           <t>
             This document places no restrictions on the number of elements in a
             CoRAL document or the depth of nested elements. Applications using
-            CoRAL (in particular those running in constrained environments) MAY
+            CoRAL (in particular those running in constrained environments) may
             wish to limit these numbers and specify implementation limits that
             an application implementation must at least support to be
             interoperable.
           </t>
 
           <t>
-            Applications MAY also mandate the following and other restrictions:
+            Applications may also mandate the following and other restrictions:
             <list style="symbols">
               <t>
                 use of only either the binary format or the text format;
@@ -1763,7 +1763,7 @@
       <section title="Embedding CoRAL in CBOR Structures">
 
         <t>
-          Data items in the CoRAL binary format (<xref target="binary"/>) MAY be
+          Data items in the CoRAL binary format (<xref target="binary"/>) may be
           embedded in other <xref target="RFC7049">CBOR</xref> data structures.
           Specifications using <xref target="I-D.ietf-cbor-cddl">CDDL</xref>
           SHOULD reference the following CDDL definitions for this purpose:
@@ -2282,7 +2282,7 @@
           <list style="hanging">
             <t hangText="&lt;urn:TBD1#accept&gt;">
               <vspace/>Specifies an acceptable HTTP content type or CoAP content
-              format for the request payload. There MAY be multiple form fields
+              format for the request payload. There may be multiple form fields
               with this name. If a form does not include a form field with this
               name, the server accepts any or no request payload, depending on
               the form relation type.
