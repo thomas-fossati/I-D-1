@@ -589,6 +589,7 @@
             resource.
             <list>
               <t>target = ciri / literal / null</t>
+              <t>ciri = &lt;Defined in Section X of RFC XXXX&gt;</t>
               <t>literal = bool / int / float / time / bytes / text</t>
             </list>
           </t>
@@ -640,9 +641,7 @@
 
           <t>
             The submission IRI reference MUST be
-            resolved against the current base IRI. The encoding of IRI
-            references in the binary format is described in <xref
-            target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>.
+            resolved against the current base IRI.
           </t>
 
           <section title="Form Data">
@@ -670,9 +669,7 @@
               A form field value can be an IRI reference, a Boolean value, an
               integer, a floating-point number, a date/time value, a byte string, a text string, or
               null. An IRI reference MUST be
-              resolved against the current base IRI. The encoding of IRI
-              references in the binary format is described in <xref
-              target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>.
+              resolved against the current base IRI.
               <list>
                 <t>form-field-value = ciri / bool / int / float</t>
                 <t>form-field-value /= time / bytes / text / null</t>
@@ -726,9 +723,7 @@
 
             <t>
               The IRI reference MUST be resolved
-              against the current context IRI. The encoding of IRI references in
-              the binary format is described in <xref
-              target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>.
+              against the current context IRI.
             </t>
 
             <t>
