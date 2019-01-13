@@ -2023,12 +2023,6 @@
         </t>
 
         <t>
-          [[NOTE TO IANA: For "application/coral+cbor", a code point in the
-          range 0-255 is requested. For "text/coral", a code point in the range
-          256-64999 is requested.]]
-        </t>
-
-        <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of "TBD3" and
           "TBD4" in this document with the code points assigned by IANA.]]
         </t>
