@@ -949,7 +949,7 @@
           <section title="Integer Literals">
 
             <t>
-              Integer literals denote integer values of unspecified precision.
+              Integer literals denote an integer value of unspecified precision.
               By default, integer literals are expressed in decimal, but they
               can also be specified in an alternate base using a prefix: Binary
               literals begin with "0b", octal literals begin with "0o", and
@@ -983,7 +983,7 @@
           <section title="Floating-point Literals">
 
             <t>
-              Floating-point literals denote floating-point numbers of
+              Floating-point literals denote a floating-point number of
               unspecified precision.
             </t>
 
@@ -1043,6 +1043,10 @@
           <section title="Byte String Literals">
 
             <t>
+              Byte string literals denote an ordered sequence of bytes.
+            </t>
+
+            <t>
               A byte string literal consists of a prefix and zero or more bytes
               encoded in <xref target="RFC4648">Base16, Base32, or Base64</xref>
               and enclosed in single quotes. Byte string literals encoded in
@@ -1060,6 +1064,10 @@
           </section>
 
           <section title="Text String Literals">
+
+            <t>
+              Text string literals denote a Unicode string.
+            </t>
 
             <t>
               A text string literal consists of zero or more Unicode characters
