@@ -743,12 +743,17 @@
         <t>
           The binary format can reference link and form relation types, link
           targets, and form field names and values from a dictionary to reduce
-          representation size and processing cost. A reference is encoded as a
-          tagged, unsigned integer using CBOR tag TBD6.
+          representation size and processing cost.
+        </t>
+
+        <t>
+          A dictionary reference is encoded as an unsigned integer. In cases
+          where a dictionary reference cannot be encoded unambiguously, it MUST
+          be tagged using CBOR tag TBD6.
           <list>
-            <t>relation /= #6.TBD6(uint)</t>
+            <t>relation /= uint</t>
             <t>target /= #6.TBD6(uint)</t>
-            <t>form-field-name /= #6.TBD6(uint)</t>
+            <t>form-field-name /= uint</t>
             <t>form-field-value /= #6.TBD6(uint)</t>
           </list>
         </t>
