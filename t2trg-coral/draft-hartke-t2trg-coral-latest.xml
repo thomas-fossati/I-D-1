@@ -913,7 +913,7 @@
           <t>
             IRIs and IRI references are Unicode strings that conforms to the syntax defined in <xref target="RFC3987">RFC 3987</xref>.
             An IRI reference can be either an IRI or a relative reference.
-            IRIs and IRI References are enclosed in angle brackets ("&lt;" and "&gt;").
+            IRIs and IRI references are enclosed in angle brackets ("&lt;" and "&gt;").
             <list>
               <t>iri = "&lt;" IRI "&gt;"</t>
               <t>iriref = "&lt;" IRI-reference "&gt;"</t>
@@ -949,7 +949,7 @@
             <t>
               Integer literals denote integer values of unspecified precision.
               By default, integer literals are expressed in decimal, but they
-              can also be specified in an alternate base using a prefix. Binary
+              can also be specified in an alternate base using a prefix: Binary
               literals begin with "0b", octal literals begin with "0o", and
               hexadecimal literals begin with "0x".
             </t>
@@ -1139,7 +1139,7 @@
           The syntactic structure of a document in the textual format is made up
           of four kinds of elements: links, forms, embedded representations, and
           (as an extension to the CoRAL data model) directives. Directives
-          provide a way to make documents easier to read and write by defining
+          provide a way to make documents easier to read and write by setting
           a base for relative IRI references and introducing shorthands for
           IRIs.
         </t>
@@ -1630,7 +1630,7 @@
         <t>
           [[NOTE TO READERS: This section describes a mechanism to convert any
           link target attributes to CoRAL in a way that allows a conversion back
-          without loss of information (round-trip conversion). It is likely that
+          without loss of information (i.e., round-trip conversion). It is likely that
           this will be replaced by a specific set of unique link relation types
           that match the known RFC 6690 attributes semantically but do not
           round-trip in the presence of other attributes.]]
