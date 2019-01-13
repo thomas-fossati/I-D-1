@@ -661,7 +661,7 @@
               A form field name is defined in the same way as a
               link relation type (<xref target="binary-links"/>).
               <list>
-                <t>form-field-name = text / uint</t>
+                <t>form-field-name = text</t>
               </list>
             </t>
 
