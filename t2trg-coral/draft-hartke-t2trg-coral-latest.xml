@@ -2,6 +2,7 @@
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC2119 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml">
+  <!ENTITY RFC3339 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3339.xml">
   <!ENTITY RFC3629 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3629.xml">
   <!ENTITY RFC3986 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3986.xml">
   <!ENTITY RFC3987 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3987.xml">
@@ -267,7 +268,7 @@
           can dereference the IRI and navigate the browsing context to the
           referenced resource; this is called <spanx>following the link</spanx>.
           A literal directly identifies a value, which in CoRAL can be a Boolean value, an
-          integer, a floating-point number, a byte string, or a text string.
+          integer, a floating-point number, a date/time value, a byte string, or a text string.
         </t>
 
         <t>
@@ -359,7 +360,7 @@
 
         <t>
           The form field value can be an IRI, a Boolean value, an integer, a
-          floating-point number, a byte string, or a text string.
+          floating-point number, a date/time value, a byte string, or a text string.
         </t>
 
       </section>
@@ -588,7 +589,7 @@
             resource.
             <list>
               <t>target = ciri / literal / null</t>
-              <t>literal = bool / int / float / bytes / text</t>
+              <t>literal = bool / int / float / time / bytes / text</t>
             </list>
           </t>
 
@@ -667,13 +668,14 @@
 
             <t>
               A form field value can be an IRI reference, a Boolean value, an
-              integer, a floating-point number, a byte string, a text string, or
+              integer, a floating-point number, a date/time value, a byte string, a text string, or
               null. An IRI reference MUST be
               resolved against the current base IRI. The encoding of IRI
               references in the binary format is described in <xref
               target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>.
               <list>
-                <t>form-field-value = ciri / bool / int / float / bytes / text / null</t>
+                <t>form-field-value = ciri / bool / int / float</t>
+                <t>form-field-value /= time / bytes / text / null</t>
               </list>
             </t>
 
@@ -928,7 +930,7 @@
 
           <t>
             A literal is a textual representation of a value. There are six
-            types of literals: Boolean, integer, floating-point, byte string,
+            types of literals: Boolean, integer, floating-point, date/time, byte string,
             text string, and null.
           </t>
 
@@ -999,7 +1001,7 @@
               Negative floating-point values are expressed by prepending a minus
               sign ("-").
               <list>
-                <t>floating-point = ["+" / "-"] 1*DIGIT [fraction] [exponent]</t>
+                <t>float = ["+" / "-"] 1*DIGIT [fraction] [exponent]</t>
                 <t>fraction = "." 1*DIGIT</t>
                 <t>exponent = (%x45 / %x65) ["+" / "-"] 1*DIGIT</t>
               </list>
@@ -1013,8 +1015,26 @@
               case-insensitive tokens "+Infinity" (or simply "Infinity") and
               "-Infinity".
               <list>
-                <t>floating-point =/ "NaN"</t>
-                <t>floating-point =/ ["+" / "-"] "Infinity"</t>
+                <t>float =/ "NaN" / ["+" / "-"] "Infinity"</t>
+              </list>
+            </t>
+
+          </section>
+
+          <section title="Date/Time Literals">
+
+            <t>
+              Date/time literals denote an instant in time.
+            </t>
+
+            <t>
+              A date/time literal consists of a sequence of characters in
+              <xref target="RFC3339">Internet date/time format</xref>, enclosed
+              in single quotes.
+              <list>
+                <t>datetime = SQUOTE date-time SQUOTE</t>
+                <t>date-time = &lt;Defined in Section 5.6 of RFC 3339&gt;</t>
+                <t>SQUOTE = %x27</t>
               </list>
             </t>
 
@@ -1034,7 +1054,6 @@
                 <t>base16 = (%x68 / %x62.31.36) SQUOTE &lt;Base16 encoded data&gt; SQUOTE</t>
                 <t>base32 = %x62.33.32 SQUOTE &lt;Base32 encoded data&gt; SQUOTE</t>
                 <t>base64 = %x62.36.34 SQUOTE &lt;Base64 encoded data&gt; SQUOTE</t>
-                <t>SQUOTE = %x27</t>
               </list>
             </t>
 
@@ -1215,7 +1234,7 @@
             null, the link target is an unidentified resource.
             <list>
               <t>target = iriref / literal / null</t>
-              <t>literal = boolean / integer / floating-point / bytes / text</t>
+              <t>literal = boolean / integer / float / datetime / bytes / text</t>
             </list>
           </t>
 
@@ -1296,8 +1315,8 @@
               string literal, or null. An IRI reference
               MUST be resolved against the current base IRI.
               <list>
-                <t>form-field-value = iriref / boolean / integer</t>
-                <t>form-field-value =/ floating-point / bytes / text / null</t>
+                <t>form-field-value = iriref / boolean / integer / float</t>
+                <t>form-field-value =/ datetime / bytes / text / null</t>
               </list>
             </t>
 
@@ -2057,6 +2076,7 @@
       &I-D.hartke-t2trg-ciri;
 
       &RFC2119;
+      &RFC3339;
       &RFC3629;
       &RFC3986;
       &RFC3987;
