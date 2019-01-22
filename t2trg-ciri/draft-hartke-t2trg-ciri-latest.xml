@@ -91,7 +91,7 @@
         individual components of a URI or IRI reference are delimited by a
         number of reserved characters, which necessitates the use of escaping
         (called percent-encoding) when these reserved characters are used in a
-        non-delimiting function. Path components can also contain special
+        non-delimiting function. Some components can also contain special
         character sequences (called dot-segments) that affect how the component
         is to be interpreted. The resolution of URI/IRI references involves
         parsing the character string into its components, combining those
@@ -101,22 +101,22 @@
       </t>
 
       <t>
-        Overall, the proper processing of URIs is quite complex. This can be a
+        Overall, the proper handling of URIs is quite complex. This can be a
         problem particularly in <xref target="RFC7228">constrained
         environments</xref>, where devices often have severe code size
         limitations. As a result, many implementations in these environments
         choose to support only an ad-hoc, informally-specified, bug-ridden,
-        non-interoperable subset of half of the standard.
+        non-interoperable subset of half of the URI standard.
       </t>
 
       <t>
-        This document specifies Constrained IRI References, a representation of
         IRI references that encodes the IRI components in <xref
+        This document specifies Constrained IRI References, an alternate serialization of
         target="RFC7049">Concise Binary Object Representation (CBOR)</xref>
         rather than a string of characters. Assuming an implementation of CBOR
-        is already present on a device, typical operations on Constrained IRI
-        references, such as parsing, reference resolution, and comparison, can
-        be implemented more easily than for the character strings; a full
+        is already present on a device, typical operations on URI
+        references such as parsing, reference resolution, and comparison can
+        be implemented more easily than for the character strings. A full
         implementation that covers all corner cases can be implemented in a
         relatively small amount of code.
       </t>
@@ -153,9 +153,9 @@
     <section title="Data Model">
 
       <t>
-        The data model for Constrained IRI References is similar to the <xref
-        target="RFC7252">encoding of request URIs in CoAP messages</xref>: The
         components of an IRI reference are encoded as a sequence of
+        The data model for Constrained IRI References is very similar to the <xref
+        target="RFC7252">serialization of the Request URI in CoAP messages</xref>: The
         <spanx>options</spanx>, where each path segment and query parameter
         becomes its own option. Every option consists of an <spanx>option
         number</spanx> identifying the type of option (scheme, host name, path
@@ -178,23 +178,22 @@
               name.
               The option value can be any Unicode string matching the
               specifications of the IRI scheme. For example, if the scheme
-              refers to CoAP or HTTP, then the option value is an <xref
-              target="RFC5890">Internationalized Domain Name</xref>.
+              refers to CoAP or HTTP, then the option value is typically a DNS name.
             </t>
             <t hangText="host.ip">
               <vspace/>Specifies the host of the IRI authority as an IPv4
               address or an IPv6 address.
-              The option value is a byte string consisting of 4 or 16 bytes,
+              The option value is a byte string with a length of 4 bytes or 16 bytes,
               respectively.
             </t>
             <t hangText="port">
               <vspace/>Specifies the port number.
-              The option value is an unsigned integer in the range 0 to 65535.
+              The option value is an integer in the range 0 to 65535.
             </t>
             <t hangText="path.type">
               <vspace/>Specifies the type of the IRI path for reference
               resolution.
-              The option value is an unsigned integer in the range 0 to 127,
+              The option value is an integer in the range 0 to 127,
               named as follows:
               <list>
                 <t>
@@ -212,7 +211,7 @@
             </t>
             <t hangText="path">
               <vspace/>Specifies one segment of the IRI path.
-              The option value can be any Unicode string except "." and "..".
+              The option value can be any Unicode string with the exception of the strings "." and "..".
               This option can occur more than once.
             </t>
             <t hangText="query">
@@ -262,20 +261,20 @@ ____ scheme __/             \___ port _
               any "host.ip" option is followed by a "port" option;
             </t>
             <t>
-              any "port" option is either followed by a "path", "query", or "fragment"
-              option or at the end of the sequence;
+              any "port" option either is followed by a "path", "query", or "fragment"
+              option or is at the end of the sequence;
             </t>
             <t>
-              any "path.type" option is either followed by a "path", "query", or
-              "fragment" option or at the end of the sequence;
+              any "path.type" option either is followed by a "path", "query", or
+              "fragment" option or is at the end of the sequence;
             </t>
             <t>
-              any "path" option is either followed by a "path", "query", or "fragment"
-              option or at the end of the sequence;
+              any "path" option either is followed by a "path", "query", or "fragment"
+              option or is at the end of the sequence;
             </t>
             <t>
-              any "query" option is either followed by a "query" or "fragment" option or
-              at the end of the sequence; and
+              any "query" option either is followed by a "query" or "fragment" option or
+              is at the end of the sequence; and
             </t>
             <t>
               any "fragment" option is at the end of the sequence.
@@ -298,8 +297,8 @@ ____ scheme __/             \___ port _
         <t>
           An absolute sequence of options is considered
           <spanx>normalized</spanx> if the result of resolving the sequence of
-          options against any base IRI reference is equal to the input. (It
-          doesn't matter what base IRI it is resolved against, since it is already
+          options against any base is equal to the input. (It
+          doesn't matter what base it is resolved against, since it is already
           absolute.)
         </t>
 
@@ -359,8 +358,12 @@ ____ scheme __/             \___ port _
 
       <t>
         A sequence of options is represented in <xref target="RFC7049">Concise
-        Binary Object Representation (CBOR)</xref> as an array of even length
-        that contains option numbers and option values in alternating order. This
+        Binary Object Representation (CBOR)</xref> as an array
+        that contains option numbers and option values in alternating order.
+      </t>
+        
+      <t>
+        The
         structure can be described in the <xref target="I-D.ietf-cbor-cddl">Concise
         Data Definition Language (CDDL)</xref> as follows:
       </t>
@@ -369,7 +372,7 @@ ____ scheme __/             \___ port _
    ciri = [?(scheme:    1, text .regexp "[A-Za-z][A-Za-z0-9+.-]*"),
            ?(host.name: 2, text //
              host.ip:   3, bytes .size 4 / bytes .size 16),
-           ?(port:      4, uint .size 2),
+           ?(port:      4, 0..65535),
            ?(path.type: 5, 0..127),
            *(path:      6, text),
            *(query:     7, text),
@@ -390,7 +393,7 @@ ____ scheme __/             \___ port _
 
       <t>
         A sequence of options is represented in the following Python 3.6 code as
-        a list of pairs, where each pair consists of an option number and an
+        a list of tuples, where each tuple consists of an option number and an
         option value.
       </t>
 
@@ -492,7 +495,7 @@ ____ scheme __/             \___ port _
 
         <t>
           The following Python 3.6 code defines how to resolve a sequence of
-          options that might be relative to a given base IRI.
+          options that might be relative to a given base.
         </t>
 
 <figure><artwork><![CDATA[
@@ -554,8 +557,8 @@ ____ scheme __/             \___ port _
       <section title="IRI Recomposition" anchor="py-recompose">
 
         <t>
-          The following Python 3.6 code defines how to recompose an IRI from a
-          sequence of options that encodes an absolute IRI reference.
+          The following Python 3.6 code defines how to recompose an IRI from an absolute
+          sequence of options.
         </t>
 
 <figure><artwork><![CDATA[
@@ -687,7 +690,7 @@ ____ scheme __/             \___ port _
         <t>
           The following Python 3.6 code illustrates how to construct CoAP options from
           an absolute sequence of options. For simplicity, the code does not
-          omit CoAP options with the default value.
+          omit CoAP options that have their default value.
         </t>
 
 <figure><artwork><![CDATA[
