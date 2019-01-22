@@ -53,12 +53,12 @@
     <abstract>
 
       <t>
-        This document specifies Constrained Internationalized Resource
-        Identifier (CIRI) References, a representation of Internationalized
-        Resource Identifier (IRI) References that encodes the IRI components in
-        Concise Binary Object Representation (CBOR) rather than a string of
-        characters. This simplifies parsing, reference resolution, and
-        comparison of IRIs in Constrained RESTful Environments (CoRE).
+        Constrained Internationalized Resource Identifiers are an alternate
+        serialization of Internationalized Resource Identifiers (IRIs) that encodes the IRI
+        components in Concise Binary Object Representation (CBOR) rather than as
+        a string of characters. This simplifies parsing, reference resolution,
+        and comparison of IRIs in environments with severe limitations on
+        processing power, code size, and memory size.
       </t>
 
     </abstract>
@@ -89,13 +89,13 @@
         URI and IRI references are strings of characters, which are chosen from
         the repertoires of US-ASCII and Unicode characters respectively. The
         individual components of a URI or IRI reference are delimited by a
-        number of reserved characters, which necessitates the use of escaping
-        (called percent-encoding) when these reserved characters are used in a
-        non-delimiting function. Some components can also contain special
-        character sequences (called dot-segments) that affect how the component
         is to be interpreted. The resolution of URI/IRI references involves
+        number of reserved characters, which necessitates the use of
+        percent-encoding when these reserved characters are used in a
+        non-delimiting function. The path component of an IRI can also contain
+        special dot-segments that affect how the component
         parsing the character string into its components, combining those
-        components with the components of the base URI/IRI, merging paths,
+        components with the components of a base URI/IRI, merging path components,
         removing dot-segments, and recomposing the result back into a character
         string.
       </t>
@@ -116,7 +116,7 @@
         rather than a string of characters. Assuming an implementation of CBOR
         is already present on a device, typical operations on URI
         references such as parsing, reference resolution, and comparison can
-        be implemented more easily than for the character strings. A full
+        be implemented more easily than for character strings. A full
         implementation that covers all corner cases can be implemented in a
         relatively small amount of code.
       </t>
@@ -131,7 +131,7 @@
         IRIs that function as resource locators.
       </t>
 
-      <section title="Requirements Notation">
+      <section title="Notational Conventions">
 
         <t>
           The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -139,6 +139,11 @@
           "OPTIONAL" in this document are to be interpreted as described in
           <xref target="RFC2119">BCP 14</xref> <xref target="RFC8174"/> when,
           and only when, they appear in all capitals, as shown here.
+        </t>
+
+        <t>
+          Terms defined in this document are written in <spanx>cursive</spanx>
+          where they are introduced.
         </t>
 
       </section>
