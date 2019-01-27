@@ -443,11 +443,6 @@
               to obtain the <spanx>request IRI</spanx>. Fragment identifiers are
               not part of the request IRI and MUST be separated from the rest of
               the IRI prior to a dereference.
-              <vspace blankLines="1"/>
-              The request IRI may need to be
-              converted to a URI (Section 3.1 of <xref
-              target="RFC3987">RFC 3987</xref>) for protocols that do not
-              support IRIs.
             </t>
             <t>
               The agent constructs a new request with the request IRI. If the
@@ -1230,9 +1225,6 @@
             <list>
               <t>qualified-name = identifier ":" identifier</t>
             </list>
-            Two link relation types are considered the same if they resolve to
-            two IRIs which, when considered as Unicode strings, are identical
-            character-by-character.
           </t>
 
           <t>
