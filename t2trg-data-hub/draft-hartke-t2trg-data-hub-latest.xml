@@ -21,7 +21,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="2"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-data-hub-02" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-data-hub-03" ipr="trust200902">
 
   <front>
 
@@ -148,13 +148,18 @@
         </list>
       </t>
 
-      <section title="Requirements Notation">
+      <section title="Notational Conventions">
 
         <t>
           The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
           "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
           "OPTIONAL" in this document are to be interpreted as described in
           <xref target="RFC2119"/>.
+        </t>
+
+        <t>
+          Terms defined in this document appear in <spanx>cursive</spanx>
+          where they are introduced.
           <vspace blankLines="10"/>
         </t>
 
