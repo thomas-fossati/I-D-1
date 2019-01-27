@@ -349,7 +349,7 @@
         <t>
           A form field can directly identify one or more data items that the client needs to
           include in the request payload or can reference another resource (such as
-          a schema) that describes such data items. Form fields may also provide
+          a schema) that describes these. Form fields may also provide
           other kinds of information, such as acceptable representation formats for the payload.
         </t>
 
@@ -458,7 +458,7 @@
               options according to  metadata
               associated with the link or form (e.g., set the HTTP Accept
               header field or the CoAP Accept option when the media type of the
-              target resource is provided). In case of a form with form
+              target resource is provided). In the case of a form with form
               data or an applicable form relation type, the agent MUST also include a request payload that matches the
               specifications of the form data.
             </t>
@@ -747,9 +747,9 @@
         </t>
 
         <t>
-          A dictionary reference is encoded as an unsigned integer. In cases
-          where a dictionary reference cannot be encoded unambiguously, it MUST
-          be tagged using CBOR tag TBD6.
+          A dictionary reference is encoded as an unsigned integer. Where a
+          dictionary reference cannot be encoded unambiguously, it is tagged
+          using CBOR tag TBD6.
           <list>
             <t>relation /= uint</t>
             <t>target /= #6.TBD6(uint)</t>
@@ -786,14 +786,14 @@
 
         <t>
           Once a dictionary has assigned an unsigned integer, the assignment
-          MUST NOT be changed or removed. A dictionary may, however, provide
+          MUST NOT be changed or removed. A dictionary, however, may provide
           additional information about an assignment that may change over time.
         </t>
 
         <t>
           In <xref target="RFC7252">CoAP</xref>, media types (including specific
           values for their parameters) are encoded as an unsigned integer called
-          the <spanx>content format</spanx>. For use with CoAP, each CoRAL
+          the <spanx>content format</spanx>. For use with CoAP, each new CoRAL
           dictionary needs to register a new content format in the IANA CoAP
           Content-Formats Registry.
         </t>
@@ -2052,7 +2052,7 @@
 
         <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of "TBD6" in this
-          document with the code points assigned by IANA.]]
+          document with the code point assigned by IANA.]]
         </t>
 
       </section>
