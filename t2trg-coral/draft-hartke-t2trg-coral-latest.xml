@@ -140,7 +140,8 @@
         processing resources</xref> and shares many similarities with the
         message format of the <xref target="RFC7252">Constrained Application
         Protocol (CoAP)</xref>. For example, it uses numeric identifiers instead
-        of verbose strings for link and form relation types, and pre-parses URIs
+        of verbose strings for link and form relation types, and pre-parses <xref
+          target="RFC3986">Uniform Resource Identifiers (URIs)</xref>
         into (what CoAP considers to be) their components, which
         simplifies URI handling for constrained nodes greatly. As a result, link serializations in CoRAL are often
         much more compact than equivalent serializations in <xref
@@ -205,7 +206,7 @@
           A browsing context may entail a <spanx>session history</spanx>. A
           session history keeps track of visited representations and the <xref
           target="RFC3987">Internationalized Resource Identifier (IRI)</xref>
-          that was used to retrieve each.
+          that was used to retrieve each representation.
         </t>
 
       </section>
@@ -224,7 +225,7 @@
           embedded resource representations, collectively called <spanx>elements</spanx>.
           CoRAL serialization formats may define additional types of elements
           for efficiency or convenience, such as a base for <xref
-          target="RFC3987">relative IRI references</xref>
+          target="RFC3986">relative references</xref>.
         </t>
 
       </section>
@@ -252,12 +253,12 @@
           denoted by an IANA-registered name, such as "stylesheet" or "type". In
           CoRAL, they are denoted by an IRI such as
           &lt;http://www.iana.org/assignments/relation/stylesheet&gt; or
-          &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;. This allows
+          &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;. This approach allows
           for the creation of new link relation types without the risk of
           collisions when from different
-          organizations or domains of knowledge. IRIs also can lead to
+          organizations or domains of knowledge. An IRI also can lead to
           documentation, schema, and other information about the link relation
-          types.
+          type. Two link relation types are equal if and only if they are equivalent under Simple String Comparison according to <xref target="RFC3987">Section 5.3.1 of RFC 3987</xref>.
         </t>
 
         <t>
@@ -309,7 +310,7 @@
 
         <t>
           The form relation type identifies the semantics of the operation. Form
-          relation types, like link relation types, are denoted by an IRI.
+          relation types are denoted like link relation types by an IRI.
         </t>
 
         <t>
@@ -355,7 +356,7 @@
 
         <t>
           The form field name identifies the semantics of the form field. Form
-          field names, like link and form relation types, are denoted by an IRI.
+          field names are denoted like link and form relation types by an IRI.
         </t>
 
         <t>
@@ -575,8 +576,6 @@
             <list>
               <t>relation = text</t>
             </list>
-            Two link relation types are considered the same if the two text
-            strings are identical codepoint-by-codepoint.
           </t>
 
           <t>
@@ -741,9 +740,10 @@
       <section title="Dictionaries" anchor="dictionaries">
 
         <t>
-          The binary format can reference link and form relation types, link
-          targets, and form field names and values from a dictionary to reduce
-          representation size and processing cost.
+          The binary format can reference values from a dictionary to reduce
+          representation size and processing cost. This applies to link relation
+          types, form relation types, link targets, form field names, and form
+          field values.
         </t>
 
         <t>
@@ -834,7 +834,7 @@
           The lexical structure of a document in the textual format is made up
           of four basic elements: line terminators, white space, comments, and
           tokens. Of these, only tokens are significant in the syntactic
-          grammar. There are four kinds of tokens: identifiers, IRI references,
+          grammar. There are five kinds of tokens: identifiers, IRIs, IRI references,
           literals, and punctuators.
         </t>
 
@@ -910,11 +910,11 @@
 
         </section>
 
-        <section title="IRIs">
+        <section title="IRIs and IRI References">
 
           <t>
             IRIs and IRI references are Unicode strings that conforms to the syntax defined in <xref target="RFC3987">RFC 3987</xref>.
-            An IRI reference can be either an IRI or a relative reference.
+            An IRI reference is either an IRI or a relative reference.
             IRIs and IRI references are enclosed in angle brackets ("&lt;" and "&gt;").
             <list>
               <t>iri = "&lt;" IRI "&gt;"</t>
@@ -1237,8 +1237,12 @@
 
           <t>
             The link target is denoted by an IRI reference or represented by a
-            value literal. The IRI reference
-            MUST be resolved against the current base IRI. If the link target is
+            value literal. An IRI reference
+            MUST be resolved against the current base IRI.
+            The resulting IRI MUST be converted to a URI (Section 3.1 of <xref
+            target="RFC3987">RFC 3987</xref>) for protocols that do not support
+            IRIs.
+            If the link target is
             null, the link target is an unidentified resource.
             <list>
               <t>target = iriref / literal / null</t>
@@ -1290,6 +1294,9 @@
           <t>
             The submission IRI reference MUST be
             resolved against the current base IRI.
+            The resulting IRI MUST be converted to a URI (Section 3.1 of <xref
+            target="RFC3987">RFC 3987</xref>) for protocols that do not support
+            IRIs.
           </t>
 
           <section title="Form Data">
@@ -1567,8 +1574,8 @@
               </t>
               <t>
                 use of only either IRIs or tagged, unsigned integers to denote
-                certain link and form relation types, link targets, and form
-                field names and values;
+                certain link relation types, form relation types, link targets, form
+                field names, and form field values;
               </t>
               <t>
                 use of only either content type strings or content format IDs;
@@ -1810,10 +1817,10 @@
       </t>
 
       <t>
-        CoRAL makes extensive use of IRIs and URIs. See Section 8 of <xref
-        target="RFC3987">RFC 3987</xref> for security considerations relating to
-        IRIs. See Section 7 of <xref target="RFC3986">RFC 3986</xref> for
-        security considerations relating to URIs.
+        CoRAL makes extensive use of URIs and IRIs. See Section 7 of <xref
+        target="RFC3986">RFC 3986</xref> for security considerations relating to
+        URIs. See Section 8 of <xref target="RFC3987">RFC 3987</xref> for
+        security considerations relating to IRIs.
       </t>
 
       <t>
