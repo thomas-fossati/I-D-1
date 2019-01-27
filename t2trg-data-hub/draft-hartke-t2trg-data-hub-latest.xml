@@ -244,7 +244,7 @@
             However, a data collection MAY restrict the media types it accepts
             for publication. In this case, the form in the data collection
             representation for creating data items MUST list the acceptable
-            media types using form fields with name &lt;urn:TBD#accept&gt;.
+            media types using form fields with name &lt;urn:TBD1#accept&gt;.
           </t>
           <t>
             The representations of the data items MAY link back to the data collection
@@ -283,10 +283,10 @@
           <t hangText="Creating an Item">
             <vspace blankLines="1"/>
             The representation of a data collection MAY contain a form with the
-            &lt;urn:TBD#create&gt; form relation type. Submitting this
+            &lt;urn:TBD1#create&gt; form relation type. Submitting this
             form with a representation in one of the acceptable media types
             creates a new data item in the data collection. The acceptable media types
-            are indicated by &lt;urn:TBD#accept&gt; form fields.
+            are indicated by &lt;urn:TBD1#accept&gt; form fields.
           </t>
           <t>
             Data hubs implementing this specification MUST offer the <xref
@@ -311,7 +311,7 @@
           <t hangText="Updating an Item">
             <vspace blankLines="1"/>
             For each data item in a data collection, the representation of the data collection
-            MAY include a nested form with the &lt;urn:TBD#update&gt;
+            MAY include a nested form with the &lt;urn:TBD1#update&gt;
             form relation type. Submitting this form updates the data item to the submitted representation.
           </t>
           <t>
@@ -321,7 +321,7 @@
           <t hangText="Deleting an Item">
             <vspace blankLines="1"/>
             For each data item in a data collection, the representation of the data collection
-            MAY include a nested form with the &lt;urn:TBD#delete&gt;
+            MAY include a nested form with the &lt;urn:TBD1#delete&gt;
             form relation type. Submitting this form deletes the data item from
             the data collection.
           </t>
@@ -332,7 +332,7 @@
           <t hangText="Searching for Items">
             <vspace blankLines="1"/>
             The representation of a data collection MAY contain a form with the
-            &lt;urn:TBD#search&gt; form relation type. This form can
+            &lt;urn:TBD1#search&gt; form relation type. This form can
             be used to find data items in the data collection. Submitting this form
             with a search query returns the subset of data items that match the
             query.
@@ -610,7 +610,7 @@
       <!-- sorted by last name -->
       <t>
         Thanks to
-        Christian Amsuess and
+        Christian Ams&uuml;ss and
         Jaime Jimenez
         for helpful comments and discussions that have shaped the
         document.
