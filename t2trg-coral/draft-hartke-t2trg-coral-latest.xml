@@ -1603,13 +1603,24 @@
         </t>
 
         <t>
-          IRIs that identify link relation types, form relation types, and form
-          field names do not need to be registered. The inclusion of DNS names
-          in IRIs allows for the decentralized creation of new IRIs without the
-          risk of collisions.
+          To avoid interoperability problems, only IRIs that are normalized
+          according to <xref target="RFC3987">Section 5.3 of RFC 3987</xref>
+          SHOULD be minted. Non-normalized forms that are best avoided include:
+          <list style="symbols">
+            <t>Uppercase characters in scheme names and domain names</t>
+            <t>Percent-encoding of characters where it is not required by the IRI syntax</t>
+            <t>Explicitly stated HTTP default port (e.g., &lt;http://example.com/&gt; is preferable over &lt;http://example.com:80/&gt;)</t>
+            <t>Completely empty path in HTTP IRIs (e.g., &lt;http://example.com/&gt; is preferable over &lt;http://example.com&gt;)</t>
+            <t>Dot segments ("/./" or "/../") in the path component of an IRI</t>
+            <t>Lowercase hexadecimal letters within percent-encoding triplets (e.g., "%3F" is preferable over "%3f")</t>
+            <t>Punycode-encoding of Internationalized Domain Names in IRIs</t>
+            <t>IRIs that are not in <xref target="UNICODE-UAX15">Unicode Normalization Form C</xref></t>
+          </list>
         </t>
 
         <t>
+          The inclusion of Domain Names in IRIs allows for the decentralized
+          creation of new IRIs without the risk of collisions.
           However, IRIs can be relatively verbose and impose a high overhead on
           representations. This can be a problem in <xref
           target="RFC7228">constrained environments</xref>. Therefore, CoRAL
