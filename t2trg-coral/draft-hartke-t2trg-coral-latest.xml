@@ -254,16 +254,18 @@
 
         <t>
           The link relation type identifies the semantics of a link. In HTML 5
-          and RFC 8288, link relation types are typically
-          denoted by an IANA-registered name, such as "stylesheet" or "type". In
-          CoRAL, they are denoted by an IRI such as
+          and RFC 8288, link relation types are typically denoted by an
+          IANA-registered name, such as "stylesheet" or "type". In CoRAL, they
+          are denoted by an <xref target="RFC3987">Internationalized Resource
+          Identifier (IRI)</xref> such as
           &lt;http://www.iana.org/assignments/relation/stylesheet&gt; or
-          &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;. This approach allows
-          for the creation of new link relation types without the risk of
-          collisions when from different
-          organizations or domains of knowledge. An IRI also can lead to
-          documentation, schema, and other information about the link relation
-          type. Two link relation types are equal if and only if they are equivalent under Simple String Comparison according to <xref target="RFC3987">Section 5.3.1 of RFC 3987</xref>.
+          &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;. This approach
+          allows for the creation of new link relation types without the risk of
+          collisions when from different organizations or domains of knowledge.
+          An IRI also can lead to documentation, schema, and other information
+          about the link relation type. Two link relation types are equal if and
+          only if they are equivalent under Simple String Comparison according
+          to <xref target="RFC3987">Section 5.3.1 of RFC 3987</xref>.
         </t>
 
         <t>
