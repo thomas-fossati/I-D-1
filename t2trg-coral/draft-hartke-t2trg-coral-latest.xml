@@ -1654,10 +1654,9 @@
         </figure>
 
         <t>
-          Since link relation types in CoRAL are always compared in a case-sensitive
-          fashion, registered link relation types MUST be converted to
-          their registered form (usually, lowercase) when serialized in a CoRAL
-          document.
+          Note that registered link relation types are constrained to Unicode
+          characters in the Lowercase Latin alphabet (U+0061 to U+007A), as per
+          <xref target="RFC8288">Section 6 of RFC 8288</xref>.
         </t>
 
         <t>
