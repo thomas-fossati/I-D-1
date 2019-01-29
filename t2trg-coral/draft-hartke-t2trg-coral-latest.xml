@@ -411,7 +411,8 @@
         <t>
           If dereferencing the entry point IRI yields a CoRAL document (or any
           other representation that implements the CoRAL data and interaction
-          model), then the agent proceeds as follows:
+          model), then the agent makes this document the active representation
+          in its browsing context and proceeds as follows:
           <list style="numbers">
             <t>
               The first step for the agent is to decide what to do next, i.e.,
