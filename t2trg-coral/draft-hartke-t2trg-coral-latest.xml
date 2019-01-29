@@ -772,11 +772,12 @@
 
           <t>
             A dictionary reference is encoded as an unsigned integer. Where a
-            dictionary reference cannot be expressed unambiguously, it MUST be
+            dictionary reference cannot be expressed unambiguously, the unsigned integer is
             tagged with CBOR tag TBD6.
             <list>
               <t>relation /= uint</t>
-              <t>target /= #6.TBD6(uint)</t>
+              <t>link-target /= #6.TBD6(uint)</t>
+              <t>form-target /= #6.TBD6(uint)</t>
               <t>form-field-name /= uint</t>
               <t>form-field-value /= #6.TBD6(uint)</t>
             </list>
