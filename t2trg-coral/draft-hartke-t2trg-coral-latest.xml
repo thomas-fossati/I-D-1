@@ -220,9 +220,10 @@
 
         <t>
           A resource representation in one of the CoRAL serialization formats is
-          called a CoRAL <spanx>document</spanx>. The IRI that was used to
-          retrieve such a document is called the document's <spanx>retrieval
-          context</spanx>.
+          called a CoRAL <spanx>document</spanx>. The <xref
+          target="RFC3987">Internationalized Resource Identifier (IRI)</xref>
+          that was used to retrieve such a document is called the document's
+          <spanx>retrieval context</spanx>.
         </t>
 
         <t>
@@ -230,7 +231,7 @@
           embedded resource representations, collectively called <spanx>elements</spanx>.
           CoRAL serialization formats may define additional types of elements
           for efficiency or convenience, such as a base for <xref
-          target="RFC3986">relative references</xref>.
+          target="RFC3987">relative IRI references</xref>.
         </t>
 
       </section>
@@ -261,17 +262,17 @@
           &lt;http://www.iana.org/assignments/relation/stylesheet&gt; or
           &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;. This approach
           allows for the creation of new link relation types without the risk of
-          collisions when from different organizations or domains of knowledge.
+          collisions when they are from different organizations or domains of knowledge.
           An IRI also can lead to documentation, schema, and other information
-          about the link relation type. Two link relation types are equal if and
-          only if they are equivalent under Simple String Comparison according
-          to <xref target="RFC3987">Section 5.3.1 of RFC 3987</xref>.
+          about the link relation type. However, the IRIs are primarily used as
+          identity tokens with no relationship to a protocol and MUST be
+          compared using Simple String Comparison as per Section 5.1 of RFC
+          3987.
         </t>
 
         <t>
-          The link context and the link target are both resources on the Web.
-          Resources are denoted in CoRAL either by an <xref target="RFC3987">IRI
-          reference</xref> or (similarly to RDF) a literal. If the IRI scheme
+          The link context and the link target are both either by an IRI
+          or (similarly to RDF) a literal. If the IRI scheme
           indicates a Web transfer protocol such as HTTP or CoAP, then an agent
           can dereference the IRI and navigate the browsing context to the
           referenced resource; this is called <spanx>following the link</spanx>.
@@ -304,14 +305,14 @@
           A <spanx>form</spanx> provides instructions to an agent for performing
           an operation on a Web resource. It consists of a <spanx>form
           context</spanx>, a <spanx>form relation type</spanx>, a <spanx>request
-          method</spanx>, and a <spanx>submission IRI</spanx>. Additionally, a
+          method</spanx>, and a <spanx>form target</spanx>. Additionally, a
           form may be accompanied by <spanx>form data</spanx>.
         </t>
 
         <t>
           A form can be viewed as an instruction of the form "To perform a {form
           relation type} operation on {form context}, make a {request method}
-          request to {submission IRI}" where the payload of the request may be
+          request to {form target}" where the payload of the request may be
           further described by form data.
         </t>
 
@@ -323,8 +324,8 @@
         <t>
           The form context is the resource on which an operation is ultimately
           performed. To perform the operation, an agent needs to construct a request
-          with the specified request method and submission IRI. The submission
-          IRI typically refers to the form context, but may refer to a different
+          with the specified request method and form target as the request IRI. The form
+          target typically is identical with the form context, but may be a different
           resource. Constructing and sending the request is called _submitting
           the form_.
         </t>
@@ -357,7 +358,7 @@
         <t>
           A form field can directly identify one or more data items that the client needs to
           include in the request payload or can reference another resource (such as
-          a schema) that describes these. Form fields may also provide
+          a schema) that describes the structure of the payload. Form fields may also provide
           other kinds of information, such as acceptable representation formats for the payload.
         </t>
 
@@ -389,8 +390,7 @@
 
         <t>
           An embedded representation may be a full, partial, or inconsistent
-          version of the representation served from the IRI of the represented
-          resource.
+          version of the representation served from the IRI of the resource.
         </t>
 
         <t>
@@ -411,8 +411,8 @@
           the only IRI an agent is expected to know before interacting with an
           application. From there, the agent is expected to make all requests by
           following links and submitting forms provided by the server in
-          responses. The entry point IRI can be obtained through manual configuration
-          or some discovery process.
+          responses. The entry point IRI can be obtained by manual configuration
+          or through some discovery process.
         </t>
 
         <t>
@@ -445,17 +445,17 @@
               format="counter"/>.
             </t>
             <t>
-              The agent resolves the IRI reference in the link or form
-              (Section 5 of <xref target="RFC3986">RFC 3986</xref>)
-              to obtain the <spanx>request IRI</spanx>. Fragment identifiers are
-              not part of the request IRI and MUST be separated from the rest of
-              the IRI prior to a dereference.
+              The agent obtains the <spanx>request IRI</spanx> from the link or
+              form. Fragment identifiers are not part of the request IRI and
+              MUST be separated from the rest of the IRI prior to a dereference.
             </t>
             <t>
               The agent constructs a new request with the request IRI. If the
               agent is following a link, then the request method MUST be GET. If the agent
               is submitting a form, then the request method MUST be the one specified by
               the form.
+              The request IRI may need to be converted to a URI (Section 3.1 of
+              RFC 3987) for protocols that do not support IRIs.
               <vspace blankLines="1"/>
               The agent SHOULD set HTTP header fields and CoAP request
               options according to  metadata
@@ -534,7 +534,7 @@
           The data structure of a document in the binary format is made up of
           four kinds of elements: links, forms, embedded representations, and
           (as an extension to the CoRAL data model) base directives. Base
-          directives provide a way to encode IRI references with a
+          directives provide a way to encode IRIs with a
           common base more efficiently.
         </t>
 
@@ -542,9 +542,9 @@
           Elements are processed in the order they appear in the document.
           Document processors need to maintain an <spanx>environment</spanx>
           while iterating an array of elements. The environment consists of
-          two variables: a <spanx>current context IRI</spanx> and a
-          <spanx>current base IRI</spanx>. Both the current context IRI and the
-          current base IRI are initially set to the document's retrieval
+          two variables: the <spanx>current context</spanx> and the
+          <spanx>current base</spanx>. Both the current context and the
+          current base are initially set to the document's retrieval
           context.
         </t>
 
@@ -582,9 +582,9 @@
 
           <t>
             The link target is denoted by an IRI reference or represented by a
-            literal value. The IRI reference
-            MUST be resolved against the current base IRI. The encoding of IRI
-            references in the binary format is described in <xref
+            literal value. An IRI reference MUST be resolved against the current
+            base. The encoding of and resolution process for IRI references in
+            the binary format is described in <xref
             target="I-D.hartke-t2trg-ciri">RFC XXXX</xref>. The link target may
             be null, which indicates that the link target is an unidentified
             resource.
@@ -597,8 +597,8 @@
 
           <t>
             The array of elements in the link body, if any, MUST be processed in
-            a fresh environment. Both the current context IRI and the current
-            base IRI in the new environment are initially set to the link target
+            a fresh environment. Both the current context and the current
+            base in the new environment are initially set to the link target
             of the enclosing link.
           </t>
 
@@ -608,8 +608,8 @@
 
           <t>
             A form is encoded as an array that consists of the unsigned integer
-            3, followed by the form relation type, the submission method, and a
-            submission IRI reference, optionally followed by form data.
+            3, followed by the form relation type, the request method, and the
+            form target, optionally followed by form data.
             <list>
               <t>form = [form: 3, relation, method, form-target, ?form-data]</t>
             </list>
@@ -622,8 +622,8 @@
 
           <t>
             The method refers to one of the request methods defined by the
-            Web transfer protocol identified by the scheme of the submission
-            IRI. It's encoded either as a text string or an unsigned integer.
+            Web transfer protocol identified by the scheme of the form target.
+            It is encoded either as a text string or an unsigned integer.
             <list>
               <t>method = text / uint</t>
             </list>
@@ -641,8 +641,8 @@
           </t>
 
           <t>
-            The submission IRI reference MUST be
-            resolved against the current base IRI.
+            The form target is denoted by an IRI reference.
+            This IRI reference MUST be resolved against the current base.
             <list>
               <t>form-target = ciri</t>
             </list>
@@ -656,8 +656,8 @@
                 <t>form-data = [*(form-field-name, form-field-value)]</t>
               </list>
               Form data, if any, MUST be processed in a fresh environment. Both
-              the current context IRI and the current base IRI in the new
-              environment are initially set to the submission IRI of the
+              the current context and the current base in the new
+              environment are initially set to the form target of the
               enclosing form.
             </t>
 
@@ -673,7 +673,7 @@
               A form field value can be an IRI reference, a Boolean value, an
               integer, a floating-point number, a date/time value, a byte string, a text string, or
               null. An IRI reference MUST be
-              resolved against the current base IRI.
+              resolved against the current base.
               <list>
                 <t>form-field-value = ciri / bool / int / float</t>
                 <t>form-field-value /= time / bytes / text / null</t>
@@ -726,8 +726,9 @@
             </t>
 
             <t>
-              The IRI reference MUST be resolved
-              against the current context IRI.
+              The base is denoted by an IRI reference.
+              This IRI reference MUST be resolved against the current context
+              (not the current base).
               <list>
                 <t>base = ciri</t>
               </list>
@@ -735,8 +736,7 @@
 
             <t>
               The directive is processed by resolving the IRI reference against
-              the current context IRI and assigning the result to the current
-              base IRI.
+              the current context and assigning the result to the current base.
             </t>
 
           </section>
@@ -924,9 +924,11 @@
         <section title="IRIs and IRI References">
 
           <t>
-            IRIs and IRI references are Unicode strings that conforms to the syntax defined in <xref target="RFC3987">RFC 3987</xref>.
-            An IRI reference can be either an IRI or a relative reference.
-            IRIs and IRI references are enclosed in angle brackets ("&lt;" and "&gt;").
+            IRIs and IRI references are Unicode strings that conform to the
+            syntax defined in <xref target="RFC3987">RFC 3987</xref>. An IRI
+            reference can be either an IRI or a relative reference. Both IRIs
+            and IRI references are enclosed in angle brackets ("&lt;" and
+            "&gt;").
             <list>
               <t>iri = "&lt;" IRI "&gt;"</t>
               <t>iriref = "&lt;" IRI-reference "&gt;"</t>
@@ -1190,9 +1192,9 @@
           Elements are processed in the order they appear in the document.
           Document processors need to maintain an <spanx>environment</spanx>
           while iterating a list of elements. The environment consists of three
-          variables: a <spanx>current context IRI</spanx>, a <spanx>current base
-          IRI</spanx>, and a <spanx>current mapping from identifiers to
-          IRIs</spanx>. Both the current context IRI and the current base IRI are
+          variables: the <spanx>current context</spanx>, the <spanx>current base</spanx>,
+          and the <spanx>current mapping from identifiers to
+          IRIs</spanx>. Both the current context and the current base are
           initially set to the document's retrieval context. The current
           mapping from identifiers to IRIs is initially empty.
         </t>
@@ -1232,7 +1234,7 @@
             A simple name consists of an identifier. It is resolved to an IRI by
             looking up the empty string in the current mapping from identifiers
             to IRIs and appending the specified identifier to the result. It is
-            an error if the empty string is not present in the mapping.
+            an error if the empty string is not present in the current mapping.
             <list>
               <t>simple-name = identifier</t>
             </list>
@@ -1241,7 +1243,7 @@
             left hand side in the current mapping from identifiers to IRIs and
             appending the identifier on the right hand side to the result. It is
             an error if the identifier on the left hand side is not present in
-            the mapping.
+            the current mapping.
             <list>
               <t>qualified-name = identifier ":" identifier</t>
             </list>
@@ -1250,10 +1252,7 @@
           <t>
             The link target is denoted by an IRI reference or represented by a
             value literal. An IRI reference
-            MUST be resolved against the current base IRI.
-            The resulting IRI MUST be converted to a URI (Section 3.1 of <xref
-            target="RFC3987">RFC 3987</xref>) for protocols that do not support
-            IRIs.
+            MUST be resolved against the current base.
             If the link target is
             null, the link target is an unidentified resource.
             <list>
@@ -1263,7 +1262,7 @@
 
           <t>
             The list of elements in the link body, if any, MUST be processed in
-            a fresh environment. Both the current context IRI and current base IRI in
+            a fresh environment. Both the current context and current base in
             this environment are initially set to the link target of the
             enclosing link. The mapping from identifiers to IRIs is initially
             set to a copy of the mapping from identifiers to IRIs in the current
@@ -1291,7 +1290,7 @@
           <t>
             The method identifier refers to one of the request methods defined
             by the Web transfer protocol identified by the scheme of the
-            submission IRI. Method identifiers are case-insensitive and
+            form target. Method identifiers are case-insensitive and
             constrained to Unicode characters in the Basic Latin block.
             <list>
               <t>method = identifier</t>
@@ -1303,11 +1302,8 @@
           </t>
 
           <t>
-            The submission IRI reference MUST be
-            resolved against the current base IRI.
-            The resulting IRI MUST be converted to a URI (Section 3.1 of <xref
-            target="RFC3987">RFC 3987</xref>) for protocols that do not support
-            IRIs.
+            The form target is denoted by an IRI reference.
+            This IRI reference MUST be resolved against the current base.
             <list>
               <t>form-target = iriref</t>
             </list>
@@ -1324,8 +1320,8 @@
 
             <t>
               Form data, if any, MUST be processed in a fresh environment. Both the current
-              context IRI and the current base IRI in this environment are initially
-              set to the submission IRI of the enclosing form. The mapping
+              context and the current base in this environment are initially
+              set to the form target of the enclosing form. The mapping
               from identifiers to IRIs is initially set to a copy of the mapping
               from identifiers to IRIs in the current environment.
             </t>
@@ -1342,7 +1338,7 @@
               The form field value can be an IRI reference, Boolean literal,
               integer literal, floating-point literal, byte string literal, text
               string literal, or null. An IRI reference
-              MUST be resolved against the current base IRI.
+              MUST be resolved against the current base.
               <list>
                 <t>form-field-value = iriref / literal</t>
               </list>
@@ -1423,17 +1419,17 @@
             </t>
 
             <t>
+              The base is denoted by an IRI reference.
+              The IRI reference MUST be resolved against the current context
+              (not the current base).
               <list>
                 <t>base = iriref</t>
               </list>
-              The IRI reference MUST be resolved
-              against the current context IRI.
             </t>
 
             <t>
               The directive is processed by resolving the IRI reference against
-              the current context IRI and assigning the result to the current
-              base IRI.
+              the current context and assigning the result to the current base.
             </t>
 
           </section>
@@ -1624,9 +1620,10 @@
         </t>
 
         <t>
-          To avoid interoperability problems, only IRIs that are normalized
-          according to <xref target="RFC3987">Section 5.3 of RFC 3987</xref>
-          SHOULD be minted. Non-normalized forms that are best avoided include:
+          To avoid interoperability problems, it is RECOMMENDED that only
+          normalized IRIs according to <xref target="RFC3987">Section 5.3 of RFC
+          3987</xref> are minted. Non-normalized forms that are best avoided
+          include:
           <list style="symbols">
             <t>Uppercase characters in scheme names and domain names</t>
             <t>Percent-encoding of characters where it is not required by the IRI syntax</t>
@@ -1640,13 +1637,14 @@
         </t>
 
         <t>
-          The inclusion of Domain Names in IRIs allows for the decentralized
-          creation of new IRIs without the risk of collisions.
-          However, IRIs can be relatively verbose and impose a high overhead on
-          representations. This can be a problem in <xref
-          target="RFC7228">constrained environments</xref>. Therefore, CoRAL
-          alternatively allows the use of unsigned integers to reference CBOR
-          data items from a dictionary, as specified in <xref
+          IRIs that identify link relation types, form relation types, and form
+          field names do not need to be registered. The inclusion of domain
+          names in IRIs allows for the decentralized creation of new IRIs
+          without the risk of collisions. However, IRIs can be relatively
+          verbose and impose a high overhead on a representation. This can be a
+          problem in <xref target="RFC7228">constrained environments</xref>.
+          Therefore, CoRAL alternatively allows the use of unsigned integers to
+          reference CBOR data items from a dictionary, as specified in <xref
           target="dictionaries"/>. These impose a much smaller overhead but
           instead need to be assigned by an authority to avoid collisions.
         </t>
@@ -1845,10 +1843,10 @@
       </t>
 
       <t>
-        CoRAL makes extensive use of URIs and IRIs. See Section 7 of <xref
-        target="RFC3986">RFC 3986</xref> for security considerations relating to
-        URIs. See Section 8 of <xref target="RFC3987">RFC 3987</xref> for
-        security considerations relating to IRIs.
+        CoRAL makes extensive use of IRIs and URIs. See Section 8 of <xref
+        target="RFC3987">RFC 3987</xref> for security considerations relating to
+        IRIs. See Section 7 of <xref target="RFC3986">RFC 3986</xref> for
+        security considerations relating to URIs.
       </t>
 
       <t>
