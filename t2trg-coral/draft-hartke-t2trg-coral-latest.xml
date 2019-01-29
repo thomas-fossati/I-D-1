@@ -755,57 +755,65 @@
           field values.
         </t>
 
-        <t>
-          A dictionary reference is encoded as an unsigned integer. Where a
-          dictionary reference cannot be encoded unambiguously, it is tagged
-          using CBOR tag TBD6.
-          <list>
-            <t>relation /= uint</t>
-            <t>target /= #6.TBD6(uint)</t>
-            <t>form-field-name /= uint</t>
-            <t>form-field-value /= #6.TBD6(uint)</t>
-          </list>
-        </t>
+        <section title="Dictionary References">
 
-        <t>
-          The "application/coral+cbor" media type is defined to have a
-          "dictionary" parameter that specifies the dictionary in use. The
-          dictionary is identified by a <xref target="RFC3986">URI</xref>. For
-          example, a CoRAL document that uses the dictionary identified by the
-          URI &lt;http://example.com/dictionary&gt; can use the following content
-          type:
-          <list>
-            <t>application/coral+cbor; dictionary="http://example.com/dictionary"</t>
-          </list>
-          The URI serves only as an identifier; it does not necessarily have to
-          be dereferencable (or even use a dereferencable URI scheme). It is
-          permissible, though, to use a dereferencable URI and to serve a
-          representation that provides information about the dictionary in a
-          human- or machine-readable way. (The format of such a representation
-          is outside the scope of this document.)
-        </t>
+          <t>
+            A dictionary reference is encoded as an unsigned integer. Where a
+            dictionary reference cannot be expressed unambiguously, it MUST be
+            tagged with CBOR tag TBD6.
+            <list>
+              <t>relation /= uint</t>
+              <t>target /= #6.TBD6(uint)</t>
+              <t>form-field-name /= uint</t>
+              <t>form-field-value /= #6.TBD6(uint)</t>
+            </list>
+          </t>
 
-        <t>
-          For simplicity, a CoRAL document can use unsigned integers only from
-          one dictionary; the value of the "dictionary" parameter MUST be a
-          single URI. If the "dictionary" parameter is absent, the default
-          dictionary specified in <xref target="default-dictionary"/> of this
-          document is assumed.
-        </t>
+        </section>
 
-        <t>
-          Once a dictionary has assigned an unsigned integer, the assignment
-          MUST NOT be changed or removed. A dictionary, however, may provide
-          additional information about an assignment that may change over time.
-        </t>
+        <section title="Media Type Parameter">
 
-        <t>
-          In <xref target="RFC7252">CoAP</xref>, media types (including specific
-          values for their parameters) are encoded as an unsigned integer called
-          the <spanx>content format</spanx>. For use with CoAP, each new CoRAL
-          dictionary needs to register a new content format in the IANA CoAP
-          Content-Formats Registry.
-        </t>
+          <t>
+            The "application/coral+cbor" media type is defined to have a
+            "dictionary" parameter that specifies the dictionary in use. The
+            dictionary is identified by a <xref target="RFC3986">URI</xref>. For
+            example, a CoRAL document that uses the dictionary identified by the
+            URI &lt;http://example.com/dictionary&gt; can use the following
+            content type:
+            <list>
+              <t>application/coral+cbor; dictionary="http://example.com/dictionary"</t>
+            </list>
+            The URI serves only as an identifier; it does not necessarily have
+            to be dereferencable (or even use a dereferencable URI scheme). It
+            is permissible, though, to use a dereferencable URI and to serve a
+            representation that provides information about the dictionary in a
+            human- or machine-readable way. (The format of such a representation
+            is outside the scope of this document.)
+          </t>
+
+          <t>
+            For simplicity, a CoRAL document can use unsigned integers from only
+            one dictionary; the value of the "dictionary" parameter MUST be a
+            single URI. If the "dictionary" parameter is absent, the default
+            dictionary specified in <xref target="default-dictionary"/> of this
+            document is assumed.
+          </t>
+
+          <t>
+            Once a dictionary has made an assignment, the assignment MUST NOT be
+            changed or removed. It can, however, provide additional information
+            about an assignment, which may change over time.
+          </t>
+
+          <t>
+            In <xref target="RFC7252">CoAP</xref>, media types (including
+            specific values for media type parameters) are encoded as an
+            unsigned integer called "content format". For use with CoAP, each
+            new CoRAL dictionary MUST register a new content format in the IANA
+            CoAP Content-Formats Registry.
+          </t>
+
+        </section>
 
       </section>
 
