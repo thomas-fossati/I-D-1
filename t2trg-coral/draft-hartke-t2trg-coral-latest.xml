@@ -1491,7 +1491,7 @@
             specific components used in the application interface and their
             identifiers. This should include the following items:
             <list style="symbols">
-              <t hangText="URI Schemes:">
+              <t hangText="IRI Schemes:">
                 IRI schemes that identify the Web transfer protocol(s) used in
                 the application.
               </t>
