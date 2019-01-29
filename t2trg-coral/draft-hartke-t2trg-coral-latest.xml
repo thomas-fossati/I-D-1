@@ -677,8 +677,7 @@
               null. An IRI reference MUST be
               resolved against the current base.
               <list>
-                <t>form-field-value = ciri / bool / int / float</t>
-                <t>form-field-value /= time / bytes / text / null</t>
+                <t>form-field-value = ciri / literal</t>
               </list>
             </t>
 
