@@ -1212,7 +1212,7 @@
 
           <t>
             The body of a document in the textual format consists of zero or
-            more links, forms, and directives.
+            more links, forms, embedded representations, and directives.
             <list>
               <t>body = *(link / form / representation / directive)</t>
             </list>
