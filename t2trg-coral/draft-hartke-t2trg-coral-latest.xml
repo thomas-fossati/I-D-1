@@ -1897,7 +1897,9 @@
         automatically following, trusting, or otherwise using links and forms in
         CoRAL documents. In particular, a server that is authoritative for the
         CoRAL representation of a resource may not necessarily be authoritative
-        for elements nested inside the top level links in the document.
+        for elements nested inside top level links in the document. See Section
+        of 5 of <xref target="RFC8288">RFC 8288</xref> for security
+        considerations relating to Web Linking.
       </t>
 
     </section>
