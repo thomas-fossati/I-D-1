@@ -111,22 +111,22 @@
       </t>
 
       <t>
-        This document defines the CoRAL data and interaction model as well as
+        This document defines the CoRAL data and interaction model, as well as
         two specialized CoRAL serialization formats.
       </t>
 
       <t>
         The CoRAL data and interaction model is a superset of the Web Linking
-        model of <xref target="RFC8288">RFC 8288</xref>. The CoRAL data model
-        consists of two primary elements: <spanx>links</spanx> that describe the
+        model of <xref target="RFC8288">RFC 8288</xref>. The data model
+        consists of two primary elements: "links" that describe the
         relationship between two resources and the type of that
-        relationship, and <spanx>forms</spanx> that describe a possible
-        operation on a resource and the type of that operation. Additionally,
+        relationship, and "forms" that describe a possible operation on a resource
+        and the type of that operation. Additionally,
         the data model can describe simple resource metadata in a way similar to
         the <xref target="W3C.REC-rdf11-concepts-20140225">Resource Description
         Framework (RDF)</xref>. In contrast to RDF, the focus of CoRAL however is on the
         interaction with resources, not just the relationships between them. The
-        CoRAL interaction model derives from <xref
+        interaction model derives from <xref
         target="W3C.REC-html52-20171214">HTML 5</xref> and specifies how an
         automated software agent can navigate between resources by following
         links and perform operations on resources by submitting forms.
@@ -139,11 +139,11 @@
         target="RFC7228">environments with constraints on power, memory, and
         processing resources</xref> and shares many similarities with the
         message format of the <xref target="RFC7252">Constrained Application
-        Protocol (CoAP)</xref>. For example, it uses numeric identifiers instead
+        Protocol (CoAP)</xref>: For example, it uses numeric identifiers instead
         of verbose strings for link and form relation types, and pre-parses <xref
           target="RFC3986">Uniform Resource Identifiers (URIs)</xref>
         into (what CoAP considers to be) their components, which
-        simplifies URI handling for constrained nodes greatly. As a result, link serializations in CoRAL are often
+        simplifies URI processing for constrained nodes a lot. As a result, link serializations in CoRAL are often
         much more compact than equivalent serializations in <xref
         target="RFC6690">CoRE Link Format</xref>.
       </t>
@@ -152,8 +152,8 @@
         The secondary CoRAL serialization format is a lightweight, textual
         encoding of links and forms that is intended to be easy to read and
         write for humans. The format is loosely inspired by the syntax of <xref
-        target="W3C.REC-turtle-20140225">Turtle</xref> and is used primarily for
-        giving examples.
+        target="W3C.REC-turtle-20140225">Turtle</xref> and is mainly intended
+        for giving examples.
       </t>
 
       <section title="Notational Conventions">
@@ -236,7 +236,7 @@
           on the Web <xref target="RFC8288"/>. As defined in RFC 8288, it
           consists of a <spanx>link context</spanx>, a <spanx>link relation
           type</spanx>, and a <spanx>link target</spanx>. In CoRAL, a link can
-          additionally have a nested list of zero or more elements, which take
+          additionally have a nested list of zero or more elements, which takes
           the place of link target attributes.
         </t>
 
@@ -421,20 +421,20 @@
             <t>
               The agent finds the link(s) or form(s) with the respective relation
               type in the active representation. This may yield one or more
-              candidates, from which the agent must select the most appropriate
-              one in the following step. The set of candidates may be empty, for
-              example, when a navigation or operation is not supported or not allowed.
+              candidates, from which the agent will have to select the most appropriate
+              one. The set of candidates may be empty, for
+              example, when a transition is not supported or not allowed.
             </t>
             <t>
               The agent selects one of the candidates based on the metadata
-              associated with the link(s) or form(s). Metadata typically
+              associated with them. Metadata
               includes the content type of the target resource representation, the
               IRI scheme, the request method, and other information that is
               provided as nested elements in a link and form data in a form.
               <vspace blankLines="1"/>
               If the selected candidate contains an embedded representation,
               the agent MAY skip the following steps and immediately
-              proceed with step <xref target="continue-with-representation"
+              proceed from step <xref target="continue-with-representation"
               format="counter"/>.
             </t>
             <t>
@@ -455,7 +455,7 @@
               associated with the link or form (e.g., set the HTTP Accept
               header field or the CoAP Accept option when the media type of the
               target resource is provided). In the case of a form with form
-              data or an applicable form relation type, the agent MUST also include a request payload that matches the
+              data or an applicable form relation type, the agent also MUST include a request payload that matches the
               specifications of the form data.
             </t>
             <t>
@@ -471,10 +471,11 @@
               the (embedded or received) representation the active representation.
             </t>
             <t>
-              Finally, the agent processes the representation. If the representation is  a CoRAL
+              Finally, the agent processes the representation according to the
+              semantics of the content type. If the representation is a CoRAL
               document (or any other representation that implements the CoRAL
-              data and interaction model), this means the agent again has the choice of
-              what to do next &mdash; and the cycle repeats.
+              data and interaction model), this means the agent again has the
+              choice of what to do next &mdash; and the cycle repeats.
             </t>
           </list>
         </t>
@@ -621,7 +622,7 @@
           </t>
 
           <t>
-            The method refers to one of the request methods defined by the
+            The method MUST refer to one of the request methods defined by the
             Web transfer protocol identified by the scheme of the form target.
             It is encoded either as a text string or an unsigned integer.
             <list>
@@ -708,8 +709,8 @@
 
           <t>
             Directives provide the ability to manipulate the environment when
-            processing a list of elements. There is one directive available: the
-            Base directive.
+            processing a list of elements. There is one type of directives
+            available: the Base directive.
             <list>
               <t>directive = base-directive</t>
             </list>
@@ -821,7 +822,7 @@
         This section defines the syntax of documents in the CoRAL textual format
         using two grammars: The lexical grammar defines how Unicode characters
         are combined to form line terminators, white space, comments, and
-        tokens. The syntactic grammar defines how the tokens are combined to
+        tokens. The syntactic grammar defines how tokens are combined to
         form documents. Both grammars are presented in <xref
         target="RFC5234">Augmented Backus-Naur Form (ABNF)</xref>.
       </t>
@@ -1025,8 +1026,8 @@
             </t>
 
             <t>
-              Floating-point literals can additionally denote the special
-              "Not-a-Number" (NaN) value, positive infinity, and negative
+              A floating-point literal can additionally denote the special
+              "Not-a-Number" (NaN) value, positive infinity, or negative
               infinity. The NaN value is produced by the case-insensitive token
               "NaN". The two infinite values are produced by the
               case-insensitive tokens "+Infinity" (or simply "Infinity") and
@@ -1288,7 +1289,7 @@
           </t>
 
           <t>
-            The method identifier refers to one of the request methods defined
+            The method identifier MUST refer to one of the request methods defined
             by the Web transfer protocol identified by the scheme of the
             form target. Method identifiers are case-insensitive and
             constrained to Unicode characters in the Basic Latin block.
@@ -1401,8 +1402,8 @@
           </t>
 
           <t>
-            The following directives are available: Base directives and
-            Using directives.
+            The following two types of directives are available: the Base
+            directive and the Using directive.
             <list>
               <t>directive = base-directive / using-directive</t>
             </list>
@@ -1555,7 +1556,7 @@
 
           <t>
             In CoRAL-based applications, resource names are therefore not part
-            of the application specification. They are an implementation detail.
+            of the application specification &mdash; they are an implementation detail.
             The specification of a CoRAL-based application MUST NOT mandate any
             particular form of resource name structure. <xref
             target="RFC7320">BCP 190</xref> describes the problematic practice
@@ -1589,13 +1590,13 @@
               <t>
                 use of only either IRIs or tagged unsigned integers to denote
                 certain link relation types, form relation types, link targets, form
-                field names, and form field values;
+                field names, and form field values in the binary format;
               </t>
               <t>
                 use of only either content type strings or content format IDs;
               </t>
               <t>
-                use of IRI references only up to a specific length;
+                use of IRI references only up to a specific string length;
               </t>
               <t>
                 use of CBOR in a canonical format (see Section 3.9 of RFC 7049).
@@ -1671,15 +1672,14 @@
         </figure>
 
         <t>
-          Note that registered link relation types are constrained to Unicode
-          characters in the Lowercase Latin alphabet (U+0061 to U+007A), as per
-          <xref target="RFC8288">Section 6 of RFC 8288</xref>.
+          Registered link relation types are required to be lowercased as per
+          <xref target="RFC8288">Section 3.3 of RFC 8288</xref>.
         </t>
 
         <t>
           (The convention of appending the link relation type to the prefix
           "http://www.iana.org/assignments/relation/" to form an IRI is adopted
-          from <xref target="RFC4287">Atom</xref>; see also <xref
+          from <xref target="RFC4287">Atom</xref>. See also <xref
           target="RFC8288">Appendix A.2 of RFC 8288</xref>.)
         </t>
 
@@ -1691,15 +1691,15 @@
           Link target attributes defined for use with <xref
           target="RFC6690">CoRE Link Format</xref> (such as "hreflang", "media",
           "title", "title*", "type", "ct", "rt", "if", "sz", and "obs") can be
-          expressed in CoRAL by nesting links under the respective link where
-          the link relation type of each nested link is the lowercased attribute
-          name appended to the IRI &lt;http://TBD2/&gt;.
+          expressed in CoRAL by nesting links under the respective link. The
+          link relation type of each such nested link is the lowercased
+          attribute name appended to the IRI &lt;http://TBD2/&gt;.
         </t>
 
         <t>
           If the expressed link target attribute has a value, the target of the
           nested link MUST be a text string; otherwise, the target MUST be the
-          Boolean value "true":
+          Boolean value "true".
         </t>
 
         <figure>
@@ -1727,7 +1727,7 @@
           an additional link of type &lt;http://TBD2/hreflang&gt; under the link
           representing the attribute. The target of the nested link MUST be a
           text string containing a <xref target="RFC5646">language tag</xref>.
-          The attribute name is expressed without the "*" character:
+          The attribute name is expressed without the "*" character.
         </t>
 
         <figure>
@@ -1749,7 +1749,7 @@
         </figure>
 
         <t>
-          Link target attributes that actually do not describe the link target
+          Link target attributes that actually don't describe the link target
           but the link itself (such as "rel", "anchor", and "rev") are excluded
           from this provision and MUST NOT occur in a CoRAL document.
         </t>
@@ -1776,10 +1776,10 @@
         <t>
           An <xref target="W3C.REC-rdf11-concepts-20140225">RDF statement</xref>
           says that some relationship, indicated by a predicate, holds between
-          two resources. RDF predicates and link relation types can therefore
-          often be used interchangeably. For example, a CoRAL document could use
-          the <xref target="FOAF">FOAF vocabulary</xref> to describe the person
-          or software that made it:
+          two resources. RDF predicates are therefore often a good source for
+          link relation types to provide resource metadata. For example, a CoRAL
+          document could use the <xref target="FOAF">FOAF vocabulary</xref> to
+          describe the person or software that made it:
         </t>
 
         <figure>
@@ -1830,7 +1830,7 @@
         resource exhaustion (e.g., resulting from the allocation of big data
         items) or exhaustion of the call stack (stack overflow). See Section 8
         of <xref target="RFC7049">RFC 7049</xref> for security considerations
-        relating to parsing CBOR.
+        relating to CBOR.
       </t>
 
       <t>
@@ -2036,18 +2036,18 @@
       <section title="CoAP Content Formats">
 
         <t>
-          This document registers CoAP content formats for the media types
+          This document registers CoAP content formats for the content types
           &quot;application/coral+cbor&quot; and &quot;text/coral&quot;
           according to the procedures of <xref target="RFC7252">RFC 7252</xref>.
           <list style="symbols">
             <t>
-              Media Type: application/coral+cbor<vspace/>
+              Content Type: application/coral+cbor<vspace/>
               Content Coding: identity<vspace/>
               ID: TBD3<vspace/>
               Reference: &SELF;
             </t>
             <t>
-              Media Type: text/coral<vspace/>
+              Content Type: text/coral<vspace/>
               Content Coding: identity<vspace/>
               ID: TBD4<vspace/>
               Reference: &SELF;
@@ -2063,7 +2063,7 @@
         <t>
           [[NOTE TO IMPLEMENTERS: Experimental implementations can use content
           format ID 65087 for "application/coral+cbor" and content format ID
-          65343 for "text/coral" until IANA has assigned stable code points.]]
+          65343 for "text/coral" until IANA has assigned code points.]]
         </t>
 
       </section>
