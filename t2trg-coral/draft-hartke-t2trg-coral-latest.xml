@@ -207,13 +207,6 @@
           context is designated the <spanx>active</spanx> representation.
         </t>
 
-        <t>
-          A browsing context may entail a <spanx>session history</spanx>. A
-          session history keeps track of visited representations and the <xref
-          target="RFC3987">Internationalized Resource Identifier (IRI)</xref>
-          that was used to retrieve each representation.
-        </t>
-
       </section>
 
       <section title="Documents">
@@ -491,10 +484,17 @@
       <section title="History Traversal">
 
         <t>
-          In addition to following links and submitting forms, an agent can also
-          <spanx>traverse the session history</spanx>. For example, if an agent has received
-          a representation that does not contain any further links or forms, it may wish to revert
-          the active representation back to one it has visited earlier.
+          A browsing context MAY entail a <spanx>session history</spanx>. A
+          session history keeps track of visited representations and the request
+          IRI that was used to retrieve each representation.
+        </t>
+
+        <t>
+          In addition to following links and submitting forms, an agent can
+          <spanx>traverse the session history</spanx> to update the browsing
+          context. For example, if an agent received a representation that
+          doesn't contain any further links or forms, it can revert the active
+          representation back to one it has visited earlier.
         </t>
 
         <t>
