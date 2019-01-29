@@ -763,8 +763,8 @@
         <t>
           The binary format can reference values from a dictionary to reduce
           representation size and processing cost. This applies to link relation
-          types, form relation types, link targets, form field names, and form
-          field values.
+          types, link targets, form relation types, form targets, form field
+          names, and form field values.
         </t>
 
         <section title="Dictionary References">
@@ -1609,9 +1609,9 @@
                 protocol;
               </t>
               <t>
-                use of only either IRIs or tagged unsigned integers to denote
-                certain link relation types, form relation types, link targets, form
-                field names, and form field values in the binary format;
+                use of only dictionary references in the binary format for
+                certain link relation types, link targets, form relation types,
+                form targets, form field names, and form field values;
               </t>
               <t>
                 use of only either content type strings or content format IDs;
