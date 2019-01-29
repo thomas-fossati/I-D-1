@@ -568,7 +568,7 @@
             2, followed by the link relation type and the link target,
             optionally followed by a link body that contains nested elements.
             <list>
-              <t>link = [link: 2, relation, target, ?body]</t>
+              <t>link = [link: 2, relation, link-target, ?body]</t>
             </list>
           </t>
 
@@ -589,7 +589,7 @@
             be null, which indicates that the link target is an unidentified
             resource.
             <list>
-              <t>target = ciri / literal </t>
+              <t>link-target = ciri / literal </t>
               <t>ciri = &lt;Defined in Section X of RFC XXXX&gt;</t>
               <t>literal = bool / int / float / time / bytes / text / null</t>
             </list>
@@ -611,7 +611,7 @@
             3, followed by the form relation type, the submission method, and a
             submission IRI reference, optionally followed by form data.
             <list>
-              <t>form = [form: 3, relation, method, ciri, ?form-data]</t>
+              <t>form = [form: 3, relation, method, form-target, ?form-data]</t>
             </list>
           </t>
 
@@ -643,6 +643,9 @@
           <t>
             The submission IRI reference MUST be
             resolved against the current base IRI.
+            <list>
+              <t>form-target = ciri</t>
+            </list>
           </t>
 
           <section title="Form Data">
@@ -716,15 +719,18 @@
 
             <t>
               A Base directive is encoded as an array that consists of the
-              negative integer -1, followed by an IRI reference.
+              negative integer -1, followed by a base.
               <list>
-                <t>base-directive = [base: -1, ciri]</t>
+                <t>base-directive = [base: -1, base]</t>
               </list>
             </t>
 
             <t>
               The IRI reference MUST be resolved
               against the current context IRI.
+              <list>
+                <t>base = ciri</t>
+              </list>
             </t>
 
             <t>
@@ -1210,7 +1216,7 @@
             target, optionally followed by a link body enclosed in curly
             brackets ("{" and "}").
             <list>
-              <t>link = relation target ["{" body "}"]</t>
+              <t>link = relation link-target ["{" body "}"]</t>
             </list>
           </t>
 
@@ -1251,7 +1257,7 @@
             If the link target is
             null, the link target is an unidentified resource.
             <list>
-              <t>target = iriref / literal</t>
+              <t>link-target = iriref / literal</t>
             </list>
           </t>
 
@@ -1270,10 +1276,10 @@
 
           <t>
             A form consists of the form relation type, followed by a "->" token,
-            a method identifier, and a submission IRI reference, optionally
+            a request method identifier, and the form target, optionally
             followed by form data enclosed in square brackets ("[" and "]").
             <list>
-              <t>form = relation "->" method iriref ["[" form-data "]"]</t>
+              <t>form = relation "->" method form-target ["[" form-data "]"]</t>
             </list>
           </t>
 
@@ -1302,6 +1308,9 @@
             The resulting IRI MUST be converted to a URI (Section 3.1 of <xref
             target="RFC3987">RFC 3987</xref>) for protocols that do not support
             IRIs.
+            <list>
+              <t>form-target = iriref</t>
+            </list>
           </t>
 
           <section title="Form Data">
@@ -1335,8 +1344,7 @@
               string literal, or null. An IRI reference
               MUST be resolved against the current base IRI.
               <list>
-                <t>form-field-value = iriref / boolean / integer / float</t>
-                <t>form-field-value =/ datetime / bytes / text / null</t>
+                <t>form-field-value = iriref / literal</t>
               </list>
             </t>
 
@@ -1408,10 +1416,15 @@
 
             <t>
               A Base directive consists of a number sign ("#"), followed by
-              the case-insensitive identifier "base", followed by an IRI
-              reference.
+              the case-insensitive identifier "base", followed by a base.
               <list>
-                <t>base-directive = "#" "base" iriref</t>
+                <t>base-directive = "#" "base" base</t>
+              </list>
+            </t>
+
+            <t>
+              <list>
+                <t>base = iriref</t>
               </list>
               The IRI reference MUST be resolved
               against the current context IRI.
@@ -1795,7 +1808,7 @@
           Specifications using <xref target="I-D.ietf-cbor-cddl">CDDL</xref>
           SHOULD reference the following CDDL definitions for this purpose:
           <list>
-            <t>CoRAL-Body = body</t>
+            <t>CoRAL-Document = body</t>
             <t>CoRAL-Link = link</t>
             <t>CoRAL-Form = form</t>
           </list>
