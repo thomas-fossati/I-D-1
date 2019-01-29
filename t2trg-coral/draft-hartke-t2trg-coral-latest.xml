@@ -1784,11 +1784,13 @@
           from this provision and MUST NOT occur in a CoRAL document.
         </t>
 
+        <!--
         <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD2/"
           in this document with an IETF-controlled IRI, such as "urn:ietf:..."
           or "http://...ietf.org/...".]]
         </t>
+        -->
 
       </section>
 
