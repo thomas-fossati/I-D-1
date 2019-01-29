@@ -589,9 +589,9 @@
             be null, which indicates that the link target is an unidentified
             resource.
             <list>
-              <t>target = ciri / literal / null</t>
+              <t>target = ciri / literal </t>
               <t>ciri = &lt;Defined in Section X of RFC XXXX&gt;</t>
-              <t>literal = bool / int / float / time / bytes / text</t>
+              <t>literal = bool / int / float / time / bytes / text / null</t>
             </list>
           </t>
 
@@ -838,6 +838,9 @@
           tokens. Of these, only tokens are significant in the syntactic
           grammar. There are five kinds of tokens: identifiers, IRIs, IRI references,
           literals, and punctuators.
+          <list>
+            <t>token = identifier / iri / iriref / literal / punctuator</t>
+          </list>
         </t>
 
         <t>
@@ -934,6 +937,10 @@
             A literal is a textual representation of a value. There are seven
             types of literals: Boolean, integer, floating-point, date/time, byte string,
             text string, and null.
+            <list>
+              <t>literal = boolean / integer / float / datetime / bytes / text</t>
+              <t>literal =/ null</t>
+            </list>
           </t>
 
           <section title="Boolean Literals">
@@ -1154,7 +1161,7 @@
           <t>
             Punctuator tokens are used for grouping and separating.
             <list>
-              <t>punctuator = "#" | ":" | "*" | "[" | "]" | "{" | "}" | "=" | "->"</t>
+              <t>punctuator = "#" / ":" / "*" / "[" / "]" / "{" / "}" / "=" / "->"</t>
             </list>
           </t>
 
@@ -1244,8 +1251,7 @@
             If the link target is
             null, the link target is an unidentified resource.
             <list>
-              <t>target = iriref / literal / null</t>
-              <t>literal = boolean / integer / float / datetime / bytes / text</t>
+              <t>target = iriref / literal</t>
             </list>
           </t>
 
