@@ -931,7 +931,7 @@
         <section title="Literals">
 
           <t>
-            A literal is a textual representation of a value. There are six
+            A literal is a textual representation of a value. There are seven
             types of literals: Boolean, integer, floating-point, date/time, byte string,
             text string, and null.
           </t>
