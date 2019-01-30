@@ -53,7 +53,7 @@
       <t>
         Constrained Internationalized Resource Identifiers are an alternate
         serialization of Uniform Resource Identifiers (URIs) that encodes the URI
-        components in Concise Binary Object Representation (CBOR) rather than
+        components in Concise Binary Object Representation (CBOR) instead of
         a string of characters. This simplifies parsing, reference resolution,
         and comparison of URIs in environments with severe limitations on
         processing power, code size, and memory size.
@@ -78,7 +78,7 @@
         target="W3C.REC-html52-20171214">HTML</xref> or the <xref
         target="RFC8288">HTTP "Link" header field</xref>. A URI reference is
         either a URI or a relative reference that must be resolved against a
-        base URI to yield a URI.
+        base URI.
       </t>
 
       <t>
@@ -97,7 +97,7 @@
       </t>
 
       <t>
-        Overall, the proper handling of URIs is quite complicated. This can be a
+        Overall, the proper processing of URIs is quite complicated. This can be a
         problem in particular in <xref target="RFC7228">constrained
         environments</xref>, where devices often have severe code size
         limitations. As a result, many implementations in these environments
@@ -109,7 +109,7 @@
         This document introduces Constrained Internationalized Resource Identifier (CIRI) references, an alternate serialization of
         URI references that encodes the URI components in <xref
         target="RFC7049">Concise Binary Object Representation (CBOR)</xref>
-        rather than a string of characters. Assuming an implementation of CBOR
+        instead of a string of characters. Assuming an implementation of CBOR
         is already present on a device, typical operations on URI
         references such as parsing, reference resolution, and comparison can
         be implemented more easily than for character strings. A full
@@ -155,7 +155,7 @@
 
       <t>
         The data model for CIRI references is very similar to the <xref
-        target="RFC7252">serialization of the Request URI in CoAP messages</xref>: The
+        target="RFC7252">serialization of the request URI in CoAP messages</xref>: The
         components of a URI reference are encoded as a sequence of
         <spanx>options</spanx>, where each path segment and query parameter
         becomes its own option. Every option consists of an <spanx>option
@@ -178,23 +178,22 @@
               <vspace/>Specifies the host of the URI authority as a registered
               name.
               The option value can be any Unicode string matching the
-              specifications of the URI scheme. For example, if the scheme
-              refers to CoAP or HTTP, then the option value is typically a DNS name.
+              specifications of the URI scheme.
             </t>
             <t hangText="host.ip">
               <vspace/>Specifies the host of the URI authority as an IPv4
               address or an IPv6 address.
-              The option value is a byte string with a length of 4 bytes or 16 bytes,
+              The option value is a byte string with a length of either 4 or 16 bytes,
               respectively.
             </t>
             <t hangText="port">
               <vspace/>Specifies the port number of the URI authority.
-              The option value is an integer in the range 0 to 65535.
+              The option value is an integer in the range from 0 to 65535.
             </t>
             <t hangText="path.type">
               <vspace/>Specifies the type of the URI path for reference
               resolution.
-              The option value is an integer in the range 0 to 127,
+              The option value is an integer in the range from 0 to 127,
               named as follows:
               <list>
                 <t>
@@ -212,7 +211,7 @@
             </t>
             <t hangText="path">
               <vspace/>Specifies one segment of the URI path.
-              The option value can be any Unicode string with the exception of the strings "." and "..".
+              The option value can be any Unicode string with the exception of "." and "..".
               This option can occur more than once.
             </t>
             <t hangText="query">
@@ -247,12 +246,12 @@ ____ scheme __/             \___ port _
           A sequence of options is considered <spanx>well-formed</spanx> if:
           <list style="symbols">
             <t>
-              the sequence of options is either empty or starts with a "scheme",
+              the sequence of options is empty or starts with a "scheme",
               "host.name", "host.ip", "port", "path.type", "path", "query",
               or "fragment" option;
             </t>
             <t>
-              any "scheme" option is followed either by a "host.name" or a
+              any "scheme" option is followed by either a "host.name" or a
               "host.ip" option;
             </t>
             <t>
@@ -262,19 +261,19 @@ ____ scheme __/             \___ port _
               any "host.ip" option is followed by a "port" option;
             </t>
             <t>
-              any "port" option either is followed by a "path", "query", or "fragment"
+              any "port" option is followed by a "path", "query", or "fragment"
               option or is at the end of the sequence;
             </t>
             <t>
-              any "path.type" option either is followed by a "path", "query", or
+              any "path.type" option is followed by a "path", "query", or
               "fragment" option or is at the end of the sequence;
             </t>
             <t>
-              any "path" option either is followed by a "path", "query", or "fragment"
+              any "path" option is followed by a "path", "query", or "fragment"
               option or is at the end of the sequence;
             </t>
             <t>
-              any "query" option either is followed by a "query" or "fragment" option or
+              any "query" option is followed by a "query" or "fragment" option or
               is at the end of the sequence; and
             </t>
             <t>
@@ -321,7 +320,7 @@ ____ scheme __/             \___ port _
               given the same `b`.
             </t>
             <t hangText="recompose(href)">
-              <vspace/>Recomposes a URI reference from an absolute
+              <vspace/>Recomposes a URI from an absolute
               sequence of options `href`. This operation MUST be performed by
               applying any algorithm that is functionally equivalent to the
               reference implementation in <xref target="py-recompose"/> of this
@@ -334,7 +333,7 @@ ____ scheme __/             \___ port _
               IPv6 addresses</xref>.
             </t>
             <t hangText="decompose(str)">
-              <vspace/>Decomposes a URI reference `str` into a sequence of
+              <vspace/>Decomposes a URI `str` into a sequence of
               options. This operation MUST be performed by applying any
               algorithm that returns a sequence of options such that
               `recompose(decompose(x))` is equivalent to `x`.
@@ -342,7 +341,7 @@ ____ scheme __/             \___ port _
             <t hangText="coap(href)">
               <vspace/>Constructs CoAP options from an absolute, normalized
               sequence of options. This operation MUST be performed by
-              recomposing the sequence of options to a URI reference string (as
+              recomposing the sequence of options to a URI (as
               described above) and decomposing the URI into CoAP options (as
               specified in Section 6.4 of RFC 7252). A concise implementation of this algorithm is
               illustrated in <xref target="py-coap"/> of this document.
@@ -357,9 +356,9 @@ ____ scheme __/             \___ port _
     <section title="CBOR">
 
       <t>
-        A sequence of options is represented in <xref target="RFC7049">Concise
-        Binary Object Representation (CBOR)</xref> as an array
-        that contains option numbers and option values in alternating order.
+        In <xref target="RFC7049">Concise Binary Object Representation
+        (CBOR)</xref>, a sequence of options is encoded as an array that
+        contains the option numbers and option values in alternating order.
       </t>
 
       <t>
@@ -392,9 +391,13 @@ ____ scheme __/             \___ port _
     <section title="Python">
 
       <t>
-        A sequence of options is represented in the following Python 3.6 code as
-        a list of tuples, where each tuple consists of an option number and an
-        option value.
+        In Python, a sequence of options is encoded as a list of tuples, where
+        each tuple contains one option number and one option value.
+      </t>
+
+      <t>
+        The following Python 3.6 code illustrates how to check a sequence of
+        options for being well-formed, absolute, and relative.
       </t>
 
 <figure><artwork><![CDATA[
@@ -423,38 +426,6 @@ ____ scheme __/             \___ port _
      RELATIVE_PATH_2UP = 5
      RELATIVE_PATH_3UP = 6
      RELATIVE_PATH_4UP = 7
-
-<CODE ENDS>
-]]></artwork></figure>
-
-      <t>
-        Examples:
-        <list>
-          <t>
-            [(Option.SCHEME, "coap"),
-             (Option.HOST_IP, b"\x20\x01\x0D\xB8\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01"),
-             (Option.PORT, 5683),
-             (Option.PATH, ".well-known"),
-             (Option.PATH, "core")]
-          </t>
-          <t>
-            [(Option.PATH_TYPE, PathType.ABSOLUTE_PATH),
-             (Option.PATH, ".well-known"),
-             (Option.PATH, "core"),
-             (Option.QUERY, "rt=temperature-c")]
-          </t>
-        </list>
-      </t>
-
-      <section title="Property Checks" anchor="py-check">
-
-        <t>
-          The following Python 3.6 code illustrates how to check a sequence of
-          options for being well-formed, absolute, and relative.
-        </t>
-
-<figure><artwork><![CDATA[
-<CODE BEGINS>
 
    _TRANSITIONS = ([Option.SCHEME, Option.HOST_NAME, Option.HOST_IP,
        Option.PORT, Option.PATH_TYPE, Option.PATH, Option.QUERY,
@@ -489,7 +460,24 @@ ____ scheme __/             \___ port _
 <CODE ENDS>
 ]]></artwork></figure>
 
-      </section>
+      <t>
+        Examples:
+        <list>
+          <t>
+            [(Option.SCHEME, "coap"),
+             (Option.HOST_IP, b"\x20\x01\x0D\xB8\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01"),
+             (Option.PORT, 5683),
+             (Option.PATH, ".well-known"),
+             (Option.PATH, "core")]
+          </t>
+          <t>
+            [(Option.PATH_TYPE, PathType.ABSOLUTE_PATH),
+             (Option.PATH, ".well-known"),
+             (Option.PATH, "core"),
+             (Option.QUERY, "rt=temperature-c")]
+          </t>
+        </list>
+      </t>
 
       <section title="Reference Resolution" anchor="py-resolve">
 
@@ -665,7 +653,7 @@ ____ scheme __/             \___ port _
         <t>
           The following Python 3.6 code illustrates how to construct CoAP options from
           an absolute sequence of options. For simplicity, the code does not
-          omit CoAP options that have their default value.
+          omit CoAP options with their default value.
         </t>
 
 <figure><artwork><![CDATA[
@@ -766,7 +754,7 @@ ____ scheme __/             \___ port _
         deal with resource exhaustion (e.g., resulting from the allocation of
         big data items) or exhaustion of the call stack (stack overflow). See
         Section 8 of <xref target="RFC7049">RFC 7049</xref> for security
-        considerations relating to parsing CBOR.
+        considerations relating to CBOR.
       </t>
 
       <t>

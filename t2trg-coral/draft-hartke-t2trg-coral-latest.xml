@@ -215,10 +215,8 @@
         </t>
 
         <t>
-          A browsing context keeps track of the
-          resource representations that the agent has processed, is processing,
-          or will process. At any time, one representation in each browsing
-          context is designated the <spanx>active</spanx> representation.
+          At any time, one representation in each browsing context is designated
+          the <spanx>active</spanx> representation.
         </t>
 
       </section>
@@ -250,7 +248,7 @@
           on the Web <xref target="RFC8288"/>. As defined in RFC 8288, it
           consists of a <spanx>link context</spanx>, a <spanx>link relation
           type</spanx>, and a <spanx>link target</spanx>. In CoRAL, a link can
-          additionally have a nested list of zero or more elements, which takes
+          additionally have a nested list of zero or more elements, which take
           the place of link target attributes.
         </t>
 
@@ -264,17 +262,15 @@
           The link relation type identifies the semantics of a link. In HTML 5
           and RFC 8288, link relation types are typically denoted by an
           IANA-registered name, such as "stylesheet" or "type". In CoRAL, they
-          are denoted by an <xref target="RFC3987">Internationalized Resource
-          Identifier (IRI)</xref> such as
+          are denoted by an IRI such as
           &lt;http://www.iana.org/assignments/relation/stylesheet&gt; or
-          &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;. This approach
+          &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;. This
           allows for the creation of new link relation types without the risk of
-          collisions when they are from different organizations or domains of knowledge.
+          collisions when from different organizations or domains of knowledge.
           An IRI also can lead to documentation, schema, and other information
-          about the link relation type. However, the IRIs are primarily used as
-          identity tokens with no relationship to a protocol and MUST be
-          compared using Simple String Comparison as per Section 5.1 of RFC
-          3987.
+          about the link relation type. These IRIs are primarily used as
+          identity tokens, though, and are compared using Simple String
+          Comparison (Section 5.1 of RFC 3987).
         </t>
 
         <t>
@@ -283,7 +279,7 @@
           indicates a Web transfer protocol such as HTTP or CoAP, then an agent
           can dereference the IRI and navigate the browsing context to the
           referenced resource; this is called <spanx>following the link</spanx>.
-          A literal directly identifies a value, which in CoRAL can be a Boolean value, an
+          A literal directly identifies a value. This can be a Boolean value, an
           integer, a floating-point number, a date/time value, a byte string, or a text string.
         </t>
 
@@ -299,7 +295,7 @@
           There are no restrictions on the cardinality of links; there can be
           multiple links to and from a particular target, and multiple links of
           the same or different types between a given link context and target.
-          However, the CoRAL data model constrains the description of a
+          However, the nested data structure constrains the description of a
           resource graph to a tree: Links between linked resources can only be
           described by further nesting links.
         </t>
@@ -331,15 +327,15 @@
         <t>
           The form context is the resource on which an operation is ultimately
           performed. To perform the operation, an agent needs to construct a request
-          with the specified request method and form target as the request IRI. The form
-          target typically is identical with the form context, but may be a different
+          with the specified request method and the form target as the request IRI. The form
+          target typically is the same resource as the form context, but may be a different
           resource. Constructing and sending the request is called _submitting
           the form_.
         </t>
 
         <t>
           If a form is accompanied by form data, as described in the following section,
-          then the agent also must construct a payload that matches the
+          then the agent also needs to construct a payload that matches the
           specifications of the form data and include that in the request.
         </t>
 
@@ -426,7 +422,7 @@
           If dereferencing the entry point IRI yields a CoRAL document (or any
           other representation that implements the CoRAL data and interaction
           model), then the agent makes this document the active representation
-          in its browsing context and proceeds as follows:
+          in the browsing context and proceeds as follows:
           <list style="numbers">
             <t>
               The first step for the agent is to decide what to do next, i.e.,
@@ -434,7 +430,7 @@
               and form relation types it understands.
             </t>
             <t>
-              The agent finds the link(s) or form(s) with the respective relation
+              The agent then finds the link(s) or form(s) with the respective relation
               type in the active representation. This may yield one or more
               candidates, from which the agent will have to select the most appropriate
               one. The set of candidates may be empty, for
@@ -442,25 +438,25 @@
             </t>
             <t>
               The agent selects one of the candidates based on the metadata
-              associated with them. Metadata
+              associated with each of these. Metadata
               includes the content type of the target resource representation, the
               IRI scheme, the request method, and other information that is
               provided as nested elements in a link and form data in a form.
               <vspace blankLines="1"/>
               If the selected candidate contains an embedded representation,
               the agent MAY skip the following steps and immediately
-              proceed from step <xref target="continue-with-representation"
+              proceed with step <xref target="continue-with-representation"
               format="counter"/>.
             </t>
             <t>
               The agent obtains the <spanx>request IRI</spanx> from the link or
-              form. Fragment identifiers are not part of the request IRI and
+              form target. Fragment identifiers are not part of the request IRI and
               MUST be separated from the rest of the IRI prior to a dereference.
             </t>
             <t>
               The agent constructs a new request with the request IRI. If the
               agent is following a link, then the request method MUST be GET. If the agent
-              is submitting a form, then the request method MUST be the one specified by
+              is submitting a form, then the request method MUST be the one specified in
               the form.
               The request IRI may need to be converted to a URI (Section 3.1 of
               RFC 3987) for protocols that do not support IRIs.
@@ -489,8 +485,8 @@
               Finally, the agent processes the representation according to the
               semantics of the content type. If the representation is a CoRAL
               document (or any other representation that implements the CoRAL
-              data and interaction model), this means the agent again has the
-              choice of what to do next &mdash; and the cycle repeats.
+              data and interaction model), this means the agent has the
+              choice of what to do next again &mdash; and the cycle repeats.
             </t>
           </list>
         </t>
@@ -500,16 +496,24 @@
       <section title="History Traversal">
 
         <t>
-          A browsing context MAY entail a <spanx>session history</spanx>. A
-          session history keeps track of visited representations and the request
-          IRI that was used to retrieve each representation.
+          A browsing context MAY entail a <spanx>session history</spanx> that
+          lists the resource representations that the agent has processed, is
+          processing, or will process.
         </t>
 
         <t>
-          In addition to following links and submitting forms, an agent can
-          <spanx>traverse the session history</spanx> to update the browsing
-          context. For example, if an agent received a representation that
-          doesn't contain any further links or forms, it can revert the active
+          An entry in the session history consists of a resource representation
+          and the request IRI that was used to retrieve the representation. New
+          entries are added to the session history as the agent navigates from
+          resource to resource.
+        </t>
+
+        <t>
+          An agent can navigate a browsing context by <spanx>traversing the
+          session history</spanx> in addition to following links and submitting
+          forms.
+          For example, if an agent received a representation that doesn't
+          contain any further links or forms, it can revert the active
           representation back to one it has visited earlier.
         </t>
 
@@ -776,7 +780,7 @@
 
         <t>
           The binary format can reference values from a dictionary to reduce
-          representation size and processing cost. This applies to link relation
+          representation size and processing cost. Dictionary references can used in place of link relation
           types, link targets, form relation types, form targets, form field
           names, and form field values.
         </t>
@@ -819,7 +823,7 @@
           </t>
 
           <t>
-            For simplicity, a CoRAL document can use unsigned integers from only
+            For simplicity, a CoRAL document can reference values only from
             one dictionary; the value of the "dictionary" parameter MUST be a
             single URI. If the "dictionary" parameter is absent, the default
             dictionary specified in <xref target="default-dictionary"/> of this
@@ -828,7 +832,7 @@
 
           <t>
             Once a dictionary has made an assignment, the assignment MUST NOT be
-            changed or removed. It can, however, provide additional information
+            changed or removed. A dictionary, however, may contain additional information
             about an assignment, which may change over time.
           </t>
 
@@ -1061,14 +1065,15 @@
             </t>
 
             <t>
-              A floating-point literal can additionally denote the special
+              A floating-point literal can additionally denote either the special
               "Not-a-Number" (NaN) value, positive infinity, or negative
               infinity. The NaN value is produced by the case-insensitive token
               "NaN". The two infinite values are produced by the
               case-insensitive tokens "+Infinity" (or simply "Infinity") and
               "-Infinity".
               <list>
-                <t>float =/ "NaN" / ["+" / "-"] "Infinity"</t>
+                <t>float =/ "NaN"</t>
+                <t>float =/ ["+" / "-"] "Infinity"</t>
               </list>
             </t>
 
@@ -1657,8 +1662,8 @@
 
         <t>
           To avoid interoperability problems, it is RECOMMENDED that only
-          normalized IRIs according to <xref target="RFC3987">Section 5.3 of RFC
-          3987</xref> are minted. Non-normalized forms that are best avoided
+          IRIs are minted thare normalized according to Section 5.3 of RFC
+          3987. Non-normalized forms that are best avoided
           include:
           <list style="symbols">
             <t>Uppercase characters in scheme names and domain names</t>
@@ -1707,7 +1712,7 @@
         </figure>
 
         <t>
-          Registered link relation types are required to be lowercased as per
+          Note that registered link relation types are required to be lowercased as per
           <xref target="RFC8288">Section 3.3 of RFC 8288</xref>.
         </t>
 
@@ -1725,7 +1730,7 @@
         <t>
           [[NOTE TO READERS: This section describes a mechanism to convert any
           link target attributes to CoRAL in a way that allows a conversion back
-          without loss of information (i.e., round-trip conversion). It is
+          without loss of information (round-trip conversion). It is
           likely that this will be replaced by a specific set of unique link
           relation types that match the known RFC 6690 attributes semantically
           but do not round-trip in the presence of unknown attributes.]]
@@ -1793,7 +1798,7 @@
         </figure>
 
         <t>
-          Link target attributes that actually don't describe the link target
+          Link target attributes that actually do not describe the link target
           but the link itself (such as "rel", "anchor", and "rev") are excluded
           from this provision and MUST NOT occur in a CoRAL document.
         </t>
@@ -1813,8 +1818,8 @@
         <t>
           An <xref target="W3C.REC-rdf11-concepts-20140225">RDF statement</xref>
           says that some relationship, indicated by a predicate, holds between
-          two resources. RDF predicates are therefore often a good source for
-          link relation types to provide resource metadata. For example, a CoRAL
+          two resources. RDF predicates can therefore be good source for
+          vocabulary to provide resource metadata. For example, a CoRAL
           document could use the <xref target="FOAF">FOAF vocabulary</xref> to
           describe the person or software that made it:
         </t>
@@ -1894,7 +1899,7 @@
         entity providing a given string is connected to the wrong account or
         online resource based on different interpretations of the string. See
         <xref target="RFC6943">RFC 6943</xref> for security considerations
-        relating to identifiers in IRIs and other locations.
+        relating to identifiers in IRIs and other places.
       </t>
 
       <t>
@@ -1927,7 +1932,7 @@
         CoRAL documents. In particular, a server that is authoritative for the
         CoRAL representation of a resource may not necessarily be authoritative
         for elements nested inside top level links in the document. See Section
-        of 5 of <xref target="RFC8288">RFC 8288</xref> for security
+        of 5 of <xref target="RFC8288">RFC 8288</xref> for additional security
         considerations relating to Web Linking.
       </t>
 
