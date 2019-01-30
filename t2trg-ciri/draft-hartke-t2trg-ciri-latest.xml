@@ -3,8 +3,6 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC2119 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml">
   <!ENTITY RFC3986 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3986.xml">
-  <!ENTITY RFC3987 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3987.xml">
-  <!ENTITY RFC5890 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5890.xml">
   <!ENTITY RFC5952 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5952.xml">
   <!ENTITY RFC7049 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7049.xml">
   <!ENTITY RFC7228 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7228.xml">
@@ -54,10 +52,10 @@
 
       <t>
         Constrained Internationalized Resource Identifiers are an alternate
-        serialization of Internationalized Resource Identifiers (IRIs) that encodes the IRI
-        components in Concise Binary Object Representation (CBOR) rather than as
+        serialization of Uniform Resource Identifiers (URIs) that encodes the URI
+        components in Concise Binary Object Representation (CBOR) rather than
         a string of characters. This simplifies parsing, reference resolution,
-        and comparison of IRIs in environments with severe limitations on
+        and comparison of URIs in environments with severe limitations on
         processing power, code size, and memory size.
       </t>
 
@@ -75,35 +73,32 @@
     <section title="Introduction" anchor="introduction">
 
       <t>
-        <xref target="RFC3986">URI</xref> and (less prevalently) <xref
-        target="RFC3987">IRI</xref> references are the standard way to link to
-        resources in hypertext formats like <xref
-        target="W3C.REC-html52-20171214">HTML</xref> and the <xref
-        target="RFC8288">HTTP "Link" header field</xref>. These formats
-        reference resources either through a URI/IRI or through a relative
-        reference that must be resolved against a base URI/IRI to yield a
-        URI/IRI.
+        <xref target="RFC3986">Uniform Resource Identifier (URI) references</xref> are the standard way to
+        link to resources in hypertext formats such as <xref
+        target="W3C.REC-html52-20171214">HTML</xref> or the <xref
+        target="RFC8288">HTTP "Link" header field</xref>. A URI reference is
+        either a URI or a relative reference that must be resolved against a
+        base URI to yield a URI.
       </t>
 
       <t>
-        URI and IRI references are strings of characters, which are chosen from
-        the repertoires of US-ASCII and Unicode characters respectively. The
-        individual components of a URI or IRI reference are delimited by a
-        is to be interpreted. The resolution of URI/IRI references involves
+        URI references are strings of characters chosen from
+        the repertoire of US-ASCII characters. The
+        individual components of a URI reference are delimited by a
         number of reserved characters, which necessitates the use of
         percent-encoding when these reserved characters are used in a
-        non-delimiting function. The path component of an IRI can also contain
+        non-delimiting function. One component can also contain
         special dot-segments that affect how the component
         is to be interpreted. The resolution of URI references involves
         parsing the character string into its components, combining those
-        components with the components of a base URI/IRI, merging path components,
+        components with the components of a base URI, merging path components,
         removing dot-segments, and recomposing the result back into a character
         string.
       </t>
 
       <t>
-        Overall, the proper handling of URIs is quite complex. This can be a
-        problem particularly in <xref target="RFC7228">constrained
+        Overall, the proper handling of URIs is quite complicated. This can be a
+        problem in particular in <xref target="RFC7228">constrained
         environments</xref>, where devices often have severe code size
         limitations. As a result, many implementations in these environments
         choose to support only an ad-hoc, informally-specified, bug-ridden,
@@ -111,25 +106,25 @@
       </t>
 
       <t>
-        IRI references that encodes the IRI components in <xref
-        This document specifies Constrained IRI References, an alternate serialization of
+        This document introduces Constrained Internationalized Resource Identifier (CIRI) references, an alternate serialization of
+        URI references that encodes the URI components in <xref
         target="RFC7049">Concise Binary Object Representation (CBOR)</xref>
         rather than a string of characters. Assuming an implementation of CBOR
         is already present on a device, typical operations on URI
         references such as parsing, reference resolution, and comparison can
         be implemented more easily than for character strings. A full
-        implementation that covers all corner cases can be implemented in a
+        implementation that covers all corner cases is intended to be implementable in a
         relatively small amount of code.
       </t>
 
       <t>
-        As a result of the simplification, Constrained IRI References are not
-        capable of expressing all IRI references permitted by the syntax of RFC
-        3987. (Hence the "constrained" in "Constrained IRI References".) The
+        As a result of the simplification, CIRI references are not
+        capable of expressing all URI references permitted by the syntax of RFC
+        3986. (Hence the "constrained" in "Constrained Internationalized Resource Identifiers".) The
         supported subset includes all <xref target="RFC7252">Constrained
         Application Protocol (CoAP) URIs</xref>, most <xref target="RFC7230">
-        Hypertext Transfer Protocol (HTTP) URIs</xref>, and many other URIs and
-        IRIs that function as resource locators.
+        Hypertext Transfer Protocol (HTTP) URIs</xref>, and many other URIs
+        that function as resource locators.
       </t>
 
       <section title="Notational Conventions">
@@ -159,9 +154,9 @@
     <section title="Data Model">
 
       <t>
-        components of an IRI reference are encoded as a sequence of
-        The data model for Constrained IRI References is very similar to the <xref
+        The data model for CIRI references is very similar to the <xref
         target="RFC7252">serialization of the Request URI in CoAP messages</xref>: The
+        components of a URI reference are encoded as a sequence of
         <spanx>options</spanx>, where each path segment and query parameter
         becomes its own option. Every option consists of an <spanx>option
         number</spanx> identifying the type of option (scheme, host name, path
@@ -174,30 +169,30 @@
           The following types of options are defined:
           <list style="hanging">
             <t hangText="scheme">
-              <vspace/>Specifies the IRI scheme.
+              <vspace/>Specifies the URI scheme.
               The option value can be any Unicode string matching the "scheme"
-              rule described in <xref target="RFC3987">Section 2.2 of RFC
-              3987</xref>.
+              rule described in <xref target="RFC3986">Section 3.1 of RFC
+              3986</xref>.
             </t>
             <t hangText="host.name">
-              <vspace/>Specifies the host of the IRI authority as a registered
+              <vspace/>Specifies the host of the URI authority as a registered
               name.
               The option value can be any Unicode string matching the
-              specifications of the IRI scheme. For example, if the scheme
+              specifications of the URI scheme. For example, if the scheme
               refers to CoAP or HTTP, then the option value is typically a DNS name.
             </t>
             <t hangText="host.ip">
-              <vspace/>Specifies the host of the IRI authority as an IPv4
+              <vspace/>Specifies the host of the URI authority as an IPv4
               address or an IPv6 address.
               The option value is a byte string with a length of 4 bytes or 16 bytes,
               respectively.
             </t>
             <t hangText="port">
-              <vspace/>Specifies the port number of the IRI authority.
+              <vspace/>Specifies the port number of the URI authority.
               The option value is an integer in the range 0 to 65535.
             </t>
             <t hangText="path.type">
-              <vspace/>Specifies the type of the IRI path for reference
+              <vspace/>Specifies the type of the URI path for reference
               resolution.
               The option value is an integer in the range 0 to 127,
               named as follows:
@@ -216,12 +211,12 @@
               </list>
             </t>
             <t hangText="path">
-              <vspace/>Specifies one segment of the IRI path.
+              <vspace/>Specifies one segment of the URI path.
               The option value can be any Unicode string with the exception of the strings "." and "..".
               This option can occur more than once.
             </t>
             <t hangText="query">
-              <vspace/>Specifies one argument of the IRI query.
+              <vspace/>Specifies one argument of the URI query.
               The option value can be any Unicode string.
               This option can occur more than once.
             </t>
@@ -326,7 +321,7 @@ ____ scheme __/             \___ port _
               given the same `b`.
             </t>
             <t hangText="recompose(href)">
-              <vspace/>Recomposes an IRI reference string from an absolute
+              <vspace/>Recomposes a URI reference from an absolute
               sequence of options `href`. This operation MUST be performed by
               applying any algorithm that is functionally equivalent to the
               reference implementation in <xref target="py-recompose"/> of this
@@ -338,8 +333,8 @@ ____ scheme __/             \___ port _
               of RFC 5952 for the <xref target="RFC5952">text representation of
               IPv6 addresses</xref>.
             </t>
-            <t hangText="decompose(iriref)">
-              <vspace/>Decomposes a IRI reference string `iriref` into a sequence of
+            <t hangText="decompose(str)">
+              <vspace/>Decomposes a URI reference `str` into a sequence of
               options. This operation MUST be performed by applying any
               algorithm that returns a sequence of options such that
               `recompose(decompose(x))` is equivalent to `x`.
@@ -347,10 +342,9 @@ ____ scheme __/             \___ port _
             <t hangText="coap(href)">
               <vspace/>Constructs CoAP options from an absolute, normalized
               sequence of options. This operation MUST be performed by
-              recomposing the sequence of options to an IRI reference string as
-              described above, mapping the IRI to a URI as specified in Section
-              3.1 of RFC 3987, and decomposing the URI into CoAP options as
-              specified in Section 6.4 of RFC 7252. A concise implementation is
+              recomposing the sequence of options to a URI reference string (as
+              described above) and decomposing the URI into CoAP options (as
+              specified in Section 6.4 of RFC 7252). A concise implementation of this algorithm is
               illustrated in <xref target="py-coap"/> of this document.
             </t>
           </list>
@@ -367,7 +361,7 @@ ____ scheme __/             \___ port _
         Binary Object Representation (CBOR)</xref> as an array
         that contains option numbers and option values in alternating order.
       </t>
-        
+
       <t>
         The
         structure can be described in the <xref target="I-D.ietf-cbor-cddl">Concise
@@ -560,10 +554,10 @@ ____ scheme __/             \___ port _
 
       </section>
 
-      <section title="IRI Recomposition" anchor="py-recompose">
+      <section title="URI Recomposition" anchor="py-recompose">
 
         <t>
-          The following Python 3.6 code defines how to recompose an IRI from an absolute
+          The following Python 3.6 code defines how to recompose a URI from an absolute
           sequence of options.
         </t>
 
@@ -580,7 +574,7 @@ ____ scheme __/             \___ port _
        if option == Option.SCHEME:
          result += value + ':'
        elif option == Option.HOST_NAME:
-         result += '//' + _encode_ireg_name(value)
+         result += '//' + _encode_reg_name(value)
        elif option == Option.HOST_IP:
          result += '//' + _encode_ip_address(value)
        elif option == Option.PORT:
@@ -605,8 +599,8 @@ ____ scheme __/             \___ port _
        no_path = False
      return result
 
-   def _encode_ireg_name(s):
-     return ''.join(c if _is_ireg_name_char(c)
+   def _encode_reg_name(s):
+     return ''.join(c if _is_reg_name_char(c)
                       else _encode_pct(c) for c in s)
 
    def _encode_ip_address(b):
@@ -619,75 +613,47 @@ ____ scheme __/             \___ port _
       return str(p)
 
    def _encode_path_segment(s):
-     return ''.join(c if _is_isegment_char(c)
+     return ''.join(c if _is_segment_char(c)
                       else _encode_pct(c) for c in s)
 
    def _encode_query_argument(s):
-     return ''.join(c if _is_iquery_char(c) and c != '&'
+     return ''.join(c if _is_query_char(c) and c not in '&'
                       else _encode_pct(c) for c in s)
 
    def _encode_fragment(s):
-     return ''.join(c if _is_ifragment_char(c)
+     return ''.join(c if _is_fragment_char(c)
                       else _encode_pct(c) for c in s)
 
    def _encode_pct(s):
      return ''.join('%{0:0>2X}'.format(c) for c in s.encode('utf-8'))
 
-   def _is_ireg_name_char(c):
-     return _is_iunreserved(c) or _is_sub_delim(c)
+   def _is_reg_name_char(c):
+     return _is_unreserved(c) or _is_sub_delim(c)
 
-   def _is_isegment_char(c):
-     return _is_ipchar(c)
+   def _is_segment_char(c):
+     return _is_pchar(c)
 
-   def _is_iquery_char(c):
-     return _is_ipchar(c) or _is_iprivate(c) or c == '/' or c == '?'
+   def _is_query_char(c):
+     return _is_pchar(c) or c in '/?'
 
-   def _is_ifragment_char(c):
-     return _is_ipchar(c) or c == '/' or c == '?'
+   def _is_fragment_char(c):
+     return _is_pchar(c) or c in '/?'
 
-   def _is_ipchar(c):
-     return _is_iunreserved(c) or _is_sub_delim(c) or \
-            c == ':' or c == '@'
+   def _is_pchar(c):
+     return _is_unreserved(c) or _is_sub_delim(c) or c in ':@'
 
-   def _is_iunreserved(c):
-     return _is_alpha(c) or _is_digit(c) or \
-            c == '-' or c == '.' or c == '_' or c == '~' or \
-            _is_ucschar(c)
+   def _is_unreserved(c):
+     return _is_alpha(c) or _is_digit(c) or c in '-._~'
 
    def _is_alpha(c):
-     return c >= 'A' and c <= 'Z' or c >= 'a' and c <= 'z'
+     return c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + \
+                 'abcdefghijklmnopqrstuvwxyz'
 
    def _is_digit(c):
-     return c >= '0' and c <= '9'
+     return c in '0123456789'
 
    def _is_sub_delim(c):
-     return c == '!' or c == '$' or c == '&' or c == '\'' or \
-            c == '(' or c == ')' or c == '*' or c == '+' or \
-            c == ',' or c == ';' or c == '='
-
-   def _is_ucschar(c):
-     return c >= '\U000000A0' and c <= '\U0000D7FF' or \
-            c >= '\U0000F900' and c <= '\U0000FDCF' or \
-            c >= '\U0000FDF0' and c <= '\U0000FFEF' or \
-            c >= '\U00010000' and c <= '\U0001FFFD' or \
-            c >= '\U00020000' and c <= '\U0002FFFD' or \
-            c >= '\U00030000' and c <= '\U0003FFFD' or \
-            c >= '\U00040000' and c <= '\U0004FFFD' or \
-            c >= '\U00050000' and c <= '\U0005FFFD' or \
-            c >= '\U00060000' and c <= '\U0006FFFD' or \
-            c >= '\U00070000' and c <= '\U0007FFFD' or \
-            c >= '\U00080000' and c <= '\U0008FFFD' or \
-            c >= '\U00090000' and c <= '\U0009FFFD' or \
-            c >= '\U000A0000' and c <= '\U000AFFFD' or \
-            c >= '\U000B0000' and c <= '\U000BFFFD' or \
-            c >= '\U000C0000' and c <= '\U000CFFFD' or \
-            c >= '\U000D0000' and c <= '\U000DFFFD' or \
-            c >= '\U000E1000' and c <= '\U000EFFFD'
-
-   def _is_iprivate(c):
-     return c >= '\U0000E000' and c <= '\U0000F8FF' or \
-            c >= '\U000F0000' and c <= '\U000FFFFD' or \
-            c >= '\U00100000' and c <= '\U0010FFFD'
+      return c in '!$&\'()*+,;='
 
 <CODE ENDS>
 ]]></artwork></figure>
@@ -805,8 +771,7 @@ ____ scheme __/             \___ port _
 
       <t>
         The security considerations discussed in <xref target="RFC3986">Section
-        7 of RFC 3986</xref> and <xref target="RFC3987">Section 8 of RFC
-        3987</xref> also apply to Constrained IRI References.
+        7 of RFC 3986</xref> also apply to Constrained Internationalized Resource Identifiers.
       </t>
 
     </section>
@@ -842,7 +807,6 @@ ____ scheme __/             \___ port _
 
       &RFC2119;
       &RFC3986;
-      &RFC3987;
       &RFC7049;
       &RFC8174;
 
@@ -852,7 +816,6 @@ ____ scheme __/             \___ port _
 
     <references title="Informative References">
 
-      &RFC5890;
       &RFC5952;
       &RFC7228;
       &RFC7230;
@@ -873,8 +836,9 @@ ____ scheme __/             \___ port _
       <!-- sorted by last name -->
       <t>
         Thanks to
-        Christian Amsuess and
-        Ari Keranen
+        Christian Ams&uuml;ss,
+        Ari Keranen, and
+        Dave Thaler
         for helpful comments and discussions that have shaped the
         document.
       </t>
