@@ -1088,11 +1088,11 @@
             <t>
               A date/time literal consists of a sequence of characters in
               <xref target="RFC3339">Internet date/time format</xref>, enclosed
-              in single quotes.
+              in dollar signs.
               <list>
-                <t>datetime = SQUOTE date-time SQUOTE</t>
+                <t>datetime = DOLLAR date-time DOLLAR</t>
                 <t>date-time = &lt;Defined in Section 5.6 of RFC 3339&gt;</t>
-                <t>SQUOTE = %x27</t>
+                <t>DOLLAR = %x24</t>
               </list>
             </t>
 
@@ -1116,6 +1116,7 @@
                 <t>base16 = (%x68 / %x62.31.36) SQUOTE &lt;Base16 encoded data&gt; SQUOTE</t>
                 <t>base32 = %x62.33.32 SQUOTE &lt;Base32 encoded data&gt; SQUOTE</t>
                 <t>base64 = %x62.36.34 SQUOTE &lt;Base64 encoded data&gt; SQUOTE</t>
+                <t>SQUOTE = %x27</t>
               </list>
             </t>
 
