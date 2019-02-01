@@ -1932,9 +1932,11 @@
         automatically following, trusting, or otherwise using links and forms in
         CoRAL documents. In particular, a server that is authoritative for the
         CoRAL representation of a resource may not necessarily be authoritative
-        for elements nested inside top level links in the document. See Section
-        of 5 of <xref target="RFC8288">RFC 8288</xref> for additional security
-        considerations relating to Web Linking.
+        for nested elements. Unless an application mitigates this risk by
+        specifying more specific rules, any link or form in a document where the
+        context and the document's retrieval context don't share the same
+        authority MUST be discarded. See Section 5 of <xref target="RFC8288">RFC
+        8288</xref> for related considerations.
       </t>
 
     </section>
