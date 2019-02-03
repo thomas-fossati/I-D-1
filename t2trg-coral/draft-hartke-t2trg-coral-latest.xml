@@ -308,14 +308,14 @@
           A <spanx>form</spanx> provides instructions to an agent for performing
           an operation on a Web resource. It consists of a <spanx>form
           context</spanx>, a <spanx>form relation type</spanx>, a <spanx>request
-          method</spanx>, and a <spanx>form target</spanx>. Additionally, a
+          method</spanx>, and a <spanx>submission target</spanx>. Additionally, a
           form may be accompanied by <spanx>form data</spanx>.
         </t>
 
         <t>
           A form can be viewed as an instruction of the form "To perform a {form
           relation type} operation on {form context}, make a {request method}
-          request to {form target}" where the payload of the request may be
+          request to {submission target}" where the payload of the request may be
           further described by form data.
         </t>
 
@@ -327,7 +327,7 @@
         <t>
           The form context is the resource on which an operation is ultimately
           performed. To perform the operation, an agent needs to construct a request
-          with the specified request method and the form target as the request IRI. The form
+          with the specified request method and submission target as the request IRI. The submission
           target typically is the same resource as the form context, but may be a different
           resource. Constructing and sending the request is called _submitting
           the form_.
@@ -449,8 +449,8 @@
               format="counter"/>.
             </t>
             <t>
-              The agent obtains the <spanx>request IRI</spanx> from the link or
-              form target. Fragment identifiers are not part of the request IRI and
+              The agent obtains the <spanx>request IRI</spanx> from the link target or
+              submission target. Fragment identifiers are not part of the request IRI and
               MUST be separated from the rest of the IRI prior to a dereference.
             </t>
             <t>
@@ -629,9 +629,9 @@
           <t>
             A form is encoded as an array that consists of the unsigned integer
             3, followed by the form relation type, the request method, and the
-            form target, optionally followed by form data.
+            submission target, optionally followed by form data.
             <list>
-              <t>form = [form: 3, relation, method, form-target, ?form-data]</t>
+              <t>form = [form: 3, relation, method, submission-target, ?form-data]</t>
             </list>
           </t>
 
@@ -642,7 +642,7 @@
 
           <t>
             The method MUST refer to one of the request methods defined by the
-            Web transfer protocol identified by the scheme of the form target.
+            Web transfer protocol identified by the scheme of the submission target.
             It is encoded either as a text string or an unsigned integer.
             <list>
               <t>method = text / uint</t>
@@ -661,10 +661,10 @@
           </t>
 
           <t>
-            The form target is denoted by an IRI reference.
+            The submission target is denoted by an IRI reference.
             This IRI reference MUST be resolved against the current base.
             <list>
-              <t>form-target = ciri</t>
+              <t>submission-target = ciri</t>
             </list>
           </t>
 
@@ -677,7 +677,7 @@
               </list>
               Form data, if any, MUST be processed in a fresh environment. Both
               the current context and the current base in the new
-              environment are initially set to the form target of the
+              environment are initially set to the submission target of the
               enclosing form.
             </t>
 
@@ -781,7 +781,7 @@
         <t>
           The binary format can reference values from a dictionary to reduce
           representation size and processing cost. Dictionary references can used in place of link relation
-          types, link targets, form relation types, form targets, form field
+          types, link targets, form relation types, submission targets, form field
           names, and form field values.
         </t>
 
@@ -794,7 +794,7 @@
             <list>
               <t>relation /= uint</t>
               <t>link-target /= #6.TBD6(uint)</t>
-              <t>form-target /= #6.TBD6(uint)</t>
+              <t>submission-target /= #6.TBD6(uint)</t>
               <t>form-field-name /= uint</t>
               <t>form-field-value /= #6.TBD6(uint)</t>
             </list>
@@ -1317,10 +1317,10 @@
 
           <t>
             A form consists of the form relation type, followed by a "->" token,
-            a request method identifier, and the form target, optionally
+            the request method, and the submission target, optionally
             followed by form data enclosed in square brackets ("[" and "]").
             <list>
-              <t>form = relation "->" method form-target ["[" form-data "]"]</t>
+              <t>form = relation "->" method submission-target ["[" form-data "]"]</t>
             </list>
           </t>
 
@@ -1332,7 +1332,7 @@
           <t>
             The method identifier MUST refer to one of the request methods defined
             by the Web transfer protocol identified by the scheme of the
-            form target. Method identifiers are case-insensitive and
+            submission target. Method identifiers are case-insensitive and
             constrained to Unicode characters in the Basic Latin block.
             <list>
               <t>method = identifier</t>
@@ -1344,10 +1344,10 @@
           </t>
 
           <t>
-            The form target is denoted by an IRI reference.
+            The submission target is denoted by an IRI reference.
             This IRI reference MUST be resolved against the current base.
             <list>
-              <t>form-target = iriref</t>
+              <t>submission-target = iriref</t>
             </list>
           </t>
 
@@ -1363,7 +1363,7 @@
             <t>
               Form data, if any, MUST be processed in a fresh environment. Both the current
               context and the current base in this environment are initially
-              set to the form target of the enclosing form. The mapping
+              set to the submission target of the enclosing form. The mapping
               from identifiers to IRIs is initially set to a copy of the mapping
               from identifiers to IRIs in the current environment.
             </t>
@@ -1631,7 +1631,7 @@
               <t>
                 use of only dictionary references in the binary format for
                 certain link relation types, link targets, form relation types,
-                form targets, form field names, and form field values;
+                submission targets, form field names, and form field values;
               </t>
               <t>
                 use of only either content type strings or content format IDs;
