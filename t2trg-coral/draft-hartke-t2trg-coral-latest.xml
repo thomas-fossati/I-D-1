@@ -1932,13 +1932,10 @@
       <t>
         Applications using CoRAL ought to consider the attack vectors opened by
         automatically following, trusting, or otherwise using links and forms in
-        CoRAL documents. In particular, a server that is authoritative for the
-        CoRAL representation of a resource may not necessarily be authoritative
-        for nested elements. Unless an application mitigates this risk by
-        specifying more specific rules, any link or form in a document where the
-        context and the document's retrieval context don't share the same
-        authority MUST be discarded. See Section 5 of <xref target="RFC8288">RFC
-        8288</xref> for related considerations.
+        CoRAL documents. Notably, a server that is authoritative for the CoRAL
+        representation of a resource may not necessarily be authoritative for
+        nested elements in the document. See Section 5 of <xref
+        target="RFC8288">RFC 8288</xref> for related considerations.
       </t>
 
     </section>
