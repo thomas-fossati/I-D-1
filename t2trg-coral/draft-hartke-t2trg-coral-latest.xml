@@ -362,14 +362,14 @@
           a schema) that describes the structure of the payload. Form fields may also provide
           other kinds of information, such as acceptable media types for the payload.
         </t>
-        
+
         <t>
           A form field is a pair of a <spanx>form field name</spanx> and a
           <spanx>form field value</spanx>.
-          
+
           The form field name identifies the semantics of the form field. Form
           field names are denoted like link and form relation types by an IRI.
-          
+
           The form field value can either be an IRI, a Boolean value, an integer, a
           floating-point number, a date/time value, a byte string, or a text string.
         </t>
