@@ -2,7 +2,6 @@
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC3986 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3986.xml">
-  <!ENTITY RFC5785 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5785.xml">
   <!ENTITY RFC6415 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6415.xml">
   <!ENTITY RFC6570 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6570.xml">
   <!ENTITY RFC6690 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6690.xml">
@@ -17,6 +16,7 @@
   <!ENTITY RFC7540 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7540.xml">
   <!ENTITY RFC7595 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7595.xml">
   <!ENTITY RFC8288 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8288.xml">
+  <!ENTITY I-D.nottingham-rfc5785bis SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.nottingham-rfc5785bis.xml">
   <!ENTITY W3C.REC-xml11-20060816 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml11-20060816.xml">
   <!ENTITY W3C.REC-xml-20081126 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-20081126.xml">
   <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-names-20091208.xml">
@@ -31,7 +31,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="info" docName="draft-hartke-core-apps-08" ipr="trust200902">
+<rfc category="info" docName="draft-hartke-core-apps-09" ipr="trust200902">
 
   <front>
 
@@ -617,20 +617,22 @@
       <section title="Well-Known Locations">
 
         <t>
-          Some applications may require the discovery of information about a
-          host, known as "site-wide metadata" in <xref target="RFC5785">RFC
-          5785</xref>. For example, <xref target="RFC6415">RFC 6415</xref>
-          defines a metadata document format for describing a host; similarly,
-          <xref target="RFC6690">RFC 6690</xref> defines a link format for the
-          discovery of resources hosted by a server.
+          Some applications may require the discovery of information about an
+          origin (sometimes called "site-wide metadata")
+          <xref target="I-D.nottingham-rfc5785bis"/>.
+          For example, <xref target="RFC6415">RFC 6415</xref> defines a metadata
+          document format for describing a host.
+          Similarly, <xref target="RFC6690">RFC 6690</xref> defines a link
+          format for the discovery of resources hosted by a server.
         </t>
 
         <t>
-          Applications that need to define a resource for this kind of metadata
-          can register new "well-known locations". <xref target="RFC5785">RFC
-          5785</xref> defines the path prefix "/.well-known/" in "http" and
-          "https" URIs for this purpose. <xref target="RFC7252">RFC 7252</xref>
-          extends this convention to "coap" and "coaps" URIs.
+          Applications that need to provide a resource for data or services
+          related to the origin overall can designate a "well-known location".
+          <xref target="I-D.nottingham-rfc5785bis">RFC 5785bis</xref> defines a
+          path prefix in HTTP URIs for these "well-known locations",
+          "/.well-known/". <xref target="RFC7252">RFC 7252</xref> extends this
+          to CoAP URIs.
         </t>
 
         <t>
@@ -854,7 +856,7 @@
       <t>
         The security considerations of
         <xref target="RFC3986">RFC 3986</xref>,
-        <xref target="RFC5785">RFC 5785</xref>,
+        <xref target="I-D.nottingham-rfc5785bis">RFC 5785bis</xref>,
         <xref target="RFC6570">RFC 6570</xref>,
         <xref target="RFC6838">RFC 6838</xref>,
         <xref target="RFC7320">RFC 7320</xref>,
@@ -907,11 +909,11 @@
 
       &RFC6570; <!--Gregorio-->
 
-      &RFC5785; <!--Nottingham-->
-
       &RFC7320; <!--Nottingham-->
 
       &RFC8288; <!--Nottingham-->
+
+      &I-D.nottingham-rfc5785bis; <!--Nottingham-->
 
       &RFC7595; <!--Thaler-->
 
