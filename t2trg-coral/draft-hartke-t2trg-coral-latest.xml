@@ -309,14 +309,14 @@
           an operation on a Web resource. It consists of a <spanx>form
           context</spanx>, a <spanx>form relation type</spanx>, a <spanx>request
           method</spanx>, and a <spanx>submission target</spanx>. Additionally, a
-          form may be accompanied by <spanx>form data</spanx>.
+          form may be accompanied by a list of <spanx>form fields</spanx>.
         </t>
 
         <t>
           A form can be viewed as an instruction of the form "To perform a {form
           relation type} operation on {form context}, make a {request method}
           request to {submission target}" where the payload of the request may be
-          further described by form data.
+          further described by any form fields.
         </t>
 
         <t>
@@ -334,9 +334,9 @@
         </t>
 
         <t>
-          If a form is accompanied by form data, as described in the following section,
+          If a form is accompanied by a list of form fields, as described in the following section,
           then the agent also needs to construct a payload that matches the
-          specifications of the form data and include that in the request.
+          specifications of the form fields and include that in the request.
         </t>
 
         <t>
@@ -349,29 +349,28 @@
 
       </section>
 
-      <section title="Form Data" anchor="form-data">
+      <section title="Form Fields">
 
         <t>
-          Form data provides instructions for agents to construct a request
-          payload. It consists of a list of zero or more <spanx>form
-          fields</spanx>, each consisting of a <spanx>form field
-          name</spanx> and a <spanx>form field value</spanx>.
+          Form fields provide further instructions to agents for constructing a
+          request payload.
         </t>
 
         <t>
-          A form field can directly identify one or more data items that the client needs to
+          A form field can directly identify one or more data items that need to
           include in the request payload or can reference another resource (such as
           a schema) that describes the structure of the payload. Form fields may also provide
-          other kinds of information, such as acceptable representation formats for the payload.
+          other kinds of information, such as acceptable media types for the payload.
         </t>
-
+        
         <t>
+          A form field is a pair of a <spanx>form field name</spanx> and a
+          <spanx>form field value</spanx>.
+          
           The form field name identifies the semantics of the form field. Form
           field names are denoted like link and form relation types by an IRI.
-        </t>
-
-        <t>
-          The form field value can be an IRI, a Boolean value, an integer, a
+          
+          The form field value can either be an IRI, a Boolean value, an integer, a
           floating-point number, a date/time value, a byte string, or a text string.
         </t>
 
@@ -441,7 +440,7 @@
               associated with each of these. Metadata
               includes the content type of the target resource representation, the
               IRI scheme, the request method, and other information that is
-              provided as nested elements in a link and form data in a form.
+              provided as nested elements in a link or form fields in a form.
               <vspace blankLines="1"/>
               If the selected candidate contains an embedded representation,
               the agent MAY skip the following steps and immediately
@@ -465,9 +464,9 @@
               options according to  metadata
               associated with the link or form (e.g., set the HTTP Accept
               header field or the CoAP Accept option when the media type of the
-              target resource is provided). In the case of a form with form
-              data or an applicable form relation type, the agent also MUST include a request payload that matches the
-              specifications of the form data.
+              target resource is provided). In the case of a form with one or more form
+              fields, the agent also MUST include a request payload that matches the
+              specifications of the form fields.
             </t>
             <t>
               The agent sends the request and receives the response.
@@ -629,9 +628,9 @@
           <t>
             A form is encoded as an array that consists of the unsigned integer
             3, followed by the form relation type, the request method, and the
-            submission target, optionally followed by form data.
+            submission target, optionally followed by a list of form fields.
             <list>
-              <t>form = [form: 3, relation, method, submission-target, ?form-data]</t>
+              <t>form = [form: 3, relation, method, submission-target, ?form-fields]</t>
             </list>
           </t>
 
@@ -668,14 +667,17 @@
             </list>
           </t>
 
-          <section title="Form Data">
+          <section title="Form Fields">
 
             <t>
-              Form data is encoded as an array of zero or more name-value pairs.
+              A list of form fields is encoded as an array of zero or more name-value pairs.
               <list>
-                <t>form-data = [*(form-field-name, form-field-value)]</t>
+                <t>form-fields = [*(form-field-name, form-field-value)]</t>
               </list>
-              Form data, if any, MUST be processed in a fresh environment. Both
+            </t>
+
+            <t>
+              The list, if any, MUST be processed in a fresh environment. Both
               the current context and the current base in the new
               environment are initially set to the submission target of the
               enclosing form.
@@ -1318,9 +1320,9 @@
           <t>
             A form consists of the form relation type, followed by a "->" token,
             the request method, and the submission target, optionally
-            followed by form data enclosed in square brackets ("[" and "]").
+            followed by a list of form fields enclosed in square brackets ("[" and "]").
             <list>
-              <t>form = relation "->" method submission-target ["[" form-data "]"]</t>
+              <t>form = relation "->" method submission-target ["[" form-fields "]"]</t>
             </list>
           </t>
 
@@ -1351,17 +1353,17 @@
             </list>
           </t>
 
-          <section title="Form Data">
+          <section title="Form Fields">
 
             <t>
-              Form data consists of zero or more name-value pairs.
+              A list of form fields consists of zero or more name-value pairs.
               <list>
-                <t>form-data = *(form-field-name form-field-value)</t>
+                <t>form-fields = *(form-field-name form-field-value)</t>
               </list>
             </t>
 
             <t>
-              Form data, if any, MUST be processed in a fresh environment. Both the current
+              The list, if any, MUST be processed in a fresh environment. Both the current
               context and the current base in this environment are initially
               set to the submission target of the enclosing form. The mapping
               from identifiers to IRIs is initially set to a copy of the mapping
