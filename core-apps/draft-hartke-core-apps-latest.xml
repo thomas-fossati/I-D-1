@@ -901,27 +901,11 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <references title="Normative References">
-
-      &RFC3986; <!--Berners-Lee-->
-
-      &RFC6838; <!--Freed-->
-
-      &RFC6570; <!--Gregorio-->
-
-      &RFC7320; <!--Nottingham-->
-
-      &RFC8288; <!--Nottingham-->
-
-      &I-D.nottingham-rfc5785bis; <!--Nottingham-->
-
-      &RFC7595; <!--Thaler-->
-
-    </references>
-
-    <references title="Informative References">
+    <references>
 
       &RFC7540; <!--Belshe-->
+
+      &RFC3986; <!--Berners-Lee-->
 
       <reference anchor="COOLURI" target="http://www.w3.org/Provider/Style/URI.html">
         <front>
@@ -933,15 +917,11 @@
 
       &RFC7228; <!--Bormann-->
 
-      &W3C.REC-xml-names-20091208; <!--Bray-->
+      &W3C.REC-xml11-20060816; <!--Bray-->
 
       &W3C.REC-xml-20081126; <!--Bray-->
 
-      &W3C.REC-xml11-20060816; <!--Bray-->
-
-      &RFC7230; <!--Fielding-->
-
-      &RFC7231; <!--Fielding-->
+      &W3C.REC-xml-names-20091208; <!--Bray-->
 
       <reference anchor="REST" target="http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf">
         <front>
@@ -965,7 +945,15 @@
         </front>
       </reference>
 
+      &RFC7230; <!--Fielding-->
+
+      &RFC7231; <!--Fielding-->
+
+      &RFC6838; <!--Freed-->
+
       &RFC7301; <!--Friedl-->
+
+      &RFC6570; <!--Gregorio-->
 
       &RFC6415; <!--Hammer-Lahav-->
 
@@ -979,11 +967,18 @@
         <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-masinter-mime-web-info-02.txt" />
       </reference>
 
+      &RFC7320; <!--Nottingham-->
+
+      &RFC8288; <!--Nottingham-->
+
+      &I-D.nottingham-rfc5785bis; <!--Nottingham-->
+
       <reference anchor="WEBAPIS">
         <front>
           <title>RESTful Web APIs</title>
           <author initials="L." surname="Richardson" fullname="Leonard Richardson"/>
           <author initials="M." surname="Amundsen" fullname="Mike Amundsen"/>
+          <author initials="S." surname="Ruby" fullname="Sam Ruby"/>
           <date day="10" month="September" year="2013"/>
         </front>
         <seriesInfo name="O'Reilly" value="Media"/>
@@ -993,6 +988,8 @@
       &RFC6690; <!--Shelby-->
 
       &RFC7252; <!--Shelby-->
+
+      &RFC7595; <!--Thaler-->
 
       &RFC6906; <!-- Wilde -->
 
