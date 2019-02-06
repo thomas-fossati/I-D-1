@@ -11,6 +11,7 @@
   <!ENTITY RFC5234 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5234.xml">
   <!ENTITY RFC5646 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5646.xml">
   <!ENTITY RFC5789 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.5789.xml">
+  <!ENTITY RFC6454 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6454.xml">
   <!ENTITY RFC6573 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6573.xml">
   <!ENTITY RFC6657 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6657.xml">
   <!ENTITY RFC6690 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6690.xml">
@@ -1938,6 +1939,14 @@
         target="RFC8288">RFC 8288</xref> for related considerations.
       </t>
 
+      <t>
+        Unless an application mitigates this risk by specifying more specific
+        rules, any link or form in a document where the link or form context and
+        the document's retrieval context don't share the same <xref
+        target="RFC6454">Web origin</xref> MUST be discarded ("same-origin
+        policy").
+      </t>
+
     </section>
 
     <!-- **************************************************************** -->
@@ -2163,6 +2172,7 @@
       &RFC3987;
       &RFC4648;
       &RFC5234;
+      &RFC6454;
       &RFC6657;
       &RFC6838;
       &RFC6943;
