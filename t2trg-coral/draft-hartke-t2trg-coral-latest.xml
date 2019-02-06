@@ -47,7 +47,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-coral-07" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-coral-08" ipr="trust200902">
 
   <front>
 
@@ -1666,7 +1666,7 @@
 
         <t>
           To avoid interoperability problems, it is RECOMMENDED that only
-          IRIs are minted thare normalized according to Section 5.3 of RFC
+          IRIs are minted that are normalized according to Section 5.3 of RFC
           3987. Non-normalized forms that are best avoided
           include:
           <list style="symbols">
