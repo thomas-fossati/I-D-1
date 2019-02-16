@@ -317,7 +317,7 @@
           A form can be viewed as an instruction of the form "To perform a {form
           relation type} operation on {form context}, make a {request method}
           request to {submission target}" where the payload of the request may be
-          further described by any form fields.
+          further described by form fields.
         </t>
 
         <t>
@@ -330,8 +330,8 @@
           performed. To perform the operation, an agent needs to construct a request
           with the specified request method and submission target as the request IRI. The submission
           target typically is the same resource as the form context, but may be a different
-          resource. Constructing and sending the request is called _submitting
-          the form_.
+          resource. Constructing and sending the request is called <spanx>submitting
+          the form</spanx>.
         </t>
 
         <t>
