@@ -1949,6 +1949,14 @@
         policy").
       </t>
 
+      <!--
+      <t>
+        CoRAL avoids the exponential XML entity expansion attack ("billion
+        laughs") and XML external entity attack by not having (the equivalent
+        of) XML entity references.
+      </t>
+      -->
+
     </section>
 
     <!-- **************************************************************** -->
