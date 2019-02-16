@@ -783,8 +783,8 @@
 
         <t>
           The binary format can reference values from a dictionary to reduce
-          representation size and processing cost. Dictionary references can used in place of link relation
           types, link targets, form relation types, submission targets, form field
+          representation size and processing cost. Dictionary references can be used in place of link relation
           names, and form field values.
         </t>
 
