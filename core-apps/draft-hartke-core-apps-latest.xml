@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="us-ascii"?>
 
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-  <!ENTITY RFC3986 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.3986.xml">
-  <!ENTITY RFC6415 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6415.xml">
-  <!ENTITY RFC6570 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6570.xml">
-  <!ENTITY RFC6690 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6690.xml">
-  <!ENTITY RFC6838 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6838.xml">
-  <!ENTITY RFC6906 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.6906.xml">
-  <!ENTITY RFC7228 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7228.xml">
-  <!ENTITY RFC7230 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7230.xml">
-  <!ENTITY RFC7231 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7231.xml">
-  <!ENTITY RFC7252 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7252.xml">
-  <!ENTITY RFC7301 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7301.xml">
-  <!ENTITY RFC7320 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7320.xml">
-  <!ENTITY RFC7540 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7540.xml">
-  <!ENTITY RFC7595 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7595.xml">
-  <!ENTITY RFC8288 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8288.xml">
-  <!ENTITY I-D.nottingham-rfc5785bis SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.nottingham-rfc5785bis.xml">
-  <!ENTITY W3C.REC-xml11-20060816 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml11-20060816.xml">
-  <!ENTITY W3C.REC-xml-20081126 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-20081126.xml">
-  <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "http://www.rfc-editor.org/refs/bibxml4/reference.W3C.REC-xml-names-20091208.xml">
+  <!ENTITY RFC3986 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml">
+  <!ENTITY RFC6415 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6415.xml">
+  <!ENTITY RFC6570 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6570.xml">
+  <!ENTITY RFC6690 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6690.xml">
+  <!ENTITY RFC6838 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6838.xml">
+  <!ENTITY RFC6906 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6906.xml">
+  <!ENTITY RFC7228 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7228.xml">
+  <!ENTITY RFC7230 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7230.xml">
+  <!ENTITY RFC7231 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7231.xml">
+  <!ENTITY RFC7252 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7252.xml">
+  <!ENTITY RFC7301 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7301.xml">
+  <!ENTITY RFC7320 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7320.xml">
+  <!ENTITY RFC7540 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7540.xml">
+  <!ENTITY RFC7595 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7595.xml">
+  <!ENTITY RFC8288 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8288.xml">
+  <!ENTITY I-D.nottingham-rfc5785bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.nottingham-rfc5785bis.xml">
+  <!ENTITY W3C.REC-xml11-20060816 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-xml11-20060816.xml">
+  <!ENTITY W3C.REC-xml-20081126 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-xml-20081126.xml">
+  <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-xml-names-20091208.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
