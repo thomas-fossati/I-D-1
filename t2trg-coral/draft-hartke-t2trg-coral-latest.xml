@@ -1856,6 +1856,8 @@
             <t>CoRAL-Link = link</t>
             <t>CoRAL-Form = form</t>
           </list>
+          For each embedded document, link, and form, the retrieval context,
+          link context, and form context needs to be specified, respectively.
         </t>
 
       </section>
