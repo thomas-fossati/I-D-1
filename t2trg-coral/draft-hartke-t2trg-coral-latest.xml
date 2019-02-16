@@ -104,8 +104,8 @@
 
       <t>
         CoRAL is intended for driving automated software agents that navigate a
-        Web application based on a standardized vocabulary of link and form
-        relation types. It is designed to be used in conjunction with a Web
+        Web application based on a standardized vocabulary of link relation types and
+        operation types. It is designed to be used in conjunction with a Web
         transfer protocol such as the <xref target="RFC7230">Hypertext Transfer
         Protocol (HTTP)</xref> or the <xref target="RFC7252">Constrained
         Application Protocol (CoAP)</xref>.
@@ -141,7 +141,7 @@
         processing resources</xref> and shares many similarities with the
         message format of the <xref target="RFC7252">Constrained Application
         Protocol (CoAP)</xref>: For example, it uses numeric identifiers instead
-        of verbose strings for link and form relation types, and pre-parses <xref
+        of verbose strings for link relation types and operation types, and pre-parses <xref
           target="RFC3986">Uniform Resource Identifiers (URIs)</xref>
         into (what CoAP considers to be) their components, which
         simplifies URI processing for constrained nodes a lot. As a result, link serializations in CoRAL are often
@@ -308,21 +308,21 @@
         <t>
           A <spanx>form</spanx> provides instructions to an agent for performing
           an operation on a Web resource. It consists of a <spanx>form
-          context</spanx>, a <spanx>form relation type</spanx>, a <spanx>request
+          context</spanx>, an <spanx>operation type</spanx>, a <spanx>request
           method</spanx>, and a <spanx>submission target</spanx>. Additionally, a
           form may be accompanied by a list of <spanx>form fields</spanx>.
         </t>
 
         <t>
-          A form can be viewed as an instruction of the form "To perform a {form
-          relation type} operation on {form context}, make a {request method}
+          A form can be viewed as an instruction of the form "To perform an {operation
+          type} operation on {form context}, make a {request method}
           request to {submission target}" where the payload of the request may be
           further described by form fields.
         </t>
 
         <t>
-          The form relation type identifies the semantics of the operation. Form
-          relation types are denoted like link relation types by an IRI.
+          The operation type identifies the semantics of the operation. Operation
+          types are denoted like link relation types by an IRI.
         </t>
 
         <t>
@@ -369,7 +369,7 @@
           <spanx>form field value</spanx>.
 
           The form field name identifies the semantics of the form field. Form
-          field names are denoted like link and form relation types by an IRI.
+          field names are denoted like link relation types and operation types by an IRI.
 
           The form field value can either be an IRI, a Boolean value, an integer, a
           floating-point number, a date/time value, a byte string, or a text string.
@@ -427,10 +427,10 @@
             <t>
               The first step for the agent is to decide what to do next, i.e.,
               which type of link to follow or form to submit, based on the link
-              and form relation types it understands.
+              relation types and operation types it understands.
             </t>
             <t>
-              The agent then finds the link(s) or form(s) with the respective relation
+              The agent then finds the link(s) or form(s) with the respective
               type in the active representation. This may yield one or more
               candidates, from which the agent will have to select the most appropriate
               one. The set of candidates may be empty, for
@@ -628,16 +628,19 @@
 
           <t>
             A form is encoded as an array that consists of the unsigned integer
-            3, followed by the form relation type, the request method, and the
+            3, followed by the operation type, the request method, and the
             submission target, optionally followed by a list of form fields.
             <list>
-              <t>form = [form: 3, relation, method, submission-target, ?form-fields]</t>
+              <t>form = [form: 3, operation, method, submission-target, ?form-fields]</t>
             </list>
           </t>
 
           <t>
-            The form relation type is defined in the same way as a
+            The operation type is defined in the same way as a
             link relation type (<xref target="binary-links"/>).
+            <list>
+              <t>operation = text</t>
+            </list>
           </t>
 
           <t>
@@ -783,8 +786,8 @@
 
         <t>
           The binary format can reference values from a dictionary to reduce
-          types, link targets, form relation types, submission targets, form field
           representation size and processing cost. Dictionary references can be used in place of link relation
+          types, link targets, operation types, submission targets, form field
           names, and form field values.
         </t>
 
@@ -796,6 +799,7 @@
             tagged with CBOR tag TBD6.
             <list>
               <t>relation /= uint</t>
+              <t>operation /= uint</t>
               <t>link-target /= #6.TBD6(uint)</t>
               <t>submission-target /= #6.TBD6(uint)</t>
               <t>form-field-name /= uint</t>
@@ -1319,17 +1323,20 @@
         <section title="Forms">
 
           <t>
-            A form consists of the form relation type, followed by a "->" token,
+            A form consists of the operation type, followed by a "->" token,
             the request method, and the submission target, optionally
             followed by a list of form fields enclosed in square brackets ("[" and "]").
             <list>
-              <t>form = relation "->" method submission-target ["[" form-fields "]"]</t>
+              <t>form = operation "->" method submission-target ["[" form-fields "]"]</t>
             </list>
           </t>
 
           <t>
-            The form relation type is defined in the same way as a link relation
+            The operation type is defined in the same way as a link relation
             type (<xref target="textual-links"/>).
+            <list>
+              <t>operation = iri / simple-name / qualified-name</t>
+            </list>
           </t>
 
           <t>
@@ -1515,7 +1522,7 @@
 
       <t>
         This section discusses some considerations in creating CoRAL-based
-        applications and managing link and form relation types.
+        applications and vocabularies.
       </t>
 
       <section title="Specifying CoRAL-based Applications">
@@ -1532,8 +1539,8 @@
             <t hangText="Interaction:">
               Interactions are based on the hypermedia interaction model of the
               Web and the methods provided by the Web transfer protocol. The
-              semantics of possible interactions are identified by link and form
-              relation types.
+              semantics of possible interactions are identified by link
+              relation types and operation types.
             </t>
             <t hangText="Representation:">
               Representations are CoRAL documents encoded in the binary format
@@ -1563,9 +1570,9 @@
               <t hangText="Link Relation Types:">
                 Link relation types that identify the semantics of links.
               </t>
-              <t hangText="Form Relation Types:">
-                Form relation types that identify the semantics of forms.
-                Additionally, for each form relation type, the permissible
+              <t hangText="Operation Types:">
+                Operation types that identify the semantics of forms.
+                Additionally, for each operation type, the permissible
                 request method(s).
               </t>
               <t hangText="Form Field Names:">
@@ -1633,7 +1640,7 @@
               </t>
               <t>
                 use of only dictionary references in the binary format for
-                certain link relation types, link targets, form relation types,
+                certain link relation types, link targets, operation types,
                 submission targets, form field names, and form field values;
               </t>
               <t>
@@ -1652,13 +1659,13 @@
 
       </section>
 
-      <section title="Minting New Relation Types">
+      <section title="Minting New Vocabulary">
 
         <t>
-          New link relation types, form relation types, and form field names can
+          New link relation types, operation types, and form field names can
           be minted by defining an <xref target="RFC3987">IRI</xref> that
           uniquely identifies the item. Although the IRI can point to a resource
-          that contains a definition of the semantics of the relation type,
+          that contains a definition of the semantics,
           clients SHOULD NOT automatically access that resource to avoid
           overburdening its server. The IRI SHOULD be under the control of the
           person or party defining it, or be delegated to them.
@@ -1682,7 +1689,7 @@
         </t>
 
         <t>
-          IRIs that identify link relation types, form relation types, and form
+          IRIs that identify link relation types, operation types, and form
           field names do not need to be registered. The inclusion of domain
           names in IRIs allows for the decentralized creation of new IRIs
           without the risk of collisions. However, IRIs can be relatively
@@ -2291,7 +2298,7 @@
 
       <t>
         This section defines the core vocabulary for CoRAL: a set of
-        link relation types, form relation types, and form field names.
+        link relation types, operation types, and form field names.
       </t>
 
       <t>
@@ -2324,47 +2331,47 @@
 
       </section>
 
-      <section title="Form Relation Types">
+      <section title="Operation Types">
 
         <t>
           <list style="hanging">
             <t hangText="&lt;urn:TBD1#create&gt;">
               <vspace/>Indicates that the form's context is a collection and
               that a new item can be created in that collection by submitting a
-              suitable representation. This form relation type is typically used
+              suitable representation. This operation type is typically used
               with the POST method <xref target="RFC7231"/> <xref
               target="RFC7252"/>.
             </t>
             <t hangText="&lt;urn:TBD1#update&gt;">
               <vspace/>Indicates that the form's context can be updated by
-              submitting a suitable representation. This form relation type is
+              submitting a suitable representation. This operation type is
               typically used with the PUT method <xref target="RFC7231"/> <xref
               target="RFC7252"/>, PATCH method <xref target="RFC5789"/> <xref
               target="RFC8132"/>, or iPATCH method <xref target="RFC8132"/>.
             </t>
             <t hangText="&lt;urn:TBD1#delete&gt;">
               <vspace/>Indicates that the form's context can be deleted. This
-              form relation type is typically used with the DELETE method <xref
+              operation type is typically used with the DELETE method <xref
               target="RFC7231"/> <xref target="RFC7252"/>.
             </t>
             <t hangText="&lt;urn:TBD1#search&gt;">
               <vspace/>Indicates that the form's context can be searched by
-              submitting a search query. This form relation type is typically
+              submitting a search query. This operation type is typically
               used with the POST method <xref target="RFC7231"/> <xref
               target="RFC7252"/> or FETCH method <xref target="RFC8132"/>.
             </t>
             <!--
             <t hangText="&lt;urn:TBD1#link&gt;">
               <vspace/>Indicates that the form's context can be associated with
-              other resources by submitting one or more links. This form
-              relation type is typically used with the PATCH method <xref
+              other resources by submitting one or more links. This
+              operation is typically used with the PATCH method <xref
               target="RFC5789"/> <xref target="RFC8132"/>, or iPATCH method
               <xref target="RFC8132"/>.
             </t>
             <t hangText="&lt;urn:TBD1#unlink&gt;">
               <vspace/>Indicates that the form's context can be disassociated
-              from other resources by submitting one or more links. This form
-              relation type is typically used with the PATCH method <xref
+              from other resources by submitting one or more links. This
+              operation type is typically used with the PATCH method <xref
               target="RFC5789"/> <xref target="RFC8132"/>, or iPATCH method
               <xref target="RFC8132"/>.
             </t>
@@ -2383,7 +2390,7 @@
               format for the request payload. There may be multiple form fields
               with this name. If a form does not include a form field with this
               name, the server accepts any or no request payload, depending on
-              the form relation type.
+              the operation type.
             </t>
             <t>
               For HTTP, the content type MUST be specified as a text string in
