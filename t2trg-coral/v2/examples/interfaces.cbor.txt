@@ -1,1 +1,0 @@
-[{1:"/s/",9:"simple.sen",10:"core.b"},{1:"/s/lt",9:"simple.sen.lt",10:"core.s"},{1:"/s/tmp",9:"simple.sen.tmp",10:"core.s",13:true},{1:"/s/hum",9:"simple.sen.hum",10:"core.s"},{1:"/a/",9:"simple.act",10:"core.b"},{1:"/a/1/led",9:"simple.act.led",10:"core.a"},{1:"/a/2/led",9:"simple.act.led",10:"core.a"},{1:"/d/",9:"simple.dev",10:"core.ll"},{1:"/l/",10:"core.lb"}]

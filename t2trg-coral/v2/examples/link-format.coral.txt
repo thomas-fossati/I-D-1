@@ -1,1 +1,0 @@
-[[4,1,[10,"sensors"]],[5,2,[4,40,13,"Sensor Index"]],[5,2,[10,"temp",16,"temperature-c",17,"sensor"]],[5,2,[10,"light",16,"light-lux",17,"sensor"]],[5,1,[1,18,5,"http",6,"www.example.com",10,"sensors",10,"t123",18,"/sensors/temp"]],[5,1,[1,2,10,"t",18,"/sensors/temp"]]]
