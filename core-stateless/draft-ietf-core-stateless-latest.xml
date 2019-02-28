@@ -22,7 +22,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="std" docName="draft-ietf-core-stateless-00" ipr="trust200902" updates="7252, 8323">
+<rfc category="std" docName="draft-ietf-core-stateless-01" ipr="trust200902" updates="7252, 8323">
 
   <front>
 
@@ -51,9 +51,9 @@
 
       <t>
         This document provides considerations for alleviating CoAP clients and
-        intermediaries of maintaining per-request state. Additionally, it
-        introduces a new, optional CoAP protocol extension for extended token
-        lengths.
+        intermediaries of keeping per-request state. To facilitate this, this
+        document additionally introduces a new, optional CoAP protocol extension
+        for extended token lengths.
       </t>
 
       <t>
@@ -83,7 +83,7 @@
       </t>
 
       <t>
-        While a request is ongoing, a client typically maintains some state that
+        While a request is ongoing, a client typically needs to keep some state that
         it requires for processing the response when it arrives. Identification
         of this state is done by means of a <spanx>token</spanx> in CoAP, an
         opaque sequence of bytes chosen by the client and included in the CoAP
@@ -109,7 +109,7 @@
 
       <t>
         In some scenarios, it can be beneficial to reduce the amount of state
-        stored at the client at the cost of increased message sizes. Clients can
+        that is stored at the client at the cost of increased message sizes. Clients can
         implement this by serializing (parts of) their state into the token itself and
         recovering the state from the token in the response (<xref
         target="stateless-exchange"/>).
@@ -133,9 +133,10 @@
 
       <t>
         <xref target="stateless-clients"/> of this document provides
-        considerations for making clients "stateless" in this way, i.e.,
-        avoiding per-request state. (They'll still need to maintain per-server
-        state and other kinds of state, so they're not entirely stateless.)
+        considerations for making clients "stateless" in this way, i.e., for
+        avoiding per-request state in client implementations. (They'll still
+        need to maintain per-server state and other kinds of state, so they're
+        not entirely stateless.)
       </t>
 
       <t>
@@ -148,11 +149,11 @@
       </t>
 
       <t>
-         While the mechanism (extended token lengths) and the use case
-         (stateless clients) presented in this document are closely related,
-         both can be used independently of the other: Some implementations may
-         fit their state in 8 bytes; some implementations may have other use
-         cases for extended token lengths.
+         While the use case (avoiding per-request state) and the mechanism
+         (extended token lengths) presented in this document are closely
+         related, both can be used independently of each other: Some
+         implementations may be able to fit their state in just 8 bytes; some
+         implementations may have other use cases for extended token lengths.
       </t>
 
       <section title="Terminology">
@@ -162,12 +163,22 @@
             <t hangText="Stateless">
               <vspace/>
               In this document, "stateless" refers to an implementation strategy
-              for a client (or intermediary in the client role) that doesn't
+              for a client (or intermediary in the client role) that doesn't require it to
               keep state for the individual requests it sends to a server (or
               intermediary in the server role). The client still needs to keep
               state for each server it communicates with (such as state for
               generating tokens and congestion control), so it's not free of any
               state.
+            </t>
+            <t hangText="Client">
+              <vspace/>
+              In this document, "client" generally refers to any sender of a
+              request and recipient of a response, including intermediaries.
+            </t>
+            <t hangText="Server">
+              <vspace/>
+              In this document, "server" generally refers to any recipient of a
+              request and sender of a response, including intermediaries.
             </t>
           </list>
         </t>
@@ -302,7 +313,7 @@
             message by sending a Reset message (Section 4.2 of RFC 7252). In
             case of a non-confirmable message, sending a Reset message is
             permitted but not required (Section 4.3 of RFC 7252). It is
-            therefore RECOMMENDED that clients use a confirmable message.
+            therefore RECOMMENDED that clients use a confirmable message for determining support.
           </t>
 
           <t>
@@ -336,6 +347,14 @@
       Client                                 Server
 ]]></artwork></figure>
 
+          <t>
+            If a server supports extended token lengths but receives a request
+            with a token of a length it is unwilling or unable to process, it
+            MUST NOT reject the message. Instead, it SHOULD return a 4.00 (Bad
+            Request) response. This implies that the server returns the entire
+            token verbatim.
+          </t>
+
         </section>
 
       </section>
@@ -363,16 +382,16 @@
     <section title="Stateless Clients" anchor="stateless-clients">
 
       <t>
-        A client can be alleviated of keeping request state by serializing the
-        state into a sequence of bytes and sending the result as the token of
-        the request. The server will return the token to the client in the
-        response, so that the client can recover the state and process the
+        A client can be alleviated of keeping per-request state by serializing the
+        state into a sequence of bytes and sending the bytes as the token of
+        the request. The server will return the token in the
+        response to the client, so that the client can recover the state and process the
         response as if it had kept the state locally.
       </t>
 
       <t>
         The format of the serialized state is an implementation detail of the
-        client and opaque to any server implementation. Using tokens to
+        client and opaque to any server implementation. However, using tokens to
         serialize state has significant and non-obvious security and privacy
         implications that need to be mitigated; see <xref target="security"/>.
         <!--
@@ -392,11 +411,13 @@
           intermediary, that intermediary needs to store the client's token
           (along with the client's transport address) while it makes its own
           request to the next hop towards the origin server and waits for the
-          response.
+          response. When the intermediary receives the response, it looks up
+          the client's token and transport address for the ongoing request and
+          sends an appropriate response to the client.
         </t>
 
         <t>
-          An intermediary might want to be "stateless" as well, i.e., be
+          Such an intermediary might want to be "stateless" as well, i.e., be
           alleviated of storing the client's token and transport address for
           ongoing requests. This can be implemented by serializing this
           information along the request state into the token to the next hop.
@@ -407,12 +428,16 @@
 
         <t>
           The downside of this approach is that an intermediary, without keeping
-          request state, is unable to aggregate requests, which reduces
-          efficiency. In particular, when multiple clients <xref
-          target="RFC7641">observe</xref> the same resource, aggregating
-          requests is REQUIRED for efficiency (Section 3.1 of RFC 7641). This
-          implies that an intermediary MUST NOT include an Observe Option in
-          requests it sends without keeping request state.
+          request state, is unable to aggregate multiple requests for the same
+          target resource, which reduces efficiency.
+        </t>
+
+        <t>
+          When multiple clients <xref target="RFC7641">observe</xref> the same
+          resource, aggregating requests is REQUIRED (Section 3.1 of RFC 7641).
+          As this cannot be satisfied without keeping request state, an
+          intermediary MUST NOT include an Observe Option in requests it sends
+          without keeping request state.
         </t>
 
         <t>
@@ -494,7 +519,7 @@
       <section title="Message Transmission">
 
         <t>
-          As a further step in the case of <xref target="RFC7252">CoAP over
+          As a further step, in the case of <xref target="RFC7252">CoAP over
           UDP</xref>, a client (or intermediary in the client role) might want
           to also avoid keeping message transmission state.
         </t>
@@ -624,7 +649,7 @@
             The use of encryption, integrity protection, and replay protection
             of serialized state is recommended in general, unless a careful
             analysis of any potential attacks to security and privacy is
-            performed. AES_CCM with a 64 bit tag is recommended, combined with a
+            performed. AES-CCM with a 64 bit tag is recommended, combined with a
             sequence number and a replay window. Where encryption is not needed,
             HMAC-SHA-256, combined with a sequence number and a replay window,
             may be used.
