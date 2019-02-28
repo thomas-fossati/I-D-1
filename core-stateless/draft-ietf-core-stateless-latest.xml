@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC2119 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml">
+  <!ENTITY RFC7228 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7228.xml">
+  <!ENTITY RFC7252 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7252.xml">
+  <!ENTITY RFC7641 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7641.xml">
+  <!ENTITY RFC7959 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.7959.xml">
+  <!ENTITY RFC8174 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml">
+  <!ENTITY RFC8323 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8323.xml">
+  <!ENTITY I-D.ietf-6tisch-minimal-security SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-6tisch-minimal-security.xml">
+  <!ENTITY I-D.ietf-core-echo-request-tag SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-core-echo-request-tag.xml">
+  <!ENTITY I-D.ietf-core-object-security SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-core-object-security.xml">
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+
+<?rfc compact="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="3"?>
+
+<rfc category="std" docName="draft-ietf-core-stateless-00" ipr="trust200902" updates="7252, 8323">
+
+  <front>
+
+    <title abbrev="Extended Tokens and Stateless Clients in CoAP">
+      Extended&#160;Tokens&#160;and&#160;Stateless&#160;Clients in&#160;the&#160;Constrained&#160;Application&#160;Protocol&#160;(CoAP)
+    </title>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Ericsson</organization>
+      <address>
+        <postal>
+          <street>Torshamnsgatan 23</street>
+          <city>Stockholm</city>
+          <code>SE-16483</code>
+          <country>Sweden</country>
+        </postal>
+        <email>klaus.hartke@ericsson.com</email>
+      </address>
+    </author>
+
+    <date/>
+
+    <workgroup>CoRE Working Group</workgroup>
+
+    <abstract>
+
+      <t>
+        This document provides considerations for alleviating CoAP clients and
+        intermediaries of maintaining per-request state. Additionally, it
+        introduces a new, optional CoAP protocol extension for extended token
+        lengths.
+      </t>
+
+      <t>
+        This document updates RFCs 7252 and 8323.
+      </t>
+
+    </abstract>
+
+  </front>
+
+  <middle>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Introduction" anchor="introduction">
+
+      <t>
+        The Constrained Application Protocol (CoAP) <xref target="RFC7252"/> is
+        a RESTful application-layer protocol for <xref
+        target="RFC7228">constrained environments</xref>. In CoAP, clients (or
+        intermediaries in the client role) make requests to servers (or
+        intermediaries in the server role), which serve the requests by
+        returning responses.
+      </t>
+
+      <t>
+        While a request is ongoing, a client typically maintains some state that
+        it requires for processing the response when it arrives. Identification
+        of this state is done by means of a <spanx>token</spanx> in CoAP, an
+        opaque sequence of bytes chosen by the client and included in the CoAP
+        request. The server returns the token verbatim in any resulting CoAP
+        response (<xref target="stateful-exchange"/>).
+      </t>
+
+<figure anchor="stateful-exchange" title="Token as an Identifier for Request State"><artwork align="center"><![CDATA[
++-----------------+     request with     +------------+
+|        |        |   state identifier   |            |
+|        |        |       as token       |            |
+|    .-<-+->------|--------------------->|------.     |
+|   _|_           |                      |      |     |
+|  /   \ stored   |                      |      |     |
+|  \___/ state    |                      |      |     |
+|    |            |                      |      |     |
+|    '->-+-<------|<---------------------|------'     |
+|        |        |     response with    |            |
+|        v        |   token echoed back  |            |
++-----------------+                      +------------+
+      Client                                 Server
+]]></artwork></figure>
+
+      <t>
+        In some scenarios, it can be beneficial to reduce the amount of state
+        stored at the client at the cost of increased message sizes. Clients can
+        implement this by serializing (parts of) their state into the token itself and
+        recovering the state from the token in the response (<xref
+        target="stateless-exchange"/>).
+      </t>
+
+<figure anchor="stateless-exchange" title="Token as Serialization of Request State"><artwork align="center"><![CDATA[
++-----------------+     request with     +------------+
+|        |        |   serialized state   |            |
+|        |        |       as token       |            |
+|        +--------|=====================>|------.     |
+|                 |                      |      |     |
+|    look ma,     |                      |      |     |
+|    no state!    |                      |      |     |
+|                 |                      |      |     |
+|        +--------|<=====================|------'     |
+|        |        |     response with    |            |
+|        v        |   token echoed back  |            |
++-----------------+                      +------------+
+      Client                                 Server
+]]></artwork></figure>
+
+      <t>
+        <xref target="stateless-clients"/> of this document provides
+        considerations for making clients "stateless" in this way, i.e.,
+        avoiding per-request state. (They'll still need to maintain per-server
+        state and other kinds of state, so they're not entirely stateless.)
+      </t>
+
+      <t>
+        Serializing state into tokens is complicated by the fact that both <xref
+        target="RFC7252">CoAP over UDP</xref> and <xref target="RFC8323">CoAP
+        over reliable transports</xref> limit the maximum token length to 8
+        bytes. To overcome this limitation, <xref target="extended-tokens"/> of
+        this document first introduces a CoAP protocol extension for extended
+        token lengths.
+      </t>
+
+      <t>
+         While the mechanism (extended token lengths) and the use case
+         (stateless clients) presented in this document are closely related,
+         both can be used independently of the other: Some implementations may
+         fit their state in 8 bytes; some implementations may have other use
+         cases for extended token lengths.
+      </t>
+
+      <section title="Terminology">
+
+        <t>
+          <list style="hanging">
+            <t hangText="Stateless">
+              <vspace/>
+              In this document, "stateless" refers to an implementation strategy
+              for a client (or intermediary in the client role) that doesn't
+              keep state for the individual requests it sends to a server (or
+              intermediary in the server role). The client still needs to keep
+              state for each server it communicates with (such as state for
+              generating tokens and congestion control), so it's not free of any
+              state.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+          "OPTIONAL" in this document are to be interpreted as described in
+          <xref target="RFC2119">BCP 14</xref> <xref target="RFC8174"/> when,
+          and only when, they appear in all capitals, as shown here.
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Extended Tokens" anchor="extended-tokens">
+
+      <section title="Extended Token Length (TKL) Field" anchor="tkl-field">
+
+        <t>
+          This document updates the message formats defined for <xref
+          target="RFC7252">CoAP over UDP</xref> and <xref target="RFC8323">CoAP
+          over TCP, TLS, and WebSockets</xref> with the following new definition
+          of the TKL field, increasing the maximum token length to 65804 bytes.
+        </t>
+
+        <t>
+          <list style="hanging">
+            <t hangText="Token Length (TKL):">
+              4-bit unsigned integer. A value between 0 and 12 inclusive
+              indicates the length of the variable-length Token field in bytes.
+              Three values are reserved for special constructs:
+              <list style="hanging">
+                <t hangText="13:">
+                  An 8-bit unsigned integer precedes the Token field and
+                  indicates the length of the Token field minus 13.
+                </t>
+                <t hangText="14:">
+                  A 16-bit unsigned integer in network byte order precedes the
+                  Token field and indicates the length of the Token field minus
+                  269.
+                </t>
+                <t hangText="15:">
+                  Reserved. This value MUST NOT be sent and MUST be processed as
+                  a message format error.
+                </t>
+              </list>
+            </t>
+          </list>
+        </t>
+
+        <t>
+          All other fields retain their definition.
+        </t>
+
+        <t>
+          The updated message formats are illustrated in <xref
+          target="message-formats"/>.
+        </t>
+
+      </section>
+
+      <section title="Discovering Support" anchor="discovery">
+
+        <t>
+           Extended token lengths require support from the server or, if there
+           are one or more intermediaries between the client and the server, the
+           intermediary in the server role that the client is interacting with.
+        </t>
+
+        <t>
+          Support can be discovered by a client (or intermediary in the client
+          role) in one of two ways: In case Capabilities and Settings Messages
+          (CSMs) are available, such as in CoAP over TCP, support can be
+          discovered using the Extended-Token-Lengths Capability Option defined
+          in <xref target="capability-option"/>. Otherwise, such as in CoAP over
+          UDP, support can only be discovered by trial and error, as described
+          in <xref target="trial-and-error"/>.
+        </t>
+
+        <section title="Extended-Token-Lengths Capability Option" anchor="capability-option">
+
+          <t>
+            A sender can use the elective Extended-Token-Lengths Capability
+            Option to indicate its support for the new TKL field definition
+            specified in <xref target="tkl-field"/>.
+          </t>
+
+          <texttable title="The Extended-Token-Lengths Capability Option" anchor="capability-option-definition">
+            <ttcol align="right">#</ttcol>
+            <ttcol align="left">C</ttcol>
+            <ttcol align="left">R</ttcol>
+            <ttcol align="left">Applies to</ttcol>
+            <ttcol align="left">Name</ttcol>
+            <ttcol align="left">Format</ttcol>
+            <ttcol align="left">Length</ttcol>
+            <ttcol align="left">Base Value</ttcol>
+
+            <c>TBD</c>
+            <c></c>
+            <c></c>
+            <c>CSM</c>
+            <c>Extended-Token-Lengths</c>
+            <c>empty</c>
+            <c>0</c>
+            <c>(none)</c>
+
+            <postamble>C=Critical, R=Repeatable</postamble>
+          </texttable>
+
+        </section>
+
+        <section title="Trial and Error" anchor="trial-and-error">
+
+          <t>
+            A request with a TKL field value outside the range from 0 to 8 will
+            be considered a message format error (Section 3 of RFC 7252) and be
+            rejected by a recipient that does not support the updated TKL field
+            definition. A client thus can determine support by sending a request
+            with an extended token length and checking whether it's rejected by
+            the recipient or not.
+          </t>
+
+          <t>
+            In CoAP over UDP, a recipient rejects a malformed confirmable
+            message by sending a Reset message (Section 4.2 of RFC 7252). In
+            case of a non-confirmable message, sending a Reset message is
+            permitted but not required (Section 4.3 of RFC 7252). It is
+            therefore RECOMMENDED that clients use a confirmable message.
+          </t>
+
+          <t>
+            As per RFC 7252, Reset messages are empty and don't contain a token;
+            they only return the Message ID (<xref
+            target="trial-and-error-illustration"/>). They also don't contain
+            any indication of what caused a message format error. It is
+            therefore RECOMMENDED that clients use a request that contains no
+            potential message format error other than the extended token length.
+          </t>
+
+          <t>
+            In CoAP over TCP, TLS, and WebSockets, a recipient rejects a
+            malformed message by sending an Abort message and shutting down the
+            connection (Section 5.6 of RFC 8323).
+          </t>
+
+<figure anchor="trial-and-error-illustration" title="A Confirmable Request With an Extended Token is Rejected With a Reset Message if the Next Hop Does Not Support It"><artwork align="center"><![CDATA[
++-----------------+   request message    +------------+
+|        |        |    with extended     |            |
+|        |        |     token length     |            |
+|    .-<-+->------|--------------------->|------.     |
+|   _|_           |                      |      |     |
+|  /   \ stored   |                      |      |     |
+|  \___/ state    |                      |      |     |
+|    |            |                      |      |     |
+|    '->-+-<------|<---------------------|------'     |
+|        |        |     reset message    |            |
+|        v        |   with only message  |            |
++-----------------+    ID echoed back    +------------+
+      Client                                 Server
+]]></artwork></figure>
+
+        </section>
+
+      </section>
+
+      <section title="Intermediaries" anchor="hop-by-hop">
+
+        <t>
+          Tokens are a hop-by-hop feature: When an intermediary receives a
+          request, the only requirement is that it echoes the token back in any
+          resulting response. There is no requirement or expectation that an
+          intermediary passes a client's token on to a server or that an
+          intermediary uses extended token lengths itself when receiving a
+          request with an extended token length.
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Stateless Clients" anchor="stateless-clients">
+
+      <t>
+        A client can be alleviated of keeping request state by serializing the
+        state into a sequence of bytes and sending the result as the token of
+        the request. The server will return the token to the client in the
+        response, so that the client can recover the state and process the
+        response as if it had kept the state locally.
+      </t>
+
+      <t>
+        The format of the serialized state is an implementation detail of the
+        client and opaque to any server implementation. Using tokens to
+        serialize state has significant and non-obvious security and privacy
+        implications that need to be mitigated; see <xref target="security"/>.
+        <!--
+        For security, the
+        serialized state MUST be integrity protected and MUST include a
+        freshness indicator (e.g., a sequence number or timestamp). It MAY
+        additionally be encrypted. These requirement can be satisfied, for
+        example, using <xref target="RFC8152">COSE</xref> with a key only known
+        to the client.
+        -->
+      </t>
+
+      <section title="Intermediaries">
+
+        <t>
+          Tokens are a hop-by-hop feature: If a client makes a request to an
+          intermediary, that intermediary needs to store the client's token
+          (along with the client's transport address) while it makes its own
+          request to the next hop towards the origin server and waits for the
+          response.
+        </t>
+
+        <t>
+          An intermediary might want to be "stateless" as well, i.e., be
+          alleviated of storing the client's token and transport address for
+          ongoing requests. This can be implemented by serializing this
+          information along the request state into the token to the next hop.
+          When the next hop returns the response, the intermediary can recover
+          the information from the token and use it to satisfy the client's
+          request.
+        </t>
+
+        <t>
+          The downside of this approach is that an intermediary, without keeping
+          request state, is unable to aggregate requests, which reduces
+          efficiency. In particular, when multiple clients <xref
+          target="RFC7641">observe</xref> the same resource, aggregating
+          requests is REQUIRED for efficiency (Section 3.1 of RFC 7641). This
+          implies that an intermediary MUST NOT include an Observe Option in
+          requests it sends without keeping request state.
+        </t>
+
+        <t>
+          When using <xref target="RFC7959">blockwise transfers</xref>, a server
+          might not be able to distinguish blocks originating from different
+          clients once they have been forwarded by an intermediary. To ensure
+          that this does not lead to inconsistent resource state, a stateless
+          intermediary MUST include the <xref
+          target="I-D.ietf-core-echo-request-tag">Request-Tag Option</xref> in
+          blockwise transfers with a value that uniquely identifies the next hop
+          towards the client in the intermediary's namespace.
+        </t>
+
+      </section>
+
+      <section title="Extended Tokens">
+
+        <t>
+          A client (or intermediary in the role of a client) that depends on
+          support for extended token lengths (<xref target="extended-tokens"/>)
+          from the next hop to avoid keeping request state MUST perform a
+          discovery of support (<xref target="discovery"/>) before it can be
+          stateless. This discovery MUST be performed in a stateful way, i.e.,
+          keeping state for the request (<xref target="stateful-discovery"/>):
+          If the client was stateless from the start and the next hop doesn't
+          support extended tokens, then any error message couldn't be processed
+          since the state would neither be present at the client nor returned in
+          the Reset message (<xref target="stateless-discovery"/>).
+        </t>
+
+<figure anchor="stateful-discovery" title="Depending on Extended Tokens for Being Stateless First Requires a Successful Stateful Discovery of Support"><artwork align="center"><![CDATA[
++-----------------+    dummy request     +------------+
+|        |        |    with extended     |            |
+|        |        |        token         |            |
+|    .-<-+->------|=====================>|------.     |
+|   _|_           |                      |      |     |
+|  /   \ stored   |                      |      |     |
+|  \___/ state    |                      |      |     |
+|    |            |                      |      |     |
+|    '->-+-<------|<=====================|------'     |
+|        |        |     response with    |            |
+|        |        |    extended token    |            |
+|        |        |      echoed back     |            |
+|        |        |                      |            |
+|        |        |                      |            |
+|        |        |     request with     |            |
+|        |        |   serialized state   |            |
+|        |        |       as token       |            |
+|        +--------|=====================>|------.     |
+|                 |                      |      |     |
+|    look ma,     |                      |      |     |
+|    no state!    |                      |      |     |
+|                 |                      |      |     |
+|        +--------|<=====================|------'     |
+|        |        |     response with    |            |
+|        v        |   token echoed back  |            |
++-----------------+                      +------------+
+      Client                                 Server
+]]></artwork></figure>
+
+<figure anchor="stateless-discovery" title="Stateless Discovery of Support Does Not Work"><artwork align="center"><![CDATA[
++-----------------+    dummy request     +------------+
+|        |        |    with extended     |            |
+|        |        |        token         |            |
+|        +--------|=====================>|------.     |
+|                 |                      |      |     |
+|                 |                      |      |     |
+|                 |                      |      |     |
+|                 |                      |      |     |
+|              ???|<---------------------|------'     |
+|                 |     reset message    |            |
+|                 |   with only message  |            |
++-----------------+    ID echoed back    +------------+
+      Client                                 Server
+]]></artwork></figure>
+
+      </section>
+
+      <section title="Message Transmission">
+
+        <t>
+          As a further step in the case of <xref target="RFC7252">CoAP over
+          UDP</xref>, a client (or intermediary in the client role) might want
+          to also avoid keeping message transmission state.
+        </t>
+
+        <t>
+          Generally, a client can use confirmable or non-confirmable messages
+          for requests. When using confirmable messages, it needs to keep
+          message exchange state for performing retransmissions and handling
+          Acknowledgement and Reset messages. When using non-confirmable
+          messages, it can keep no message exchange state. However, in either
+          case the client needs to keep congestion control state. That is, it
+          needs to maintain state for each node it communicates with and, e.g.,
+          enforce NSTART.
+        </t>
+
+        <t>
+          As per RFC 7252, a client must be prepared to receive a response as a
+          piggybacked response, a separate response or non-confirmable response
+          (Section 5.2 of RFC 7252), regardless of the message type used for the
+          request. A stateless client needs to handle these response types as
+          follows:
+          <list style="symbols">
+            <t>
+              If a piggybacked response contains a valid authentication tag and
+              freshness indicator in the token, the client MUST process the
+              message as specified in RFC 7252; otherwise, it MUST silently
+              ignore the message.
+            </t>
+            <t>
+              If a separate response contains a valid authentication tag and
+              freshness indicator in the token, the client MUST process the
+              message as specified in RFC 7252; otherwise, it MUST reject the
+              message as specified in Section 4.2 of RFC 7252.
+            </t>
+            <t>
+              If a non-confirmable response contains a valid authentication tag
+              and freshness indicator in the token, the client MUST process the
+              message as specified in RFC 7252; otherwise, it MUST reject the
+              message as specified in Section 4.3 of RFC 7252.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Security Considerations" anchor="security">
+
+      <section title="Extended Tokens">
+
+        <t>
+          Tokens significantly larger than the 8 bytes specified in RFC 7252
+          have implications for nodes in particular with constrained memory size
+          that need to be mitigated.
+        </t>
+
+        <t>
+          A node in the server role supporting extended token lengths may be
+          vulnerable to a denial-of-service when an attacker (either on-path or
+          a malicious client) sends large tokens to fill up the memory of the
+          node. Implementations MUST be prepared for this and mitigate it.
+        </t>
+
+      </section>
+
+      <section title="Stateless Clients">
+
+        <t>
+          Transporting the state needed by a client to process a response as
+          serialized state information in the token has several significant and
+          non-obvious security and privacy implications that need to be
+          mitigated.
+        </t>
+
+        <t>
+          Serialized state information is an attractive target for both unwanted
+          nodes (attackers between the node in client role and the next hop) and
+          wanted nodes (the next hop itself) on the path. Therefore, a node in
+          the client role MUST integrity protect the state information, unless
+          processing a response does not modify state or cause other significant
+          side effects.
+        </t>
+
+        <t>
+          Even when the serialized state is integrity protected, an attacker may
+          still replay a response, making the client believe it sent the same
+          request twice. Therefore, the node in client role MUST implement
+          replay protection (e.g., by using sequence numbers and a replay
+          window), unless processing a response does not modify state or cause
+          other significant side effects. Integrity protection is REQUIRED for
+          replay protection.
+        </t>
+
+        <t>
+          If processing a response without keeping request state is sensitive to
+          the time elapsed to sending the request, then the serialized state
+          MUST include freshness information (e.g., a timestamp).
+        </t>
+
+        <t>
+          Information in the serialized state may be privacy sensitive. A node
+          in client role MUST encrypt the serialized state if it contains
+          privacy sensitive information that an attacker would not get
+          otherwise. For example, an intermediary that serializes the client's
+          token and transport address into its token leaks that information to
+          the next hop, which may be undesirable. In wireless mesh networks,
+          where all traffic is visible to a passive attacker, encryption may not
+          be needed as the attacker can get the same information from analyzing
+          the traffic flows.
+        </t>
+
+        <t>
+          A node in client role using <xref
+          target="I-D.ietf-core-object-security">OSCORE</xref> always MUST
+          encrypt the serialized state.
+        </t>
+
+        <section title="Recommended Algorithms">
+
+          <t>
+            The use of encryption, integrity protection, and replay protection
+            of serialized state is recommended in general, unless a careful
+            analysis of any potential attacks to security and privacy is
+            performed. AES_CCM with a 64 bit tag is recommended, combined with a
+            sequence number and a replay window. Where encryption is not needed,
+            HMAC-SHA-256, combined with a sequence number and a replay window,
+            may be used.
+          </t>
+
+        </section>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="IANA Considerations">
+
+      <section title="CoAP Signaling Option Number">
+
+        <t>
+          The following entries are added to the "CoAP Signaling Option Numbers"
+          registry within the "CoRE Parameters" registry.
+        </t>
+
+        <texttable>
+          <ttcol align="left">Applies to</ttcol>
+          <ttcol align="right">Number</ttcol>
+          <ttcol align="left">Name</ttcol>
+          <ttcol align="left">Reference</ttcol>
+
+          <c>7.01</c>
+          <c>TBD</c>
+          <c>Extended-Token-Lengths</c>
+          <c>[[this document]]</c>
+        </texttable>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC2119;
+      &RFC7252;
+      &RFC7641;
+      &RFC7959;
+      &RFC8174;
+      &RFC8323;
+
+      &I-D.ietf-core-echo-request-tag;
+
+    </references>
+
+    <references title="Informative References">
+
+      &RFC7228;
+
+      &I-D.ietf-core-object-security;
+
+      &I-D.ietf-6tisch-minimal-security;
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Updated Message Formats" anchor="message-formats">
+
+      <t>
+        This appendix illustrates the CoAP message formats updated with the new
+        definition of the TKL field (<xref target="extended-tokens"/>).
+        <vspace blankLines="100"/>
+      </t>
+
+      <section title="CoAP over UDP">
+
+<figure><artwork align="center"><![CDATA[
+                0   1   2   3   4   5   6   7
+              +-------+-------+---------------+
+              |       |       |               |
+              |  Ver  |   T   |      TKL      |   1 byte
+              |       |       |               |
+              +-------+-------+---------------+
+              |                               |
+              |             Code              |   1 byte
+              |                               |
+              +-------------------------------+
+              |                               |
+              |                               |
+              |                               |
+              +-         Message ID          -+   2 bytes
+              |                               |
+              |                               |
+              |                               |
+              +-------------------------------+
+              \                               \
+              /              TKL              /   0-2 bytes
+              \          (extended)           \
+              +-------------------------------+
+              \                               \
+              /             Token             /   0 or more bytes
+              \                               \
+              +-------------------------------+
+              \                               \
+              /                               /
+              \                               \
+              /            Options            /   0 or more bytes
+              \                               \
+              /                               /
+              \                               \
+              +---------------+---------------+
+              |               |               |
+              |      15       |       15      |   1 byte (if payload)
+              |               |               |
+              +---------------+---------------+
+              \                               \
+              /                               /
+              \                               \
+              /            Payload            /   0 or more bytes
+              \                               \
+              /                               /
+              \                               \
+              +-------------------------------+
+]]></artwork></figure>
+
+      </section>
+
+      <section title="CoAP over TCP">
+
+<figure><artwork align="center"><![CDATA[
+                0   1   2   3   4   5   6   7
+              +---------------+---------------+
+              |               |               |
+              |      Len      |      TKL      |   1 byte
+              |               |               |
+              +---------------+---------------+
+              \                               \
+              /              Len              /   0-2 bytes
+              \          (extended)           \
+              +-------------------------------+
+              |                               |
+              |             Code              |   1 byte
+              |                               |
+              +-------------------------------+
+              \                               \
+              /              TKL              /   0-2 bytes
+              \          (extended)           \
+              +-------------------------------+
+              \                               \
+              /             Token             /   0 or more bytes
+              \                               \
+              +-------------------------------+
+              \                               \
+              /                               /
+              \                               \
+              /            Options            /   0 or more bytes
+              \                               \
+              /                               /
+              \                               \
+              +---------------+---------------+
+              |               |               |
+              |      15       |       15      |   1 byte (if payload)
+              |               |               |
+              +---------------+---------------+
+              \                               \
+              /                               /
+              \                               \
+              /            Payload            /   0 or more bytes
+              \                               \
+              /                               /
+              \                               \
+              +-------------------------------+
+]]></artwork></figure>
+
+      </section>
+
+      <section title="CoAP over WebSockets">
+
+<figure><artwork align="center"><![CDATA[
+                0   1   2   3   4   5   6   7
+              +---------------+---------------+
+              |               |               |
+              |       0       |      TKL      |   1 byte
+              |               |               |
+              +---------------+---------------+
+              |                               |
+              |             Code              |   1 byte
+              |                               |
+              +-------------------------------+
+              \                               \
+              /              TKL              /   0-2 bytes
+              \          (extended)           \
+              +-------------------------------+
+              \                               \
+              /             Token             /   0 or more bytes
+              \                               \
+              +-------------------------------+
+              \                               \
+              /                               /
+              \                               \
+              /            Options            /   0 or more bytes
+              \                               \
+              /                               /
+              \                               \
+              +---------------+---------------+
+              |               |               |
+              |      15       |       15      |   1 byte (if payload)
+              |               |               |
+              +---------------+---------------+
+              \                               \
+              /                               /
+              \                               \
+              /            Payload            /   0 or more bytes
+              \                               \
+              /                               /
+              \                               \
+              +-------------------------------+
+]]></artwork></figure>
+
+        <t>
+          <vspace blankLines="100"/>
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Acknowledgements" numbered="no">
+
+      <t>
+        This document is based on the requirements of and work on the <xref
+        target="I-D.ietf-6tisch-minimal-security">Minimal Security Framework for
+        6TiSCH</xref> by Malisa Vucinic, Jonathan Simon, Kris Pister, and
+        Michael Richardson.
+      </t>
+
+      <!-- sorted by last name -->
+      <t>
+        Thanks to
+        Carsten Bormann,
+        Ari Keranen,
+        John Mattsson,
+        Jim Schaad,
+        Goeran Selander, and
+        Malisa Vucinic
+        for helpful comments and discussions that have shaped the
+        document.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </back>
+
+</rfc>
