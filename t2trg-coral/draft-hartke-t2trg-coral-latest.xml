@@ -359,8 +359,8 @@
 
         <t>
           A form field can directly identify one or more data items that need to
-          include in the request payload or can reference another resource (such as
-          a schema) that describes the structure of the payload. Form fields may also provide
+          be included in the request payload or can reference another resource (such as
+          a schema) that describes the structure of the payload. Form fields can also provide
           other kinds of information, such as acceptable media types for the payload.
         </t>
 
@@ -371,7 +371,7 @@
           The form field name identifies the semantics of the form field. Form
           field names are denoted like link relation types and operation types by an IRI.
 
-          The form field value can either be an IRI, a Boolean value, an integer, a
+          The form field value can be either an IRI, a Boolean value, an integer, a
           floating-point number, a date/time value, a byte string, or a text string.
         </t>
 
