@@ -2535,17 +2535,22 @@
         This section defines a default dictionary that is assumed when the
         "application/coral+cbor" media type is used without a "dictionary"
         parameter.
-        <list>
-          <t>0 = &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</t>
-          <t>1 = &lt;http://www.iana.org/assignments/relation/item&gt;</t>
-          <t>2 = &lt;http://www.iana.org/assignments/relation/collection&gt;</t>
-          <t>3 = &lt;urn:TBD1#create&gt;</t>
-          <t>4 = &lt;urn:TBD1#update&gt;</t>
-          <t>5 = &lt;urn:TBD1#delete&gt;</t>
-          <t>6 = &lt;urn:TBD1#search&gt;</t>
-          <t>7 = &lt;urn:TBD1#accept&gt;</t>
-        </list>
       </t>
+
+      <texttable title="Default Dictionary" anchor="dict">
+        <ttcol align="right">Key</ttcol>
+        <ttcol align="left">Value</ttcol>
+
+        <c>0</c><c>&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</c>
+        <c>1</c><c>&lt;http://www.iana.org/assignments/relation/item&gt;</c>
+        <c>2</c><c>&lt;http://www.iana.org/assignments/relation/collection&gt;</c>
+        <c>3</c><c>&lt;urn:TBD1#create&gt;</c>
+        <c>4</c><c>&lt;urn:TBD1#update&gt;</c>
+        <c>5</c><c>&lt;urn:TBD1#delete&gt;</c>
+        <c>6</c><c>&lt;urn:TBD1#search&gt;</c>
+        <c>7</c><c>&lt;urn:TBD1#accept&gt;</c>
+        <c>8</c><c>&lt;urn:TBD1#type&gt;</c>
+      </texttable>
 
     </section>
 
