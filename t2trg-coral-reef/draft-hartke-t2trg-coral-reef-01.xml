@@ -1,0 +1,1347 @@
+<?xml version="1.0" encoding="us-ascii"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+  <!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+  <!ENTITY RFC3986 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml">
+  <!ENTITY RFC6690 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6690.xml">
+  <!ENTITY RFC6573 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6573.xml">
+  <!ENTITY RFC7228 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7228.xml">
+  <!ENTITY RFC7252 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7252.xml">
+  <!ENTITY RFC8174 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
+  <!ENTITY RFC8288 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8288.xml">
+  <!ENTITY IANA.core-parameters SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml8/reference.IANA.core-parameters.xml">
+  <!ENTITY I-D.hartke-t2trg-coral SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.hartke-t2trg-coral.xml">
+  <!ENTITY I-D.ietf-core-resource-directory SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-core-resource-directory.xml">
+  <!ENTITY I-D.nottingham-rfc5785bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.nottingham-rfc5785bis.xml">
+  <!ENTITY W3C.REC-rdf-schema-20140225 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-rdf-schema-20140225.xml">
+  <!ENTITY SELF "[I-D.hartke-t2trg-coral-reef]">
+]>
+
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+
+<?rfc compact="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="3"?>
+
+<rfc category="exp" docName="draft-hartke-t2trg-coral-reef-01" ipr="trust200902">
+
+  <front>
+
+    <title abbrev="CoRE Resource Discovery Using CoRAL">
+      Resource&nbsp;Discovery&nbsp;in&nbsp;Constrained&nbsp;RESTful&nbsp;Environments&nbsp;(CoRE) Using&nbsp;the&nbsp;Constrained&nbsp;RESTful&nbsp;Application&nbsp;Language&nbsp;(CoRAL)
+    </title>
+
+    <author initials="K." surname="Hartke" fullname="Klaus Hartke">
+      <organization>Ericsson</organization>
+      <address>
+        <postal>
+          <street>Torshamnsgatan 23</street>
+          <city>Stockholm</city>
+          <code>SE-16483</code>
+          <country>Sweden</country>
+        </postal>
+        <email>klaus.hartke@ericsson.com</email>
+      </address>
+    </author>
+
+    <date/>
+
+    <workgroup>Thing-to-Thing Research Group</workgroup>
+
+    <abstract>
+
+      <t>
+       This document explores how the Constrained RESTful Application Language
+       (CoRAL) might be used for two use cases in Constrained RESTful
+       Environments (CoRE): CoRE Resource Discovery, which allows a client to
+       discover the resources of a server given a host name or IP address, and
+       CoRE Resource Directory, which provides a directory of resources on many
+       servers.
+      </t>
+
+    </abstract>
+
+  </front>
+
+  <middle>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Preamble">
+
+      <t>
+        This document explores how <xref target="RFC6690">CoRE Resource
+        Discovery</xref> and <xref
+        target="I-D.ietf-core-resource-directory">CoRE Resource Directory</xref>
+        might look like if based on <xref
+        target="I-D.hartke-t2trg-coral">CoRAL</xref>. The exploration is done in
+        the style of a self-contained specification.
+      </t>
+
+      <t>
+        This document doesn't represent a proposal or recommendation for
+        standardization at its current stage.
+      </t>
+
+    </section>
+
+    <section title="Introduction">
+
+      <t>
+        Constrained RESTful Environments (CoRE) realize the <xref
+        target="REST">Representational State Transfer (REST) architectural
+        style</xref> in a suitable form for <xref target="RFC7228">constrained
+        nodes (e.g., 8-bit microcontrollers with limited RAM and ROM) and
+        constrained networks</xref>. CoRE technologies like the <xref
+        target="RFC7252">Constrained Application Protocol (CoAP)</xref> are
+        aimed at machine-to-machine (M2M) applications like smart energy and
+        building automation.
+      </t>
+
+      <t>
+        The discovery of resources hosted by a constrained server is very
+        important in machine-to-machine applications where there are no humans
+        in the loop and static interfaces result in fragility. In the Web, the
+        discovery of resources provided by a Web server is typically based on
+        links in representations of resources pointing at other resources, with
+        search engines providing an entry point to find resources based on
+        queries.
+      </t>
+
+      <t>
+        This document applies the idea of using <xref target="RFC8288">Web
+        Linking</xref> for discovery to Constrained RESTful Environments.
+        The discovery of resources hosted by a constrained Web
+        server, resource metadata, and related resources is called "CoRE Resource
+        Discovery".
+      </t>
+
+      <t>
+        The main function of CoRE Resource Discovery is to provide <xref
+        target="RFC3986">Uniform Resource Identifiers (URIs)</xref> for the
+        resources hosted by a server, complemented by metadata about those
+        resources and possibly links to further resources. In this document,
+        this information is conveyed in the <xref
+        target="I-D.hartke-t2trg-coral">Constrained RESTful Application Language
+        (CoRAL)</xref>.
+      </t>
+
+      <t>
+        This document specifies the use of CoRAL for two use cases:
+        <list style="hanging">
+          <t hangText="Resource Discovery">
+            <vspace/>
+            Allows a client to discover the resources of a server given a host
+            name or IP address.
+          </t>
+          <t hangText="Resource Directory">
+            <vspace/>
+            Allows a client to discover the resources of several servers given
+            the URL of a resource directory.
+            <vspace/>
+            Allows a server (or a third party acting on behalf of a server) to
+            register resources with a resource directory given a URL.
+          </t>
+        </list>
+      </t>
+
+      <section title="Resource Discovery">
+
+        <t>
+          In many M2M applications, such as home or building automation, there
+          is a need for local clients and servers to find and interact with each
+          other without human intervention. CoRE Resource Discovery can be used
+          by clients in such environments to discover the resources hosted by
+          the server given a host name or IP address.
+        </t>
+
+        <t>
+          In this specification, this is performed by retrieving a CoRAL
+          representation of a well-known resource on the server, called
+          "/.well-known/core". The representation contains a list of links to
+          the resources of interest on the server, which are typically entry
+          points to the different applications hosted by the server. The links
+          may have nested resource metadata. A client would then find an
+          appropriate resource based on the metadata. Metadata queries may also
+          be specified the query string to filter the result set.
+        </t>
+
+        <t>
+          The following example shows how a client discovers the resources of a
+          CoAP server by making a GET request to the "/.well-known/core"
+          resource. The client receives a 2.05 (Content) response with a list of
+          links of type &lt;http://TBD6/rd-item&gt;. The links contain nested
+          elements with resource metadata (such as resource type, interface
+          description, available content formats, and related resources).
+        </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: .well-known
+       Uri-Path: core
+       Accept: TBD3
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
+
+       rd-item </sensors> {
+          ct 40
+          title "Sensor Index"
+       }
+       rd-item </sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item </sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
+]]></artwork></figure>
+
+        <t>
+          In detail, this representation contains links to three resources of
+          interest on the server: &lt;/sensors&gt;, &lt;/sensors/temp&gt;, and
+          &lt;/sensors/light&gt;.
+        </t>
+
+        <t>
+          For &lt;/sensors&gt;, a content format hint ("ct") and a title
+          ("title") are provided as resource metadata. For &lt;/sensors/temp&gt;
+          as well as &lt;/sensors/light&gt;, a resource type ("rt") and an
+          interface description ("if") are provided as resource metadata.
+          Additionally, two links are provided with further detail on
+          &lt;/sensors/temp&gt;: one to a schema describing this resource
+          ("describedby") and one to an substitute for this resource
+          ("alternate").
+        </t>
+
+      </section>
+
+      <section title="Resource Directory">
+
+        <t>
+          In many deployment scenarios, such as in constrained networks with
+          sleeping servers or in large M2M deployments with bandwidth limited
+          access networks, it is beneficial to deploy resource directory
+          entities that store links to resources stored on other servers. A
+          resource directory can be thought of as a limited search engine for
+          M2M resources.
+        </t>
+
+        <t>
+          In this specification, a resource directory provides the same lookup
+          interface as a "/.well-known/core" resource, except that it
+          provides links to resources on potentially many different servers. For
+          populating the resource directory, a registration interface is
+          offered. The registration interface is a collection resource with the
+          common operations of create, read, update, and delete. The items of
+          the collection are groups of links of type &lt;http://TBD6/rd-item&gt;
+          that are to be made available in the lookup interface.
+        </t>
+
+        <t>
+          The following example shows how a client registers a group of links
+          with a CoAP resource directory by making a POST request to the
+          collection resource. The client receives a 2.01 (Created) response
+          with the location of the created collection item. The client can use
+          this location later to update the group of links or delete them from
+          the directory.
+        </t>
+
+<figure><artwork><![CDATA[
+   =>  0.02 POST
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+
+       #base <coap://[2001:db8:3::124]/>
+       rd-item </light/left> { rt "light-lux" ct 0 }
+       rd-item </light/middle> { rt "light-lux" ct 0 }
+       rd-item </light/right> { rt "light-lux" ct 0 }
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.01 Created
+       Location-Path: path
+       Location-Path: to
+       Location-Path: resource
+       Location-Path: directory
+       Location-Path: 42
+]]></artwork></figure>
+
+        <t>
+          The following example shows how a client performs a lookup on the
+          resource directory by making a GET request to the resource directory
+          resource. The client receives a 2.05 (Content) response with a
+          combined view of all groups of links registered earlier, filtered by
+          a query.
+        </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Query: rt=light-lux
+       Accept: TBD3
+]]></artwork></figure>
+
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+
+       #base <coap://[2001:db8:1::9]/>
+       rd-item </1234> { rt "light-lux" }
+
+       #base <coap://[2001:db8:3::124]/>
+       rd-item </light/left> { rt "light-lux" ct 0 }
+       rd-item </light/middle> { rt "light-lux" ct 0 }
+       rd-item </light/right> { rt "light-lux" ct 0 }
+]]></artwork></figure>
+
+      </section>
+
+      <section title="Notational Conventions">
+
+        <t>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+          "OPTIONAL" in this document are to be interpreted as described in
+          <xref target="RFC2119">BCP 14</xref> <xref target="RFC8174"/> when,
+          and only when, they appear in all capitals, as shown here.
+        </t>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Resource Metadata" anchor="resource-metadata">
+
+      <t>
+        Both "/.well-known/core" resources and resource directories link to
+        resources of interest using the &lt;http://TBD6/rd-item&gt; link
+        relation type. Metadata for these resources can be expressed by nesting
+        further links inside these links.
+      </t>
+
+      <t>
+        The following link relation types for resource metadata are defined:
+        <list style="hanging">
+          <t hangText="&lt;http://TBD6/hreflang&gt;">
+            <vspace/>
+            The link target is a hint indicating what the (human-spoken)
+            language of the result of dereferencing the link context should
+            be.
+          </t>
+          <t hangText="&lt;http://TBD6/media&gt;">
+            <vspace/>
+            The link target indicates the intended destination medium or media
+            for style information for the link context.
+          </t>
+          <t hangText="&lt;http://TBD6/title&gt;">
+            <vspace/>
+            The link target is a label that it can be used as a human-readable
+            identifier for the link context.
+          </t>
+          <t>
+            The link can have a nested link containing language information.
+          </t>
+          <t hangText="&lt;http://TBD6/type&gt;">
+            <vspace/>
+            The link target is a hint indicating what the media type of the
+            result of dereferencing the link context should be.
+          </t>
+          <t hangText="&lt;http://TBD6/rt&gt;">
+            <vspace/>
+            The link target is an application-specific semantic type of the
+            link context.
+          </t>
+          <t>
+            Multiple resource types can be specified, each as a link with the
+            resource type as link target. The link target MUST NOT contain
+            multiple resource types separated by white space.
+          </t>
+          <t hangText="&lt;http://TBD6/if&gt;">
+            <vspace/>
+            The link target is a specific interface definition that can be
+            used to interact with the link context.
+          </t>
+          <t hangText="&lt;http://TBD6/sz&gt;">
+            <vspace/>
+            The link target is an indication of the maximum size of the
+            resource representation returned by performing a GET on the link
+            context.
+          </t>
+          <t hangText="&lt;http://TBD6/ct&gt;">
+            <vspace/>
+            The link target is a hint about the Content-Formats that the link
+            context returns.
+          </t>
+        </list>
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Resource Discovery" anchor="resource-discovery">
+
+      <t>
+        Given a host name or IP address, a client can discover the resources of
+        a server implementing this section through the use of a <xref
+        target="I-D.nottingham-rfc5785bis">well-known resource</xref>.
+        Well-known resources have a path component that begins with
+        "/.well-known/". This specification defines a new well-known resource
+        for CoRE Resource Discovery: "/.well-known/core".
+      </t>
+
+      <section title="How It Works">
+
+        <t>
+          A server implementing this specification offers a "/.well-known/core"
+          resource on the default port appropriate for the protocol for the
+          purpose of resource discovery. It is up to the server which of the
+          resources in its namespace are included; the "/.well-known/core"
+          resource is generally meant to provide entry points to
+          applications hosted by the server.
+        </t>
+
+        <t>
+          A client wishing to discover the resources of a server constructs an
+          initial URI from a template using the given host name or IP address.
+          It then retrieves a CoRAL representation, as specified in <xref
+          target="I-D.hartke-t2trg-coral"/>. The representation contains a list
+          of links, each from the well-known resource to one resource, along
+          with resource metadata. The client can filter the list using a number
+          of query parameters.
+        </t>
+
+        <t>
+          <vspace blankLines="100"/>
+        </t>
+
+      </section>
+
+      <section title="API Reference">
+
+        <section title="Get All Resources" anchor="get-all">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">GET</t>
+                  <t hangText="URI Template:">coap://{host-and-port}/.well-known/core</t>
+                  <t hangText="Accept Option:">TBD3</t>
+                </list>
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, the server returns a 2.05 (Content) response
+                with a representation in content format TBD3 ('application/coral+cbor; dictionary=http://TBD5/'). The representation
+                MUST contain zero or more links of type
+                &lt;http://TBD6/rd-item&gt;, each of which MUST target a resource in
+                the namespace of the server (same origin). The links may have nested elements
+                providing resource metadata.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: .well-known
+       Uri-Path: core
+       Accept: TBD3
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
+
+       rd-item </sensors> {
+          ct 40
+          title "Sensor Index"
+       }
+       rd-item </sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item </sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="Get Resources By Resource Type">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">GET</t>
+                  <t hangText="URI Template:">coap://{host-and-port}/.well-known/core?rt={value}</t>
+                  <t hangText="Accept Option:">TBD3</t>
+                </list>
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, same response kind as in <xref
+                target="get-all"/>.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: .well-known
+       Uri-Path: core
+       Uri-Query: rt=temperature-c
+       Accept: TBD3
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
+
+       rd-item </sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="Get Resources By Interface Type">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">GET</t>
+                  <t hangText="URI Template:">coap://{host-and-port}/.well-known/core?if={value}</t>
+                  <t hangText="Accept Option:">TBD3</t>
+                </list>
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, same response kind as in <xref
+                target="get-all"/>.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: .well-known
+       Uri-Path: core
+       Uri-Query: if=sensor
+       Accept: TBD3
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
+
+       rd-item </sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item </sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Resource Directory" anchor="resource-directory">
+
+      <t>
+        A resource directory provides information about entry points to
+        applications hosted by other servers. It is intended to make discovery
+        operations more efficient than performing a lookup on the
+        "/.well-known/core" of each of these servers.
+      </t>
+
+      <section title="How It Works">
+
+        <t>
+          A client wishing to discover resources using a resource directory
+          needs to be configured with the URI of a resource directory or acquire
+          it through some discovery process. The client then retrieves the
+          representation as specified in <xref
+          target="I-D.hartke-t2trg-coral"/>. The resource directory serves a
+          list of links, each from the resource directory to one of the
+          resources, along with the resource metadata. The client can filter the
+          list using a number of query parameters.
+        </t>
+
+        <t>
+          A device (or a third party acting on behalf of a device) can register
+          resources with a resource directory by submitting links to be created
+          at the directory. The directory uses the submitted links in two ways:
+          First, it includes those links in the results of client queries.
+          Second, it creates a resource containing the group of submitted links,
+          such that the device can easily update or delete the whole group as a
+          single unit.
+        </t>
+
+        <t>
+          <vspace blankLines="100"/>
+        </t>
+
+      </section>
+
+      <section title="API Reference">
+
+        <section title="Get All Resources">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">GET</t>
+                  <t hangText="URI Template:">{resource-directory-location}</t>
+                  <t hangText="Accept Option:">TBD3</t>
+                </list>
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, same response kind as in <xref
+                target="get-all"/>.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Accept: TBD3
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
+
+       rd-item <coap://[2001:db8:1::1]/sensors> {
+          ct 40
+          title "Sensor Index"
+       }
+       rd-item <coap://[2001:db8:1::1]/sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item <coap://[2001:db8:1::1]/sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="Get Resources By Resource Type">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">GET</t>
+                  <t hangText="URI Template:">{resource-directory-location}?rt={value}</t>
+                  <t hangText="Accept Option:">TBD3</t>
+                </list>
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, same response kind as in <xref
+                target="get-all"/>.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Query: rt=temperature-c
+       Accept: TBD3
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
+
+       rd-item <coap://[2001:db8:1::1]/sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="Get Resources By Interface Type">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">GET</t>
+                  <t hangText="URI Template:">{resource-directory-location}?if={value}</t>
+                  <t hangText="Accept Option:">TBD3</t>
+                </list>
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, same response kind as in <xref
+                target="get-all"/>.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Query: if=sensor
+       Accept: TBD3
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
+
+       rd-item <coap://[2001:db8:1::1]/sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item <coap://[2001:db8:1::1]/sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="List Resource Registrations">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">GET</t>
+                  <t hangText="URI Template:">{resource-directory-location}</t>
+                  <t hangText="Accept Option:">TBD3</t>
+                </list>
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, the server returns a 2.05 (Content) response
+                with a representation in content format TBD3. The representation
+                contains or zero or more links with the
+                &lt;http://TBD6/rd-unit&gt; link relation type, each of which
+                has a resource registration as the link target.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Accept: TBD3
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+
+       rd-unit </rd/1>
+       rd-unit </rd/2>
+       rd-unit </rd/3>
+       rd-unit </rd/4>
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="Create Resource Registration">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">POST</t>
+                  <t hangText="URI Template:">{resource-directory-location}</t>
+                  <t hangText="Content-Format Option:">TBD3</t>
+                </list>
+                The client submits a representation in content format TBD3. The
+                representation contains zero or more links with the
+                &lt;http://TBD6/rd-item&gt; link relation type, each of which
+                has a resource to be registered as the link target.
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, the server returns a 2.01 (Created) response
+                indicating the location at which the resource registration was
+                created.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.02 POST
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Content-Format: TBD3
+
+       #base <coap://[2001:db8:4::1]/>
+       rd-item </light/left> { rt "light" ct 0 }
+       rd-item </light/middle> { rt "light" ct 0 }
+       rd-item </light/right> { rt "light" ct 0 }
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.01 Created
+       Location-Path: path
+       Location-Path: to
+       Location-Path: resource
+       Location-Path: directory
+       Location-Path: 42
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="Read Resource Registration">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">GET</t>
+                  <t hangText="URI Template:">{registration-location}</t>
+                  <t hangText="Accept Option:">TBD3</t>
+                </list>
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, same response kind as in <xref
+                target="get-all"/>.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Path: 42
+       Accept: TBD3
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #base <coap://[2001:db8:4::1]>
+       rd-item </light/left> { rt "light" ct 0 }
+       rd-item </light/middle> { rt "light" ct 0 }
+       rd-item </light/right> { rt "light" ct 0 }
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="Update Resource Registration">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">PUT</t>
+                  <t hangText="URI Template:">{registration-location}</t>
+                  <t hangText="Content-Format Option:">TBD3</t>
+                </list>
+                The client submits a representation in content format TBD3. The
+                representation contains zero or more links with the
+                &lt;http://TBD6/rd-item&gt; link relation type, each of which
+                has a resource to be registered as the link target. Any existing
+                list of resources at the location is replaced by this update.
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, the server returns a 2.04 (Changed) response.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.03 PUT
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Path: 42
+       Content-Format: TBD3
+
+       #base <coap://[2001:db8:4::1]/>
+       rd-item </light/left> { rt "light" ct 0 }
+       rd-item </light/right> { rt "light" ct 0 }
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.04 Changed
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+        <section title="Delete Resource Registration">
+
+          <t>
+            <list style="hanging">
+              <t hangText="Request">
+                <list style="hanging">
+                  <t hangText="Request Method:">DELETE</t>
+                  <t hangText="URI Template:">{registration-location}</t>
+                </list>
+              </t>
+              <t hangText="Response">
+                <vspace blankLines="1"/>
+                When successful, the server returns a 2.02 (Deleted) response.
+              </t>
+              <t hangText="Example"></t>
+            </list>
+          </t>
+
+<figure><artwork><![CDATA[
+   =>  0.04 DELETE
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Path: 42
+]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.02 Deleted
+]]></artwork></figure>
+
+          <t>
+            <vspace blankLines="100"/>
+          </t>
+
+        </section>
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Security Considerations" anchor="security">
+
+      <t>
+        TODO.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="IANA Considerations">
+
+      <section title="CoRE Dictionary" anchor="registry">
+
+        <t>
+          This document creates a new registry named "CoRAL Dictionary for CoRE"
+          under the <xref target="CORE-PARAMETERS">Constrained RESTful
+          Environments (CoRE) Parameters" registry</xref> for use with the <xref
+          target="I-D.hartke-t2trg-coral">CoRAL binary format</xref>.
+
+          The registry is located at &lt;http://TBD5/&gt;.
+        </t>
+
+        <t>
+          The registry is a mapping between a key and a value.
+
+          The key is an integer in the range 0 to 2147483647 (2^31-1).
+
+          The value is either an Internationalized Resource Identifier (IRI)
+          reference, a Boolean value, an integer, a floating-point number, a
+          date/time value, a byte string, or a text string.
+
+          Both the key and the value are to be denoted in the <xref
+          target="I-D.hartke-t2trg-coral">CoRAL textual format</xref> and must
+          be unique within the registry.
+
+          A reference may be provided to offer more information about a value.
+        </t>
+
+        <t>
+          The registry policy is Expert Review.
+        </t>
+
+        <t>
+          The initial entries in the registry are as follows:
+          <list style="symbols">
+            <t>
+              Key: 0<vspace/>
+              Value: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;<vspace/>
+              Reference: <xref target="W3C.REC-rdf-schema-20140225"/>
+            </t>
+            <t>
+              Key: 1<vspace/>
+              Value: &lt;http://www.iana.org/assignments/relation/item&gt;<vspace/>
+              Reference: <xref target="RFC6573"/>
+            </t>
+            <t>
+              Key: 2<vspace/>
+              Value: &lt;http://www.iana.org/assignments/relation/collection&gt;<vspace/>
+              Reference: <xref target="RFC6573"/>
+            </t>
+            <t>
+              Key: 3<vspace/>
+              Value: &lt;urn:TBD1#create&gt;<vspace/>
+              Reference: <xref target="I-D.hartke-t2trg-coral"/>
+            </t>
+            <t>
+              Key: 4<vspace/>
+              Value: &lt;urn:TBD1#update&gt;<vspace/>
+              Reference: <xref target="I-D.hartke-t2trg-coral"/>
+            </t>
+            <t>
+              Key: 5<vspace/>
+              Value: &lt;urn:TBD1#delete&gt;<vspace/>
+              Reference: <xref target="I-D.hartke-t2trg-coral"/>
+            </t>
+            <t>
+              Key: 6<vspace/>
+              Value: &lt;urn:TBD1#search&gt;<vspace/>
+              Reference: <xref target="I-D.hartke-t2trg-coral"/>
+            </t>
+            <t>
+              Key: 7<vspace/>
+              Value: &lt;urn:TBD1#accept&gt;<vspace/>
+              Reference: <xref target="I-D.hartke-t2trg-coral"/>
+            </t>
+            <t>
+              Key: 8<vspace/>
+              Value: &lt;http://TBD6/rd-unit&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 9<vspace/>
+              Value: &lt;http://TBD6/rd-item&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 10<vspace/>
+              Value: &lt;http://TBD6/hreflang&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 11<vspace/>
+              Value: &lt;http://TBD6/media&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 12<vspace/>
+              Value: &lt;http://TBD6/title&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 13<vspace/>
+              Value: &lt;http://TBD6/type&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 14<vspace/>
+              Value: &lt;http://TBD6/rt&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 15<vspace/>
+              Value: &lt;http://TBD6/if&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 16<vspace/>
+              Value: &lt;http://TBD6/sz&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 17<vspace/>
+              Value: &lt;http://TBD6/ct&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+            <t>
+              Key: 18<vspace/>
+              Value: &lt;/.well-known/core&gt;<vspace/>
+              Reference: &SELF;
+            </t>
+          </list>
+        </t>
+
+        <!--
+        <t>
+          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD1/"
+          in this document with the IRI assigned in draft-hartke-t2trg-coral.]]
+        </t>
+
+        <t>
+          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD5/"
+          in this document with the URI of the new registry.]]
+        </t>
+
+        <t>
+          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD6/"
+          in this document with an IETF-controlled IRI, such as "urn:ietf:..."
+          or "http://...ietf.org/...".]]
+        </t>
+        -->
+
+      </section>
+
+      <section title="CoAP Content Format">
+
+        <t>
+          This document registers a CoAP content format for CoRAL documents in
+          the binary format that use the registry established in <xref
+          target="registry"/>. The registration is in accordance with the
+          procedures of <xref target="RFC7252">RFC 7252</xref>.
+          <list style="symbols">
+            <t>
+              Content Type: application/coral+cbor; dictionary=http://TBD5/<vspace/>
+              Content Coding: identity<vspace/>
+              ID: TBD3<vspace/>
+              Reference: &SELF; <xref target="I-D.hartke-t2trg-coral"/>
+            </t>
+          </list>
+        </t>
+
+        <!--
+        <t>
+          [[NOTE TO RFC EDITOR: Please replace all occurrences of "TBD3" in this
+          document with the code point assigned by IANA.]]
+        </t>
+        -->
+
+      </section>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </middle>
+
+  <back>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <references title="Normative References">
+
+      &RFC2119;
+      &RFC6573;
+      &RFC7252;
+      &RFC8174;
+
+      &I-D.hartke-t2trg-coral;
+      &I-D.nottingham-rfc5785bis;
+
+      &W3C.REC-rdf-schema-20140225;
+
+    </references>
+
+    <references title="Informative References">
+
+      &RFC3986;
+      &RFC6690;
+      &RFC7228;
+      &RFC8288;
+
+      &IANA.core-parameters;
+
+      &I-D.ietf-core-resource-directory;
+
+      <reference anchor="REST" target="http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf">
+        <front>
+          <title>Architectural Styles and the Design of Network-based Software Architectures</title>
+          <author initials="R." surname="Fielding" fullname="Roy Fielding">
+            <organization>University of California, Irvine</organization>
+          </author>
+          <date year="2000"/>
+        </front>
+        <seriesInfo name="Ph.D." value="Dissertation, University of California, Irvine"/>
+        <format type="PDF" target="http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf"/>
+      </reference>
+
+    </references>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+    <section title="Acknowledgements" numbered="no">
+
+      <!-- sorted by last name -->
+      <t>
+        Thanks to
+        Christian Ams&uuml;ss and
+        Carsten Bormann
+        for helpful comments and discussions that have shaped the document.
+      </t>
+
+    </section>
+
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+    <!-- **************************************************************** -->
+
+  </back>
+
+</rfc>
