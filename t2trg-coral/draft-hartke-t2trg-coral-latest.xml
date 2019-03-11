@@ -365,11 +365,11 @@
         </t>
 
         <t>
-          A form field is a pair of a <spanx>form field name</spanx> and a
+          A form field is a pair of a <spanx>form field type</spanx> and a
           <spanx>form field value</spanx>.
 
-          The form field name identifies the semantics of the form field. Form
-          field names are denoted like link relation types and operation types by an IRI.
+          The form field type identifies the semantics of the form field. Form
+          field types are denoted like link relation types and operation types by an IRI.
 
           The form field value can be either an IRI, a Boolean value, an integer, a
           floating-point number, a date/time value, a byte string, or a text string.
@@ -674,9 +674,9 @@
           <section title="Form Fields">
 
             <t>
-              A list of form fields is encoded as an array of zero or more name-value pairs.
+              A list of form fields is encoded as an array of zero or more type-value pairs.
               <list>
-                <t>form-fields = [*(form-field-name, form-field-value)]</t>
+                <t>form-fields = [*(form-field-type, form-field-value)]</t>
               </list>
             </t>
 
@@ -688,10 +688,10 @@
             </t>
 
             <t>
-              A form field name is defined in the same way as a
+              A form field type is defined in the same way as a
               link relation type (<xref target="binary-links"/>).
               <list>
-                <t>form-field-name = text</t>
+                <t>form-field-type = text</t>
               </list>
             </t>
 
@@ -788,7 +788,7 @@
           The binary format can reference values from a dictionary to reduce
           representation size and processing cost. Dictionary references can be used in place of link relation
           types, link targets, operation types, submission targets, form field
-          names, and form field values.
+          types, and form field values.
         </t>
 
         <section title="Dictionary References">
@@ -802,7 +802,7 @@
               <t>operation-type /= uint</t>
               <t>link-target /= #6.TBD6(uint)</t>
               <t>submission-target /= #6.TBD6(uint)</t>
-              <t>form-field-name /= uint</t>
+              <t>form-field-type /= uint</t>
               <t>form-field-value /= #6.TBD6(uint)</t>
             </list>
           </t>
@@ -1364,9 +1364,9 @@
           <section title="Form Fields">
 
             <t>
-              A list of form fields consists of zero or more name-value pairs.
+              A list of form fields consists of zero or more type-value pairs.
               <list>
-                <t>form-fields = *(form-field-name form-field-value)</t>
+                <t>form-fields = *(form-field-type form-field-value)</t>
               </list>
             </t>
 
@@ -1379,10 +1379,10 @@
             </t>
 
             <t>
-              The form field name is defined in the same way as a link relation
+              The form field type is defined in the same way as a link relation
               type (<xref target="textual-links"/>).
               <list>
-                <t>form-field-name = iri / simple-name / qualified-name</t>
+                <t>form-field-type = iri / simple-name / qualified-name</t>
               </list>
             </t>
 
@@ -1412,7 +1412,7 @@
           </t>
 
           <t>
-            Representation metadata consists of zero or more name-value pairs.
+            Representation metadata consists of zero or more type-value pairs.
             <list>
               <t>representation-metadata = *(metadata-name metadata-value)</t>
             </list>
@@ -1575,10 +1575,10 @@
                 Additionally, for each operation type, the permissible
                 request method(s).
               </t>
-              <t hangText="Form Field Names:">
-                Form field names that identify the semantics of form fields.
-                Additionally, for each form field name, the permissible form
-                field value(s) and/or type(s).
+              <t hangText="Form Field Types:">
+                Form field types that identify the semantics of form fields.
+                Additionally, for each form field type, the permissible form
+                field values.
               </t>
             </list>
           </t>
@@ -1662,7 +1662,7 @@
       <section title="Minting New Vocabulary">
 
         <t>
-          New link relation types, operation types, and form field names can
+          New link relation types, operation types, and form field types can
           be minted by defining an <xref target="RFC3987">IRI</xref> that
           uniquely identifies the item. Although the IRI can point to a resource
           that contains a definition of the semantics,
@@ -1690,7 +1690,7 @@
 
         <t>
           IRIs that identify link relation types, operation types, and form
-          field names do not need to be registered. The inclusion of domain
+          field types do not need to be registered. The inclusion of domain
           names in IRIs allows for the decentralized creation of new IRIs
           without the risk of collisions. However, IRIs can be relatively
           verbose and impose a high overhead on a representation. This can be a
@@ -2354,7 +2354,7 @@
 
       <t>
         This section defines the core vocabulary for CoRAL: a set of
-        link relation types, operation types, and form field names.
+        link relation types, operation types, and form field types.
       </t>
 
       <t>
@@ -2437,15 +2437,15 @@
 
       </section>
 
-      <section title="Form Field Names">
+      <section title="Form Field Types">
 
         <t>
           <list style="hanging">
             <t hangText="&lt;urn:TBD1#accept&gt;">
               <vspace/>Specifies an acceptable HTTP content type or CoAP content
               format for the request payload. There may be multiple form fields
-              with this name. If a form does not include a form field with this
-              name, the server accepts any or no request payload, depending on
+              of this type. If a form does not include a form field of this
+              type, the server accepts any or no request payload, depending on
               the operation type.
             </t>
             <t>
