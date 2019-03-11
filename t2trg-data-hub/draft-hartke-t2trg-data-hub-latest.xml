@@ -3,13 +3,16 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
   <!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
   <!ENTITY RFC6573 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6573.xml">
-  <!ENTITY RFC6690 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6690.xml">
+  <!ENTITY RFC7228 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7228.xml">
   <!ENTITY RFC7252 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7252.xml">
   <!ENTITY RFC7641 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7641.xml">
   <!ENTITY RFC8132 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8132.xml">
   <!ENTITY I-D.hartke-t2trg-coral SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.hartke-t2trg-coral.xml">
   <!ENTITY I-D.ietf-core-coap-pubsub SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-core-coap-pubsub.xml">
   <!ENTITY I-D.ietf-core-resource-directory SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-core-resource-directory.xml">
+  <!ENTITY I-D.ietf-suit-architecture SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-suit-architecture.xml">
+  <!ENTITY I-D.ietf-suit-information-model SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-suit-information-model.xml">
+  <!ENTITY W3C.REC-html52-20171214 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-html52-20171214.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -47,7 +50,7 @@
     <abstract>
 
       <t>
-        The Thing-to-Thing Data Hub is a RESTful, hypermedia-driven Web
+        The "Thing-to-Thing Data Hub" is a RESTful, hypermedia-driven Web
         application that can be used in Thing-to-Thing communications to share
         data items such as thing descriptions, configurations, resource
         descriptions, or firmware updates at a central location.
@@ -68,40 +71,41 @@
 
       <t>
         In Thing-to-Thing communication, there is often a need to share data
-        items of common interest at a central location. For example, the <xref
-        target="I-D.ietf-core-resource-directory">CoRE Resource Directory</xref>
-        aggregates descriptions of resources held on other servers, which
-        enables Things to easily discover these resources. Similarly, a <xref
-        target="WOT">W3C Web-of-Things Thing Description Repository</xref>
-        stores semantic metadata of Things as well as functional descriptions of
-        their interfaces, making this data available to Web dashboards,
-        commissioning tools and other things.
+        items of common interest through a central location. For example, the
+        <xref target="I-D.ietf-core-resource-directory">Resource
+        Directory</xref> aggregates descriptions of Web resources held on
+        constrained nodes, which enables other nodes to easily discover these
+        resources. Similarly, a <xref
+        target="I-D.ietf-suit-architecture">Firmware Server</xref> stores stores
+        firmware images and manifests, making this data available to deployed
+        devices, commissioning tools, and other services.
       </t>
 
       <t>
         As more and more Thing-to-Thing applications are implemented, it becomes
-        increasingly important to be able to share not only resource and Thing
-        descriptions but also many other kinds of data, such as default
-        configurations for new devices, service locations, firmware updates, or
-        certificate revocation lists. The existing resource directories and
-        Thing description repositories are not a good fit for these kinds of
-        data, as they're specialized to their use cases and don't accept any other
-        kinds of data. Creating a new, specialized application for each use
-        case is not practical in the long term.
+        increasingly important being able to not only share resource
+        descriptions and firmware updates but also many other kinds of data,
+        such as default configurations for new devices, service locations, or
+        certificate revocation lists. Resource directories and firmware servers
+        are not a good fit for these kinds of data, as they're specialized to
+        their use cases and generally not accepting any other kinds of data. And
+        creating new, specialized applications for every type of data is not
+        practical in the long term.
       </t>
 
       <t>
         This document defines a simple "data hub" application, a RESTful Web
-        application with a hypermedia API that is suitable for constrained
-        environments and that generalizes the concept of a central repository
-        to sharing any kinds of data. A data hub enables clients to share data
+        application with a machine-understandable hypermedia API. A "data hub"
+        generalizes the concept of a central repository for different
+        applications and is suitable for <xref target="RFC7228">constrained
+        environments</xref>. Specifically, it enables clients to share data
         items in any format and provides means for creating, reading, observing,
         updating, deleting, and finding data items at a data hub server.
       </t>
 
       <t>
         Data hubs are intended to be used primarily with <xref
-        target="RFC7252">CoAP</xref>.
+        target="RFC7252">Constrained Application Protocol (CoAP)</xref>.
         <vspace blankLines="10"/>
       </t>
 
@@ -112,9 +116,9 @@
             General
             <vspace blankLines="1"/>
             The data hub generalizes the concept of a directory or repository to
-            data items of any Internet media type. This means applications using
-            the data hub aren't stuck forever with the same media types or
-            limited to resource descriptions and Thing descriptions.
+            data items of any Internet media type. This means that applications
+            using the data hub aren't stuck forever with the same media types or
+            limited to just resource descriptions or firmware updates.
           </t>
           <t>
             Searchable
@@ -126,24 +130,26 @@
             Observable
             <vspace blankLines="1"/>
             Data items published to a data hub are exposed as resources. As
-            such, they can be <xref target="RFC7641">observed for
-            changes</xref>. This allows clients to stay informed of information
-            that other clients update over time. As a result, the data hub
-            functions similar to a <xref target="I-D.ietf-core-coap-pubsub">CoAP
-            Publish-Subscribe Broker</xref>, although this isn't its primary use
-            case.
+            such, they can be <xref target="RFC7641">observed for changes</xref>
+            over CoAP. This allows clients to stay informed of information that
+            other clients update over time. As a result, the data hub functions
+            similar to a <xref
+            target="I-D.ietf-core-coap-pubsub">Publish-Subscribe Broker</xref>.
           </t>
           <t>
             Evolvable
             <vspace blankLines="1"/>
-            The key differentiator of the data hub compared to CoRE Resource
-            Directory and CoAP Publish-Subscribe Broker is the evolvability --
-            the ability to respond effectively to the need for changes without
-            negatively impacting existing and new clients. Data hubs enable
+            The key differentiator of the data hub compared to <xref
+            target="I-D.ietf-core-resource-directory">Resource Directory</xref>
+            and <xref target="I-D.ietf-core-coap-pubsub">CoAP Publish-Subscribe
+            Broker</xref> is the evolvability -- the ability to respond
+            effectively to the need for changes without negatively impacting
+            existing and new clients.<vspace blankLines="1"/>Data hubs enable
             fine-grained evolvability by driving all interactions by
-            machine-readable hypermedia elements. Features can be added, changed
-            or removed in a safe, backwards-compatible way simply by updating
-            the data hub representation to expose appropriate links and forms.
+            machine-understandable hypermedia elements. Features can be added,
+            changed or removed in a safe, backwards-compatible way simply by
+            updating the data hub representation to expose appropriate links and
+            forms.
           </t>
         </list>
       </t>
@@ -158,8 +164,8 @@
         </t>
 
         <t>
-          Terms defined in this document appear in <spanx>cursive</spanx>
-          where they are introduced.
+          Terms defined in this document appear in <spanx>cursive</spanx> where
+          they are introduced.
           <vspace blankLines="10"/>
         </t>
 
@@ -175,11 +181,11 @@
     <section title="Data Model">
 
       <t>
-        The data model consists of three elements:
-        the <spanx>data&nbsp;hub</spanx>,
-        a <spanx>data&nbsp;collection</spanx>, and
-        a number of shared <spanx>data&nbsp;items</spanx>
-        (<xref target="fig-data-hub"/>).
+        The data model of the "Thing-to-Thing Data Hub" application consists of
+        three elements: the <spanx>data&nbsp;hub</spanx> itself, a
+        <spanx>data&nbsp;collection</spanx>, and a number of
+        <spanx>data&nbsp;items</spanx> that have been shared (<xref
+        target="fig-data-hub"/>).
       </t>
 
 <figure anchor="fig-data-hub" title="A Data Collection with a Number of Shared Data Items Hosted at a Data Hub"><artwork align="center"><![CDATA[
@@ -208,48 +214,52 @@
         <list style="hanging">
           <t hangText="Data Hub">
             <vspace blankLines="1"/>
-            A data hub is a Web application running at a Web server.
-            It hosts the data collection and the data items.
+            A data hub is a Web application running on a Web server. It hosts
+            the data collection and the data items.
           </t>
           <t hangText="Data Collection">
             <vspace blankLines="1"/>
-            A data collection is a collection resource that contains the data items.
+            A data collection is a collection resource that contains the data
+            items.
           </t>
           <t>
             Representations of data collections MUST have the <xref
             target="I-D.hartke-t2trg-coral">"application/coral+cbor" or
-            "text/coral" media type</xref>. They primarily consist of links to
-            the data items using the <xref target="RFC6573">"item" link relation
-            type</xref>. To reduce the number of round-trips, they MAY also
-            embed (complete or partial) representations of the data items. Forms
-            contained in the representation enable interactions with the collection and the
-            data items, as described in the following section. The
+            "text/coral" media type</xref>. The representations primarily
+            consist of links to the data items, using the <xref
+            target="RFC6573">"item" link relation type</xref>. To reduce the
+            number of round-trips, the representations MAY also embed (complete
+            or partial) representations of the data items. Forms contained in
+            the representation enable interactions with the data collection and
+            the data items, as detailed in the following sections. The
             representations MAY additionally contain other links and forms that
-            are not described in this document, such as a link with the
-            "alternate" link relation type that references an alternate
-            representation of the data collection resource.
+            are not described in this document, such as a link with the <xref
+            target="W3C.REC-html52-20171214">"alternate" link relation
+            type</xref> that references an alternate representation of the data
+            collection resource.
           </t>
           <t>
-            For a start, a data hub is defined to have a depth of only one
-            level; i.e., all data item resources are organized directly under
-            the top-level data collection resource. This could be extended to multiple
-            levels in a future revision of this document.
+            In this version of this document, a data hub is defined to have a
+            depth of only one level. That is, all data item resources are
+            organized directly under the top-level data collection resource.
+            This could be extended to multiple levels in a future version.
           </t>
           <t hangText="Data Item">
             <vspace blankLines="1"/>
-            A data item is a resource that is a member of the data collection resource.
+            A data item is a resource that is a member of the data collection
+            resource.
           </t>
           <t>
-            Data item representations MAY have any media type.
-            However, a data collection MAY restrict the media types it accepts
-            for publication. In this case, the form in the data collection
-            representation for creating data items MUST list the acceptable
-            media types using form fields with name &lt;urn:TBD1#accept&gt;.
+            Data item representations can have any media type. However, a data
+            collection MAY restrict the media types it accepts for publication.
+            In this case, the form in the representation of the data collection
+            for creating data items MUST list the acceptable media types using
+            form fields with the name &lt;urn:TBD1#accept&gt;.
           </t>
           <t>
-            The representations of the data items MAY link back to the data collection
-            resource using the <xref target="RFC6573">"collection" link relation
-            type</xref>.
+            The representations of data items MAY link back to the data
+            collection resource using the <xref target="RFC6573">"collection"
+            link relation type</xref>.
           </t>
         </list>
       </t>
@@ -259,87 +269,92 @@
     <section title="Interaction Model">
 
       <t>
-        The interaction model consists of eight possible interactions with a
-        data collection: discovering and reading the data collection, and creating, reading,
-        observing, updating, deleting, and finding shared data items in the data
-        collection.
+        The interaction model consists of eight potential interactions with a
+        data hub: discovering and reading the data collection, and creating,
+        reading, observing, updating, deleting, and finding shared data items in
+        the data collection.
       </t>
 
       <t>
         <list style="hanging">
           <t hangText="Discovering a Data Hub">
             <vspace blankLines="1"/>
-            For a start, this revision of the document assumes that clients are
-            pre-configured with a link to a data collection at some data hub.
+            In this version of this document, clients are assumed to be
+            pre-configured with a link to a data collection at a data hub.
           </t>
           <t hangText="Reading a Collection">
             <vspace blankLines="1"/>
-            A client can retrieve a representation of a data collection by following
-            the pre-configured link. The representation of the data collection includes
-            links to (and, optionally, representations of) the data items in the
-            data collection. The representation of the data collection also includes forms for
-            creating, updating, deleting, and finding data items.
+            A client can retrieve a representation of a data collection by
+            following the pre-configured link. As described above, the
+            representation of the data collection includes links to (and,
+            optionally, representations of) the data items in the data
+            collection. The representation of the data collection also includes
+            forms for creating, updating, deleting, and finding data items.
           </t>
           <t hangText="Creating an Item">
             <vspace blankLines="1"/>
             The representation of a data collection MAY contain a form with the
-            &lt;urn:TBD1#create&gt; form relation type. Submitting this
-            form with a representation in one of the acceptable media types
-            creates a new data item in the data collection. The acceptable media types
-            are indicated by &lt;urn:TBD1#accept&gt; form fields.
+            &lt;urn:TBD1#create&gt; operation type. Submitting this form with a
+            representation in one of the acceptable media types creates a new
+            data item in the data collection. The acceptable media types are
+            indicated by &lt;urn:TBD1#accept&gt; form fields.
           </t>
           <t>
-            Data hubs implementing this specification MUST offer the <xref
-            target="RFC7252">POST method</xref> in this form. The location of
-            the created data item is conveyed in the 2.01 (Created) response by
-            the <xref target="RFC7252">Location-Path and Location-Query
-            options</xref>.
+            Implementations of this version of this document MUST offer the
+            <xref target="RFC7252">POST method</xref> in the form. On success,
+            the location of the created data item MUST be conveyed in a 2.01
+            (Created) response using the <xref target="RFC7252">Location-Path
+            and Location-Query options</xref>.
           </t>
           <t hangText="Reading an Item">
             <vspace blankLines="1"/>
             A client can retrieve a representation of a data item by following a
             link with the &lt;http://www.iana.org/assignments/relation/item&gt;
-            link relation type in the data collection representation.
+            link relation type in the representation of the data collection.
           </t>
           <t hangText="Observing an Item">
             <vspace blankLines="1"/>
             A client can observe a data item by following a link with the
             &lt;http://www.iana.org/assignments/relation/item&gt; link relation
-            type in the data collection representation and observing the target
-            resource as specified in <xref target="RFC7641">RFC 7641</xref>.
+            type in the representation of the data collection and observing the
+            target resource as specified in <xref target="RFC7641">RFC
+            7641</xref>.
           </t>
           <t hangText="Updating an Item">
             <vspace blankLines="1"/>
-            For each data item in a data collection, the representation of the data collection
-            MAY include a nested form with the &lt;urn:TBD1#update&gt;
-            form relation type. Submitting this form updates the data item to the submitted representation.
+            For each data item in a data collection, the representation of the
+            data collection MAY include a form with the &lt;urn:TBD1#update&gt;
+            operation type nested within the link to the data item. Submitting
+            this form updates the data item to the submitted representation.
           </t>
           <t>
-            Data hubs implementing this specification MUST offer the <xref
-            target="RFC7252">PUT method</xref> in this form.
+            Implementations of this version of this document MUST offer the
+            <xref target="RFC7252">PUT method</xref> in the form.
           </t>
           <t hangText="Deleting an Item">
             <vspace blankLines="1"/>
-            For each data item in a data collection, the representation of the data collection
-            MAY include a nested form with the &lt;urn:TBD1#delete&gt;
-            form relation type. Submitting this form deletes the data item from
-            the data collection.
+            For each data item in a data collection, the representation of the
+            data collection MAY include a form with the &lt;urn:TBD1#delete&gt;
+            operation type nested within the link to the data item. Submitting
+            this form deletes the data item from the data collection.
           </t>
           <t>
-            Data hubs implementing this specification MUST offer the <xref
-            target="RFC7252">DELETE method</xref> in this form.
+            Implementations of this version of this document MUST offer the
+            <xref target="RFC7252">DELETE method</xref> in the form.
           </t>
           <t hangText="Searching for Items">
             <vspace blankLines="1"/>
             The representation of a data collection MAY contain a form with the
-            &lt;urn:TBD1#search&gt; form relation type. This form can
-            be used to find data items in the data collection. Submitting this form
-            with a search query returns the subset of data items that match the
-            query.
+            &lt;urn:TBD1#search&gt; operation type. This form can be used to
+            find data items in the data collection. Submitting this form with a
+            search query returns the subset of data items that match the query.
           </t>
           <t>
-            Data hubs implementing this specification MUST offer the <xref
-            target="RFC8132">FETCH method</xref> in this form.
+            (TODO: Describe the representation format for search queries.)
+          </t>
+          <t>
+            Implementations of this version of this document MUST offer the
+            <xref target="RFC8132">FETCH method</xref> in the form.
           </t>
         </list>
       </t>
@@ -351,16 +366,38 @@
     <!-- **************************************************************** -->
     <!-- **************************************************************** -->
 
-    <section title="Security Considerations" anchor="security">
+    <section title="Security Considerations">
 
       <t>
-        TODO.
+        The data hub application relies on a Web transfer protocol like CoAP to
+        exchange representations in a CoRAL serialization format. See Section 11
+        of <xref target="RFC7252">RFC 7252</xref> and Section 7 of <xref
+        target="RFC7641">RFC 7641</xref> for security considerations relating to
+        CoAP. See Section 7 of <xref target="I-D.hartke-t2trg-coral">RFC
+        XXXX</xref> for security considerations relating to CoRAL.
+      </t>
+
+      <t>
+        The data hub application does not define any specific mechanisms for
+        protecting the confidentiality and integrity of messages exchanged
+        between a data hub and a client. It is recommended that implementations
+        employ application layer or transport layer mechanisms for interactions
+        with a data hub.
+      </t>
+
+      <t>
+        The data hub application does not define any specific mechanisms for
+        protecting the confidentiality and integrity of representations of data
+        items shared through a data hub. For scenarios where end-to-end security
+        matters, such as for <xref
+        target="I-D.ietf-suit-information-model">firmware updates</xref>,
+        implementations should employ an object security mechanism.
       </t>
 
       <!--
 
-      * CoRAL security considerations
       * authorization/access control
+      * denial of service
       * ...
 
       -->
@@ -402,18 +439,14 @@
 
     <references title="Informative References">
 
-      &RFC6690;
+      &RFC7228;
+
       &I-D.ietf-core-coap-pubsub;
       &I-D.ietf-core-resource-directory;
+      &I-D.ietf-suit-architecture;
+      &I-D.ietf-suit-information-model;
 
-      <reference anchor="WOT" target="http://w3c.github.io/wot/current-practices/wot-practices.html">
-        <front>
-          <title>WoT Current Practices</title>
-          <author initials="M." surname="Kovatsch" fullname="Matthias Kovatsch" role="editor"/>
-          <author initials="D." surname="Peintner" fullname="Daniel Peintner" role="editor"/>
-          <date month="February" day="22" year="2018"/>
-        </front>
-      </reference>
+      &W3C.REC-html52-20171214;
 
     </references>
 
