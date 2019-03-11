@@ -588,7 +588,7 @@
             2, followed by the link relation type and the link target,
             optionally followed by a link body that contains nested elements.
             <list>
-              <t>link = [link: 2, relation-type, link-target, ?body]</t>
+              <t>link = [2, relation-type, link-target, ?body]</t>
             </list>
           </t>
 
@@ -631,7 +631,7 @@
             3, followed by the operation type, the request method, and the
             submission target, optionally followed by a list of form fields.
             <list>
-              <t>form = [form: 3, operation-type, method, submission-target, ?form-fields]</t>
+              <t>form = [3, operation-type, method, submission-target, ?form-fields]</t>
             </list>
           </t>
 
@@ -728,7 +728,7 @@
             the unsigned integer 0, followed by a byte string containing the
             representation data, optionally followed by representation metadata.
             <list>
-              <t>representation = [representation: 0, bytes, ?representation-metadata]</t>
+              <t>representation = [0, bytes, ?representation-metadata]</t>
             </list>
           </t>
 
@@ -781,9 +781,9 @@
 
             <t>
               A Base directive is encoded as an array that consists of the
-              negative integer -1, followed by a base.
+              unsigned integer 1, followed by a base.
               <list>
-                <t>base-directive = [base: -1, base]</t>
+                <t>base-directive = [1, base]</t>
               </list>
             </t>
 
