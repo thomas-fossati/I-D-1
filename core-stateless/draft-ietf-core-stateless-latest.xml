@@ -10,7 +10,6 @@
   <!ENTITY RFC8323 SYSTEM "http://www.rfc-editor.org/refs/bibxml/reference.RFC.8323.xml">
   <!ENTITY I-D.ietf-6tisch-minimal-security SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-6tisch-minimal-security.xml">
   <!ENTITY I-D.ietf-core-echo-request-tag SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-core-echo-request-tag.xml">
-  <!ENTITY I-D.ietf-core-object-security SYSTEM "http://www.rfc-editor.org/refs/bibxml3/reference.I-D.ietf-core-object-security.xml">
 ]>
 
 <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
@@ -637,12 +636,6 @@
           the traffic flows.
         </t>
 
-        <t>
-          A node in client role using <xref
-          target="I-D.ietf-core-object-security">OSCORE</xref> always MUST
-          encrypt the serialized state.
-        </t>
-
         <section title="Recommended Algorithms">
 
           <t>
@@ -721,8 +714,6 @@
     <references title="Informative References">
 
       &RFC7228;
-
-      &I-D.ietf-core-object-security;
 
       &I-D.ietf-6tisch-minimal-security;
 
