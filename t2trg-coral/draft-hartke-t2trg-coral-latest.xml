@@ -725,18 +725,43 @@
 
           <t>
             An embedded representation is encoded as an array that consists of
-            the unsigned integer 0, followed by the HTTP content type or CoAP
-            content format of the representation and a byte string containing
-            the representation data.
+            the unsigned integer 0, followed by a byte string containing the
+            representation data, optionally followed by representation metadata.
             <list>
-              <t>representation = [representation: 0, text / uint, bytes]</t>
+              <t>representation = [representation: 0, bytes, ?representation-metadata]</t>
             </list>
-            For HTTP, the content type MUST be specified as a text string in the
-            format defined in Section 3.1.1.1 of <xref target="RFC7231">RFC
-            7231</xref>; the set of possible values is maintained in the IANA
-            Media Types Registry. For CoAP, the content format MUST be specified
-            as an unsigned integer; the set of possible values is maintained in
-            the IANA CoAP Content-Formats Registry.
+          </t>
+
+          <t>
+            Representation metadata is encoded as an array of zero or more
+            name-value pairs.
+            <list>
+              <t>representation-metadata = [*(metadata-name, metadata-value)]</t>
+            </list>
+          </t>
+
+          <t>
+            The metadata, if any, MUST be processed in a fresh environment. All
+            variables in the new environment are initially set to a copy of the
+            variables in the current environment.
+          </t>
+
+          <t>
+            The metadata name is defined in the same way as a
+            link relation type (<xref target="binary-links"/>).
+            <list>
+              <t>metadata-name = text</t>
+            </list>
+          </t>
+
+          <t>
+            A metadata value can be an IRI reference, a Boolean value, an
+            integer, a floating-point number, a date/time value, a byte string, a text string, or
+            null. An IRI reference MUST be
+            resolved against the current base.
+            <list>
+              <t>metadata-value = ciri / literal</t>
+            </list>
           </t>
 
         </section>
@@ -788,7 +813,7 @@
           The binary format can reference values from a dictionary to reduce
           representation size and processing cost. Dictionary references can be used in place of link relation
           types, link targets, operation types, submission targets, form field
-          types, and form field values.
+          types, form field values, representation metadata names, and representation metadata values.
         </t>
 
         <section title="Dictionary References">
@@ -799,11 +824,13 @@
             tagged with CBOR tag TBD6.
             <list>
               <t>relation-type /= uint</t>
-              <t>operation-type /= uint</t>
               <t>link-target /= #6.TBD6(uint)</t>
+              <t>operation-type /= uint</t>
               <t>submission-target /= #6.TBD6(uint)</t>
               <t>form-field-type /= uint</t>
               <t>form-field-value /= #6.TBD6(uint)</t>
+              <t>metadata-name /= uint</t>
+              <t>metadata-value /= #6.TBD6(uint)</t>
             </list>
           </t>
 
@@ -1412,32 +1439,34 @@
           </t>
 
           <t>
-            Representation metadata consists of zero or more type-value pairs.
+            Representation metadata consists of zero or more name-value pairs.
             <list>
               <t>representation-metadata = *(metadata-name metadata-value)</t>
             </list>
           </t>
 
           <t>
-            This document specifies only one kind of metadata item, labeled with
-            the name "type": the HTTP content type or CoAP content format of the
-            representation.
-            <list>
-              <t>metadata-name = "type"</t>
-              <t>metadata-value = text / integer</t>
-            </list>
-            For HTTP, the content type MUST be specified as a text string in the
-            format defined in Section 3.1.1.1 of <xref target="RFC7231">RFC
-            7231</xref>; the set of possible values is maintained in the IANA
-            Media Types Registry. For CoAP, the content format MUST be specified
-            as an integer; the set of possible values is maintained in
-            the IANA CoAP Content-Formats Registry.
+            The metadata, if any, MUST be processed in a fresh environment. All
+            variables in the new environment are initially set to a copy of the
+            variables in the current environment.
           </t>
 
           <t>
-            A metadata item with the name "type" MUST NOT occur more than once.
-            If absent, its value defaults to content type
-            "application/octet-stream" or content format 42.
+            The metadata name is defined in the same way as a link relation
+            type (<xref target="textual-links"/>).
+            <list>
+              <t>metadata-name = iri / simple-name / qualified-name</t>
+            </list>
+          </t>
+
+          <t>
+            The metadata value can be an IRI reference, Boolean literal,
+            integer literal, floating-point literal, byte string literal, text
+            string literal, or null. An IRI reference
+            MUST be resolved against the current base.
+            <list>
+              <t>metadata-value = iriref / literal</t>
+            </list>
           </t>
 
         </section>
@@ -1580,6 +1609,11 @@
                 Additionally, for each form field type, the permissible form
                 field values.
               </t>
+              <t hangText="Representation Metadata:">
+                Metadata names that identify the semantics of representation
+                metadata. Additionally, for each metadata name, the permissible
+                metadata values.
+              </t>
             </list>
           </t>
 
@@ -1640,8 +1674,7 @@
               </t>
               <t>
                 use of only dictionary references in the binary format for
-                certain link relation types, link targets, operation types,
-                submission targets, form field names, and form field values;
+                certain vocabulary;
               </t>
               <t>
                 use of only either content type strings or content format IDs;
@@ -1659,10 +1692,10 @@
 
       </section>
 
-      <section title="Minting New Vocabulary">
+      <section title="Minting Vocabulary">
 
         <t>
-          New link relation types, operation types, and form field types can
+          New link relation types, operation types, form field types, and metadata names can
           be minted by defining an <xref target="RFC3987">IRI</xref> that
           uniquely identifies the item. Although the IRI can point to a resource
           that contains a definition of the semantics,
@@ -1689,8 +1722,7 @@
         </t>
 
         <t>
-          IRIs that identify link relation types, operation types, and form
-          field types do not need to be registered. The inclusion of domain
+          IRIs that identify vocabulary do not need to be registered. The inclusion of domain
           names in IRIs allows for the decentralized creation of new IRIs
           without the risk of collisions. However, IRIs can be relatively
           verbose and impose a high overhead on a representation. This can be a
@@ -2354,7 +2386,8 @@
 
       <t>
         This section defines the core vocabulary for CoRAL: a set of
-        link relation types, operation types, and form field types.
+        link relation types, operation types, form field types, and metadata
+        names.
       </t>
 
       <t>
@@ -2456,6 +2489,33 @@
               format MUST be specified as an unsigned integer; the set of
               possible values is maintained in the IANA CoAP Content-Formats
               Registry.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Representation Metadata">
+
+        <t>
+          <list style="hanging">
+            <t hangText="&lt;urn:TBD1#type&gt;">
+              <vspace/>Specifies the HTTP content type or CoAP content format of
+              the representation.
+            </t>
+            <t>
+              For HTTP, the content type MUST be specified as a text string in
+              the format defined in Section 3.1.1.1 of <xref
+              target="RFC7231">RFC 7231</xref>; the set of possible values is
+              maintained in the IANA Media Types Registry. For CoAP, the content
+              format MUST be specified as an unsigned integer; the set of
+              possible values is maintained in the IANA CoAP Content-Formats
+              Registry.
+            </t>
+            <t>
+              A metadata item of this type MUST NOT occur more than once.
+              If absent, its value defaults to content type
+              "application/octet-stream" or content format 42.
             </t>
           </list>
         </t>
