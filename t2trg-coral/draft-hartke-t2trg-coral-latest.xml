@@ -1872,11 +1872,41 @@
       <section title="Submitting CoRAL Documents">
 
         <t>
-          A CoRAL document is a representation that captures the current or
-          intended state of a resource. The exact meaning of a CoRAL document
-          depends on the context in which it occurs. The following sections
-          describe the meaning of a CoRAL document submitted in requests.
+          By default, a CoRAL document is a representation that captures the
+          current state of a resource. The meaning of a CoRAL document changes
+          when it is submitted in a request. Depending on the request method,
+          the CoRAL document can capture the intended state of a resource or
+          be subject to application-specific processing.
         </t>
+
+        <section title="PUT Requests">
+
+          <t>
+            A PUT request with a CoRAL document enclosed in the request payload
+            requests that the state of the target resource be created or
+            replaced with the state described by the CoRAL document.
+
+            A successful PUT of a CoRAL document generally means that a
+            subsequent GET on that same target resource would result in an
+            equivalent document being sent in a success response.
+          </t>
+
+          <t>
+            An origin server SHOULD verify that a submitted CoRAL document is
+            consistent with any constraints the server has for the target
+            resource. When a document is inconsistent with the target resource,
+            the origin server SHOULD either make it consistent (e.g., by
+            removing inconsistent elements) or respond with an appropriate error
+            message containing sufficient information to explain why the
+            document is unsuitable.
+          </t>
+
+          <t>
+            The retrieval context of a CoRAL document in a PUT is the request
+            IRI of the request.
+          </t>
+
+        </section>
 
         <section title="POST Requests">
 
@@ -1888,36 +1918,7 @@
 
           <t>
             The retrieval context of a CoRAL document in a POST is the request
-            IRI.
-          </t>
-
-        </section>
-
-        <section title="PUT Requests">
-
-          <t>
-            A PUT request with a CoRAL document enclosed in the request payload
-            requests that the state of the target resource be created or
-            replaced with the state described by the CoRAL document.
-
-            A successful PUT of a CoRAL document suggests that a subsequent GET
-            on that same target resource would result in an equivalent document
-            being sent in a success response.
-          </t>
-
-          <t>
-            An origin server SHOULD verify that a submitted document is
-            consistent with any constraints the server has for the target
-            resource. When a document is inconsistent with the target resource,
-            the origin server SHOULD either make it consistent (e.g., by
-            removing inconsistent elements) or respond with an appropriate error
-            message containing sufficient information to explain why the
-            document is unsuitable.
-          </t>
-
-          <t>
-            The retrieval context of a CoRAL document in a PUT is the request
-            IRI.
+            IRI of the request.
           </t>
 
         </section>
