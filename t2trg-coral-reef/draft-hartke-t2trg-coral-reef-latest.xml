@@ -133,10 +133,22 @@
       </t>
 
       <t>
-        This document specifies the use of CoRAL for two use cases: Resource
-        Discovery, which allows a client to discover the resources of a server
-        given a host name or IP address, and Resource Directory, which provides
-        a limited search engine for M2M resources.
+        This document specifies the use of CoRAL for two use cases:
+        <list style="hanging">
+          <t hangText="Resource Discovery">
+            <vspace/>
+            Allows a client to discover the resources of a server given a host
+            name or IP address.
+          </t>
+          <t hangText="Resource Directory">
+            <vspace/>
+            Allows a client to discover the resources of several servers given
+            the URL of a resource directory.
+            <vspace/>
+            Allows a server (or a third party acting on behalf of a server) to
+            register resources with a resource directory given a URL.
+          </t>
+        </list>
       </t>
 
       <section title="Resource Discovery">
@@ -170,33 +182,52 @@
         </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: .well-known
-   Uri-Path: core
-   Accept: TBD3
-
-
-   2.05 Content
-   Content-Format: TBD3
-
-   #using <http://TBD6/>
-   #using iana = <http://www.iana.org/assignments/relation/>
-
-   rd-item </sensors> {
-      ct 40
-      title "Sensor Index"
-   }
-   rd-item </sensors/temp> {
-      rt "temperature-c"
-      if "sensor"
-      iana:describedby <http://www.example.com/sensors/t123>
-      iana:alternate </t>
-   }
-   rd-item </sensors/light> {
-      rt "light-lux"
-      if "sensor"
-   }
+   =>  0.01 GET
+       Uri-Path: .well-known
+       Uri-Path: core
+       Accept: TBD3
 ]]></artwork></figure>
+
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
+
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
+
+       rd-item </sensors> {
+          ct 40
+          title "Sensor Index"
+       }
+       rd-item </sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item </sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
+]]></artwork></figure>
+
+        <t>
+          In detail, this representation contains links to three resources of
+          interest on the server: &lt;/sensors&gt;, &lt;/sensors/temp&gt;, and
+          &lt;/sensors/light&gt;.
+        </t>
+
+        <t>
+          For &lt;/sensors&gt;, a content format hint ("ct") and a title
+          ("title") are provided as resource metadata. For &lt;/sensors/temp&gt;
+          as well as &lt;/sensors/light&gt;, a resource type ("rt") and an
+          interface description ("if") are provided as resource metadata.
+          Additionally, two links are provided with further detail on
+          &lt;/sensors/temp&gt;: one to a schema describing this resource
+          ("describedby") and one to an substitute for this resource
+          ("alternate").
+        </t>
+
       </section>
 
       <section title="Resource Directory">
@@ -231,27 +262,28 @@
         </t>
 
 <figure><artwork><![CDATA[
-   0.02 POST
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Content-Format: TBD3
+   =>  0.02 POST
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Content-Format: TBD3
 
-   #using <http://TBD6/>
+       #using <http://TBD6/>
 
-   #base <coap://[2001:db8:3::124]/>
-   rd-item </light/left> { rt "light-lux" ct 0 }
-   rd-item </light/middle> { rt "light-lux" ct 0 }
-   rd-item </light/right> { rt "light-lux" ct 0 }
+       #base <coap://[2001:db8:3::124]/>
+       rd-item </light/left> { rt "light-lux" ct 0 }
+       rd-item </light/middle> { rt "light-lux" ct 0 }
+       rd-item </light/right> { rt "light-lux" ct 0 }
+]]></artwork></figure>
 
-
-   2.01 Created
-   Location-Path: path
-   Location-Path: to
-   Location-Path: resource
-   Location-Path: directory
-   Location-Path: 5
+<figure><artwork><![CDATA[
+   <=  2.01 Created
+       Location-Path: path
+       Location-Path: to
+       Location-Path: resource
+       Location-Path: directory
+       Location-Path: 42
 ]]></artwork></figure>
 
         <t>
@@ -263,27 +295,29 @@
         </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Uri-Query: rt=light-lux
-   Accept: TBD3
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Query: rt=light-lux
+       Accept: TBD3
+]]></artwork></figure>
 
 
-   2.05 Content
-   Content-Format: TBD3
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
 
-   #using <http://TBD6/>
+       #using <http://TBD6/>
 
-   #base <coap://[2001:db8:1::9]/>
-   rd-item </1234> { rt "light-lux" }
+       #base <coap://[2001:db8:1::9]/>
+       rd-item </1234> { rt "light-lux" }
 
-   #base <coap://[2001:db8:3::124]/>
-   rd-item </light/left> { rt "light-lux" ct 0 }
-   rd-item </light/middle> { rt "light-lux" ct 0 }
-   rd-item </light/right> { rt "light-lux" ct 0 }
+       #base <coap://[2001:db8:3::124]/>
+       rd-item </light/left> { rt "light-lux" ct 0 }
+       rd-item </light/middle> { rt "light-lux" ct 0 }
+       rd-item </light/right> { rt "light-lux" ct 0 }
 ]]></artwork></figure>
 
       </section>
@@ -397,7 +431,7 @@
           resource on the default port appropriate for the protocol for the
           purpose of resource discovery. It is up to the server which of the
           resources in its namespace are included; the "/.well-known/core"
-          resource is generally meant to be used to provide entry points to
+          resource is generally meant to provide entry points to
           applications hosted by the server.
         </t>
 
@@ -426,17 +460,17 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">GET</t>
-                  <t hangText="URI Template:">coap://{host}/.well-known/core</t>
+                  <t hangText="URI Template:">coap://{host-and-port}/.well-known/core</t>
                   <t hangText="Accept Option:">TBD3</t>
                 </list>
               </t>
               <t hangText="Response">
                 <vspace blankLines="1"/>
                 When successful, the server returns a 2.05 (Content) response
-                with a representation in content format TBD3. The representation
+                with a representation in content format TBD3 ('application/coral+cbor; dictionary=http://TBD5/'). The representation
                 MUST contain zero or more links of type
-                &lt;http://TBD6/rd-item&gt;, each of which targets a resource in
-                the namespace of the server. The links may have nested elements
+                &lt;http://TBD6/rd-item&gt;, each of which MUST target a resource in
+                the namespace of the server (same origin). The links may have nested elements
                 providing resource metadata.
               </t>
               <t hangText="Example"></t>
@@ -444,32 +478,33 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: .well-known
-   Uri-Path: core
-   Accept: TBD3
+   =>  0.01 GET
+       Uri-Path: .well-known
+       Uri-Path: core
+       Accept: TBD3
+]]></artwork></figure>
 
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
 
-   2.05 Content
-   Content-Format: TBD3
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
 
-   #using <http://TBD6/>
-   #using iana = <http://www.iana.org/assignments/relation/>
-
-   rd-item </sensors> {
-      ct 40
-      title "Sensor Index"
-   }
-   rd-item </sensors/temp> {
-      rt "temperature-c"
-      if "sensor"
-      iana:describedby <http://www.example.com/sensors/t123>
-      iana:alternate </t>
-   }
-   rd-item </sensors/light> {
-      rt "light-lux"
-      if "sensor"
-   }
+       rd-item </sensors> {
+          ct 40
+          title "Sensor Index"
+       }
+       rd-item </sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item </sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
 ]]></artwork></figure>
 
           <t>
@@ -485,7 +520,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">GET</t>
-                  <t hangText="URI Template:">coap://{host}/.well-known/core?rt={value}</t>
+                  <t hangText="URI Template:">coap://{host-and-port}/.well-known/core?rt={value}</t>
                   <t hangText="Accept Option:">TBD3</t>
                 </list>
               </t>
@@ -499,25 +534,26 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: .well-known
-   Uri-Path: core
-   Uri-Query: rt=temperature-c
-   Accept: TBD3
+   =>  0.01 GET
+       Uri-Path: .well-known
+       Uri-Path: core
+       Uri-Query: rt=temperature-c
+       Accept: TBD3
+]]></artwork></figure>
 
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
 
-   2.05 Content
-   Content-Format: TBD3
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
 
-   #using <http://TBD6/>
-   #using iana = <http://www.iana.org/assignments/relation/>
-
-   rd-item </sensors/temp> {
-      rt "temperature-c"
-      if "sensor"
-      iana:describedby <http://www.example.com/sensors/t123>
-      iana:alternate </t>
-   }
+       rd-item </sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
 ]]></artwork></figure>
 
           <t>
@@ -533,7 +569,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">GET</t>
-                  <t hangText="URI Template:">coap://{host}/.well-known/core?if={value}</t>
+                  <t hangText="URI Template:">coap://{host-and-port}/.well-known/core?if={value}</t>
                   <t hangText="Accept Option:">TBD3</t>
                 </list>
               </t>
@@ -547,29 +583,30 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: .well-known
-   Uri-Path: core
-   Uri-Query: if=sensor
-   Accept: TBD3
+   =>  0.01 GET
+       Uri-Path: .well-known
+       Uri-Path: core
+       Uri-Query: if=sensor
+       Accept: TBD3
+]]></artwork></figure>
 
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
 
-   2.05 Content
-   Content-Format: TBD3
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
 
-   #using <http://TBD6/>
-   #using iana = <http://www.iana.org/assignments/relation/>
-
-   rd-item </sensors/temp> {
-      rt "temperature-c"
-      if "sensor"
-      iana:describedby <http://www.example.com/sensors/t123>
-      iana:alternate </t>
-   }
-   rd-item </sensors/light> {
-      rt "light-lux"
-      if "sensor"
-   }
+       rd-item </sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item </sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
 ]]></artwork></figure>
 
           <t>
@@ -634,7 +671,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">GET</t>
-                  <t hangText="URI Template:">coap://{host}/{path-to-directory}</t>
+                  <t hangText="URI Template:">{resource-directory-location}</t>
                   <t hangText="Accept Option:">TBD3</t>
                 </list>
               </t>
@@ -648,34 +685,35 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Accept: TBD3
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Accept: TBD3
+]]></artwork></figure>
 
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
 
-   2.05 Content
-   Content-Format: TBD3
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
 
-   #using <http://TBD6/>
-   #using iana = <http://www.iana.org/assignments/relation/>
-
-   rd-item <coap://[2001:db8:1::1]/sensors> {
-      ct 40
-      title "Sensor Index"
-   }
-   rd-item <coap://[2001:db8:1::1]/sensors/temp> {
-      rt "temperature-c"
-      if "sensor"
-      iana:describedby <http://www.example.com/sensors/t123>
-      iana:alternate </t>
-   }
-   rd-item <coap://[2001:db8:1::1]/sensors/light> {
-      rt "light-lux"
-      if "sensor"
-   }
+       rd-item <coap://[2001:db8:1::1]/sensors> {
+          ct 40
+          title "Sensor Index"
+       }
+       rd-item <coap://[2001:db8:1::1]/sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item <coap://[2001:db8:1::1]/sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
 ]]></artwork></figure>
 
           <t>
@@ -691,7 +729,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">GET</t>
-                  <t hangText="URI Template:">coap://{host}/{path-to-directory}?rt={value}</t>
+                  <t hangText="URI Template:">{resource-directory-location}?rt={value}</t>
                   <t hangText="Accept Option:">TBD3</t>
                 </list>
               </t>
@@ -705,27 +743,28 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Uri-Query: rt=temperature-c
-   Accept: TBD3
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Query: rt=temperature-c
+       Accept: TBD3
+]]></artwork></figure>
 
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
 
-   2.05 Content
-   Content-Format: TBD3
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
 
-   #using <http://TBD6/>
-   #using iana = <http://www.iana.org/assignments/relation/>
-
-   rd-item <coap://[2001:db8:1::1]/sensors/temp> {
-      rt "temperature-c"
-      if "sensor"
-      iana:describedby <http://www.example.com/sensors/t123>
-      iana:alternate </t>
-   }
+       rd-item <coap://[2001:db8:1::1]/sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
 ]]></artwork></figure>
 
           <t>
@@ -741,7 +780,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">GET</t>
-                  <t hangText="URI Template:">coap://{host}/{path-to-directory}?if={value}</t>
+                  <t hangText="URI Template:">{resource-directory-location}?if={value}</t>
                   <t hangText="Accept Option:">TBD3</t>
                 </list>
               </t>
@@ -755,31 +794,32 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Uri-Query: if=sensor
-   Accept: TBD3
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Query: if=sensor
+       Accept: TBD3
+]]></artwork></figure>
 
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
 
-   2.05 Content
-   Content-Format: TBD3
+       #using <http://TBD6/>
+       #using iana = <http://www.iana.org/assignments/relation/>
 
-   #using <http://TBD6/>
-   #using iana = <http://www.iana.org/assignments/relation/>
-
-   rd-item <coap://[2001:db8:1::1]/sensors/temp> {
-      rt "temperature-c"
-      if "sensor"
-      iana:describedby <http://www.example.com/sensors/t123>
-      iana:alternate </t>
-   }
-   rd-item <coap://[2001:db8:1::1]/sensors/light> {
-      rt "light-lux"
-      if "sensor"
-   }
+       rd-item <coap://[2001:db8:1::1]/sensors/temp> {
+          rt "temperature-c"
+          if "sensor"
+          iana:describedby <http://www.example.com/sensors/t123>
+          iana:alternate </t>
+       }
+       rd-item <coap://[2001:db8:1::1]/sensors/light> {
+          rt "light-lux"
+          if "sensor"
+       }
 ]]></artwork></figure>
 
           <t>
@@ -795,7 +835,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">GET</t>
-                  <t hangText="URI Template:">coap://{host}/{path-to-directory}</t>
+                  <t hangText="URI Template:">{resource-directory-location}</t>
                   <t hangText="Accept Option:">TBD3</t>
                 </list>
               </t>
@@ -812,23 +852,24 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Accept: TBD3
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Accept: TBD3
+]]></artwork></figure>
 
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
 
-   2.05 Content
-   Content-Format: TBD3
+       #using <http://TBD6/>
 
-   #using <http://TBD6/>
-
-   rd-unit </rd/1>
-   rd-unit </rd/2>
-   rd-unit </rd/3>
-   rd-unit </rd/4>
+       rd-unit </rd/1>
+       rd-unit </rd/2>
+       rd-unit </rd/3>
+       rd-unit </rd/4>
 ]]></artwork></figure>
 
           <t>
@@ -844,7 +885,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">POST</t>
-                  <t hangText="URI Template:">coap://{host}/{path-to-directory}</t>
+                  <t hangText="URI Template:">{resource-directory-location}</t>
                   <t hangText="Content-Format Option:">TBD3</t>
                 </list>
                 The client submits a representation in content format TBD3. The
@@ -863,25 +904,26 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.02 POST
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Content-Format: TBD3
+   =>  0.02 POST
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Content-Format: TBD3
 
-   #base <coap://[2001:db8:4::1]/>
-   rd-item </light/left> { rt "light" ct 0 }
-   rd-item </light/middle> { rt "light" ct 0 }
-   rd-item </light/right> { rt "light" ct 0 }
+       #base <coap://[2001:db8:4::1]/>
+       rd-item </light/left> { rt "light" ct 0 }
+       rd-item </light/middle> { rt "light" ct 0 }
+       rd-item </light/right> { rt "light" ct 0 }
+]]></artwork></figure>
 
-
-   2.01 Created
-   Location-Path: path
-   Location-Path: to
-   Location-Path: resource
-   Location-Path: directory
-   Location-Path: 5
+<figure><artwork><![CDATA[
+   <=  2.01 Created
+       Location-Path: path
+       Location-Path: to
+       Location-Path: resource
+       Location-Path: directory
+       Location-Path: 42
 ]]></artwork></figure>
 
           <t>
@@ -897,7 +939,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">GET</t>
-                  <t hangText="URI Template:">{location}</t>
+                  <t hangText="URI Template:">{registration-location}</t>
                   <t hangText="Accept Option:">TBD3</t>
                 </list>
               </t>
@@ -911,22 +953,23 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.01 GET
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Uri-Path: 5
-   Accept: TBD3
+   =>  0.01 GET
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Path: 42
+       Accept: TBD3
+]]></artwork></figure>
 
+<figure><artwork><![CDATA[
+   <=  2.05 Content
+       Content-Format: TBD3
 
-   2.05 Content
-   Content-Format: TBD3
-
-   #base <coap://[2001:db8:4::1]>
-   rd-item </light/left> { rt "light" ct 0 }
-   rd-item </light/middle> { rt "light" ct 0 }
-   rd-item </light/right> { rt "light" ct 0 }
+       #base <coap://[2001:db8:4::1]>
+       rd-item </light/left> { rt "light" ct 0 }
+       rd-item </light/middle> { rt "light" ct 0 }
+       rd-item </light/right> { rt "light" ct 0 }
 ]]></artwork></figure>
 
           <t>
@@ -942,7 +985,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">PUT</t>
-                  <t hangText="URI Template:">{location}</t>
+                  <t hangText="URI Template:">{registration-location}</t>
                   <t hangText="Content-Format Option:">TBD3</t>
                 </list>
                 The client submits a representation in content format TBD3. The
@@ -960,20 +1003,21 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.03 PUT
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Uri-Path: 5
-   Content-Format: TBD3
+   =>  0.03 PUT
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Path: 42
+       Content-Format: TBD3
 
-   #base <coap://[2001:db8:4::1]/>
-   rd-item </light/left> { rt "light" ct 0 }
-   rd-item </light/right> { rt "light" ct 0 }
+       #base <coap://[2001:db8:4::1]/>
+       rd-item </light/left> { rt "light" ct 0 }
+       rd-item </light/right> { rt "light" ct 0 }
+]]></artwork></figure>
 
-
-   2.04 Changed
+<figure><artwork><![CDATA[
+   <=  2.04 Changed
 ]]></artwork></figure>
 
           <t>
@@ -989,7 +1033,7 @@
               <t hangText="Request">
                 <list style="hanging">
                   <t hangText="Request Method:">DELETE</t>
-                  <t hangText="URI Template:">{location}</t>
+                  <t hangText="URI Template:">{registration-location}</t>
                 </list>
               </t>
               <t hangText="Response">
@@ -1001,15 +1045,16 @@
           </t>
 
 <figure><artwork><![CDATA[
-   0.04 DELETE
-   Uri-Path: path
-   Uri-Path: to
-   Uri-Path: resource
-   Uri-Path: directory
-   Uri-Path: 5
+   =>  0.04 DELETE
+       Uri-Path: path
+       Uri-Path: to
+       Uri-Path: resource
+       Uri-Path: directory
+       Uri-Path: 42
+]]></artwork></figure>
 
-
-   2.02 Deleted
+<figure><artwork><![CDATA[
+   <=  2.02 Deleted
 ]]></artwork></figure>
 
           <t>
