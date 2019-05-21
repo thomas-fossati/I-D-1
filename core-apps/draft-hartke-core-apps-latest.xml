@@ -16,7 +16,7 @@
   <!ENTITY RFC7540 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7540.xml">
   <!ENTITY RFC7595 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7595.xml">
   <!ENTITY RFC8288 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8288.xml">
-  <!ENTITY I-D.nottingham-rfc5785bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.nottingham-rfc5785bis.xml">
+  <!ENTITY RFC8615 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8615.xml">
   <!ENTITY W3C.REC-xml11-20060816 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-xml11-20060816.xml">
   <!ENTITY W3C.REC-xml-20081126 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-xml-20081126.xml">
   <!ENTITY W3C.REC-xml-names-20091208 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-xml-names-20091208.xml">
@@ -619,7 +619,7 @@
         <t>
           Some applications may require the discovery of information about an
           origin (sometimes called "site-wide metadata")
-          <xref target="I-D.nottingham-rfc5785bis"/>.
+          <xref target="RFC8615"/>.
           For example, <xref target="RFC6415">RFC 6415</xref> defines a metadata
           document format for describing a host.
           Similarly, <xref target="RFC6690">RFC 6690</xref> defines a link
@@ -629,7 +629,7 @@
         <t>
           Applications that need to provide a resource for data or services
           related to the origin overall can designate a "well-known location".
-          <xref target="I-D.nottingham-rfc5785bis">RFC 5785bis</xref> defines a
+          <xref target="RFC8615">RFC 8615</xref> defines a
           path prefix in HTTP URIs for these "well-known locations",
           "/.well-known/". <xref target="RFC7252">RFC 7252</xref> extends this
           to CoAP URIs.
@@ -856,12 +856,12 @@
       <t>
         The security considerations of
         <xref target="RFC3986">RFC 3986</xref>,
-        <xref target="I-D.nottingham-rfc5785bis">RFC 5785bis</xref>,
         <xref target="RFC6570">RFC 6570</xref>,
         <xref target="RFC6838">RFC 6838</xref>,
         <xref target="RFC7320">RFC 7320</xref>,
-        <xref target="RFC7595">RFC 7595</xref>, and
-        <xref target="RFC8288">RFC 8288</xref>
+        <xref target="RFC7595">RFC 7595</xref>,
+        <xref target="RFC8288">RFC 8288</xref>, and
+        <xref target="RFC8615">RFC 8615</xref>
         are inherited.
       </t>
 
@@ -971,7 +971,7 @@
 
       &RFC8288; <!--Nottingham-->
 
-      &I-D.nottingham-rfc5785bis; <!--Nottingham-->
+      &RFC8615; <!--Nottingham-->
 
       <reference anchor="WEBAPIS">
         <front>

@@ -9,10 +9,10 @@
   <!ENTITY RFC7252 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7252.xml">
   <!ENTITY RFC8174 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
   <!ENTITY RFC8288 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8288.xml">
+  <!ENTITY RFC8615 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8615.xml">
   <!ENTITY IANA.core-parameters SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml8/reference.IANA.core-parameters.xml">
   <!ENTITY I-D.hartke-t2trg-coral SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.hartke-t2trg-coral.xml">
   <!ENTITY I-D.ietf-core-resource-directory SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-core-resource-directory.xml">
-  <!ENTITY I-D.nottingham-rfc5785bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.nottingham-rfc5785bis.xml">
   <!ENTITY W3C.REC-rdf-schema-20140225 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-rdf-schema-20140225.xml">
   <!ENTITY SELF "[I-D.hartke-t2trg-coral-reef]">
 ]>
@@ -418,7 +418,7 @@
       <t>
         Given a host name or IP address, a client can discover the resources of
         a server implementing this section through the use of a <xref
-        target="I-D.nottingham-rfc5785bis">well-known resource</xref>.
+        target="RFC8615">well-known resource</xref>.
         Well-known resources have a path component that begins with
         "/.well-known/". This specification defines a new well-known resource
         for CoRE Resource Discovery: "/.well-known/core".
@@ -1292,9 +1292,9 @@
       &RFC6573;
       &RFC7252;
       &RFC8174;
+      &RFC8615;
 
       &I-D.hartke-t2trg-coral;
-      &I-D.nottingham-rfc5785bis;
 
       &W3C.REC-rdf-schema-20140225;
 
