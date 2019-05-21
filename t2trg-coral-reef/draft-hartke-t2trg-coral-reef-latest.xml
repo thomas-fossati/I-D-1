@@ -26,7 +26,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-coral-reef-01" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-coral-reef-02" ipr="trust200902">
 
   <front>
 
@@ -1262,6 +1262,11 @@
           document with the code point assigned by IANA.]]
         </t>
         -->
+
+        <t>
+          [[NOTE TO IMPLEMENTERS: Experimental implementations can use content
+          format ID 65088.]]
+        </t>
 
       </section>
 
