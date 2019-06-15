@@ -691,18 +691,6 @@
 
           </section>
 
-          <section title="Short Forms">
-
-            <t>
-              [[NOTE TO READERS: This section used to describe special elements
-              for compressing certain forms that were assumed to occur
-              frequently. The topic of encoding frequently occurring elements
-              more efficiently will be revisited when more real-world examples
-              are available.]]
-            </t>
-
-          </section>
-
         </section>
 
         <section title="Embedded Representations">
