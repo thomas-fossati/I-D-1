@@ -26,8 +26,8 @@
   <!ENTITY RFC8174 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
   <!ENTITY RFC8288 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8288.xml">
   <!ENTITY RFC8446 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml">
+  <!ENTITY RFC8610 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8610.xml">
   <!ENTITY I-D.hartke-t2trg-ciri SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.hartke-t2trg-ciri.xml">
-  <!ENTITY I-D.ietf-cbor-cddl SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-cbor-cddl.xml">
   <!ENTITY W3C.REC-html52-20171214 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-html52-20171214.xml">
   <!ENTITY W3C.REC-rdf11-concepts-20140225 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-rdf11-concepts-20140225.xml">
   <!ENTITY W3C.REC-rdf-schema-20140225 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-rdf-schema-20140225.xml">
@@ -528,7 +528,7 @@
         A document in the binary format is a data item in <xref
         target="RFC7049">Concise Binary Object Representation (CBOR)</xref>. The
         structure of this data item is presented in the <xref
-        target="I-D.ietf-cbor-cddl">Concise Data Definition Language
+        target="RFC8610">Concise Data Definition Language
         (CDDL)</xref>. The media type is "application/coral+cbor".
       </t>
 
@@ -1772,7 +1772,7 @@
         <t>
           Data items in the CoRAL binary format (<xref target="binary"/>) may be
           embedded in other <xref target="RFC7049">CBOR</xref> data structures.
-          Specifications using <xref target="I-D.ietf-cbor-cddl">CDDL</xref>
+          Specifications using <xref target="RFC8610">CDDL</xref>
           SHOULD reference the following CDDL definitions for this purpose:
           <list>
             <t>CoRAL-Document = body</t>
@@ -2168,8 +2168,7 @@
       &RFC7049;
       &RFC8174;
       &RFC8288;
-
-      &I-D.ietf-cbor-cddl;
+      &RFC8610;
 
       <reference anchor="UNICODE" target="http://www.unicode.org/versions/latest/">
         <front>
