@@ -9,7 +9,6 @@
   <!ENTITY RFC4287 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4287.xml">
   <!ENTITY RFC4648 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4648.xml">
   <!ENTITY RFC5234 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5234.xml">
-  <!ENTITY RFC5646 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5646.xml">
   <!ENTITY RFC5789 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5789.xml">
   <!ENTITY RFC6454 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6454.xml">
   <!ENTITY RFC6573 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6573.xml">
@@ -25,7 +24,6 @@
   <!ENTITY RFC7320 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7320.xml">
   <!ENTITY RFC8132 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8132.xml">
   <!ENTITY RFC8174 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
-  <!ENTITY RFC8187 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8187.xml">
   <!ENTITY RFC8288 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8288.xml">
   <!ENTITY RFC8446 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml">
   <!ENTITY I-D.hartke-t2trg-ciri SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.hartke-t2trg-ciri.xml">
@@ -47,7 +45,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-coral-08" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-coral-09" ipr="trust200902">
 
   <front>
 
@@ -1768,94 +1766,6 @@
 
       </section>
 
-      <section title="Expressing Link Target Attributes">
-
-        <t>
-          [[NOTE TO READERS: This section describes a mechanism to convert any
-          link target attributes to CoRAL in a way that allows a conversion back
-          without loss of information (round-trip conversion). It is
-          likely that this will be replaced by a specific set of unique link
-          relation types that match the known RFC 6690 attributes semantically
-          but do not round-trip in the presence of unknown attributes.]]
-        </t>
-
-        <t>
-          Link target attributes defined for use with <xref
-          target="RFC6690">CoRE Link Format</xref> (such as "hreflang", "media",
-          "title", "title*", "type", "ct", "rt", "if", "sz", and "obs") can be
-          expressed in CoRAL by nesting links under the respective link. The
-          link relation type of each such nested link is the lowercased
-          attribute name appended to the IRI &lt;http://TBD2/&gt;.
-        </t>
-
-        <t>
-          If the expressed link target attribute has a value, the target of the
-          nested link MUST be a text string; otherwise, the target MUST be the
-          Boolean value "true".
-        </t>
-
-        <figure>
-          <artwork>
-   #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
-   #using attr = &lt;http://TBD2/&gt;
-
-   iana:item &lt;/patches/1&gt; {
-      attr:type "application/json-patch+json"
-      attr:ct   "51"
-      attr:sz   "247"
-      attr:obs  true
-   }
-
-&lt;=&gt;
-
-   &lt;/patches/1&gt;; rel=item; type="application/json-patch+json";
-      ct=51; sz=247; obs
-          </artwork>
-        </figure>
-
-        <t>
-          Language information in attributes as per <xref target="RFC8187">RFC
-          8187</xref>, such as in "title*" attributes, is expressed by nesting
-          an additional link of type &lt;http://TBD2/hreflang&gt; under the link
-          representing the attribute. The target of the nested link MUST be a
-          text string containing a <xref target="RFC5646">language tag</xref>.
-          The attribute name is expressed without the "*" character.
-        </t>
-
-        <figure>
-          <artwork>
-   #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
-   #using attr = &lt;http://TBD2/&gt;
-
-   iana:terms-of-service &lt;/tos&gt; {
-      attr:title "Nutzungsbedingungen" { attr:hreflang "de" }
-      attr:title "Terms of use"        { attr:hreflang "en" }
-   }
-
-&lt;=&gt;
-
-   &lt;/tos&gt;; rel=terms-of-service;
-      title*=UTF-8'de'Nutzungsbedingungen;
-      title*=UTF-8'en'Terms%20of%20use
-          </artwork>
-        </figure>
-
-        <t>
-          Link target attributes that actually do not describe the link target
-          but the link itself (such as "rel", "anchor", and "rev") are excluded
-          from this provision and MUST NOT occur in a CoRAL document.
-        </t>
-
-        <!--
-        <t>
-          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD2/"
-          in this document with an IETF-controlled IRI, such as "urn:ietf:..."
-          or "http://...ietf.org/...".]]
-        </t>
-        -->
-
-      </section>
-
       <section title="Expressing Simple RDF Statements">
 
         <t>
@@ -2337,7 +2247,6 @@
     <references title="Informative References">
 
       &RFC4287;
-      &RFC5646;
       &RFC5789;
       &RFC6573;
       &RFC6690;
@@ -2347,7 +2256,6 @@
       &RFC7252;
       &RFC7320;
       &RFC8132;
-      &RFC8187;
       &RFC8446;
 
       &W3C.REC-html52-20171214;
