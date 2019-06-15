@@ -1138,27 +1138,27 @@
             </t>
             <t>
               Key: 3<vspace/>
-              Value: &lt;urn:TBD1#create&gt;<vspace/>
+              Value: &lt;http://coreapps.org/collections#create&gt;<vspace/>
               Reference: <xref target="I-D.hartke-t2trg-coral"/>
             </t>
             <t>
               Key: 4<vspace/>
-              Value: &lt;urn:TBD1#update&gt;<vspace/>
+              Value: &lt;http://coreapps.org/collections#update&gt;<vspace/>
               Reference: <xref target="I-D.hartke-t2trg-coral"/>
             </t>
             <t>
               Key: 5<vspace/>
-              Value: &lt;urn:TBD1#delete&gt;<vspace/>
+              Value: &lt;http://coreapps.org/collections#delete&gt;<vspace/>
               Reference: <xref target="I-D.hartke-t2trg-coral"/>
             </t>
             <t>
               Key: 6<vspace/>
-              Value: &lt;urn:TBD1#search&gt;<vspace/>
+              Value: &lt;http://coreapps.org/collections#search&gt;<vspace/>
               Reference: <xref target="I-D.hartke-t2trg-coral"/>
             </t>
             <t>
               Key: 7<vspace/>
-              Value: &lt;urn:TBD1#accept&gt;<vspace/>
+              Value: &lt;http://coreapps.org/coap#accept&gt;<vspace/>
               Reference: <xref target="I-D.hartke-t2trg-coral"/>
             </t>
             <t>
@@ -1216,15 +1216,15 @@
               Value: &lt;/.well-known/core&gt;<vspace/>
               Reference: &SELF;
             </t>
+            <t>
+              Key: 19<vspace/>
+              Value: &lt;http://coreapps.org/coap#type&gt;<vspace/>
+              Reference: <xref target="I-D.hartke-t2trg-coral"/>
+            </t>
           </list>
         </t>
 
         <!--
-        <t>
-          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD1/"
-          in this document with the IRI assigned in draft-hartke-t2trg-coral.]]
-        </t>
-
         <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD5/"
           in this document with the URI of the new registry.]]
