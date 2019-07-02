@@ -300,7 +300,7 @@
         <t>
           A form can be viewed as an instruction of the form "To perform an {operation
           type} operation on {form context}, make a {request method}
-          request to {submission target}" where the payload of the request may be
+          request to {submission target}" where the request may be
           further described by form fields.
         </t>
 
@@ -319,9 +319,10 @@
         </t>
 
         <t>
-          If a form is accompanied by a list of form fields, as described in the following section,
-          then the agent also needs to construct a payload that matches the
-          specifications of the form fields and include that in the request.
+          Form fields, as described in the following section, can be used to
+          provide more detailed instructions to the agent for constructing the
+          request. For example, form fields can instruct the agent to include a
+          payload matching the specifications of the form fields in the request.
         </t>
 
         <t>
@@ -338,14 +339,15 @@
 
         <t>
           Form fields provide further instructions to agents for constructing a
-          request payload.
+          request.
         </t>
 
         <t>
-          A form field can directly identify one or more data items that need to
+          For example, a form field can identify one or more data items that need to
           be included in the request payload or can reference another resource (such as
           a schema) that describes the structure of the payload. Form fields can also provide
-          other kinds of information, such as acceptable media types for the payload.
+          other kinds of information, such as acceptable media types for the payload
+          or expected request headers.
         </t>
 
         <t>
@@ -445,13 +447,13 @@
               The request IRI may need to be converted to a URI (Section 3.1 of
               RFC 3987) for protocols that do not support IRIs.
               <vspace blankLines="1"/>
-              The agent SHOULD set HTTP header fields and CoAP request
+              The agent should set HTTP header fields and CoAP request
               options according to  metadata
               associated with the link or form (e.g., set the HTTP Accept
               header field or the CoAP Accept option when the media type of the
-              target resource is provided). In the case of a form with one or more form
-              fields, the agent also MUST include a request payload that matches the
-              specifications of the form fields.
+              target resource is provided). Depending on the operation type of a
+              form, the agent may also need to include a request payload that
+              matches the specifications of one or more form fields.
             </t>
             <t>
               The agent sends the request and receives the response.
