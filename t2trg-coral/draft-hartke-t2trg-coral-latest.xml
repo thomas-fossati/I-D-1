@@ -1853,11 +1853,26 @@
       <t>
         Parsers of CoRAL documents must operate on input that is assumed to be
         untrusted. This means that parsers MUST fail gracefully in the face of
-        malicious inputs. Additionally, parsers MUST be prepared to deal with
-        resource exhaustion (e.g., resulting from the allocation of big data
-        items) or exhaustion of the call stack (stack overflow). See Section 8
-        of <xref target="RFC7049">RFC 7049</xref> for security considerations
-        relating to CBOR.
+        malicious inputs (e.g., inputs not adhering to the data structure).
+        Additionally, parsers MUST be prepared to deal with resource exhaustion
+        (e.g., resulting from the allocation of big data items) or exhaustion of
+        the call stack (stack overflow).
+      </t>
+
+      <t>
+        CoRAL documents intentionally do not feature the equivalent of XML
+        entity references as to preclude the whole class of exponential XML
+        entity expansion ("billion laughs") <xref target="CAPEC-197"/> and
+        improper XML external entity <xref target="CAPEC-201"/> attacks.
+      </t>
+
+      <t>
+        Implementers of the CoRAL binary format need to consider the security
+        aspects of processing CBOR. Notably, number representations for the same
+        numeric value are not equivalent in the CoRAL binary format (e.g., a
+        floating-point value of 0.0 is different from the integer 0). See
+        Section 8 of <xref target="RFC7049">RFC 7049</xref> for security
+        considerations relating to CBOR.
       </t>
 
       <t>
@@ -1927,14 +1942,6 @@
         target="RFC6454">Web origin</xref> MUST be discarded ("same-origin
         policy").
       </t>
-
-      <!--
-      <t>
-        CoRAL avoids the exponential XML entity expansion attack ("billion
-        laughs") and XML external entity attack by not having (the equivalent
-        of) XML entity references.
-      </t>
-      -->
 
     </section>
 
@@ -2253,6 +2260,22 @@
           <author initials="D." surname="Brickley" fullname="Dan Brickley"/>
           <author initials="L." surname="Miller" fullname="Libby Miller"/>
           <date month="January" day="14" year="2014"/>
+        </front>
+      </reference>
+
+      <reference anchor="CAPEC-197" target="https://capec.mitre.org/data/definitions/197.html">
+        <front>
+          <title>CAPEC-197: XML Entity Expansion</title>
+          <author fullname="MITRE"/>
+          <date month="July" day="31" year="2018"/>
+        </front>
+      </reference>
+
+      <reference anchor="CAPEC-201" target="https://capec.mitre.org/data/definitions/201.html">
+        <front>
+          <title>CAPEC-201: XML Entity Linking</title>
+          <author fullname="MITRE"/>
+          <date month="July" day="31" year="2018"/>
         </front>
       </reference>
 
