@@ -10,7 +10,7 @@
   <!ENTITY RFC7252 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7252.xml">
   <!ENTITY RFC8174 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
   <!ENTITY RFC8288 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8288.xml">
-  <!ENTITY I-D.ietf-cbor-cddl SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-cbor-cddl.xml">
+  <!ENTITY RFC8610 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8610.xml">
   <!ENTITY W3C.REC-html52-20171214 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml4/reference.W3C.REC-html52-20171214.xml">
 ]>
 
@@ -23,7 +23,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="3"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-ciri-02" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-ciri-03" ipr="trust200902">
 
   <front>
 
@@ -363,7 +363,7 @@ ____ scheme __/             \___ port _
 
       <t>
         The
-        structure can be described in the <xref target="I-D.ietf-cbor-cddl">Concise
+        structure can be described in the <xref target="RFC8610">Concise
         Data Definition Language (CDDL)</xref> as follows:
       </t>
 
@@ -797,8 +797,7 @@ ____ scheme __/             \___ port _
       &RFC3986;
       &RFC7049;
       &RFC8174;
-
-      &I-D.ietf-cbor-cddl;
+      &RFC8610;
 
     </references>
 
