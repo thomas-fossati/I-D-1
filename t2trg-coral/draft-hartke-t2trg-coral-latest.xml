@@ -9,6 +9,7 @@
   <!ENTITY RFC4287 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4287.xml">
   <!ENTITY RFC4648 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4648.xml">
   <!ENTITY RFC5234 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5234.xml">
+  <!ENTITY RFC5646 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5646.xml">
   <!ENTITY RFC5789 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5789.xml">
   <!ENTITY RFC6454 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6454.xml">
   <!ENTITY RFC6573 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6573.xml">
@@ -2170,6 +2171,7 @@
       &RFC3987;
       &RFC4648;
       &RFC5234;
+      &RFC5646;
       &RFC6454;
       &RFC6657;
       &RFC6838;
@@ -2305,6 +2307,26 @@
               <vspace/>Indicates that the link's context is an instance of the
               class specified as the link's target, as defined by <xref
               target="W3C.REC-rdf-schema-20140225">RDF Schema</xref>.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Base">
+
+        <t>
+          Link Relation Types:
+          <list style="hanging">
+            <t hangText="&lt;http://coreapps.org/base#lang&gt;">
+              <vspace/>Indicates that the link target is a <xref
+              target="RFC5646">language tag</xref> that specifies the language
+              of the link context.
+            </t>
+            <t>
+              The link target MUST be a text string in the format
+              specified in <xref target="RFC5646">Section 2.1 of RFC
+              5646</xref>.
             </t>
           </list>
         </t>
@@ -2474,6 +2496,7 @@
         <c>6</c><c>&lt;http://coreapps.org/collections#search&gt;</c>
         <c>7</c><c>&lt;http://coreapps.org/coap#accept&gt;</c>
         <c>8</c><c>&lt;http://coreapps.org/coap#type&gt;</c>
+        <c>9</c><c>&lt;http://coreapps.org/base#lang&gt;</c>
       </texttable>
 
     </section>

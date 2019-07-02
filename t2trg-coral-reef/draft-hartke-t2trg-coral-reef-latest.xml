@@ -353,7 +353,7 @@
       <t>
         The following link relation types for resource metadata are defined:
         <list style="hanging">
-          <t hangText="&lt;http://TBD6/hreflang&gt;">
+          <t hangText="&lt;http://coreapps.org/base#lang&gt;">
             <vspace/>
             The link target is a hint indicating what the (human-spoken)
             language of the result of dereferencing the link context should
@@ -1173,8 +1173,8 @@
             </t>
             <t>
               Key: 10<vspace/>
-              Value: &lt;http://TBD6/hreflang&gt;<vspace/>
-              Reference: &SELF;
+              Value: &lt;http://coreapps.org/base#lang&gt;<vspace/>
+              Reference: <xref target="I-D.hartke-t2trg-coral"/>
             </t>
             <t>
               Key: 11<vspace/>
