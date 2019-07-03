@@ -1143,7 +1143,7 @@
             </t>
             <t>
               Key: 4<vspace/>
-              Value: &lt;http://coreapps.org/collections#update&gt;<vspace/>
+              Value: &lt;http://coreapps.org/base#update&gt;<vspace/>
               Reference: <xref target="I-D.hartke-t2trg-coral"/>
             </t>
             <t>
@@ -1153,7 +1153,7 @@
             </t>
             <t>
               Key: 6<vspace/>
-              Value: &lt;http://coreapps.org/collections#search&gt;<vspace/>
+              Value: &lt;http://coreapps.org/base#search&gt;<vspace/>
               Reference: <xref target="I-D.hartke-t2trg-coral"/>
             </t>
             <t>

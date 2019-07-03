@@ -2293,40 +2293,105 @@
     <section title="Core Vocabulary">
 
       <t>
-        This section defines the core vocabulary for CoRAL: a set of
-        link relation types, operation types, form field types, and metadata
-        names.
+        This section defines the core vocabulary for CoRAL: a set of link
+        relation types, operation types, form field types, and metadata names.
       </t>
-
-      <section title="RDF">
-
-        <t>
-          Link Relation Types:
-          <list style="hanging">
-            <t hangText="&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;">
-              <vspace/>Indicates that the link's context is an instance of the
-              class specified as the link's target, as defined by <xref
-              target="W3C.REC-rdf-schema-20140225">RDF Schema</xref>.
-            </t>
-          </list>
-        </t>
-
-      </section>
 
       <section title="Base">
 
         <t>
           Link Relation Types:
           <list style="hanging">
+            <t hangText="&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;">
+              <vspace/>
+              Indicates that the link's context is an instance of the class
+              specified as the link's target, as defined by <xref
+              target="W3C.REC-rdf-schema-20140225">RDF Schema</xref>.
+            </t>
             <t hangText="&lt;http://coreapps.org/base#lang&gt;">
-              <vspace/>Indicates that the link target is a <xref
+              <vspace/>
+              Indicates that the link target is a <xref
               target="RFC5646">language tag</xref> that specifies the language
               of the link context.
             </t>
             <t>
-              The link target MUST be a text string in the format
-              specified in <xref target="RFC5646">Section 2.1 of RFC
-              5646</xref>.
+              The link target MUST be a text string in the format specified in
+              <xref target="RFC5646">Section 2.1 of RFC 5646</xref>.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Operation Types:
+          <list style="hanging">
+            <t hangText="&lt;http://coreapps.org/base#update&gt;">
+              <vspace/>
+              Indicates that the state of the form's context can be replaced
+              with the state described by a representation submitted to the
+              server.
+            </t>
+            <t>
+              This operation type is typically used with the PUT method <xref
+              target="RFC7231"/> <xref target="RFC7252"/>, PATCH method <xref
+              target="RFC5789"/> <xref target="RFC8132"/>, or iPATCH method
+              <xref target="RFC8132"/>.
+            </t>
+            <t hangText="&lt;http://coreapps.org/base#search&gt;">
+              <vspace/>
+              Indicates that the form's context can be searched by submitting a
+              search query.
+            </t>
+            <t>
+              This operation type is typically used with the POST method <xref
+              target="RFC7231"/> <xref target="RFC7252"/> or FETCH method <xref
+              target="RFC8132"/>.
+            </t>
+          </list>
+        </t>
+
+      </section>
+
+      <section title="Collections">
+
+        <t>
+          Link Relation Types:
+          <list style="hanging">
+            <t hangText="&lt;http://www.iana.org/assignments/relation/item&gt;">
+              <vspace/>
+              Indicates that the link's context is a collection and that the
+              link's target is a member of that collection, as defined in
+              Section 2.1 of <xref target="RFC6573">RFC 6573</xref>.
+            </t>
+            <t hangText="&lt;http://www.iana.org/assignments/relation/collection&gt;">
+              <vspace/>
+              Indicates that the link's target is a collection and that the
+              link's context is a member of that collection, as defined in
+              Section 2.2 of <xref target="RFC6573">RFC 6573</xref>.
+            </t>
+          </list>
+        </t>
+
+        <t>
+          Operation Types:
+          <list style="hanging">
+            <t hangText="&lt;http://coreapps.org/collections#create&gt;">
+              <vspace/>
+              Indicates that the form's context is a collection and that a new
+              item can be created in that collection with the state defined by a
+              representation submitted to the server.
+            </t>
+            <t>
+              This operation type is typically used with the POST method <xref
+              target="RFC7231"/> <xref target="RFC7252"/>.
+            </t>
+            <t hangText="&lt;http://coreapps.org/collections#delete&gt;">
+              <vspace/>
+              Indicates that the form's context is a member of a collection and
+              that the form's context can be removed from that collection.
+            </t>
+            <t>
+              This operation type is typically used with the DELETE method <xref
+              target="RFC7231"/> <xref target="RFC7252"/>.
             </t>
           </list>
         </t>
@@ -2339,16 +2404,17 @@
           Form Field Types:
           <list style="hanging">
             <t hangText="&lt;http://coreapps.org/http#accept&gt;">
-              <vspace/>Specifies an acceptable HTTP content type for the request
-              payload. There may be multiple form fields of this type. If a form
-              does not include a form field of this type, the server accepts any
-              or no request payload, depending on the operation type.
+              <vspace/>
+              Specifies an acceptable HTTP content type for the request payload.
+              There may be multiple form fields of this type. If a form does not
+              include a form field of this type, the server accepts any or no
+              request payload, depending on the operation type.
             </t>
             <t>
-              The content type MUST be specified as a text string in the format
-              defined in Section 3.1.1.1 of <xref target="RFC7231">RFC
-              7231</xref>; the set of possible values is maintained in the IANA
-              Media Types Registry.
+              The form field value MUST be a text string in the format defined
+              in <xref target="RFC7231">Section 3.1.1.1 of RFC 7231</xref>. The
+              possible set of media types and their parameters are maintained in
+              the IANA Media Types Registry.
             </t>
           </list>
         </t>
@@ -2357,16 +2423,17 @@
           Representation Metadata:
           <list style="hanging">
             <t hangText="&lt;http://coreapps.org/http#type&gt;">
-              <vspace/>Specifies the HTTP content type of the representation.
+              <vspace/>
+              Specifies the HTTP content type of the representation.
             </t>
             <t>
-              The content type MUST be specified as a text string in the format
-              defined in Section 3.1.1.1 of <xref target="RFC7231">RFC
-              7231</xref>; the set of possible values is maintained in the IANA
-              Media Types Registry.
+              The metadata value MUST be specified as a text string in the
+              format defined in <xref target="RFC7231">Section 3.1.1.1 of RFC
+              7231</xref>. The possible set of media types and their parameters
+              are maintained in the IANA Media Types Registry.
             </t>
             <t>
-              A metadata item of this type MUST NOT occur more than once for one
+              Metadata of this type MUST NOT occur more than once for a
               representation. If absent, its value defaults to content type
               "application/octet-stream".
             </t>
@@ -2381,16 +2448,15 @@
           Form Field Types:
           <list style="hanging">
             <t hangText="&lt;http://coreapps.org/coap#accept&gt;">
-              <vspace/>Specifies an acceptable CoAP content format for the
-              request payload. There may be multiple form fields of this type.
-              If a form does not include a form field of this type, the server
-              accepts any or no request payload, depending on the operation
-              type.
+              <vspace/>
+              Specifies an acceptable CoAP content format for the request
+              payload. There may be multiple form fields of this type. If a form
+              does not include a form field of this type, the server accepts any
+              or no request payload, depending on the operation type.
             </t>
             <t>
-              The content format MUST be specified as an unsigned integer; the
-              set of possible values is maintained in the IANA CoAP
-              Content-Formats Registry.
+              The form field value MUST be an integer identifying one of content
+              formats maintained in the IANA CoAP Content-Formats Registry.
             </t>
           </list>
         </t>
@@ -2399,69 +2465,17 @@
           Representation Metadata:
           <list style="hanging">
             <t hangText="&lt;http://coreapps.org/coap#type&gt;">
-              <vspace/>Specifies the CoAP content format of the representation.
+              <vspace/>
+              Specifies the CoAP content format of the representation.
             </t>
             <t>
-              The content format MUST be specified as an unsigned integer; the
-              set of possible values is maintained in the IANA CoAP
-              Content-Formats Registry.
+              The metadata value MUST be an integer identifying one of content
+              formats maintained in the IANA CoAP Content-Formats Registry.
             </t>
             <t>
-              A metadata item of this type MUST NOT occur more than once for one
-              representation. If absent, its value defaults to content format 42
-              (i.e., content type "application/octet-stream" with content coding
-              "identity").
-            </t>
-          </list>
-        </t>
-
-      </section>
-
-      <section title="Collection Pattern">
-
-        <t>
-          Link Relation Types:
-          <list style="hanging">
-            <t hangText="&lt;http://www.iana.org/assignments/relation/item&gt;">
-              <vspace/>Indicates that the link's context is a collection and
-              that the link's target is a member of that collection, as defined
-              in Section 2.1 of <xref target="RFC6573">RFC 6573</xref>.
-            </t>
-            <t hangText="&lt;http://www.iana.org/assignments/relation/collection&gt;">
-              <vspace/>Indicates that the link's target is a collection and that
-              the link's context is a member of that collection, as defined in
-              Section 2.2 of <xref target="RFC6573">RFC 6573</xref>.
-            </t>
-          </list>
-        </t>
-
-        <t>
-          Operation Types:
-          <list style="hanging">
-            <t hangText="&lt;http://coreapps.org/collections#create&gt;">
-              <vspace/>Indicates that the form's context is a collection and
-              that a new item can be created in that collection by submitting a
-              suitable representation. This operation type is typically used
-              with the POST method <xref target="RFC7231"/> <xref
-              target="RFC7252"/>.
-            </t>
-            <t hangText="&lt;http://coreapps.org/collections#update&gt;">
-              <vspace/>Indicates that the form's context can be updated by
-              submitting a suitable representation. This operation type is
-              typically used with the PUT method <xref target="RFC7231"/> <xref
-              target="RFC7252"/>, PATCH method <xref target="RFC5789"/> <xref
-              target="RFC8132"/>, or iPATCH method <xref target="RFC8132"/>.
-            </t>
-            <t hangText="&lt;http://coreapps.org/collections#delete&gt;">
-              <vspace/>Indicates that the form's context can be deleted. This
-              operation type is typically used with the DELETE method <xref
-              target="RFC7231"/> <xref target="RFC7252"/>.
-            </t>
-            <t hangText="&lt;http://coreapps.org/collections#search&gt;">
-              <vspace/>Indicates that the form's context can be searched by
-              submitting a search query. This operation type is typically
-              used with the POST method <xref target="RFC7231"/> <xref
-              target="RFC7252"/> or FETCH method <xref target="RFC8132"/>.
+              Metadata of this type MUST NOT occur more than once for a
+              representation. If absent, it defaults to content format 42 (i.e.,
+              content type "application/octet-stream" without a content coding).
             </t>
           </list>
         </t>
@@ -2491,9 +2505,9 @@
         <c>1</c><c>&lt;http://www.iana.org/assignments/relation/item&gt;</c>
         <c>2</c><c>&lt;http://www.iana.org/assignments/relation/collection&gt;</c>
         <c>3</c><c>&lt;http://coreapps.org/collections#create&gt;</c>
-        <c>4</c><c>&lt;http://coreapps.org/collections#update&gt;</c>
+        <c>4</c><c>&lt;http://coreapps.org/base#update&gt;</c>
         <c>5</c><c>&lt;http://coreapps.org/collections#delete&gt;</c>
-        <c>6</c><c>&lt;http://coreapps.org/collections#search&gt;</c>
+        <c>6</c><c>&lt;http://coreapps.org/base#search&gt;</c>
         <c>7</c><c>&lt;http://coreapps.org/coap#accept&gt;</c>
         <c>8</c><c>&lt;http://coreapps.org/coap#type&gt;</c>
         <c>9</c><c>&lt;http://coreapps.org/base#lang&gt;</c>
