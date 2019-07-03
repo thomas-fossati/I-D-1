@@ -314,7 +314,7 @@
           The form context is the resource on which an operation is ultimately
           performed. To perform the operation, an agent needs to construct a request
           with the specified request method and submission target as the request IRI. The submission
-          target typically is the same resource as the form context, but may be a different
+          target is typically the same resource as the form context, but may be a different
           resource. Constructing and sending the request is called <spanx>submitting
           the form</spanx>.
         </t>
@@ -323,7 +323,8 @@
           Form fields, as described in the following section, can be used to
           provide more detailed instructions to the agent for constructing the
           request. For example, form fields can instruct the agent to include a
-          payload matching the specifications of the form fields in the request.
+          payload in the request that must match the specifications of the form
+          field information.
         </t>
 
         <t>
@@ -615,10 +616,10 @@
 
           <t>
             A form is encoded as an array that consists of the unsigned integer
-            3, followed by the operation type, the request method, and the
+            3, followed by the operation type and the
             submission target, optionally followed by a list of form fields.
             <list>
-              <t>form = [3, operation-type, method, submission-target, ?form-fields]</t>
+              <t>form = [3, operation-type, submission-target, ?form-fields]</t>
             </list>
           </t>
 
@@ -631,23 +632,11 @@
           </t>
 
           <t>
-            The method MUST refer to one of the request methods defined by the
-            Web transfer protocol identified by the scheme of the submission target.
-            It is encoded either as a text string or an unsigned integer.
-            <list>
-              <t>method = text / uint</t>
-            </list>
-          </t>
-
-          <t>
-            For <xref target="RFC7230">HTTP</xref>, the method MUST be encoded
-            as a text string in the format defined in Section 4.1 of <xref
-            target="RFC7231">RFC 7231</xref>; the set of possible values is
-            maintained in the
-            IANA HTTP Method Registry. For <xref target="RFC7252">CoAP</xref>,
-            the method MUST be encoded as an unsigned integer (e.g., the
-            unsigned integer 2 for the POST method); the set of possible values
-            is maintained in the IANA CoAP Method Codes Registry.
+            The request method is either implied by the operation type or
+            encoded as a form field. If there are both, the form field takes
+            precedence over the operation type. Either way, the method MUST be
+            defined for the Web transfer protocol identified by the scheme of
+            the submission target.
           </t>
 
           <t>
@@ -1325,11 +1314,11 @@
         <section title="Forms">
 
           <t>
-            A form consists of the operation type, followed by a "->" token,
-            the request method, and the submission target, optionally
+            A form consists of the operation type, followed by a "->" token
+            and the submission target, optionally
             followed by a list of form fields enclosed in square brackets ("[" and "]").
             <list>
-              <t>form = operation-type "->" method submission-target ["[" form-fields "]"]</t>
+              <t>form = operation-type "->" submission-target ["[" form-fields "]"]</t>
             </list>
           </t>
 
@@ -1342,17 +1331,11 @@
           </t>
 
           <t>
-            The method identifier MUST refer to one of the request methods defined
-            by the Web transfer protocol identified by the scheme of the
-            submission target. Method identifiers are case-insensitive and
-            constrained to Unicode characters in the Basic Latin block.
-            <list>
-              <t>method = identifier</t>
-            </list>
-            For <xref target="RFC7230">HTTP</xref>, the set of possible method
-            identifiers is maintained in the IANA HTTP Method Registry. For
-            <xref target="RFC7252">CoAP</xref>, the set of possible method
-            identifiers is maintained in the IANA CoAP Method Codes Registry.
+            The request method is either implied by the operation type or
+            encoded as a form field. If there are both, the form field takes
+            precedence over the operation type. Either way, the method MUST be
+            defined for the Web transfer protocol identified by the scheme of
+            the submission target.
           </t>
 
           <t>
@@ -2331,10 +2314,12 @@
               server.
             </t>
             <t>
-              This operation type is typically used with the PUT method <xref
-              target="RFC7231"/> <xref target="RFC7252"/>, PATCH method <xref
-              target="RFC5789"/> <xref target="RFC8132"/>, or iPATCH method
-              <xref target="RFC8132"/>.
+              This operation type defaults to the PUT method <xref
+              target="RFC7231"/> <xref target="RFC7252"/> for both HTTP and
+              CoAP.
+              Typical overrides by a form field include the PATCH method <xref
+              target="RFC5789"/> <xref target="RFC8132"/> for HTTP and CoAP and
+              the iPATCH method <xref target="RFC8132"/> for CoAP.
             </t>
             <t hangText="&lt;http://coreapps.org/base#search&gt;">
               <vspace/>
@@ -2342,9 +2327,11 @@
               search query.
             </t>
             <t>
-              This operation type is typically used with the POST method <xref
-              target="RFC7231"/> <xref target="RFC7252"/> or FETCH method <xref
-              target="RFC8132"/>.
+              This operation type defaults to the POST method <xref
+              target="RFC7231"/> for HTTP and the FETCH method <xref
+              target="RFC8132"/> for CoAP.
+              Typical overrides by a form field include the POST method <xref
+              target="RFC7252"/> for CoAP.
             </t>
           </list>
         </t>
@@ -2381,8 +2368,9 @@
               representation submitted to the server.
             </t>
             <t>
-              This operation type is typically used with the POST method <xref
-              target="RFC7231"/> <xref target="RFC7252"/>.
+              This operation type defaults to the POST method <xref
+              target="RFC7231"/> <xref target="RFC7252"/> for both HTTP and
+              CoAP.
             </t>
             <t hangText="&lt;http://coreapps.org/collections#delete&gt;">
               <vspace/>
@@ -2390,8 +2378,9 @@
               that the form's context can be removed from that collection.
             </t>
             <t>
-              This operation type is typically used with the DELETE method <xref
-              target="RFC7231"/> <xref target="RFC7252"/>.
+              This operation type defaults to the DELETE method <xref
+              target="RFC7231"/> <xref target="RFC7252"/> for both HTTP and
+              CoAP.
             </t>
           </list>
         </t>
@@ -2403,6 +2392,20 @@
         <t>
           Form Field Types:
           <list style="hanging">
+            <t hangText="&lt;http://coreapps.org/http#method&gt;">
+              <vspace/>
+              Specifies the HTTP method for the request.
+            </t>
+            <t>
+              The form field value MUST be a text string in the format defined
+              in <xref target="RFC7231">Section 4.1 of RFC 7231</xref>. The set
+              of possible values is maintained in the IANA HTTP Method Registry.
+            </t>
+            <t>
+              A form field of this type MUST NOT occur more than once in a form.
+              If absent, it defaults to the request method implied by the form's
+              operation type.
+            </t>
             <t hangText="&lt;http://coreapps.org/http#accept&gt;">
               <vspace/>
               Specifies an acceptable HTTP content type for the request payload.
@@ -2447,6 +2450,20 @@
         <t>
           Form Field Types:
           <list style="hanging">
+            <t hangText="&lt;http://coreapps.org/coap#method&gt;">
+              <vspace/>
+              Specifies the CoAP method for the request.
+            </t>
+            <t>
+              The form field value MUST be an integer identifying one of the
+              CoAP request methods maintained in the IANA CoAP Method Codes
+              Registry (e.g., the integer 2 for the POST method).
+            </t>
+            <t>
+              A form field of this type MUST NOT occur more than once in a form.
+              If absent, it defaults to the request method implied by the form's
+              operation type.
+            </t>
             <t hangText="&lt;http://coreapps.org/coap#accept&gt;">
               <vspace/>
               Specifies an acceptable CoAP content format for the request
@@ -2511,6 +2528,7 @@
         <c>7</c><c>&lt;http://coreapps.org/coap#accept&gt;</c>
         <c>8</c><c>&lt;http://coreapps.org/coap#type&gt;</c>
         <c>9</c><c>&lt;http://coreapps.org/base#lang&gt;</c>
+        <c>10</c><c>&lt;http://coreapps.org/coap#method&gt;</c>
       </texttable>
 
     </section>
