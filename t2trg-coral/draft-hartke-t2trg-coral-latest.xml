@@ -536,6 +536,13 @@
         (CDDL)</xref>. The media type is "application/coral+cbor".
       </t>
 
+      <t>
+        The following restrictions are placed on CBOR encoders: Byte strings and
+        text strings MUST be encoded with definite length. Integers and
+        floating-point values MUST be encoded as such (e.g., a floating-point
+        value of 0.0 must not be encoded as the integer 0).
+      </t>
+
       <section title="Data Structure">
 
         <t>
@@ -1854,9 +1861,9 @@
 
       <t>
         Implementers of the CoRAL binary format need to consider the security
-        aspects of processing CBOR. Notably, number representations for the same
-        numeric value are not equivalent in the CoRAL binary format (e.g., a
-        floating-point value of 0.0 is different from the integer 0). See
+        aspects of processing CBOR with the restrictions described in <xref
+        target="binary"/>. Notably, different number representations for the
+        same numeric value are not equivalent in the CoRAL binary format. See
         Section 8 of <xref target="RFC7049">RFC 7049</xref> for security
         considerations relating to CBOR.
       </t>
