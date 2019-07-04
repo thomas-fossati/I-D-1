@@ -176,7 +176,7 @@
           The following example shows how a client discovers the resources of a
           CoAP server by making a GET request to the "/.well-known/core"
           resource. The client receives a 2.05 (Content) response with a list of
-          links of type &lt;http://TBD6/rd-item&gt;. The links contain nested
+          links of type &lt;http://coreapps.org/reef#rd-item&gt;. The links contain nested
           elements with resource metadata (such as resource type, interface
           description, available content formats, and related resources).
         </t>
@@ -192,7 +192,7 @@
    <=  2.05 Content
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
        #using iana = <http://www.iana.org/assignments/relation/>
 
        rd-item </sensors> {
@@ -248,7 +248,7 @@
           populating the resource directory, a registration interface is
           offered. The registration interface is a collection resource with the
           common operations of create, read, update, and delete. The items of
-          the collection are groups of links of type &lt;http://TBD6/rd-item&gt;
+          the collection are groups of links of type &lt;http://coreapps.org/reef#rd-item&gt;
           that are to be made available in the lookup interface.
         </t>
 
@@ -269,7 +269,7 @@
        Uri-Path: directory
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
 
        #base <coap://[2001:db8:3::124]/>
        rd-item </light/left> { rt "light-lux" ct 0 }
@@ -309,7 +309,7 @@
    <=  2.05 Content
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
 
        #base <coap://[2001:db8:1::9]/>
        rd-item </1234> { rt "light-lux" }
@@ -345,7 +345,7 @@
 
       <t>
         Both "/.well-known/core" resources and resource directories link to
-        resources of interest using the &lt;http://TBD6/rd-item&gt; link
+        resources of interest using the &lt;http://coreapps.org/reef#rd-item&gt; link
         relation type. Metadata for these resources can be expressed by nesting
         further links inside these links.
       </t>
@@ -359,12 +359,12 @@
             language of the result of dereferencing the link context should
             be.
           </t>
-          <t hangText="&lt;http://TBD6/media&gt;">
+          <t hangText="&lt;http://coreapps.org/reef#media&gt;">
             <vspace/>
             The link target indicates the intended destination medium or media
             for style information for the link context.
           </t>
-          <t hangText="&lt;http://TBD6/title&gt;">
+          <t hangText="&lt;http://coreapps.org/reef#title&gt;">
             <vspace/>
             The link target is a label that it can be used as a human-readable
             identifier for the link context.
@@ -372,12 +372,12 @@
           <t>
             The link can have a nested link containing language information.
           </t>
-          <t hangText="&lt;http://TBD6/type&gt;">
+          <t hangText="&lt;http://coreapps.org/reef#type&gt;">
             <vspace/>
             The link target is a hint indicating what the media type of the
             result of dereferencing the link context should be.
           </t>
-          <t hangText="&lt;http://TBD6/rt&gt;">
+          <t hangText="&lt;http://coreapps.org/reef#rt&gt;">
             <vspace/>
             The link target is an application-specific semantic type of the
             link context.
@@ -387,18 +387,18 @@
             resource type as link target. The link target MUST NOT contain
             multiple resource types separated by white space.
           </t>
-          <t hangText="&lt;http://TBD6/if&gt;">
+          <t hangText="&lt;http://coreapps.org/reef#if&gt;">
             <vspace/>
             The link target is a specific interface definition that can be
             used to interact with the link context.
           </t>
-          <t hangText="&lt;http://TBD6/sz&gt;">
+          <t hangText="&lt;http://coreapps.org/reef#sz&gt;">
             <vspace/>
             The link target is an indication of the maximum size of the
             resource representation returned by performing a GET on the link
             context.
           </t>
-          <t hangText="&lt;http://TBD6/ct&gt;">
+          <t hangText="&lt;http://coreapps.org/reef#ct&gt;">
             <vspace/>
             The link target is a hint about the Content-Formats that the link
             context returns.
@@ -469,7 +469,7 @@
                 When successful, the server returns a 2.05 (Content) response
                 with a representation in content format TBD3 ('application/coral+cbor; dictionary=http://TBD5/'). The representation
                 MUST contain zero or more links of type
-                &lt;http://TBD6/rd-item&gt;, each of which MUST target a resource in
+                &lt;http://coreapps.org/reef#rd-item&gt;, each of which MUST target a resource in
                 the namespace of the server (same origin). The links may have nested elements
                 providing resource metadata.
               </t>
@@ -488,7 +488,7 @@
    <=  2.05 Content
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
        #using iana = <http://www.iana.org/assignments/relation/>
 
        rd-item </sensors> {
@@ -545,7 +545,7 @@
    <=  2.05 Content
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
        #using iana = <http://www.iana.org/assignments/relation/>
 
        rd-item </sensors/temp> {
@@ -594,7 +594,7 @@
    <=  2.05 Content
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
        #using iana = <http://www.iana.org/assignments/relation/>
 
        rd-item </sensors/temp> {
@@ -697,7 +697,7 @@
    <=  2.05 Content
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
        #using iana = <http://www.iana.org/assignments/relation/>
 
        rd-item <coap://[2001:db8:1::1]/sensors> {
@@ -756,7 +756,7 @@
    <=  2.05 Content
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
        #using iana = <http://www.iana.org/assignments/relation/>
 
        rd-item <coap://[2001:db8:1::1]/sensors/temp> {
@@ -807,7 +807,7 @@
    <=  2.05 Content
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
        #using iana = <http://www.iana.org/assignments/relation/>
 
        rd-item <coap://[2001:db8:1::1]/sensors/temp> {
@@ -844,7 +844,7 @@
                 When successful, the server returns a 2.05 (Content) response
                 with a representation in content format TBD3. The representation
                 contains or zero or more links with the
-                &lt;http://TBD6/rd-unit&gt; link relation type, each of which
+                &lt;http://coreapps.org/reef#rd-unit&gt; link relation type, each of which
                 has a resource registration as the link target.
               </t>
               <t hangText="Example"></t>
@@ -864,7 +864,7 @@
    <=  2.05 Content
        Content-Format: TBD3
 
-       #using <http://TBD6/>
+       #using <http://coreapps.org/reef#>
 
        rd-unit </rd/1>
        rd-unit </rd/2>
@@ -890,7 +890,7 @@
                 </list>
                 The client submits a representation in content format TBD3. The
                 representation contains zero or more links with the
-                &lt;http://TBD6/rd-item&gt; link relation type, each of which
+                &lt;http://coreapps.org/reef#rd-item&gt; link relation type, each of which
                 has a resource to be registered as the link target.
               </t>
               <t hangText="Response">
@@ -990,7 +990,7 @@
                 </list>
                 The client submits a representation in content format TBD3. The
                 representation contains zero or more links with the
-                &lt;http://TBD6/rd-item&gt; link relation type, each of which
+                &lt;http://coreapps.org/reef#rd-item&gt; link relation type, each of which
                 has a resource to be registered as the link target. Any existing
                 list of resources at the location is replaced by this update.
               </t>
@@ -1163,12 +1163,12 @@
             </t>
             <t>
               Key: 8<vspace/>
-              Value: &lt;http://TBD6/rd-unit&gt;<vspace/>
+              Value: &lt;http://coreapps.org/reef#rd-unit&gt;<vspace/>
               Reference: &SELF;
             </t>
             <t>
               Key: 9<vspace/>
-              Value: &lt;http://TBD6/rd-item&gt;<vspace/>
+              Value: &lt;http://coreapps.org/reef#rd-item&gt;<vspace/>
               Reference: &SELF;
             </t>
             <t>
@@ -1178,37 +1178,37 @@
             </t>
             <t>
               Key: 11<vspace/>
-              Value: &lt;http://TBD6/media&gt;<vspace/>
+              Value: &lt;http://coreapps.org/reef#media&gt;<vspace/>
               Reference: &SELF;
             </t>
             <t>
               Key: 12<vspace/>
-              Value: &lt;http://TBD6/title&gt;<vspace/>
+              Value: &lt;http://coreapps.org/reef#title&gt;<vspace/>
               Reference: &SELF;
             </t>
             <t>
               Key: 13<vspace/>
-              Value: &lt;http://TBD6/type&gt;<vspace/>
+              Value: &lt;http://coreapps.org/reef#type&gt;<vspace/>
               Reference: &SELF;
             </t>
             <t>
               Key: 14<vspace/>
-              Value: &lt;http://TBD6/rt&gt;<vspace/>
+              Value: &lt;http://coreapps.org/reef#rt&gt;<vspace/>
               Reference: &SELF;
             </t>
             <t>
               Key: 15<vspace/>
-              Value: &lt;http://TBD6/if&gt;<vspace/>
+              Value: &lt;http://coreapps.org/reef#if&gt;<vspace/>
               Reference: &SELF;
             </t>
             <t>
               Key: 16<vspace/>
-              Value: &lt;http://TBD6/sz&gt;<vspace/>
+              Value: &lt;http://coreapps.org/reef#sz&gt;<vspace/>
               Reference: &SELF;
             </t>
             <t>
               Key: 17<vspace/>
-              Value: &lt;http://TBD6/ct&gt;<vspace/>
+              Value: &lt;http://coreapps.org/reef#ct&gt;<vspace/>
               Reference: &SELF;
             </t>
             <t>
@@ -1224,18 +1224,10 @@
           </list>
         </t>
 
-        <!--
         <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD5/"
           in this document with the URI of the new registry.]]
         </t>
-
-        <t>
-          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD6/"
-          in this document with an IETF-controlled IRI, such as "urn:ietf:..."
-          or "http://...ietf.org/...".]]
-        </t>
-        -->
 
       </section>
 
@@ -1256,16 +1248,14 @@
           </list>
         </t>
 
-        <!--
         <t>
           [[NOTE TO RFC EDITOR: Please replace all occurrences of "TBD3" in this
           document with the code point assigned by IANA.]]
         </t>
-        -->
 
         <t>
           [[NOTE TO IMPLEMENTERS: Experimental implementations can use content
-          format ID 65088.]]
+          format ID 65088 until IANA has assigned a code point.]]
         </t>
 
       </section>
