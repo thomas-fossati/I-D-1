@@ -24,7 +24,7 @@
 <?rfc toc="yes"?>
 <?rfc tocdepth="2"?>
 
-<rfc category="exp" docName="draft-hartke-t2trg-data-hub-03" ipr="trust200902">
+<rfc category="exp" docName="draft-hartke-t2trg-data-hub-04" ipr="trust200902">
 
   <front>
 
@@ -142,7 +142,7 @@
             The key differentiator of the data hub compared to <xref
             target="I-D.ietf-core-resource-directory">Resource Directory</xref>
             and <xref target="I-D.ietf-core-coap-pubsub">CoAP Publish-Subscribe
-            Broker</xref> lies the evolvability of the application -- the ability to respond
+            Broker</xref> lies in the evolvability of the application -- the ability to respond
             effectively to the need for changes without negatively impacting
             existing and new clients.<vspace blankLines="1"/>Data hubs enable
             fine-grained evolvability by driving all interactions by
