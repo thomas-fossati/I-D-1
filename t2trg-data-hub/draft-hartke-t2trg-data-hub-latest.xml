@@ -142,7 +142,7 @@
             The key differentiator of the data hub compared to <xref
             target="I-D.ietf-core-resource-directory">Resource Directory</xref>
             and <xref target="I-D.ietf-core-coap-pubsub">CoAP Publish-Subscribe
-            Broker</xref> is the evolvability -- the ability to respond
+            Broker</xref> lies the evolvability of the application -- the ability to respond
             effectively to the need for changes without negatively impacting
             existing and new clients.<vspace blankLines="1"/>Data hubs enable
             fine-grained evolvability by driving all interactions by
@@ -214,7 +214,7 @@
         <list style="hanging">
           <t hangText="Data Hub">
             <vspace blankLines="1"/>
-            A data hub is a Web application running on a Web server. It hosts
+            A data hub is a Web application running on a Web server that hosts
             the data collection and the data items.
           </t>
           <t hangText="Data Collection">
@@ -224,18 +224,20 @@
           </t>
           <t>
             Representations of data collections MUST have the <xref
-            target="I-D.hartke-t2trg-coral">"application/coral+cbor" or
-            "text/coral" media type</xref>. The representations primarily
-            consist of links to the data items, using the <xref
-            target="RFC6573">"item" link relation type</xref>. To reduce the
+            target="I-D.hartke-t2trg-coral">"application/coral+cbor"
+            media type</xref>. The representations consist primarily of links to
+            the data items. These links have the
+            &lt;http://www.iana.org/assignments/relation/item&gt; link relation
+            type <xref target="RFC6573"/>. To reduce the
             number of round-trips, the representations MAY also embed (complete
             or partial) representations of the data items. Forms contained in
             the representation enable interactions with the data collection and
             the data items, as detailed in the following sections. The
             representations MAY additionally contain other links and forms that
-            are not described in this document, such as a link with the <xref
-            target="W3C.REC-html52-20171214">"alternate" link relation
-            type</xref> that references an alternate representation of the data
+            are not described in this document, such as a link with the
+            &lt;http://www.iana.org/assignments/relation/alternate&gt; link
+            relation type <xref target="W3C.REC-html52-20171214"/> that
+            references an alternate representation of the data
             collection resource.
           </t>
           <t>
@@ -254,12 +256,13 @@
             collection MAY restrict the media types it accepts for publication.
             In this case, the form in the representation of the data collection
             for creating data items MUST list the acceptable media types using
-            form fields with the name &lt;urn:TBD1#accept&gt;.
+            form fields of type &lt;http://coreapps.org/coap#accept&gt;.
           </t>
           <t>
             The representations of data items MAY link back to the data
-            collection resource using the <xref target="RFC6573">"collection"
-            link relation type</xref>.
+            collection resource using the
+            &lt;http://www.iana.org/assignments/relation/collection&gt; link
+            relation type <xref target="RFC6573"/>.
           </t>
         </list>
       </t>
@@ -280,12 +283,12 @@
           <t hangText="Discovering a Data Hub">
             <vspace blankLines="1"/>
             In this version of this document, clients are assumed to be
-            pre-configured with a link to a data collection at a data hub.
+            pre-configured with an entry-point IRI for a data collection at a data hub.
           </t>
           <t hangText="Reading a Collection">
             <vspace blankLines="1"/>
             A client can retrieve a representation of a data collection by
-            following the pre-configured link. As described above, the
+            dereferencing the entry-point IRI. As described above, the
             representation of the data collection includes links to (and,
             optionally, representations of) the data items in the data
             collection. The representation of the data collection also includes
@@ -294,14 +297,19 @@
           <t hangText="Creating an Item">
             <vspace blankLines="1"/>
             The representation of a data collection MAY contain a form with the
-            &lt;urn:TBD1#create&gt; operation type. Submitting this form with a
+            &lt;http://coreapps.org/collections#create&gt; operation type. Submitting this form with a
             representation in one of the acceptable media types creates a new
             data item in the data collection. The acceptable media types are
-            indicated by &lt;urn:TBD1#accept&gt; form fields.
+            indicated by form fields of type &lt;http://coreapps.org/coap#accept&gt;.
           </t>
           <t>
-            Implementations of this version of this document MUST offer the
-            <xref target="RFC7252">POST method</xref> in the form. On success,
+            Implementations of this version of this document MUST use the method
+            implied by the &lt;http://coreapps.org/collections#create&gt;
+            operation type, i.e., the <xref target="RFC7252">POST method</xref>.
+            A form indicating different a method MUST be ignored.
+          </t>
+          <t>
+            On success,
             the location of the created data item MUST be conveyed in a 2.01
             (Created) response using the <xref target="RFC7252">Location-Path
             and Location-Query options</xref>.
@@ -323,38 +331,56 @@
           <t hangText="Updating an Item">
             <vspace blankLines="1"/>
             For each data item in a data collection, the representation of the
-            data collection MAY include a form with the &lt;urn:TBD1#update&gt;
+            data collection MAY include a form with the &lt;http://coreapps.org/base#update&gt;
             operation type nested within the link to the data item. Submitting
             this form updates the data item to the submitted representation.
           </t>
           <t>
-            Implementations of this version of this document MUST offer the
-            <xref target="RFC7252">PUT method</xref> in the form.
+            Implementations of this version of this document MUST use the method
+            implied by the &lt;http://coreapps.org/base#update&gt; operation
+            type, i.e., the <xref target="RFC7252">PUT method</xref>. A form
+            indicating different a method MUST be ignored.
+          </t>
+          <t>
+            On success, a 2.04 (Changed) response is returned.
           </t>
           <t hangText="Deleting an Item">
             <vspace blankLines="1"/>
             For each data item in a data collection, the representation of the
-            data collection MAY include a form with the &lt;urn:TBD1#delete&gt;
+            data collection MAY include a form with the &lt;http://coreapps.org/collections#delete&gt;
             operation type nested within the link to the data item. Submitting
             this form deletes the data item from the data collection.
           </t>
           <t>
-            Implementations of this version of this document MUST offer the
-            <xref target="RFC7252">DELETE method</xref> in the form.
+            Implementations of this version of this document MUST use the method
+            implied by the &lt;http://coreapps.org/collections#delete&gt;
+            operation type, i.e., the <xref target="RFC7252">DELETE
+            method</xref>. A form indicating different a method MUST be ignored.
+          </t>
+          <t>
+            On success, a 2.02 (Deleted) response is returned.
           </t>
           <t hangText="Searching for Items">
             <vspace blankLines="1"/>
             The representation of a data collection MAY contain a form with the
-            &lt;urn:TBD1#search&gt; operation type. This form can be used to
+            &lt;http://coreapps.org/base#search&gt; operation type. This form can be used to
             find data items in the data collection. Submitting this form with a
             search query returns the subset of data items that match the query.
           </t>
           <t>
-            (TODO: Describe the representation format for search queries.)
+            (TODO: Specify the representation format for search queries.)
           </t>
           <t>
-            Implementations of this version of this document MUST offer the
-            <xref target="RFC8132">FETCH method</xref> in the form.
+            Implementations of this version of this document MUST use the method
+            implied by the &lt;http://coreapps.org/base#search&gt; operation
+            type, i.e., the <xref target="RFC8132">FETCH method</xref>. A form
+            indicating different a method MUST be ignored.
+          </t>
+          <t>
+            On success, a 2.05 (Content) response is returned.
+          </t>
+          <t>
+            (TODO: Specify the representation format for the response.)
           </t>
         </list>
       </t>
@@ -461,7 +487,7 @@
       <t>
         Thanks to
         Christian Ams&uuml;ss and
-        Jaime Jimenez
+        Jaime Jim&eacute;nez
         for helpful comments and discussions that have shaped the
         document.
       </t>
