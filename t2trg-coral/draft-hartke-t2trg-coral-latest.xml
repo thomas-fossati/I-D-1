@@ -1720,14 +1720,14 @@
 
         <t>
           Note that registered link relation types are required to be lowercased as per
-          <xref target="RFC8288">Section 3.3 of RFC 8288</xref>.
+          Section 3.3 of <xref target="RFC8288">RFC 8288</xref>.
         </t>
 
         <t>
           (The convention of appending the link relation type to the prefix
           "http://www.iana.org/assignments/relation/" to form an IRI is adopted
-          from <xref target="RFC4287">Atom</xref>. See also <xref
-          target="RFC8288">Appendix A.2 of RFC 8288</xref>.)
+          from <xref target="RFC4287">Atom</xref>. See also Appendix A.2 of <xref
+          target="RFC8288">RFC 8288</xref>.)
         </t>
 
       </section>
@@ -2305,7 +2305,7 @@
             </t>
             <t>
               The link target MUST be a text string in the format specified in
-              <xref target="RFC5646">Section 2.1 of RFC 5646</xref>.
+              Section 2.1 of <xref target="RFC5646">RFC 5646</xref>.
             </t>
           </list>
         </t>
@@ -2404,7 +2404,7 @@
             </t>
             <t>
               The form field value MUST be a text string in the format defined
-              in <xref target="RFC7231">Section 4.1 of RFC 7231</xref>. The set
+              in Section 4.1 of <xref target="RFC7231">RFC 7231</xref>. The set
               of possible values is maintained in the IANA HTTP Method Registry.
             </t>
             <t>
@@ -2421,7 +2421,7 @@
             </t>
             <t>
               The form field value MUST be a text string in the format defined
-              in <xref target="RFC7231">Section 3.1.1.1 of RFC 7231</xref>. The
+              in Section 3.1.1.1 of <xref target="RFC7231">RFC 7231</xref>. The
               possible set of media types and their parameters are maintained in
               the IANA Media Types Registry.
             </t>
@@ -2437,7 +2437,7 @@
             </t>
             <t>
               The metadata value MUST be specified as a text string in the
-              format defined in <xref target="RFC7231">Section 3.1.1.1 of RFC
+              format defined in Section 3.1.1.1 of <xref target="RFC7231">RFC
               7231</xref>. The possible set of media types and their parameters
               are maintained in the IANA Media Types Registry.
             </t>
