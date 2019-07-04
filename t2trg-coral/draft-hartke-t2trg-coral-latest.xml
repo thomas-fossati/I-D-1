@@ -817,7 +817,7 @@
             URI &lt;http://example.com/dictionary&gt; can use the following
             content type:
             <list>
-              <t>application/coral+cbor; dictionary="http://example.com/dictionary"</t>
+              <t>application/coral+cbor;dictionary="http://example.com/dictionary"</t>
             </list>
             The URI serves only as an identifier; it does not necessarily have
             to be dereferencable (or even use a dereferencable URI scheme). It

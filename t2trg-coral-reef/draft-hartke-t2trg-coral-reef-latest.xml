@@ -467,7 +467,7 @@
               <t hangText="Response">
                 <vspace blankLines="1"/>
                 When successful, the server returns a 2.05 (Content) response
-                with a representation in content format TBD3 ('application/coral+cbor; dictionary=http://TBD5/'). The representation
+                with a representation in content format TBD3. The representation
                 MUST contain zero or more links of type
                 &lt;http://coreapps.org/reef#rd-item&gt;, each of which MUST target a resource in
                 the namespace of the server (same origin). The links may have nested elements
@@ -1240,7 +1240,7 @@
           procedures of <xref target="RFC7252">RFC 7252</xref>.
           <list style="symbols">
             <t>
-              Content Type: application/coral+cbor; dictionary=http://TBD5/<vspace/>
+              Content Type: application/coral+cbor;dictionary="http://TBD5/"<vspace/>
               Content Coding: identity<vspace/>
               ID: TBD3<vspace/>
               Reference: &SELF; <xref target="I-D.hartke-t2trg-coral"/>
