@@ -1091,13 +1091,13 @@
             </t>
 
             <t>
-              A date/time literal consists of a sequence of characters in
-              <xref target="RFC3339">Internet date/time format</xref>, enclosed
-              in dollar signs.
+              A date/time literal consists of the prefix "dt" and a sequence of
+              Unicode characters in <xref target="RFC3339">Internet Date/Time
+              Format</xref>, enclosed in single quotes.
               <list>
-                <t>datetime = DOLLAR date-time DOLLAR</t>
+                <t>datetime = %x64.74 SQUOTE date-time SQUOTE</t>
                 <t>date-time = &lt;Defined in Section 5.6 of RFC 3339&gt;</t>
-                <t>DOLLAR = %x24</t>
+                <t>SQUOTE = %x27</t>
               </list>
             </t>
 
@@ -1111,8 +1111,8 @@
 
             <t>
               A byte string literal consists of a prefix and zero or more bytes
-              encoded in <xref target="RFC4648">Base16, Base32, or Base64</xref>
-              and enclosed in single quotes. Byte string literals encoded in
+              encoded in <xref target="RFC4648">Base16, Base32, or Base64</xref>,
+              enclosed in single quotes. Byte string literals encoded in
               Base16 begin with "h" or "b16", byte string literals encoded in
               Base32 begin with "b32", and byte string literals encoded in
               Base64 begin with "b64".
@@ -1121,7 +1121,6 @@
                 <t>base16 = (%x68 / %x62.31.36) SQUOTE &lt;Base16 encoded data&gt; SQUOTE</t>
                 <t>base32 = %x62.33.32 SQUOTE &lt;Base32 encoded data&gt; SQUOTE</t>
                 <t>base64 = %x62.36.34 SQUOTE &lt;Base64 encoded data&gt; SQUOTE</t>
-                <t>SQUOTE = %x27</t>
               </list>
             </t>
 
