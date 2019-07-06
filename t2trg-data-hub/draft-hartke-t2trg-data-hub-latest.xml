@@ -75,10 +75,12 @@
         <xref target="I-D.ietf-core-resource-directory">Resource
         Directory</xref> aggregates descriptions of Web resources held on
         constrained nodes, which enables other nodes to easily discover these
-        resources. Similarly, a <xref
-        target="I-D.ietf-suit-architecture">Firmware Server</xref> stores stores
-        firmware images and manifests, making this data available to deployed
-        devices, commissioning tools, and other services.
+        resources; a <xref target="W3C.CR-wot-architecture-20190516">Thing
+        Directory</xref> stores metadata of IoT devices, allowing clients to
+        discover interaction affordances and supported protocol bindings of
+        Things; and a <xref target="I-D.ietf-suit-architecture">Firmware
+        Server</xref> stores firmware images and manifests, making this data
+        available to deployed devices, commissioning tools, and other services.
       </t>
 
       <t>
@@ -473,6 +475,33 @@
       &I-D.ietf-suit-information-model;
 
       &W3C.REC-html52-20171214;
+
+      <reference anchor="W3C.CR-wot-architecture-20190516" target="https://www.w3.org/TR/2019/CR-wot-architecture-20190516">
+        <front>
+          <title>Web of Things (WoT) Architecture</title>
+          <author initials='M.' surname='Kovatsch' fullname='Matthias Kovatsch'>
+            <organization />
+          </author>
+          <author initials='R.' surname='Matsukura' fullname='Ryuichi Matsukura'>
+            <organization />
+          </author>
+          <author initials='M.' surname='Lagally' fullname='Michael Lagally'>
+            <organization />
+          </author>
+          <author initials='T.' surname='Kawaguchi' fullname='Toru Kawaguchi'>
+            <organization />
+          </author>
+          <author initials='K.' surname='Toumura' fullname='Kunihiko Toumura'>
+            <organization />
+          </author>
+          <author initials='K.' surname='Kajimoto' fullname='Kazuo Kajimoto'>
+            <organization />
+          </author>
+          <date month='May' day='16' year='2019' />
+        </front>
+        <seriesInfo name='World Wide Web Consortium Candidate Recommendation' value='CR-wot-architecture-20190516' />
+        <format type='HTML' target='https://www.w3.org/TR/2019/CR-wot-architecture-20190516' />
+      </reference>
 
     </references>
 
