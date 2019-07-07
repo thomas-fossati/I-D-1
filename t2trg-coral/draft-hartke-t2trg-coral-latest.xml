@@ -1759,6 +1759,31 @@
 
       </section>
 
+      <section title="Expressing Language-Tagged Strings">
+
+        <t>
+          Text strings that are the target of a link can be associated with a
+          <xref target="RFC5646">language tag</xref> by nesting a link of type
+          &lt;http://coreapps.org/base#lang&gt; under the link. The target of
+          this nested link MUST be a text string that conforms to the syntax of
+          a language tag:
+        </t>
+
+        <figure>
+          <artwork>
+   #using &lt;http://coreapps.org/base#&gt;
+   #using example = &lt;http://example.org/&gt;
+   #using iana = &lt;http://www.iana.org/assignments/relation/&gt;
+
+   iana:terms-of-service &lt;/tos&gt; {
+      example:title "Nutzungsbedingungen" { lang "de" }
+      example:title "Terms of use"        { lang "en" }
+   }
+          </artwork>
+        </figure>
+
+      </section>
+
       <section title="Embedding CoRAL in CBOR Structures">
 
         <t>
