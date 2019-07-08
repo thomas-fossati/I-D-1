@@ -254,7 +254,7 @@
           allows for the creation of new link relation types without the risk of
           collisions when from different organizations or domains of knowledge.
           An IRI also can lead to documentation, schema, and other information
-          about the link relation type. These IRIs are primarily used as
+          about the link relation type. These IRIs are only used as
           identity tokens, though, and are compared using Simple String
           Comparison (Section 5.1 of RFC 3987).
         </t>
@@ -313,18 +313,18 @@
         <t>
           The form context is the resource on which an operation is ultimately
           performed. To perform the operation, an agent needs to construct a request
-          with the specified request method and submission target as the request IRI. The submission
-          target is typically the same resource as the form context, but may be a different
+          with the specified method and the specified submission target as the request IRI. Usually, the submission
+          target is the same resource as the form context, but it may be a different
           resource. Constructing and sending the request is called <spanx>submitting
           the form</spanx>.
         </t>
 
         <t>
-          Form fields, as described in the following section, can be used to
+          Form fields, specified in the next section, can be used to
           provide more detailed instructions to the agent for constructing the
           request. For example, form fields can instruct the agent to include a
-          payload in the request that must match the specifications of the form
-          field information.
+          payload or certain headers in the request that must match the
+          specifications of the form fields.
         </t>
 
         <t>
@@ -335,8 +335,6 @@
           of the enclosing link.
         </t>
 
-      </section>
-
       <section title="Form Fields">
 
         <t>
@@ -345,23 +343,30 @@
         </t>
 
         <t>
-          For example, a form field can identify one or more data items that need to
-          be included in the request payload or can reference another resource (such as
-          a schema) that describes the structure of the payload. Form fields can also provide
+          For example, a form field could identify one or more data items that need to
+          be included in the request payload or reference another resource (such as
+          a schema) that describes the structure of the payload. A form field could also provide
           other kinds of information, such as acceptable media types for the payload
-          or expected request headers.
+          or expected request headers. Form fields may be specific to the
+          protocol used for submitting the form.
         </t>
 
         <t>
-          A form field is a pair of a <spanx>form field type</spanx> and a
+          A form field is the pair of a <spanx>form field type</spanx> and a
           <spanx>form field value</spanx>.
+        </t>
 
+        <t>
           The form field type identifies the semantics of the form field. Form
           field types are denoted like link relation types and operation types by an IRI.
+        </t>
 
+        <t>
           The form field value can be either an IRI, a Boolean value, an integer, a
           floating-point number, a date/time value, a byte string, or a text string.
         </t>
+
+      </section>
 
       </section>
 
@@ -507,9 +512,10 @@
 
         <t>
           Traversing the history should take advantage of caches to avoid new
-          requests. An agent MAY reissue a safe request (e.g., a GET request) if
+          requests. An agent MAY reissue a safe request (e.g., a GET request) when
           it doesn't have a fresh representation in its cache. An agent MUST NOT
-          reissue an unsafe request (e.g., a PUT or POST request).
+          reissue an unsafe request (e.g., a PUT or POST request) unless it
+          intends to perform that operation again.
         </t>
 
       </section>
@@ -570,6 +576,7 @@
             of zero or more links, forms, embedded representations, and
             directives.
             <list>
+              <t>document = body</t>
               <t>body = [*(link / form / representation / directive)]</t>
             </list>
           </t>
@@ -1251,6 +1258,7 @@
             The body of a document in the textual format consists of zero or
             more links, forms, embedded representations, and directives.
             <list>
+              <t>document = body</t>
               <t>body = *(link / form / representation / directive)</t>
             </list>
           </t>
@@ -1688,7 +1696,11 @@
         <t>
           IRIs that identify vocabulary do not need to be registered. The inclusion of domain
           names in IRIs allows for the decentralized creation of new IRIs
-          without the risk of collisions. However, IRIs can be relatively
+          without the risk of collisions.
+        </t>
+
+        <t>
+          However, IRIs can be relatively
           verbose and impose a high overhead on a representation. This can be a
           problem in <xref target="RFC7228">constrained environments</xref>.
           Therefore, CoRAL alternatively allows the use of unsigned integers to
@@ -1719,14 +1731,14 @@
         </figure>
 
         <t>
-          Note that registered link relation types are required to be lowercased as per
+          Note that registered link relation types are required to be lowercased, as per
           Section 3.3 of <xref target="RFC8288">RFC 8288</xref>.
         </t>
 
         <t>
-          (The convention of appending the link relation type to the prefix
-          "http://www.iana.org/assignments/relation/" to form an IRI is adopted
-          from <xref target="RFC4287">Atom</xref>. See also Appendix A.2 of <xref
+          (The convention of appending the link relation types to the prefix
+          "http://www.iana.org/assignments/relation/" to form IRIs is adopted
+          from <xref target="RFC4287">Atom</xref>; see also Appendix A.2 of <xref
           target="RFC8288">RFC 8288</xref>.)
         </t>
 
@@ -1765,8 +1777,8 @@
           Text strings that are the target of a link can be associated with a
           <xref target="RFC5646">language tag</xref> by nesting a link of type
           &lt;http://coreapps.org/base#lang&gt; under the link. The target of
-          this nested link MUST be a text string that conforms to the syntax of
-          a language tag:
+          this nested link MUST be a text string that conforms to the syntax
+          specified in Section 2.1 of RFC 5646:
         </t>
 
         <figure>
@@ -1784,15 +1796,15 @@
 
       </section>
 
-      <section title="Embedding CoRAL in CBOR Structures">
+      <section title="Embedding CoRAL in CBOR Data">
 
         <t>
           Data items in the CoRAL binary format (<xref target="binary"/>) may be
-          embedded in other <xref target="RFC7049">CBOR</xref> data structures.
+          embedded in other <xref target="RFC7049">CBOR data</xref> data.
           Specifications using <xref target="RFC8610">CDDL</xref>
           SHOULD reference the following CDDL definitions for this purpose:
           <list>
-            <t>CoRAL-Document = body</t>
+            <t>CoRAL-Document = document</t>
             <t>CoRAL-Link = link</t>
             <t>CoRAL-Form = form</t>
           </list>
@@ -1808,8 +1820,8 @@
           By default, a CoRAL document is a representation that captures the
           current state of a resource. The meaning of a CoRAL document changes
           when it is submitted in a request. Depending on the request method,
-          the CoRAL document can capture the intended state of a resource or
-          be subject to application-specific processing.
+          the CoRAL document can capture the intended state of a resource (PUT) or
+          be subject to application-specific processing (POST).
         </t>
 
         <section title="PUT Requests">
@@ -2192,7 +2204,6 @@
       &RFC6943;
       &RFC7049;
       &RFC8174;
-      &RFC8288;
       &RFC8610;
 
       <reference anchor="UNICODE" target="http://www.unicode.org/versions/latest/">
@@ -2254,6 +2265,7 @@
       &RFC7252;
       &RFC7320;
       &RFC8132;
+      &RFC8288;
       &RFC8446;
 
       &W3C.REC-html52-20171214;

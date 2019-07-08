@@ -372,7 +372,7 @@
           <t>
             The link can have a nested link containing language information.
           </t>
-          <t hangText="&lt;http://coreapps.org/reef#type&gt;">
+          <t hangText="&lt;http://coreapps.org/coap#type&gt;">
             <vspace/>
             The link target is a hint indicating what the media type of the
             result of dereferencing the link context should be.
@@ -1099,6 +1099,11 @@
         </t>
 
         <t>
+          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD5/"
+          in this document with the URI of the new registry.]]
+        </t>
+
+        <t>
           The registry is a mapping between a key and a value.
 
           The key is an integer in the range 0 to 2147483647 (2^31-1).
@@ -1188,8 +1193,8 @@
             </t>
             <t>
               Key: 13<vspace/>
-              Value: &lt;http://coreapps.org/reef#type&gt;<vspace/>
-              Reference: &SELF;
+              Value: &lt;http://coreapps.org/coap#type&gt;<vspace/>
+              Reference: <xref target="I-D.hartke-t2trg-coral"/>
             </t>
             <t>
               Key: 14<vspace/>
@@ -1216,17 +1221,7 @@
               Value: &lt;/.well-known/core&gt;<vspace/>
               Reference: &SELF;
             </t>
-            <t>
-              Key: 19<vspace/>
-              Value: &lt;http://coreapps.org/coap#type&gt;<vspace/>
-              Reference: <xref target="I-D.hartke-t2trg-coral"/>
-            </t>
           </list>
-        </t>
-
-        <t>
-          [[NOTE TO RFC EDITOR: Please replace all occurrences of "http://TBD5/"
-          in this document with the URI of the new registry.]]
         </t>
 
       </section>
@@ -1243,7 +1238,7 @@
               Content Type: application/coral+cbor;dictionary="http://TBD5/"<vspace/>
               Content Coding: identity<vspace/>
               ID: TBD3<vspace/>
-              Reference: &SELF; <xref target="I-D.hartke-t2trg-coral"/>
+              Reference: &SELF;
             </t>
           </list>
         </t>
@@ -1279,20 +1274,18 @@
     <references title="Normative References">
 
       &RFC2119;
-      &RFC6573;
       &RFC7252;
       &RFC8174;
       &RFC8615;
 
       &I-D.hartke-t2trg-coral;
 
-      &W3C.REC-rdf-schema-20140225;
-
     </references>
 
     <references title="Informative References">
 
       &RFC3986;
+      &RFC6573;
       &RFC6690;
       &RFC7228;
       &RFC8288;
@@ -1300,6 +1293,8 @@
       &IANA.core-parameters;
 
       &I-D.ietf-core-resource-directory;
+
+      &W3C.REC-rdf-schema-20140225;
 
       <reference anchor="REST" target="http://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf">
         <front>
